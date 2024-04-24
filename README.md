@@ -1,0 +1,2 @@
+# waveDiscord
+Discord bot Wave
