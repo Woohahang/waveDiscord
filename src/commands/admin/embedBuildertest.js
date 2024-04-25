@@ -17,7 +17,7 @@ module.exports = {
             .addFields(
                 { name: 'Steam 프로필', value: '[스팀 친구 추가하기](https://steamcommunity.com/profiles/76561198311685982/)', inline: true },
                 { name: '카카오 배틀 그라운드', value: '[testName](https://dak.gg/pubg)', inline: true },
-                { name: '　', value: '　' },
+                { name: ' ', value: ' ' },
                 { name: '리그 오브 레전드', value: '[끼매누#KR1](https://www.op.gg/summoners/kr/%EB%81%BC%EB%A7%A4%EB%88%84-KR1)', inline: true },
                 { name: '발로란트', value: '[testName](https://dak.gg/valorant?hl=ko)', inline: true },
                 { name: '\u200B', value: '\u200B' }
@@ -26,6 +26,7 @@ module.exports = {
             .setFooter({ text: '━━━━━━━━━━━━━━━ update', iconURL: 'https://cdn-icons-png.flaticon.com/512/5052/5052710.png' });
 
         await interaction.reply({ embeds: [emb] });
+
     }
 
 };

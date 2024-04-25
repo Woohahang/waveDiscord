@@ -51,12 +51,12 @@ module.exports = async (oldState, newState) => {
         .setFooter({ text: '━━━━━━━━━━━ update', iconURL: 'https://cdn-icons-png.flaticon.com/512/5052/5052710.png' });
 
     // 채널에 메시지를 전송합니다.
+
     try {
         await channel.send({ embeds: [embedMessage] });
     } catch (error) {
         console.error(`메시지를 보내는 중에 오류가 발생했습니다. : ${error}`);
     }
 
+
 };
-
-

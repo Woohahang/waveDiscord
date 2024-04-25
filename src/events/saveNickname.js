@@ -88,6 +88,7 @@ module.exports = async (interaction) => {
 
             case 'kaKaoName':
                 const kaKaoContent = interaction.fields.getTextInputValue('kaKaoContent');
+
                 console.log("카카오 :" + kaKaoContent);
                 if (!kaKaoContent) return await interaction.reply({ content: "작성이 취소되었습니다.", ephemeral: true });
                 const userDataK = await userSchema.findOne({ guildId: interaction.guild.id, userId: interaction.member.id });
@@ -109,6 +110,7 @@ module.exports = async (interaction) => {
 
             case 'loLName':
                 const loLContent = interaction.fields.getTextInputValue('loLContent');
+
                 if (!loLContent) return await interaction.reply({ content: "작성이 취소되었습니다.", ephemeral: true });
                 const userDatal = await userSchema.findOne({ guildId: interaction.guild.id, userId: interaction.member.id });
                 if (userDatal) {

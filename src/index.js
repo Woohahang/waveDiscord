@@ -2,7 +2,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits, TextInputBuilder, ActionRowBuilder, ModalBuilder } = require('discord.js');
+const { Client, Collection, Events, GatewayIntentBits, TextInputBuilder, ActionRowBuilder, ModalBuilder, EmbedBuilder } = require('discord.js');
 const { token } = require('../../config.json');
 const connectToDatabase = require('./database.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildVoiceStates] });
@@ -14,6 +14,7 @@ const commandFolders = fs.readdirSync(foldersPath);
 
 const saveNickname = require('./events/saveNickname.js');
 const voiceJoin = require('./events/voiceJoinMessage.js');
+const { channel } = require('node:diagnostics_channel');
 
 // MongoDB 연결
 connectToDatabase();
@@ -101,7 +102,6 @@ client.on('voiceStateUpdate', async (oldState, newState) => { //
         voiceJoin(oldState, newState);
     }
 })
-
 
 
 client.login(token);
