@@ -64,7 +64,6 @@ client.on(Events.InteractionCreate, async interaction => {
 client.on('interactionCreate', async interaction => {
 
     if (!interaction.isMessageComponent()) return;
-    console.log("메뉴 선택 객체");
 
     try {
         saveNickname(interaction);
@@ -82,7 +81,6 @@ client.on('interactionCreate', async interaction => {
 // 전송 버튼 눌렀을 때만 작동한다.
 client.on('interactionCreate', async interaction => {
     if (!interaction.isModalSubmit()) return;
-    console.log("전송 객체");
 
     try {
         saveNickname(interaction);

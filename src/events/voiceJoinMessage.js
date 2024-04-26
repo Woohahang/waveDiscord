@@ -22,7 +22,6 @@ async function addDefaultLoL(userDocument) {
     }
 }
 
-
 function createFields(userDocument) {
     const fields = [];
 
@@ -37,18 +36,18 @@ function createFields(userDocument) {
         });
     }
 
-    if (userDocument.kakao) {
+    if (userDocument.loL) {
         fields.push({
-            name: '카카오 배틀 그라운드',
-            value: `[${userDocument.kakao}](https://dak.gg/pubg/profile/kakao/${userDocument.kakao})`,
+            name: '라이엇 게임즈',
+            value: `[${userDocument.loL}](https://www.op.gg/summoners/kr/${userDocument.loL})`,
             inline: true
         });
     }
 
-    if (userDocument.loL) {
+    if (userDocument.kakao) {
         fields.push({
-            name: '리그 오브 레전드',
-            value: `[${userDocument.loL}](https://www.op.gg/summoners/kr/${userDocument.loL})`,
+            name: '카카오 배틀 그라운드',
+            value: `[${userDocument.kakao}](https://dak.gg/pubg/profile/kakao/${userDocument.kakao})`,
             inline: true
         });
     }

@@ -68,11 +68,9 @@ function createFields(userDocument) {
             });
         }
     }
-    const sads = '';
-    console.log("asdds");
+
     return fields;
 }
-
 
 client.on('voiceStateUpdate', async (oldState, newState) => {
     // return;
@@ -131,12 +129,28 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
 client.login(token);
 
 /* 작업 목록
-    1. setTimestamp 표기 오류 수정 ( 현재시간 표기 -> 마지막 업데이트 시간 표기 )
-
-    2. 중복 된 임베드 메시지 삭제 기능 추가
+    1. src/events/saveNickname.js 리팩토링
+    - 확장성을 고려하고 중복된 코드를 정리함.
 
     - 메모
     1. Collection 객체는 일반적인 forEach 문법을 사용할 수 없습니다. 대신 .forEach() 메서드를 사용하여 반복 작업을 수행해야 합니다.
     2. discord.js 에서 지원하는 객체는 Collection 문법에 따를 것
         - ex) 임베드의 개수를 헤아릴 때 embeds.length --> embeds.size
+*/
+
+/* 계획
+    1. 디스코드 서버 관리자가 음성 채널에 맞는 임베드만 나오도록 설정하는 기능 구현 계획
+
+    2. 임베드 닉네임 옆에 레벨과 티어 문자열로 같이 나오게
+        - 검색 후 티어 이미지 링크와 일치하는 변수를 담으면 될 것 같다.
+
+    3. 티어에 맞는 역할 부여
+        ex) 롤 다이아 -> 다이아 역할 자동 부여 (역할의 id를 변수로 담을 것, 이름은 바꿀 수 있게)
+
+    3. 임베드 한줄로 수정할까 고려중
+
+    4. 전용 게임방을 위해 관리자가 손쉽게 닉네임 등록 메뉴를 원하는 것만 나오도록 선택하는 기능 구현
+        ex) 롤방이면 닉네임 등록 ( 롤만 나오도록 )
+
+    5. 홈페이지를 만들 때 야간 모드 ( 달 모양 아이콘 계획 ) 컨셉 : 밤과 낮을 파도, 바다에 맞게
 */
