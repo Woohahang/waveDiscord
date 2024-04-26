@@ -79,8 +79,8 @@ module.exports = async (interaction) => {
                         guildId: interaction.guild.id,
                         userId: interaction.member.id,
                         steam: steamContent,
-                        kakao: "",
-                        loL: ""
+                        kakao: '',
+                        loL: ''
                     });
                     await newUserData.save();
                     return await interaction.reply({ content: "성공적으로 등록 하였습니다.", ephemeral: true });
@@ -88,8 +88,6 @@ module.exports = async (interaction) => {
 
             case 'kaKaoName':
                 const kaKaoContent = interaction.fields.getTextInputValue('kaKaoContent');
-
-                console.log("카카오 :" + kaKaoContent);
                 if (!kaKaoContent) return await interaction.reply({ content: "작성이 취소되었습니다.", ephemeral: true });
                 const userDataK = await userSchema.findOne({ guildId: interaction.guild.id, userId: interaction.member.id });
                 if (userDataK) {
@@ -100,9 +98,9 @@ module.exports = async (interaction) => {
                     const newUserData = new userSchema({
                         guildId: interaction.guild.id,
                         userId: interaction.member.id,
-                        steam: "",
-                        kakao: userDataK,
-                        loL: ""
+                        steam: '',
+                        kakao: kaKaoContent,
+                        loL: ''
                     });
                     await newUserData.save();
                     return await interaction.reply({ content: "성공적으로 등록 하였습니다.", ephemeral: true });
@@ -121,8 +119,8 @@ module.exports = async (interaction) => {
                     const newUserData = new userSchema({
                         guildId: interaction.guild.id,
                         userId: interaction.member.id,
-                        steam: "",
-                        kakao: "",
+                        steam: '',
+                        kakao: '',
                         loL: userDatal
                     });
                     await newUserData.save();
