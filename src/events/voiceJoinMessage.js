@@ -6,7 +6,7 @@ const { waveID } = require('../../../config.json');
 
 async function removeEmptyFields(userDocument) {
     // 게임이 더 확장 되면 필드명 추가
-    ['steam', 'kakao', 'loL'].forEach(field => {
+    ['steam', 'kakao', 'riotGames'].forEach(field => {
         if (userDocument[field] === '') {
             userDocument[field] = undefined;
         }
@@ -15,9 +15,9 @@ async function removeEmptyFields(userDocument) {
     await userDocument.save();
 }
 
-async function addDefaultLoL(userDocument) {
-    if (userDocument.loL && !userDocument.loL.includes('#')) {
-        userDocument.loL += '#KR1';
+async function addDefaultRiotGames(userDocument) {
+    if (userDocument.riotGames && !userDocument.riotGames.includes('#')) {
+        userDocument.riotGames += '#KR1';
         await userDocument.save();
     }
 }
@@ -32,15 +32,15 @@ function createFields(userDocument) {
         fields.push({
             name: 'Steam 프로필',
             value: includesSteamCommunity ? `[스팀 친구 추가](${userDocument.steam})` : userDocument.steam,
-            inline: true
+            inline: false
         });
     }
 
-    if (userDocument.loL) {
+    if (userDocument.riotGames) {
         fields.push({
             name: '라이엇 게임즈',
-            value: `[${userDocument.loL}](https://www.op.gg/summoners/kr/${userDocument.loL})`,
-            inline: true
+            value: `[${userDocument.riotGames}](https://www.op.gg/summoners/kr/${userDocument.riotGames})`,
+            inline: false
         });
     }
 
@@ -48,20 +48,20 @@ function createFields(userDocument) {
         fields.push({
             name: '카카오 배틀 그라운드',
             value: `[${userDocument.kakao}](https://dak.gg/pubg/profile/kakao/${userDocument.kakao})`,
-            inline: true
+            inline: false
         });
     }
 
     // 게임과 닉네임을 나타내는 정보를 세 개 이상 작성할 경우, 공백을 추가합니다.
-    if (fields.length >= 3) {
-        for (let i = 2; i < fields.length; i += 3) {
-            fields.splice(i, 0, {
-                name: ' ',
-                value: ' ',
-                inline: true
-            });
-        }
-    }
+    // if (fields.length >= 3) {
+    // for (let i = 2; i < fields.length; i += 3) {
+    // fields.splice(i, 0, {
+    // name: ' ',
+    // value: ' ',
+    // inline: true
+    // });
+    // }
+    // }
 
     return fields;
 }
@@ -80,7 +80,7 @@ module.exports = async (oldState, newState) => {
 
         try {
             await removeEmptyFields(userDocument);
-            await addDefaultLoL(userDocument);
+            await addDefaultRiotGames(userDocument);
 
             const fields = createFields(userDocument);
 

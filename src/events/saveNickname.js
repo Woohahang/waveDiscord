@@ -21,7 +21,7 @@ async function showModalAndSaveData(interaction, title, customId, label) {
 }
 
 module.exports = async (interaction) => {
-    if (interaction.isStringSelectMenu() && interaction.customId === "gameSelectMenu") {
+    if (interaction.isStringSelectMenu() && interaction.customId === "gameMenu") {
         const selectedValue = interaction.values[0];
 
         let title, customId, label;
@@ -38,9 +38,9 @@ module.exports = async (interaction) => {
                 label = "KaKao Battle Grounds 닉네임을 작성해주세요.";
                 break;
 
-            case 'loL':
-                title = "LoL 닉네임";
-                customId = "loLName";
+            case 'riotGames':
+                title = "riotGames 닉네임";
+                customId = "riotGamesName";
                 label = "League of Legends 닉네임을 작성해주세요.";
                 break;
 
@@ -66,7 +66,7 @@ module.exports = async (interaction) => {
             userId: interaction.member.id,
             steam: '',
             kakao: '',
-            loL: ''
+            riotGames: ''
         });
 
         switch (customId) {
@@ -78,8 +78,8 @@ module.exports = async (interaction) => {
                 userData.kakao = content;
                 break;
 
-            case 'loLName':
-                userData.loL = content;
+            case 'riotGamesName':
+                userData.riotGames = content;
                 break;
         }
 

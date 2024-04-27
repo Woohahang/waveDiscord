@@ -2,22 +2,22 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits, TextInputBuilder, ActionRowBuilder, ModalBuilder, EmbedBuilder } = require('discord.js');
+const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const { token } = require('../../config.json');
 const connectToDatabase = require('./database.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildVoiceStates] });
-
 client.commands = new Collection();
-
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 
-const saveNickname = require('./events/saveNickname.js');
-const voiceJoin = require('./events/voiceJoinMessage.js');
-const { channel } = require('node:diagnostics_channel');
 
 // MongoDB 연결
 connectToDatabase();
+
+// 이벤트 핸들러 모듈 가져오기
+const saveNickname = require('./events/saveNickname.js');
+const voiceJoin = require('./events/voiceJoinMessage.js');
+const removeNickname = require('./events/removeNickname.js');
 
 for (const folder of commandFolders) {
     const commandsPath = path.join(foldersPath, folder);
@@ -60,37 +60,53 @@ client.on(Events.InteractionCreate, async interaction => {
 
 });
 
-// 메뉴 선택 했을 때만 작동한다.
+// isMessageComponent 동작 메서드
 client.on('interactionCreate', async interaction => {
-
     if (!interaction.isMessageComponent()) return;
 
     try {
-        saveNickname(interaction);
-    } catch (error) {
-        console.error(error);
-        if (interaction.replied || interaction.deferred) {
-            await interaction.followUp({ content: '상호 작용 처리 중 오류가 발생했습니다!', ephemeral: true });
-        } else {
-            await interaction.reply({ content: '상호 작용 처리 중 오류가 발생했습니다!', ephemeral: true });
-        }
-    }
+        switch (interaction.customId) {
 
+            case 'gameMenu':
+                console.log('customid 가 gameMenu 입니다.');
+                saveNickname(interaction);
+                break;
+
+            case 'removeNickNames':
+                console.log('customId 가 removeNames 입니다.');
+                removeNickname(interaction);
+                break;
+
+            default:
+                console.log('isMessageComponent 에서 알 수 없는 customId : ' + interaction.customId)
+        }
+    } catch (error) {
+        console.error('isMessageComponent 에서 Interaction 처리 중 오류 발생:', error);
+        await interaction.reply({ content: '상호 작용 처리 중 오류가 발생했습니다!', ephemeral: true });
+    }
 })
 
-// 전송 버튼 눌렀을 때만 작동한다.
+// isModalSubmit 동작 메서드
 client.on('interactionCreate', async interaction => {
     if (!interaction.isModalSubmit()) return;
 
     try {
-        saveNickname(interaction);
-    } catch (error) {
-        console.error(error);
-        if (interaction.replied || interaction.deferred) {
-            await interaction.followUp({ content: '전송 처리 중 오류가 발생했습니다!', ephemeral: true });
-        } else {
-            await interaction.reply({ content: '전송 처리 중 오류가 발생했습니다!', ephemeral: true });
+        switch (interaction.customId) {
+            case 'steamCode':
+            case 'kaKaoName':
+            case 'riotGamesName':
+                saveNickname(interaction);
+                console.log('customId 가 ' + interaction.customId + ' 입니다.');
+                break;
+
+            default:
+                console.log('isModalSubmit 에서 알 수 없는 customId : ' + interaction.customId);
+                break;
         }
+
+    } catch (error) {
+        console.error('isModalSubmit 에서 Interaction 처리 중 오류 발생:', error);
+        await interaction.reply({ content: '상호 작용 처리 중 오류가 발생했습니다!', ephemeral: true });
     }
 })
 

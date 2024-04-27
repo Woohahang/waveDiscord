@@ -12,7 +12,7 @@ module.exports = {
         await interaction.deferReply({ ephemeral: true });
 
         let select = new StringSelectMenuBuilder()
-            .setCustomId('gameSelectMenu')
+            .setCustomId('gameMenu')
             .setPlaceholder('선택하세요!')
             .addOptions(
                 new StringSelectMenuOptionBuilder()
@@ -26,7 +26,7 @@ module.exports = {
                 new StringSelectMenuOptionBuilder()
                     .setLabel('League of Legends')
                     .setDescription('리그 오브 레전드 닉네임')
-                    .setValue('loL'),
+                    .setValue('riotGames'),
             );
 
         let row = new ActionRowBuilder()

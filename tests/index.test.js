@@ -11,7 +11,7 @@ connectToDatabase();
 
 async function removeEmptyFields(userDocument) {
     // 게임이 더 확장 되면 필드명 추가
-    ['steam', 'kakao', 'loL'].forEach(field => {
+    ['steam', 'kakao', 'riotGames'].forEach(field => {
         if (userDocument[field] === '') {
             userDocument[field] = undefined;
         }
@@ -20,9 +20,9 @@ async function removeEmptyFields(userDocument) {
     await userDocument.save();
 }
 
-async function addDefaultLoL(userDocument) {
-    if (userDocument.loL && !userDocument.loL.includes('#')) {
-        userDocument.loL += '#KR1';
+async function addDefaultRiotGames(userDocument) {
+    if (userDocument.riotGames && !userDocument.riotGames.includes('#')) {
+        userDocument.riotGames += '#KR1';
         await userDocument.save();
     }
 }
@@ -50,10 +50,10 @@ function createFields(userDocument) {
         });
     }
 
-    if (userDocument.loL) {
+    if (userDocument.riotGames) {
         fields.push({
             name: '리그 오브 레전드',
-            value: `[${userDocument.loL}](https://www.op.gg/summoners/kr/${userDocument.loL})`,
+            value: `[${userDocument.riotGames}](https://www.op.gg/summoners/kr/${userDocument.riotGames})`,
             inline: true
         });
     }
@@ -86,7 +86,7 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
 
         try {
             await removeEmptyFields(userDocument);
-            await addDefaultLoL(userDocument);
+            await addDefaultRiotGames(userDocument);
 
             const fields = createFields(userDocument);
 
@@ -129,8 +129,12 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
 client.login(token);
 
 /* 작업 목록
-    1. src/events/saveNickname.js 리팩토링
-    - 확장성을 고려하고 중복된 코드를 정리함.
+    1. index.js 예외 처리 추가
+    
+    2. 닉네임 삭제 기능 추가
+
+    3. 변수명 변경 loL -> riotGames
+
 
     - 메모
     1. Collection 객체는 일반적인 forEach 문법을 사용할 수 없습니다. 대신 .forEach() 메서드를 사용하여 반복 작업을 수행해야 합니다.
@@ -139,6 +143,8 @@ client.login(token);
 */
 
 /* 계획
+    - 본인 데이터 전체 삭제 or 닉네임 삭제
+
     1. 디스코드 서버 관리자가 음성 채널에 맞는 임베드만 나오도록 설정하는 기능 구현 계획
 
     2. 임베드 닉네임 옆에 레벨과 티어 문자열로 같이 나오게
@@ -146,11 +152,14 @@ client.login(token);
 
     3. 티어에 맞는 역할 부여
         ex) 롤 다이아 -> 다이아 역할 자동 부여 (역할의 id를 변수로 담을 것, 이름은 바꿀 수 있게)
-
-    3. 임베드 한줄로 수정할까 고려중
+        관리자 기능 : 메뉴 선택에 다이아몬드 선택하면 또 메뉴가 나오면서 기존 역할 선택
 
     4. 전용 게임방을 위해 관리자가 손쉽게 닉네임 등록 메뉴를 원하는 것만 나오도록 선택하는 기능 구현
         ex) 롤방이면 닉네임 등록 ( 롤만 나오도록 )
 
     5. 홈페이지를 만들 때 야간 모드 ( 달 모양 아이콘 계획 ) 컨셉 : 밤과 낮을 파도, 바다에 맞게
+*/
+
+/* 선택
+    1. 임베드 한줄에 내용 하나 or 두개
 */
