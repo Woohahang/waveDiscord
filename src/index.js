@@ -3,7 +3,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
-const { testtoken } = require('../../config.json');
+const { token } = require('../../config.json');
 const connectToDatabase = require('./database.js');
 const client = new Client({
     intents: [
@@ -14,10 +14,10 @@ const client = new Client({
         GatewayIntentBits.GuildMembers,
     ]
 });
+
 client.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
-
 
 // MongoDB 연결
 connectToDatabase();
@@ -143,11 +143,12 @@ client.on('guildCreate', async guild => {
 });
 
 
-client.on('messageCreate', async message => {
-    if (message.member.id === '282793473462239232' && message.content === "1") {
-        createGuideChannel(message);
-    }
-});
+// 서버 입장 채널 테스트
+// client.on('messageCreate', async message => {
+//     if (message.member.id === '282793473462239232' && message.content === "1") {
+//         createGuideChannel(message);
+//     }
+// });
 
 
-client.login(testtoken);
+client.login(token);

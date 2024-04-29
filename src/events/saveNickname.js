@@ -57,33 +57,34 @@ module.exports = async (interaction) => {
     // 모달 제출 여부 확인
     if (interaction.isModalSubmit()) {
         const customId = interaction.customId.split('-')[0]; // "-content" 부분 제거
-        const content = interaction.fields.getTextInputValue(`${customId}-content`);
+        let content = interaction.fields.getTextInputValue(`${customId}-content`);
 
         if (!content) return await interaction.reply({ content: "작성이 취소되었습니다.", ephemeral: true });
 
-        let userData = await userSchema.findOne({ userId: interaction.member.id }) ||
-            new userSchema({
-                userId: interaction.member.id,
-                steam: '',
-                kakao: '',
-                riotGames: ''
-            });
+        let userData = await userSchema.findOne({ userId: interaction.member.id });
+
+        // userData 가 없으면 만든다.
+        if (!userData) {
+            userData = new userSchema({ userId: interaction.member.id });
+            await userData.save();
+        }
 
         switch (customId) {
             case 'steamCode':
-                userData.steam = content;
+                userData.steam = content.substr(0, 70);
                 break;
 
             case 'kaKaoName':
-                userData.kakao = content;
+                userData.kakao = content.substr(0, 20);
                 break;
 
             case 'riotGamesName':
-                userData.riotGames = content;
+                userData.riotGames = content.substr(0, 20);
                 break;
         }
 
         await userData.save();
+
         return await interaction.reply({ content: "성공적으로 변경 하였습니다.", ephemeral: true });
     }
 };

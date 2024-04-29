@@ -72,10 +72,7 @@ module.exports = async (oldState, newState) => {
         const userDocument = await userSchema.findOne({ userId: newState.id });
         const channel = newState.channel;
 
-        if (!userDocument) {
-            console.log("사용자 문서를 찾을 수 없습니다.");
-            return
-        };
+        if (!userDocument) { console.log("사용자 문서를 찾을 수 없습니다."); return };
 
         try {
             await removeEmptyFields(userDocument);

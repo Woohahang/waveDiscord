@@ -28,9 +28,7 @@ function waveButton() {
 }
 
 module.exports = async (guild) => {
-    // const channel = await guild.channels.create({ name: '📘ㆍwave', type: 0, });
-
-    const channel = guild.channel;
+    const channel = await guild.channels.create({ name: '📘ㆍwave', type: 0, });
 
     await channel.send({
         content: "## :star: Wave 메인 명령어\n## /닉네임등록  /닉네임삭제\n\n",
@@ -38,8 +36,6 @@ module.exports = async (guild) => {
     });
 
     await channel.send({ components: [waveButton()] });
-
-    console.log('Wave 채널을 생성하고 메시지를 보냈습니다.');
 };
 
 //"## 업데이트 계획\n- **/닉네임등록 의 게임 순서를 관리자가 변경할 수 있습니다.**\n**- /닉네임등록 의 목록을 추가 삭제 할 수 있습니다.**\n- **[ 사용자 정보 ] 의 목록 순서를 관리자가 변경할 수 있습니다.**\n- **[ 사용자 정보 ] 전적과 매칭된 티어가 나타날 예정입니다.**"
