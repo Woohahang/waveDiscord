@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 let userSchema = new mongoose.Schema({
-    guildId: String,
     userId: String,
     steam: String,
     kakao: String,

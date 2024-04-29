@@ -5,7 +5,15 @@ const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const { token } = require('../../config.json');
 const connectToDatabase = require('./database.js');
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildVoiceStates] });
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildVoiceStates,
+        GatewayIntentBits.GuildMembers,
+    ]
+});
 client.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
@@ -18,6 +26,7 @@ connectToDatabase();
 const saveNickname = require('./events/saveNickname.js');
 const voiceJoin = require('./events/voiceJoinMessage.js');
 const removeNickname = require('./events/removeNickname.js');
+const createGuideChannel = require('./events/createGuideChannel.js');
 
 for (const folder of commandFolders) {
     const commandsPath = path.join(foldersPath, folder);
@@ -36,6 +45,13 @@ for (const folder of commandFolders) {
 client.once(Events.ClientReady, readyClient => {
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
+
+// 음성 채널 입장시 작동
+client.on('voiceStateUpdate', async (oldState, newState) => { //
+    if (oldState.channelId !== newState.channelId && newState.channelId !== null) {  // 채널 타입이 2(길드 채널)이라면 true, newState.channel 음성 채널에 입장하면 true
+        voiceJoin(oldState, newState);
+    }
+})
 
 // 슬래시 커맨더만 작동한다.
 client.on(Events.InteractionCreate, async interaction => {
@@ -110,12 +126,22 @@ client.on('interactionCreate', async interaction => {
     }
 })
 
-// 음성 채널 입장시 작동
-client.on('voiceStateUpdate', async (oldState, newState) => { //
-    if (oldState.channelId !== newState.channelId && newState.channelId !== null) {  // 채널 타입이 2(길드 채널)이라면 true, newState.channel 음성 채널에 입장하면 true
-        voiceJoin(oldState, newState);
+// Wave 채널 가입 상호작용
+client.on('guildCreate', async guild => {
+    try {
+        createGuideChannel(guild);
+    } catch (error) {
+        console.error('Wave 채널 생성 중 오류 발생 : ', error);
     }
-})
+});
+
+client.on('messageCreate', async message => {
+    if (message.member.id === '282793473462239232' && message.content === "1") {
+        await message.channel.send(
+            "## :star: Wave 메인 명령어\n## /닉네임등록  /닉네임삭제\n\n* 현 명령어의 기능 업데이트 집중 예정입니다.\n\n## 업데이트 계획\n- **/닉네임등록 의 게임 순서를 관리자가 변경할 수 있습니다.**\n**- /닉네임등록 의 목록을 추가 삭제 할 수 있습니다.**\n- **[ 사용자 정보 ] 의 목록 순서를 관리자가 변경할 수 있습니다.**\n- **[ 사용자 정보 ] 전적과 매칭된 티어가 나타날 예정입니다.**"
+        );
+    }
+});
 
 
 client.login(token);

@@ -41,7 +41,7 @@ module.exports = {
     async execute(interaction) {
 
         try {
-            let userData = await userSchema.findOne({ guildId: interaction.guild.id, userId: interaction.member.id });
+            let userData = await userSchema.findOne({ userId: interaction.member.id });
 
             if (!userData) {
                 return await interaction.reply({ content: '등록된 정보가 없습니다.', ephemeral: true });

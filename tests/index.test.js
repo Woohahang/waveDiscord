@@ -129,12 +129,10 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
 client.login(token);
 
 /* 작업 목록
-    1. index.js 예외 처리 추가
-    
-    2. 닉네임 삭제 기능 추가
+    1. 닉네임에 공백이 있다면 정규식으로 전환
 
-    3. 변수명 변경 loL -> riotGames
-
+    2. Wave 가 초대를 받으면 가이드 채널 생성
+  
 
     - 메모
     1. Collection 객체는 일반적인 forEach 문법을 사용할 수 없습니다. 대신 .forEach() 메서드를 사용하여 반복 작업을 수행해야 합니다.

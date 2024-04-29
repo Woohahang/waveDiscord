@@ -61,13 +61,13 @@ module.exports = async (interaction) => {
 
         if (!content) return await interaction.reply({ content: "작성이 취소되었습니다.", ephemeral: true });
 
-        let userData = await userSchema.findOne({ guildId: interaction.guild.id, userId: interaction.member.id }) || new userSchema({
-            guildId: interaction.guild.id,
-            userId: interaction.member.id,
-            steam: '',
-            kakao: '',
-            riotGames: ''
-        });
+        let userData = await userSchema.findOne({ userId: interaction.member.id }) ||
+            new userSchema({
+                userId: interaction.member.id,
+                steam: '',
+                kakao: '',
+                riotGames: ''
+            });
 
         switch (customId) {
             case 'steamCode':

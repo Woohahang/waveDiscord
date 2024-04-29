@@ -10,6 +10,7 @@ const commands = [];
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 
+
 for (const folder of commandFolders) {
     // Grab all the command files from the commands directory you created earlier
     const commandsPath = path.join(foldersPath, folder);
@@ -41,11 +42,18 @@ const rest = new REST().setToken(token);
         );
 
         console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+
+        // 글로벌 커맨드 등록
+        // await rest.put(Routes.applicationCommands(clientId), {
+        //     body: commands,
+        // });
     } catch (error) {
         // And of course, make sure you catch and log any errors!
         console.error(error);
     }
-})();
+}
+
+)();
 
 
 
