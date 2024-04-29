@@ -129,10 +129,7 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
 client.login(token);
 
 /* 작업 목록
-    1. 닉네임에 공백이 있다면 정규식으로 전환
-
-    2. Wave 가 초대를 받으면 가이드 채널 생성
-  
+    1. 가이드 채널 : 닉네임삭제, 초대링크 업데이트
 
     - 메모
     1. Collection 객체는 일반적인 forEach 문법을 사용할 수 없습니다. 대신 .forEach() 메서드를 사용하여 반복 작업을 수행해야 합니다.

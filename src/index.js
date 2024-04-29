@@ -3,7 +3,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
-const { token } = require('../../config.json');
+const { testtoken } = require('../../config.json');
 const connectToDatabase = require('./database.js');
 const client = new Client({
     intents: [
@@ -76,7 +76,9 @@ client.on(Events.InteractionCreate, async interaction => {
 
 });
 
-// isMessageComponent 동작 메서드
+
+
+// 클릭 메서드
 client.on('interactionCreate', async interaction => {
     if (!interaction.isMessageComponent()) return;
 
@@ -91,6 +93,11 @@ client.on('interactionCreate', async interaction => {
             case 'removeNickNames':
                 console.log('customId 가 removeNames 입니다.');
                 removeNickname(interaction);
+                break;
+
+            case 'removeButton':
+                const command = await interaction.client.commands.get('닉네임삭제')
+                await command.execute(interaction);
                 break;
 
             default:
@@ -135,13 +142,12 @@ client.on('guildCreate', async guild => {
     }
 });
 
+
 client.on('messageCreate', async message => {
     if (message.member.id === '282793473462239232' && message.content === "1") {
-        await message.channel.send(
-            "## :star: Wave 메인 명령어\n## /닉네임등록  /닉네임삭제\n\n* 현 명령어의 기능 업데이트 집중 예정입니다.\n\n## 업데이트 계획\n- **/닉네임등록 의 게임 순서를 관리자가 변경할 수 있습니다.**\n**- /닉네임등록 의 목록을 추가 삭제 할 수 있습니다.**\n- **[ 사용자 정보 ] 의 목록 순서를 관리자가 변경할 수 있습니다.**\n- **[ 사용자 정보 ] 전적과 매칭된 티어가 나타날 예정입니다.**"
-        );
+        createGuideChannel(message);
     }
 });
 
 
-client.login(token);
+client.login(testtoken);

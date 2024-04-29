@@ -69,10 +69,7 @@ module.exports = async (oldState, newState) => {
 
     if (oldState.channelId !== newState.channelId && newState.channelId !== null) {
         const user = newState.member.user;
-        const userDocument = await userSchema.findOne({
-            // guildId: newState.guild.id,
-            userId: newState.id
-        });
+        const userDocument = await userSchema.findOne({ userId: newState.id });
         const channel = newState.channel;
 
         if (!userDocument) {

@@ -2,10 +2,10 @@
 
 const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
 
-function gameMenuLoader() {
+async function gameMenuLoader() {
     let select = new StringSelectMenuBuilder()
         .setCustomId('gameMenu')
-        .setPlaceholder('선택하세요!')
+        .setPlaceholder('닉네임 등록 !')
         .addOptions(
             new StringSelectMenuOptionBuilder()
                 .setLabel('Steam')

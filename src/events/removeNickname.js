@@ -51,12 +51,27 @@ module.exports = async (interaction) => {
             { new: true }
         );
 
-        await userData.save();
+        const userDataObject = userData.toObject(); // Mongoose Document를 JavaScript Object로 변환합니다.
+        delete userDataObject.userId;
+        delete userDataObject.updatedAt;
+        delete userDataObject._id;
+        delete userDataObject.__v;
+        const isAllEmpty = Object.values(userDataObject).every(value => value === '');
 
-        await interaction.reply({
-            content: generateMessage(removeKeys),
-            ephemeral: true
-        });
+        if (isAllEmpty) {
+            // 모든 값이 비어있다면 사용자 정보를 완전히 삭제합니다.
+            await userSchema.deleteOne({ userId });
+            return await interaction.reply({
+                content: '정보를 완전히 삭제했습니다.',
+                ephemeral: true
+            });
+        } else {
+            // 어떤 닉네임이 삭제 되었는지 알려줍니다.
+            await interaction.reply({
+                content: generateMessage(removeKeys),
+                ephemeral: true
+            });
+        }
 
     } catch (error) {
         console.error('닉네임 삭제 중 오류 발생:', error);

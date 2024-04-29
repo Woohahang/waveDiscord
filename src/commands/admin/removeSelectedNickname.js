@@ -41,14 +41,22 @@ module.exports = {
     async execute(interaction) {
 
         try {
+            // 사용자 정보 조회
             let userData = await userSchema.findOne({ userId: interaction.member.id });
 
-            if (!userData) {
-                return await interaction.reply({ content: '등록된 정보가 없습니다.', ephemeral: true });
-            }
+            // DB 에 없는 경우
+            if (!userData) { return await interaction.reply({ content: '등록된 정보가 없습니다.', ephemeral: true }); }
 
-            //  userData에 있는 값들을 기반으로 옵션을 생성하고, 값이 있는 옵션의 수를 계산합니다.
+            //  등록 된 닉네임의 개수
             const numOptionsWithValue = generateOptions(userData).length;
+
+            // 개수가 0 이면 리턴
+            if (numOptionsWithValue === 0) {
+                return await interaction.reply({
+                    content: '등록 된 닉네임이 없습니다.',
+                    ephemeral: true
+                });
+            }
 
             const selectedNames = new StringSelectMenuBuilder()
                 .setCustomId('removeNickNames')
@@ -57,8 +65,7 @@ module.exports = {
                 .setMinValues(1)
                 .setMaxValues(numOptionsWithValue);
 
-            const row = new ActionRowBuilder()
-                .addComponents(selectedNames);
+            const row = new ActionRowBuilder().addComponents(selectedNames);
 
             await interaction.reply({
                 content: '등록 된 닉네임을 삭제합니다! 메뉴를 선택해주세요!',
