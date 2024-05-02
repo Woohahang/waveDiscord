@@ -1,6 +1,6 @@
 // // src/events/saveNickname.js
 
-const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle } = require('discord.js');
+const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, Component } = require('discord.js');
 const userSchema = require('../models/userSchema.js');
 
 async function showModalAndSaveData(interaction, title, customId, label) {
@@ -56,6 +56,7 @@ module.exports = async (interaction) => {
 
     // 모달 제출 여부 확인
     if (interaction.isModalSubmit()) {
+
         const customId = interaction.customId.split('-')[0]; // "-content" 부분 제거
         let content = interaction.fields.getTextInputValue(`${customId}-content`);
 
@@ -69,22 +70,35 @@ module.exports = async (interaction) => {
             await userData.save();
         }
 
+        let limitReached = false;
         switch (customId) {
             case 'steamCode':
-                userData.steam = content.substr(0, 70);
+                userData.steam = content.substr(0, 100);
                 break;
 
             case 'kaKaoName':
-                userData.kakao = content.substr(0, 20);
+                if (userData.kakao.length > 2) {
+                    limitReached = true;
+                } else {
+                    userData.kakao.push(content.substr(0, 20));
+                }
                 break;
 
             case 'riotGamesName':
-                userData.riotGames = content.substr(0, 20);
-                break;
+                if (userData.riotGames.length > 2) {
+                    limitReached = true;
+                } else {
+                    userData.riotGames.push(content.substr(0, 20));
+                    break;
+                }
         }
 
-        await userData.save();
+        if (limitReached) {
+            return await interaction.reply({ content: "해당 항목의 데이터는 이미 제한에 도달했습니다.", ephemeral: true });
+        } else {
+            await userData.save();
+            return await interaction.reply({ content: "성공적으로 변경 하였습니다.", ephemeral: true });
+        }
 
-        return await interaction.reply({ content: "성공적으로 변경 하였습니다.", ephemeral: true });
     }
 };

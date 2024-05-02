@@ -4,6 +4,7 @@ const { SlashCommandBuilder } = require('discord.js');
 
 const { gameMenuLoader } = require('../../module/gameMenuLoader.js');
 
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("닉네임등록")
@@ -11,6 +12,7 @@ module.exports = {
 
     async execute(interaction) {
         try {
+            // 서버 소유자만 이 커맨드를 사용할 수 있습니다.
             if (interaction.guild.ownerId !== interaction.user.id) {
                 return await interaction.reply({
                     content: "서버 소유자만 생성할 수 있습니다.",
@@ -20,12 +22,14 @@ module.exports = {
 
             await interaction.deferReply({ ephemeral: true });
 
+            // 게임 리스트를 불러옵니다.
             await interaction.channel.send({
-                content: '**닉네임 등록할 게임을 선택해주세요 !**',
-                components: [await gameMenuLoader()],
+                content: '닉네임 등록할 게임을 선택해주세요 !',
+                components: [await gameMenuLoader()]
             });
 
             await interaction.editReply({ content: "성공적으로 생성하였습니다." });
+
         } catch (error) {
             console.error("메뉴 생성 중 오류 발생:", error.message);
         }

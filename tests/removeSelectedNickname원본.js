@@ -6,32 +6,32 @@ const userSchema = require('../../models/userSchema.js');
 function generateOptions(userData) {
     const options = [];
 
-    for (let i = 0; i < userData.steam.length; i++) {
+    if (userData.steam) {
         options.push({
-            value: 'steam' + i,
-            label: userData.steam[i],
-            description: '스팀'
+            value: 'steam',
+            label: userData.steam,
+            description: 'Steam'
         });
     }
 
-    for (let i = 0; i < userData.kakao.length; i++) {
+    if (userData.kakao) {
         options.push({
-            value: 'kakao' + i,
-            label: userData.kakao[i],
+            value: 'kakao',
+            label: userData.kakao,
             description: '카카오 배틀 그라운드'
         });
     }
 
-    for (let i = 0; i < userData.riotGames.length; i++) {
+    if (userData.riotGames) {
         options.push({
-            value: 'riotGames' + i,
-            label: userData.riotGames[i],
+            value: 'riotGames',
+            label: userData.riotGames,
             description: '라이엇 게임즈'
         });
     }
 
     return options;
-}
+};
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -39,22 +39,31 @@ module.exports = {
         .setDescription('등록 된 닉네임을 삭제합니다.'),
 
     async execute(interaction) {
+
         try {
+            // 사용자 정보 조회
             let userData = await userSchema.findOne({ userId: interaction.member.id });
+
+            // DB 에 없는 경우
             if (!userData) { return await interaction.reply({ content: '등록된 정보가 없습니다.', ephemeral: true }); }
 
-            const userNicknames = generateOptions(userData);
-            const namesLength = userNicknames.length;
+            //  등록 된 닉네임의 개수
+            const numOptionsWithValue = generateOptions(userData).length;
 
-            if (namesLength <= 0) { return await interaction.reply({ content: '등록된 닉네임이 없습니다.', ephemeral: true }); }
-
+            // 개수가 0 이면 리턴
+            if (numOptionsWithValue === 0) {
+                return await interaction.reply({
+                    content: '등록 된 닉네임이 없습니다.',
+                    ephemeral: true
+                });
+            }
 
             const selectedNames = new StringSelectMenuBuilder()
                 .setCustomId('removeNickNames')
                 .setPlaceholder('선택하세요!')
-                .addOptions(userNicknames)
+                .addOptions(generateOptions(userData))
                 .setMinValues(1)
-                .setMaxValues(namesLength);
+                .setMaxValues(numOptionsWithValue);
 
             const row = new ActionRowBuilder().addComponents(selectedNames);
 
@@ -68,5 +77,5 @@ module.exports = {
             console.error(error);
             await interaction.reply({ content: '닉네임 삭제 중 오류가 발생했습니다.', ephemeral: true });
         }
-    }
+    },
 };

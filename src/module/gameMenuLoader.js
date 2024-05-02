@@ -3,7 +3,7 @@
 const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
 
 async function gameMenuLoader() {
-    let select = new StringSelectMenuBuilder()
+    let gameMenuSelect = new StringSelectMenuBuilder()
         .setCustomId('gameMenu')
         .setPlaceholder('닉네임 등록 !')
         .addOptions(
@@ -22,7 +22,7 @@ async function gameMenuLoader() {
         );
 
     let row = new ActionRowBuilder()
-        .addComponents(select);
+        .addComponents(gameMenuSelect);
 
     return row;
 }
