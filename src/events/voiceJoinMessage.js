@@ -13,11 +13,13 @@ function createFields(userDocument) {
     // 스팀
     let steamNickNames = '';
     if (userDocument.steam.length > 0) {
+        let includesSteamCommunity;
         userDocument.steam.forEach(nickname => {
+            includesSteamCommunity = nickname.includes("https://steamcommunity.com/profiles/");
             steamNickNames += `${nickname}\n`;
         });
 
-        fields.push({ name: 'Steam', value: steamNickNames });
+        fields.push({ name: 'Steam', value: includesSteamCommunity ? `[스팀 친구 추가](${removeSpaces(steamNickNames)})` : steamNickNames });
     }
 
     // 라이엇
@@ -27,7 +29,7 @@ function createFields(userDocument) {
             if (nickname && !nickname.includes('#')) {
                 nickname += '#KR1';
             }
-            riotGamesNickNames += `[${nickname}](https://dak.gg/pubg/profile/kakao/${removeSpaces(nickname)})\n`;
+            riotGamesNickNames += `[${nickname}](https://www.op.gg/summoners/kr/${removeSpaces(nickname)})\n`;
         });
 
         fields.push({ name: '라이엇 게임즈', value: riotGamesNickNames });
@@ -54,7 +56,6 @@ module.exports = async (oldState, newState) => {
             const userDocument = await userSchema.findOne({ userId: newState.id });
 
             if (!userDocument) { console.log("사용자 문서를 찾을 수 없습니다."); return };
-
             const embed = new EmbedBuilder()
                 .setColor('#0099ff')
                 .setColor(0x0099FF)
@@ -65,11 +66,17 @@ module.exports = async (oldState, newState) => {
 
             // 중복 임베드 삭제
             const messages = await channel.messages.fetch({ limit: 10 });
-
             const filterEmbeds = messages.filter(message => message.author.id === clientId && message.embeds.length > 0);
 
+
+            // 이전 임베드에 name 이 만약 없다면 에러가 발생한 전적이 있다 .. 테스트 하느라 그때 에러 발생
             filterEmbeds.forEach(message => {
                 message.embeds.forEach(embed => {
+
+                    // 의도 : wave 가 보낸 채팅 중에 author 가 없거나 name 없거나 할 경우 지금 줄이 없다면
+                    if (!embed.author && !embed.author.name && !embed.author.url && !embed.author.iconURL) return;
+
+                    // 바로 여기서 없는 embed.author.name 을 다른 것과 비교 하려다 에러 나면서 봇이 멈춘다.
                     if (embed.author.name == user.globalName && embed.author.url == user.avatarURL() && embed.author.iconURL == user.displayAvatarURL()) {
                         if (message) {
                             message.delete();

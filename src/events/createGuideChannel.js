@@ -1,9 +1,8 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
-
 const { gameMenuLoader } = require('../module/gameMenuLoader.js');
 
-// 클릭 이벤트를 처리하는 클라이언트에 적용될 코드
 
+// 클릭 이벤트를 처리하는 클라이언트에 적용될 코드
 function waveButton() {
     // const search = new ButtonBuilder()
     //     .setCustomId('userSearch')
@@ -42,4 +41,5 @@ module.exports = async (guild) => {
 
     // 채널 내용
     await channel.send({ components: [waveButton()] });
+
 };

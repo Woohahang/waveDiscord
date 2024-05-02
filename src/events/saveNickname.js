@@ -20,6 +20,7 @@ async function showModalAndSaveData(interaction, title, customId, label) {
     await interaction.showModal(modal);
 }
 
+
 module.exports = async (interaction) => {
     if (interaction.isStringSelectMenu() && interaction.customId === "gameMenu") {
         const selectedValue = interaction.values[0];
@@ -27,19 +28,19 @@ module.exports = async (interaction) => {
         let title, customId, label;
         switch (selectedValue) {
             case 'steam':
-                title = "Steam 코드";
+                title = "스팀 프로필 주소 또는 코드";
                 customId = "steamCode";
                 label = "Steam 친구 코드를 작성해주세요.";
                 break;
 
             case 'kaKaoBG':
-                title = "KaKao BG 닉네임";
+                title = "카카오 배틀 그라운드 닉네임";
                 customId = "kaKaoName";
                 label = "KaKao Battle Grounds 닉네임을 작성해주세요.";
                 break;
 
             case 'riotGames':
-                title = "riotGames 닉네임";
+                title = "라이엇 게임즈 닉네임";
                 customId = "riotGamesName";
                 label = "League of Legends 닉네임을 작성해주세요.";
                 break;
@@ -52,6 +53,8 @@ module.exports = async (interaction) => {
         if (title && customId && label) {
             await showModalAndSaveData(interaction, title, customId, label);
         }
+
+
     }
 
     // 모달 제출 여부 확인

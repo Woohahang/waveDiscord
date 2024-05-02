@@ -2,8 +2,8 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
-const { testtoken } = require('../../config.json');
+const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+const { token } = require('../../config.json');
 const connectToDatabase = require('./database.js');
 const client = new Client({
     intents: [
@@ -19,10 +19,8 @@ client.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 
-
 // MongoDB 연결
 connectToDatabase();
-
 
 // 이벤트 핸들러 모듈 가져오기
 const saveNickname = require('./events/saveNickname.js');
@@ -75,7 +73,6 @@ client.on(Events.InteractionCreate, async interaction => {
             await interaction.reply({ content: '이 명령을 실행하는 동안 오류가 발생했습니다!', ephemeral: true });
         }
     }
-
 });
 
 // 클릭 메서드
@@ -163,4 +160,4 @@ client.on('guildCreate', async guild => {
 
 
 
-client.login(testtoken);
+client.login(token);

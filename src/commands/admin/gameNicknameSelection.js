@@ -4,7 +4,6 @@ const { SlashCommandBuilder } = require('discord.js');
 
 const { gameMenuLoader } = require('../../module/gameMenuLoader.js');
 
-
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("닉네임등록")
@@ -18,12 +17,12 @@ module.exports = {
                     content: "서버 소유자만 생성할 수 있습니다.",
                     ephemeral: true // 해당 메시지를 사용자에게만 표시합니다.
                 });
-            }
+            };
 
             await interaction.deferReply({ ephemeral: true });
 
             // 게임 리스트를 불러옵니다.
-            await interaction.channel.send({
+            gameMenuMessage = await interaction.channel.send({
                 content: '닉네임 등록할 게임을 선택해주세요 !',
                 components: [await gameMenuLoader()]
             });
