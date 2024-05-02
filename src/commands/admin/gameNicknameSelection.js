@@ -11,23 +11,13 @@ module.exports = {
 
     async execute(interaction) {
         try {
-            // 서버 소유자만 이 커맨드를 사용할 수 있습니다.
-            if (interaction.guild.ownerId !== interaction.user.id) {
-                return await interaction.reply({
-                    content: "서버 소유자만 생성할 수 있습니다.",
-                    ephemeral: true // 해당 메시지를 사용자에게만 표시합니다.
-                });
-            };
-
-            await interaction.deferReply({ ephemeral: true });
 
             // 게임 리스트를 불러옵니다.
-            gameMenuMessage = await interaction.channel.send({
+            await interaction.reply({
                 content: '닉네임 등록할 게임을 선택해주세요 !',
-                components: [await gameMenuLoader()]
+                components: [await gameMenuLoader()],
+                ephemeral: true
             });
-
-            await interaction.editReply({ content: "성공적으로 생성하였습니다." });
 
         } catch (error) {
             console.error("메뉴 생성 중 오류 발생:", error.message);

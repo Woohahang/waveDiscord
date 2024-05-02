@@ -48,7 +48,6 @@ module.exports = {
 
             if (namesLength <= 0) { return await interaction.reply({ content: '등록된 닉네임이 없습니다.', ephemeral: true }); }
 
-
             const selectedNames = new StringSelectMenuBuilder()
                 .setCustomId('removeNickNames')
                 .setPlaceholder('선택하세요!')
