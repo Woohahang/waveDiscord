@@ -73,8 +73,8 @@ module.exports = async (oldState, newState) => {
             filterEmbeds.forEach(message => {
                 message.embeds.forEach(embed => {
 
-                    // 의도 : wave 가 보낸 채팅 중에 author 가 없거나 name 없거나 할 경우 지금 줄이 없다면
-                    if (!embed.author && !embed.author.name && !embed.author.url && !embed.author.iconURL) return;
+                    // 임베드 안에 author 안에 필수 프로퍼티 name 이 없다면 삭제를 중단하라! 왜? 봇이 멈춘다
+                    if (!embed.author || !embed.author.name) return;
 
                     // 바로 여기서 없는 embed.author.name 을 다른 것과 비교 하려다 에러 나면서 봇이 멈춘다.
                     if (embed.author.name == user.globalName && embed.author.url == user.avatarURL() && embed.author.iconURL == user.displayAvatarURL()) {

@@ -1,19 +1,39 @@
+// createGuideChannel.js
+
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
-const { gameMenuLoader } = require('../module/gameMenuLoader.js');
 
+async function gameMenuLoader() {
+    let gameMenuSelect = new StringSelectMenuBuilder()
+        .setCustomId('gameMenu')
+        .setPlaceholder('닉네임 등록 !')
+        .addOptions(
+            new StringSelectMenuOptionBuilder()
+                .setLabel('Steam')
+                .setDescription('스팀 친구 코드 또는 스팀 프로필 주소')
+                .setValue('steam'),
+            new StringSelectMenuOptionBuilder()
+                .setLabel('KaKao Battle Grounds')
+                .setDescription('배틀 그라운드 닉네임')
+                .setValue('kaKaoBG'),
+            new StringSelectMenuOptionBuilder()
+                .setLabel('Riot Games')
+                .setDescription('라이엇 게임즈 닉네임')
+                .setValue('riotGames'),
+        );
 
-// 클릭 이벤트를 처리하는 클라이언트에 적용될 코드
+    let row = new ActionRowBuilder()
+        .addComponents(gameMenuSelect);
+
+    return row;
+
+}
+
 function waveButton() {
-    // const search = new ButtonBuilder()
-    //     .setCustomId('userSearch')
-    //     .setLabel('유저 검색')
-    //     .setStyle(ButtonStyle.Primary)
-    //     .setDisabled(true);
 
     const remove = new ButtonBuilder()
         .setCustomId('removeButton')
         .setLabel('닉네임 삭제')
-        .setStyle(ButtonStyle.Primary)
+        .setStyle(ButtonStyle.Primary);
 
     const waveLink = new ButtonBuilder()
         .setLabel('Wave 초대하기')
@@ -24,9 +44,12 @@ function waveButton() {
         .addComponents(remove, waveLink);
 
     return row;
-}
+};
+
+
 
 module.exports = async (guild) => {
+
     // 채널 이름
     const channel = await guild.channels.create({ name: '📘ㆍwave', type: 0 });
 
@@ -40,3 +63,11 @@ module.exports = async (guild) => {
     });
 
 };
+
+
+
+/*
+ components: [await gameMenuLoader(), waveButton()] 에서 await 을 쓰는 이유 ( 없으면 에러 )
+
+ gameMenuLoader 안에 StringSelectMenuBuilder 가 비동기 함수다. 요청을 받으면 작동 되는 함수
+*/

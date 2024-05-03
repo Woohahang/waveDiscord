@@ -20,9 +20,23 @@ async function showModalAndSaveData(interaction, title, customId, label) {
     await interaction.showModal(modal);
 }
 
+async function guideMessageEdit(interaction) { // 목적 : 가이드 채널 메시지에서 메뉴를 선택했을 때, 선택하세요! 초기 값으로 만들게 하기 위함.
+    const guideChannel = interaction.channel;
+    const guideChannelMessage = await guideChannel.messages.fetch();
+    const guideMessage = guideChannelMessage.find(message => message.content.includes('Wave 메인 명령어')); // 메시지 내용 중에 Wave 메인 명령어 가 있는 것만 가지고 온다.
+
+    if (guideMessage) {
+        guideMessage.edit({ components: [guideMessage.components[0]] });
+
+    }
+}
 
 module.exports = async (interaction) => {
     if (interaction.isStringSelectMenu() && interaction.customId === "gameMenu") {
+
+        guideMessageEdit(interaction);
+
+        if (!interaction.values[0]) return;
         const selectedValue = interaction.values[0];
 
         let title, customId, label;
@@ -54,14 +68,10 @@ module.exports = async (interaction) => {
             await showModalAndSaveData(interaction, title, customId, label);
         }
 
-
     }
 
     // 모달 제출 여부 확인
     if (interaction.isModalSubmit()) {
-
-
-
         const customId = interaction.customId.split('-')[0]; // "-content" 부분 제거
         let content = interaction.fields.getTextInputValue(`${customId}-content`);
 

@@ -2,7 +2,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+const { Client, Collection, Events, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const { token, clientId } = require('../../config.json');
 const connectToDatabase = require('./database.js');
 const client = new Client({
@@ -33,7 +33,6 @@ const { checkAdminPermissionOnGuild, checkAdminPermissionOnVoice } = require('./
 
 // 길드 초대 메시지
 const guildInviteMessage = require('./events/guildInviteMessage.js');
-
 
 // 커맨드 파일 읽기
 for (const folder of commandFolders) {
@@ -157,32 +156,19 @@ client.on('interactionCreate', async interaction => {
 
 
 
-
-
-
-
-
 // 서버 입장 채널 테스트
 // client.on('messageCreate', async message => {
 //     if (message.member.id === '282793473462239232' && message.content === "1") {
 
-//         const userIdToCheck = '1227561479801409566'; // 권한을 확인하고자 하는 사용자의 ID
-//         const memberToCheck = message.guild.members.cache.get(userIdToCheck);
-//         if (memberToCheck) {
-//             console.log(memberToCheck.permissions);
-//         } else {
-//             console.log(`사용자 ${userIdToCheck}를 찾을 수 없습니다.`);
-//         }
+//         const channel = message.channel;
 
+//         const members = channel.members;
+
+//         // const d = members
+
+//         // console.log(d);
 //     }
 // });
-
-
-
-
-
-
-
 
 
 client.login(token);

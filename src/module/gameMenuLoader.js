@@ -25,6 +25,7 @@ async function gameMenuLoader() {
         .addComponents(gameMenuSelect);
 
     return row;
+
 }
 
 module.exports = { gameMenuLoader };

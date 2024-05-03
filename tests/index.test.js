@@ -129,10 +129,10 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
 client.login(token);
 
 /* 작업 목록
+    1. 메뉴 선택 이후 선택하세요 뜨게 하기
+
     1. 목표,
     - 나가면 메시지도 같이 삭제
-    - 닉네임 등록 이후 선택하세요 뜨게 하기
-
 
     - 메모
     1. Collection 객체는 일반적인 forEach 문법을 사용할 수 없습니다. 대신 .forEach() 메서드를 사용하여 반복 작업을 수행해야 합니다.

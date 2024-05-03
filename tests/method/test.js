@@ -32,3 +32,13 @@ client.on('messageCreate', async message => {
 
     }
 });
+
+//
+
+client.on('messageCreate', async message => {
+    if (message.member.id === '282793473462239232' && message.content === "1") {
+
+
+
+    }
+});
