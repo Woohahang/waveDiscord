@@ -3,7 +3,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
-const { token } = require('../../config.json');
+const { token, clientId } = require('../../config.json');
 const connectToDatabase = require('./database.js');
 const client = new Client({
     intents: [
@@ -28,6 +28,14 @@ const voiceJoin = require('./events/voiceJoinMessage.js');
 const removeNickname = require('./events/removeNickname.js');
 const createGuideChannel = require('./events/createGuideChannel.js');
 
+// 권한 모듈
+const { checkAdminPermissionOnGuild, checkAdminPermissionOnVoice } = require('./module/checkAdminPermissionOnGuild.js');
+
+// 길드 초대 메시지
+const guildInviteMessage = require('./events/guildInviteMessage.js');
+
+
+// 커맨드 파일 읽기
 for (const folder of commandFolders) {
     const commandsPath = path.join(foldersPath, folder);
     const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
@@ -46,16 +54,36 @@ client.once(Events.ClientReady, readyClient => {
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
+// 가이드 채널 생성
+client.on('guildCreate', async guild => {
+
+    if (checkAdminPermissionOnGuild(clientId, guild)) { // Wave 가 관리자 권한 받았는지 체크
+        try {
+            createGuideChannel(guild); // 받았다면 가이드 채널 생성 !
+        } catch (error) {
+            console.error(error);
+        }
+    } else {
+        guildInviteMessage(guild); // 관리자 권한을 못 받았다면 DM 전송
+    }
+
+});
+
 // 음성 채널 입장시 작동
 client.on('voiceStateUpdate', async (oldState, newState) => { //
+    // Wave 가 관리자 권한이 없다면 리턴
+    if (!checkAdminPermissionOnVoice(clientId, newState) || !checkAdminPermissionOnVoice(clientId, oldState)) return;
+
     if (oldState.channelId !== newState.channelId && newState.channelId !== null) {  // 채널 타입이 2(길드 채널)이라면 true, newState.channel 음성 채널에 입장하면 true
         voiceJoin(oldState, newState);
     }
+
 })
 
 // 슬래시 커맨더만 작동한다.
 client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isChatInputCommand()) return; // 상호작용이 채팅 입력 명령어에 해당 하는지 체크. -> SlashCommandBuilder 를 체크
+
     const command = interaction.client.commands.get(interaction.commandName);
 
     if (!command) { // 상호작용에서 받은 명령어 이름을 사용하여 해당 명령어가 클라이언트의 명령어 콜렉션에 있는지 확인
@@ -81,14 +109,11 @@ client.on('interactionCreate', async interaction => {
 
     try {
         switch (interaction.customId) {
-
             case 'gameMenu':
-                console.log('customid 가 gameMenu 입니다.');
                 saveNickname(interaction);
                 break;
 
             case 'removeNickNames':
-                console.log('customId 가 removeNames 입니다.');
                 removeNickname(interaction);
                 break;
 
@@ -130,14 +155,6 @@ client.on('interactionCreate', async interaction => {
     }
 })
 
-// Wave 채널 가입 상호작용
-client.on('guildCreate', async guild => {
-    try {
-        createGuideChannel(guild);
-    } catch (error) {
-        console.error('Wave 채널 생성 중 오류 발생 : ', error);
-    }
-});
 
 
 
@@ -148,7 +165,15 @@ client.on('guildCreate', async guild => {
 // 서버 입장 채널 테스트
 // client.on('messageCreate', async message => {
 //     if (message.member.id === '282793473462239232' && message.content === "1") {
-//         // createGuideChannel(message);
+
+//         const userIdToCheck = '1227561479801409566'; // 권한을 확인하고자 하는 사용자의 ID
+//         const memberToCheck = message.guild.members.cache.get(userIdToCheck);
+//         if (memberToCheck) {
+//             console.log(memberToCheck.permissions);
+//         } else {
+//             console.log(`사용자 ${userIdToCheck}를 찾을 수 없습니다.`);
+//         }
+
 //     }
 // });
 

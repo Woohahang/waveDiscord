@@ -1,7 +1,6 @@
 // src//commands/admin/gameNicknameSelection.js
 
 const { SlashCommandBuilder } = require('discord.js');
-
 const { gameMenuLoader } = require('../../module/gameMenuLoader.js');
 
 module.exports = {

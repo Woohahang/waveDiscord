@@ -60,6 +60,8 @@ module.exports = async (interaction) => {
     // 모달 제출 여부 확인
     if (interaction.isModalSubmit()) {
 
+
+
         const customId = interaction.customId.split('-')[0]; // "-content" 부분 제거
         let content = interaction.fields.getTextInputValue(`${customId}-content`);
 
