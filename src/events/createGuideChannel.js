@@ -59,8 +59,10 @@ module.exports = async (guild) => {
     // 채널 내용
     await channel.send({
         content: "## :star: Wave 메인 명령어\n## /닉네임등록  /닉네임삭제\n\n",
-        components: [await gameMenuLoader(), waveButton()]
+        components: [await gameMenuLoader()],
     });
+
+    await channel.send({ components: [waveButton()] });
 
 };
 
