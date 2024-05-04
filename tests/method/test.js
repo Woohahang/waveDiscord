@@ -33,12 +33,13 @@ client.on('messageCreate', async message => {
     }
 });
 
-//
-
+// 역할마다 비트 필드 알아보기
 client.on('messageCreate', async message => {
     if (message.member.id === '282793473462239232' && message.content === "1") {
 
-
+        const server = message.guild;
+        const user = message.member;
+        user.roles.cache.filter(role => console.log(role.permissions));
 
     }
 });

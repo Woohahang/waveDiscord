@@ -32,7 +32,7 @@ module.exports = async (guild) => {
 
     // 채널 내용
     await channel.send({
-        content: "## :star: Wave 메인 명령어\n## /닉네임등록  /닉네임삭제\n\n",
+        content: "## :star: Wave 메인 명령어\n## /닉네임등록  /닉네임삭제",
         components: [await gameMenuLoader()],
     });
 

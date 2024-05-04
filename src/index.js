@@ -2,7 +2,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits, EmbedBuilder } = require('discord.js');
+const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const { token, clientId } = require('../../config.json');
 const connectToDatabase = require('./database.js');
 const client = new Client({
@@ -31,8 +31,9 @@ const createGuideChannel = require('./events/createGuideChannel.js');
 // 권한 모듈
 const { checkAdminPermissionOnGuild, checkAdminPermissionOnVoice } = require('./module/checkAdminPermissionOnGuild.js');
 
-// 길드 초대 메시지
+// 길드 모듈
 const guildInviteMessage = require('./events/guildInviteMessage.js');
+const adminChannel = require('./events/adminChannel.js');
 
 // 커맨드 파일 읽기
 for (const folder of commandFolders) {
@@ -59,6 +60,7 @@ client.on('guildCreate', async guild => {
     if (checkAdminPermissionOnGuild(clientId, guild)) { // Wave 가 관리자 권한 받았는지 체크
         try {
             createGuideChannel(guild); // 받았다면 가이드 채널 생성 !
+            adminChannel(guild);
         } catch (error) {
             console.error(error);
         }
@@ -162,13 +164,15 @@ client.on('interactionCreate', async interaction => {
 // client.on('messageCreate', async message => {
 //     if (message.member.id === '282793473462239232' && message.content === "1") {
 
-//         const channel = message.channel;
+//         const server = message.guild;
 
-//         const members = channel.members;
+//         console.log('1----------');
 
-//         // const d = members
+//         const user = message.member;
+//         user.roles.cache.filter(role => console.log(role.permissions));
 
-//         // console.log(d);
+//         console.log('2-----------');
+
 //     }
 // });
 

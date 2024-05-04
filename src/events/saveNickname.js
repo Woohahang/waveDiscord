@@ -44,31 +44,31 @@ module.exports = async (interaction) => {
             case 'steam':
                 title = "스팀 프로필 주소 또는 코드";
                 customId = "steamCode";
-                label = "Steam 친구 코드를 작성해주세요.";
+                label = "Steam 친구 코드 또는 프로필 주소를 작성해주세요.";
                 break;
 
             case 'riotGames':
                 title = "라이엇 게임즈 닉네임";
                 customId = "riotGamesName";
-                label = "League of Legends 닉네임을 작성해주세요.";
+                label = "✔️ 최대 세개의 닉네임을 등록할 수 있습니다.";
                 break;
 
             case 'steamBG':
                 title = "스팀 배틀 그라운드 닉네임";
                 customId = "steamBGName";
-                label = "Steam Battle Grounds 닉네임을 작성해주세요.";
+                label = "✔️ 최대 세개의 닉네임을 등록할 수 있습니다.";
                 break;
 
             case 'kaKaoBG':
                 title = "카카오 배틀 그라운드 닉네임";
                 customId = "kaKaoBGName";
-                label = "KaKao Battle Grounds 닉네임을 작성해주세요.";
+                label = "✔️ 최대 세개의 닉네임을 등록할 수 있습니다.";
                 break;
 
             case 'overWatchTwo':
                 title = "오버워치 2 닉네임";
                 customId = "overWatchTwoName";
-                label = "OVERWATCH 2 닉네임을 작성해주세요.";
+                label = "✔️ 최대 세개의 닉네임을 등록할 수 있습니다.";
                 break;
 
             default:
@@ -138,10 +138,10 @@ module.exports = async (interaction) => {
         }
 
         if (limitReached) {
-            return await interaction.reply({ content: "해당 항목의 데이터는 이미 제한에 도달했습니다.", ephemeral: true });
+            return await interaction.reply({ content: "해당 항목의 닉네임 개수를 초과했습니다.", ephemeral: true });
         } else {
             await userData.save();
-            return await interaction.reply({ content: "성공적으로 변경 하였습니다.", ephemeral: true });
+            return await interaction.reply({ content: "닉네임 등록 완료 !", ephemeral: true });
         }
 
     }

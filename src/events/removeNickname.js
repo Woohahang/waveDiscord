@@ -23,8 +23,6 @@ module.exports = async (interaction) => {
         }
     });
 
-    console.log(userData);
-
     // 변경된 스키마를 저장
     await userData.save();
 
@@ -34,5 +32,4 @@ module.exports = async (interaction) => {
     });
 
     console.log('선택된 닉네임들이 성공적으로 삭제되었습니다.');
-
 };
