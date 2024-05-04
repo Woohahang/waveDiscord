@@ -1,7 +1,7 @@
 // src/commands/admin/removeSelectedNickname.js
 
 const { SlashCommandBuilder, StringSelectMenuBuilder, ActionRowBuilder } = require('discord.js');
-const userSchema = require('../../models/userSchema.js');
+const userSchema = require('../../mongoDB/userSchema.js');
 
 function generateOptions(userData) {
     const options = [];

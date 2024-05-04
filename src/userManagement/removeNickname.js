@@ -1,6 +1,6 @@
 //  src/services/removeNickname.js , 등록된 닉네임 삭제
 
-const userSchema = require('../models/userSchema.js');
+const userSchema = require('../mongoDB/userSchema.js');
 
 module.exports = async (interaction) => {
 

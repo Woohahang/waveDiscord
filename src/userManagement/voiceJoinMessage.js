@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const userSchema = require('../models/userSchema.js');
+const userSchema = require('../mongoDB/userSchema.js');
 const { clientId } = require('../../../config.json');
 
 // 모든 공백을 제거하고 반환
@@ -93,6 +93,10 @@ module.exports = async (oldState, newState) => {
             // 이전 임베드에 name 이 만약 없다면 에러가 발생한 전적이 있다 .. 테스트 하느라 그때 에러 발생
             filterEmbeds.forEach(message => {
                 message.embeds.forEach(embed => {
+
+
+                    // !!!!!!!!! ?.은 옵셔널 체이닝 연산자로 나중에 고치기 예를 들면 embed?.author?.name 이런식으로
+
 
                     // 임베드 안에 author 안에 필수 프로퍼티 name 이 없다면 삭제를 중단하라! 왜? 봇이 멈춘다
                     if (!embed.author || !embed.author.name) return;

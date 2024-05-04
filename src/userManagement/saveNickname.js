@@ -1,7 +1,7 @@
 // // src/events/saveNickname.js
 
 const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, Component } = require('discord.js');
-const userSchema = require('../models/userSchema.js');
+const userSchema = require('../mongoDB/userSchema.js');
 
 async function showModalAndSaveData(interaction, title, customId, label) {
     const modal = new ModalBuilder();

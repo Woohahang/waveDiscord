@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const { token, clientId } = require('../../config.json');
-const connectToDatabase = require('./database.js');
+const connectToDatabase = require('./mongoDB/database.js');
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -19,21 +19,22 @@ client.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 
+
 // MongoDB 연결
 connectToDatabase();
 
 // 이벤트 핸들러 모듈 가져오기
-const saveNickname = require('./events/saveNickname.js');
-const voiceJoin = require('./events/voiceJoinMessage.js');
-const removeNickname = require('./events/removeNickname.js');
-const createGuideChannel = require('./events/createGuideChannel.js');
+const saveNickname = require('./userManagement/saveNickname.js');
+const voiceJoin = require('./userManagement/voiceJoinMessage.js');
+const removeNickname = require('./userManagement/removeNickname.js');
+const createGuideChannel = require('./adminManagement/createGuideChannel.js');
 
 // 권한 모듈
 const { checkAdminPermissionOnGuild, checkAdminPermissionOnVoice } = require('./module/checkAdminPermissionOnGuild.js');
 
 // 길드 모듈
-const guildInviteMessage = require('./events/guildInviteMessage.js');
-const adminChannel = require('./events/adminChannel.js');
+const guildInviteMessage = require('./adminManagement/guildInviteMessage.js');
+const adminChannel = require('./adminManagement/adminChannel.js');
 
 // 커맨드 파일 읽기
 for (const folder of commandFolders) {
@@ -69,7 +70,6 @@ client.on('guildCreate', async guild => {
     }
 
 });
-
 // 음성 채널 입장시 작동
 client.on('voiceStateUpdate', async (oldState, newState) => { //
     // Wave 가 관리자 권한이 없다면 리턴
@@ -124,7 +124,7 @@ client.on('interactionCreate', async interaction => {
                 break;
 
             default:
-                console.log('isMessageComponent 에서 알 수 없는 customId : ' + interaction.customId)
+                console.log('isMessageComponent 에서 알 수 없는 customId : ' + interaction.customId);
         }
     } catch (error) {
         console.error('isMessageComponent 에서 Interaction 처리 중 오류 발생:', error);
@@ -148,6 +148,7 @@ client.on('interactionCreate', async interaction => {
                 break;
 
             default:
+                if (interaction.customId === 'upDate') return;
                 console.log('isModalSubmit 에서 알 수 없는 customId : ' + interaction.customId);
                 break;
         }
@@ -157,6 +158,35 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply({ content: '상호 작용 처리 중 오류가 발생했습니다!', ephemeral: true });
     }
 })
+
+const gupDateButton = require('./adminManagement/upDateButton.js');
+
+// 길드 관리자 상호작용
+client.on('interactionCreate', async interaction => {
+    if (!interaction.isMessageComponent()) return;
+
+    if (true) { // 만약 오너 또는 부여받은 관리자 역할이 아니면 else
+        switch (interaction.customId) {
+
+            case 'upDate':
+                gupDateButton(interaction);
+                break;
+
+            default:
+                console.log('관리자 클래스 알 수 없는 cusetId : ' + interaction.customId);
+        }
+    } else {
+        // 파일 하나 만들기 부여받으라는 전달 메시지
+    }
+
+})
+
+
+
+
+
+
+
 
 
 
