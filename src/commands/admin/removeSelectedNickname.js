@@ -14,6 +14,22 @@ function generateOptions(userData) {
         });
     }
 
+    for (let i = 0; i < userData.riotGames.length; i++) {
+        options.push({
+            value: 'riotGames' + i,
+            label: userData.riotGames[i],
+            description: '라이엇 게임즈'
+        });
+    }
+
+    for (let i = 0; i < userData.steamBG.length; i++) {
+        options.push({
+            value: 'steamBG' + i,
+            label: userData.steamBG[i],
+            description: '스팀 배틀 그라운드'
+        });
+    }
+
     for (let i = 0; i < userData.kakao.length; i++) {
         options.push({
             value: 'kakao' + i,
@@ -22,11 +38,11 @@ function generateOptions(userData) {
         });
     }
 
-    for (let i = 0; i < userData.riotGames.length; i++) {
+    for (let i = 0; i < userData.overWatchTwo.length; i++) {
         options.push({
-            value: 'riotGames' + i,
-            label: userData.riotGames[i],
-            description: '라이엇 게임즈'
+            value: 'overWatchTwo' + i,
+            label: userData.overWatchTwo[i],
+            description: '오버워치 2'
         });
     }
 

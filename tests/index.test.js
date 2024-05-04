@@ -129,8 +129,6 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
 client.login(token);
 
 /* 작업 목록
-    1. 메뉴 선택 이후 선택하세요 뜨게 하기
-
     1. 목표,
     - 나가면 메시지도 같이 삭제
 

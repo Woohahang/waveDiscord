@@ -137,8 +137,10 @@ client.on('interactionCreate', async interaction => {
     try {
         switch (interaction.customId) {
             case 'steamCode':
-            case 'kaKaoName':
             case 'riotGamesName':
+            case 'kaKaoBGName':
+            case 'steamBGName':
+            case 'overWatchTwoName':
                 saveNickname(interaction);
                 console.log('customId 가 ' + interaction.customId + ' 입니다.');
                 break;

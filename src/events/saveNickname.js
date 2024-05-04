@@ -20,7 +20,7 @@ async function showModalAndSaveData(interaction, title, customId, label) {
     await interaction.showModal(modal);
 }
 
-async function guideMessageEdit(interaction) { // 목적 : 가이드 채널 메시지에서 메뉴를 선택했을 때, 선택하세요! 초기 값으로 만들게 하기 위함.
+async function guideMessageEdit(interaction) { // 목적 : 가이드 채널 메시지에서 메뉴를 선택했을 때, 셀렉트 메뉴의 선택하세요! 로 초기 값 만들게 하기 위함.
     const guideChannel = interaction.channel;
     const guideChannelMessage = await guideChannel.messages.fetch();
     const guideMessage = guideChannelMessage.find(message => message.content.includes('Wave 메인 명령어')); // 메시지 내용 중에 Wave 메인 명령어 가 있는 것만 가지고 온다.
@@ -47,16 +47,28 @@ module.exports = async (interaction) => {
                 label = "Steam 친구 코드를 작성해주세요.";
                 break;
 
-            case 'kaKaoBG':
-                title = "카카오 배틀 그라운드 닉네임";
-                customId = "kaKaoName";
-                label = "KaKao Battle Grounds 닉네임을 작성해주세요.";
-                break;
-
             case 'riotGames':
                 title = "라이엇 게임즈 닉네임";
                 customId = "riotGamesName";
                 label = "League of Legends 닉네임을 작성해주세요.";
+                break;
+
+            case 'steamBG':
+                title = "스팀 배틀 그라운드 닉네임";
+                customId = "steamBGName";
+                label = "Steam Battle Grounds 닉네임을 작성해주세요.";
+                break;
+
+            case 'kaKaoBG':
+                title = "카카오 배틀 그라운드 닉네임";
+                customId = "kaKaoBGName";
+                label = "KaKao Battle Grounds 닉네임을 작성해주세요.";
+                break;
+
+            case 'overWatchTwo':
+                title = "오버워치 2 닉네임";
+                customId = "overWatchTwoName";
+                label = "OVERWATCH 2 닉네임을 작성해주세요.";
                 break;
 
             default:
@@ -91,14 +103,6 @@ module.exports = async (interaction) => {
                 userData.steam = content.substr(0, 100);
                 break;
 
-            case 'kaKaoName':
-                if (userData.kakao.length > 2) {
-                    limitReached = true;
-                } else {
-                    userData.kakao.push(content.substr(0, 20));
-                }
-                break;
-
             case 'riotGamesName':
                 if (userData.riotGames.length > 2) {
                     limitReached = true;
@@ -106,6 +110,31 @@ module.exports = async (interaction) => {
                     userData.riotGames.push(content.substr(0, 20));
                     break;
                 }
+
+            case 'steamBGName':
+                if (userData.steamBG.length > 2) {
+                    limitReached = true;
+                } else {
+                    userData.steamBG.push(content.substr(0, 20));
+                    break;
+                }
+
+            case 'kaKaoBGName':
+                if (userData.kakao.length > 2) {
+                    limitReached = true;
+                } else {
+                    userData.kakao.push(content.substr(0, 20));
+                }
+                break;
+
+            case 'overWatchTwoName':
+                if (userData.overWatchTwo.length > 2) {
+                    limitReached = true;
+                } else {
+                    userData.overWatchTwo.push(content.substr(0, 20));
+                    break;
+                }
+
         }
 
         if (limitReached) {

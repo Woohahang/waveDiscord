@@ -35,6 +35,16 @@ function createFields(userDocument) {
         fields.push({ name: '라이엇 게임즈', value: riotGamesNickNames });
     }
 
+    // 스팀 배그
+    let steamBGNicknames = '';
+    if (userDocument.steamBG.length > 0) {
+        userDocument.steamBG.forEach(nickname => {
+            steamBGNicknames += `[${nickname}](https://pubg.op.gg/user/${removeSpaces(nickname)})\n`;
+        });
+
+        fields.push({ name: '스팀 배틀 그라운드', value: steamBGNicknames });
+    }
+
     // 카카오
     let kakaonicknames = '';
     if (userDocument.kakao.length > 0) {
@@ -43,6 +53,16 @@ function createFields(userDocument) {
         });
 
         fields.push({ name: '카카오 배틀 그라운드', value: kakaonicknames });
+    }
+
+    // 오버워치 2
+    let overWatchTwoNicknames = '';
+    if (userDocument.overWatchTwo.length > 0) {
+        userDocument.overWatchTwo.forEach(nickname => {
+            overWatchTwoNicknames += `${nickname}\n`;
+        });
+
+        fields.push({ name: '오버워치 2', value: overWatchTwoNicknames });
     }
 
     return fields;
@@ -55,7 +75,8 @@ module.exports = async (oldState, newState) => {
             const channel = newState.channel;
             const userDocument = await userSchema.findOne({ userId: newState.id });
 
-            if (!userDocument) { console.log("사용자 문서를 찾을 수 없습니다."); return };
+            if (!userDocument) return;
+
             const embed = new EmbedBuilder()
                 .setColor('#0099ff')
                 .setColor(0x0099FF)

@@ -2,9 +2,13 @@ const mongoose = require('mongoose');
 
 let userSchema = new mongoose.Schema({
     userId: String,
+
     steam: [String],
-    kakao: [String],
     riotGames: [String],
+    steamBG: [String],
+    kakao: [String],
+    overWatchTwo: [String],
+
     updatedAt: { type: Date, default: Date.now }
 });
 

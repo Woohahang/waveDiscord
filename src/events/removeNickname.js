@@ -14,7 +14,6 @@ module.exports = async (interaction) => {
     // 선택된 닉네임을 가진 유저의 스키마 찾기
     const userData = await userSchema.findOne({ userId });
 
-
     // 선택된 닉네임들을 유저의 스키마에서 제거
     selectedOptions.forEach(option => {
         const optionType = option.value.replace(/\d+/g, ''); // 'steam', 'kakao', 'riotGames' 중 하나
@@ -23,6 +22,8 @@ module.exports = async (interaction) => {
             userData[optionType].splice(index, 1);
         }
     });
+
+    console.log(userData);
 
     // 변경된 스키마를 저장
     await userData.save();
