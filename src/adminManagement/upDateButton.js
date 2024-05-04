@@ -6,32 +6,24 @@ const { adminButton } = require('../module/adminModules/adminButton.js');
 module.exports = async (interaction) => {
     try {
 
-        const userId = interaction.member.id;
-        const ownerId = interaction.guild.ownerId;
-
-        if (userId !== ownerId) {
-            return await interaction.reply({
-                content: '서버 소유자만 동작이 가능합니다.',
-                ephemeral: true
-            });
-        }
-
         const channel = interaction.channel;
         const messages = await channel.messages.fetch({ limit: 10 });
         const waveMessages = messages.filter(message => message.author.id === clientId);
 
+        // 이전 메시지 삭제
         waveMessages.forEach(message => {
             message?.delete(); // 메시지가 없더라도 작업을 중단하지 않고 undefined 반환
         });
 
-        // 채널 내용
+        // 메시지 전송
         await channel.send({
             content: '## ⭐ Wave 관리자 채널',
             components: [adminMenuLoader(), adminButton()],
         })
 
+        // 업데이트 내용 알림
         await interaction.reply({
-            content: '업데이트 완료',
+            content: upDateMessage(),
             ephemeral: true
         })
 
@@ -40,6 +32,20 @@ module.exports = async (interaction) => {
     }
 };
 
+
+function upDateMessage() {
+    let message;
+
+    message = '## 업데이트 완료' + '\n';
+    message += '> * 현재 **Wave** 는 보완과 개발 단계에 있습니다. ' + '\n';
+    message += '> * 개발은 지금도 진행 중이며 가끔식 업데이트 버튼을 눌러주세요.' + '\n';
+    message += '## 기획 중인 기능' + '\n';
+    message += '> * 관리자 채널에 있는 선택 메뉴 기능' + '\n';
+    message += '> * 유저 검색' + '\n';
+    message += '> * [ ON/OFF ] 닉네임 정보 옆 티어 자동 표기' + '\n';
+
+    return message;
+}
 
 
 /*
