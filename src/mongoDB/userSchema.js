@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 let userSchema = new mongoose.Schema({
+
     userId: String,
 
     steam: [String],
@@ -10,6 +11,7 @@ let userSchema = new mongoose.Schema({
     overWatchTwo: [String],
 
     updatedAt: { type: Date, default: Date.now }
+
 });
 
 userSchema.pre('save', function (next) {

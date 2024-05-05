@@ -28,6 +28,8 @@ module.exports = async (guild) => {
             components: [adminMenuLoader(), adminButton()],
         })
 
+        await channel.send({ content: '> * **채널 보기 권한 OFF 적용 상태 **\n> * **채널을 옮기는 과정** 중에 권한이 풀릴 수도 있습니다.' });
+
     } catch (error) {
         console.error(error);
     }

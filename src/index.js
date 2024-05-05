@@ -34,6 +34,9 @@ const { checkAdminPermissionOnGuild, checkAdminPermissionOnVoice } = require('./
 // 길드 모듈
 const guildInviteMessage = require('./adminManagement/guildInviteMessage.js');
 const adminChannel = require('./adminManagement/adminChannel.js');
+const hideMenu = require('./adminManagement/hideMenu.js');
+const upDateButton = require('./adminManagement/upDateButton.js');
+
 
 // 커맨드 파일 읽기
 for (const folder of commandFolders) {
@@ -158,31 +161,39 @@ client.on('interactionCreate', async interaction => {
     }
 })
 
-const gupDateButton = require('./adminManagement/upDateButton.js');
 
-// 길드 관리자 상호작용
+
+// 관리자 채널
 client.on('interactionCreate', async interaction => {
     if (!interaction.isMessageComponent()) return;
 
-    if (true) { // 만약 오너 또는 부여받은 관리자 역할이 아니면 else
-        switch (interaction.customId) {
+    // console.log(interaction.values[0]);
+    // console.log(interaction.customId);
 
-            case 'upDate':
-                gupDateButton(interaction);
-                break;
+    switch (interaction.values[0]) {
+        case 'hideMenu':
+            hideMenu(interaction);
+            break;
 
-            default:
-                console.log('관리자 클래스 알 수 없는 cusetId : ' + interaction.customId);
-        }
-    } else {
-        // 파일 하나 만들기 부여받으라는 전달 메시지
+        case 'showMenu':
+            console.log('미구현');
+            break;
+
+        case 'changeOrder':
+            console.log('미구현');
+            break;
+
+    }
+
+    switch (interaction.customId) {
+
+        case 'upDate':
+            upDateButton(interaction);
+            break;
+
     }
 
 })
-
-
-
-
 
 
 

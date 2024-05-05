@@ -21,6 +21,8 @@ module.exports = async (interaction) => {
             components: [adminMenuLoader(), adminButton()],
         })
 
+        await channel.send({ content: '> * **채널 보기 권한 OFF 적용 상태 **\n> * **채널을 옮기는 과정** 중에 권한이 풀릴 수도 있습니다.' });
+
         // 업데이트 내용 알림
         await interaction.reply({
             content: upDateMessage(),
@@ -32,13 +34,12 @@ module.exports = async (interaction) => {
     }
 };
 
-
 function upDateMessage() {
     let message;
 
     message = '## 업데이트 완료' + '\n';
     message += '> * 현재 **Wave** 는 보완과 개발 단계에 있습니다. ' + '\n';
-    message += '> * 개발은 지금도 진행 중이며 가끔식 업데이트 버튼을 눌러주세요.' + '\n';
+    message += '> * 개발은 지금도 진행 중이며 가끔 업데이트 버튼을 눌러주세요.' + '\n';
     message += '## 기획 중인 기능' + '\n';
     message += '> * 관리자 채널에 있는 선택 메뉴 기능' + '\n';
     message += '> * 유저 검색' + '\n';
