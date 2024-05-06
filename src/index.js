@@ -27,6 +27,8 @@ const saveNickname = require('./userManagement/saveNickname.js');
 const voiceJoin = require('./userManagement/voiceJoinMessage.js');
 const removeNickname = require('./userManagement/removeNickname.js');
 const createGuideChannel = require('./adminManagement/createGuideChannel.js');
+const submitNicknameHandler = require('./userManagement/submitNicknameHandler.js');
+
 
 // 권한 모듈
 const { checkAdminPermissionOnGuild, checkAdminPermissionOnVoice } = require('./module/checkAdminPermissionOnGuild.js');
@@ -58,7 +60,7 @@ client.once(Events.ClientReady, readyClient => {
 });
 
 // 가이드 채널 생성
-client.on('guildCreate', async guild => {
+client.on(Events.GuildCreate, async guild => {
 
     if (checkAdminPermissionOnGuild(clientId, guild)) { // Wave 가 관리자 권한 받았는지 체크
         try {
@@ -72,16 +74,9 @@ client.on('guildCreate', async guild => {
     }
 
 });
-// 음성 채널 입장시 작동
-client.on('voiceStateUpdate', async (oldState, newState) => { //
-    // Wave 가 관리자 권한이 없다면 리턴
-    if (!checkAdminPermissionOnVoice(clientId, newState) || !checkAdminPermissionOnVoice(clientId, oldState)) return;
 
-    if (oldState.channelId !== newState.channelId && newState.channelId !== null) {  // 채널 타입이 2(길드 채널)이라면 true, newState.channel 음성 채널에 입장하면 true
-        voiceJoin(oldState, newState);
-    }
 
-})
+
 
 // 슬래시 커맨더만 작동한다.
 client.on(Events.InteractionCreate, async interaction => {
@@ -106,14 +101,17 @@ client.on(Events.InteractionCreate, async interaction => {
     }
 });
 
+// 기능 구현중
+const hideIsVisible = require('./adminManagement/hideIsVisible.js');
+
 // 클릭 메서드
-client.on('interactionCreate', async interaction => {
+client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isMessageComponent()) return;
 
     try {
         switch (interaction.customId) {
             case 'gameMenu':
-                saveNickname(interaction);
+                await saveNickname(interaction); // 결과에 따라 처리해야 되기 때문에 awiat 필요. 
                 break;
 
             case 'removeNickNames':
@@ -125,6 +123,10 @@ client.on('interactionCreate', async interaction => {
                 await command.execute(interaction);
                 break;
 
+            case 'hideGameMenu':
+                hideIsVisible(interaction);
+                break;
+
             default:
                 console.log('isMessageComponent 에서 알 수 없는 customId : ' + interaction.customId);
         }
@@ -134,63 +136,75 @@ client.on('interactionCreate', async interaction => {
     }
 })
 
-// isModalSubmit 동작 메서드
-client.on('interactionCreate', async interaction => {
-    if (!interaction.isModalSubmit()) return;
+client.on(Events.InteractionCreate, async interaction => {
+    if (!interaction.isModalSubmit()) return; // 모달 처리
 
     try {
-        switch (interaction.customId) {
-            case 'steamCode':
-            case 'riotGamesName':
-            case 'kaKaoBGName':
-            case 'steamBGName':
-            case 'overWatchTwoName':
-                saveNickname(interaction);
-                console.log('customId 가 ' + interaction.customId + ' 입니다.');
-                break;
+        // customId에서 '-'를 기준으로 분리하고, 마지막 요소를 가져옵니다.
+        const customIdParts = interaction.customId.split('-');
+        const lastPart = customIdParts[customIdParts.length - 1];
 
-            default:
-                if (interaction.customId === 'upDate') return;
-                console.log('isModalSubmit 에서 알 수 없는 customId : ' + interaction.customId);
-                break;
+        switch (lastPart) {
+            case 'submitNickname':
+                submitNicknameHandler(interaction);
         }
 
     } catch (error) {
         console.error('isModalSubmit 에서 Interaction 처리 중 오류 발생:', error);
         await interaction.reply({ content: '상호 작용 처리 중 오류가 발생했습니다!', ephemeral: true });
     }
-})
-
+});
 
 
 // 관리자 채널
-client.on('interactionCreate', async interaction => {
-    if (!interaction.isMessageComponent()) return;
+client.on(Events.InteractionCreate, async interaction => {
+    if (interaction.isStringSelectMenu()) {
 
-    // console.log(interaction.values[0]);
-    // console.log(interaction.customId);
+        switch (interaction.values[0]) {
+            case 'hideMenu':
+                // hideMenu(interaction);
+                interaction.reply({
+                    content: '개발 단계입니다.',
+                    ephemeral: true
+                })
+                break;
 
-    switch (interaction.values[0]) {
-        case 'hideMenu':
-            hideMenu(interaction);
-            break;
+            case 'showMenu':
+                interaction.reply({
+                    content: '개발 단계입니다.',
+                    ephemeral: true
+                })
+                break;
 
-        case 'showMenu':
-            console.log('미구현');
-            break;
+            case 'changeOrder':
+                interaction.reply({
+                    content: '개발 단계입니다.',
+                    ephemeral: true
+                })
+                break;
 
-        case 'changeOrder':
-            console.log('미구현');
-            break;
-
+        }
     }
+})
 
-    switch (interaction.customId) {
 
-        case 'upDate':
-            upDateButton(interaction);
-            break;
+client.on(Events.InteractionCreate, async interaction => {
+    if (!interaction.isButton()) return;
 
+    try {
+
+        switch (interaction.customId) {
+            case 'upDate':
+                upDateButton(interaction);
+                break;
+
+            default:
+                console.log('isButton 에서 알 수 없는 customId : ' + interaction.customId);
+        }
+
+    } catch (error) {
+        console.error('isButton 에서 Interaction 처리 중 오류 발생:', error);
+        await interaction.reply({ content: '상호 작용 처리 중 오류가 발생했습니다!', ephemeral: true });
     }
 
 })
@@ -200,21 +214,43 @@ client.on('interactionCreate', async interaction => {
 
 
 
-// 서버 입장 채널 테스트
-// client.on('messageCreate', async message => {
-//     if (message.member.id === '282793473462239232' && message.content === "1") {
+const messageIds = {};
 
-//         const server = message.guild;
+// index.js
+client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
 
-//         console.log('1----------');
+    // 사용자가 음성 채널에 들어온 경우
+    if (!oldState.channel && newState.channel) {
+        console.log('채널 입장');
 
-//         const user = message.member;
-//         user.roles.cache.filter(role => console.log(role.permissions));
+        voiceJoin(newState);
 
-//         console.log('2-----------');
+    }
+    // 사용자가 음성 채널에서 나간 경우
+    else if (oldState.channel && !newState.channel) {
+        console.log('채널 나감');
 
-//     }
-// });
+
+        // 메시지 ID를 사용하여 메시지 삭제
+        // const userId = oldState.id;
+        // const messageId = messageIds[userId];
+        // if (messageId) {
+        //     const channel = oldState.channel;
+        //     try {
+        //         const message = await channel.messages.fetch(messageId);
+        //         message.delete();
+        //         delete messageIds[userId]; // 사용 후 메시지 ID 정보 삭제
+        //     } catch (error) {
+        //         console.error("메시지 삭제 중 오류 발생:", error);
+        //     }
+        // }
+
+    }
+});
+
+
+
+
 
 
 client.login(token);

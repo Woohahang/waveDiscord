@@ -43,7 +43,7 @@ module.exports = async (interaction) => {
 
         // 셀렉트 메뉴에 옵션을 넣습니다.
         const select = new StringSelectMenuBuilder()
-            .setCustomId('starter')
+            .setCustomId('hideGameMenu')
             .setPlaceholder('메뉴 숨기기 !')
             .setMinValues(1)
             .setMaxValues(options.length)

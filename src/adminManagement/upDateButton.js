@@ -1,3 +1,5 @@
+// upDateButton.js
+
 const { clientId } = require('../../../config.json');
 
 const { adminMenuLoader } = require('../module/adminModules/adminMenuLoader.js');
@@ -5,11 +7,9 @@ const { adminButton } = require('../module/adminModules/adminButton.js');
 
 module.exports = async (interaction) => {
     try {
-
         const channel = interaction.channel;
         const messages = await channel.messages.fetch({ limit: 10 });
         const waveMessages = messages.filter(message => message.author.id === clientId);
-
         // 이전 메시지 삭제
         waveMessages.forEach(message => {
             message?.delete(); // 메시지가 없더라도 작업을 중단하지 않고 undefined 반환

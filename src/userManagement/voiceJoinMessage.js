@@ -68,9 +68,12 @@ function createFields(userDocument) {
     return fields;
 }
 
-module.exports = async (oldState, newState) => {
+const messageIds = {};
+
+// voiceJoin.js
+module.exports = async (newState) => {
     try {
-        if (oldState.channelId !== newState.channelId && newState.channelId !== null) {
+        if (newState.channelId !== null) {
             const user = newState.member.user;
             const channel = newState.channel;
             const userDocument = await userSchema.findOne({ userId: newState.id });
@@ -94,15 +97,8 @@ module.exports = async (oldState, newState) => {
             filterEmbeds.forEach(message => {
                 message.embeds.forEach(embed => {
 
-
-                    // !!!!!!!!! ?.은 옵셔널 체이닝 연산자로 나중에 고치기 예를 들면 embed?.author?.name 이런식으로
-
-
-                    // 임베드 안에 author 안에 필수 프로퍼티 name 이 없다면 삭제를 중단하라! 왜? 봇이 멈춘다
-                    if (!embed.author || !embed.author.name) return;
-
                     // 바로 여기서 없는 embed.author.name 을 다른 것과 비교 하려다 에러 나면서 봇이 멈춘다.
-                    if (embed.author.name == user.globalName && embed.author.url == user.avatarURL() && embed.author.iconURL == user.displayAvatarURL()) {
+                    if (embed.author?.name == user.globalName && embed.author?.url == user.avatarURL() && embed.author?.iconURL == user.displayAvatarURL()) {
                         if (message) {
                             message.delete();
                         } else {
@@ -115,7 +111,8 @@ module.exports = async (oldState, newState) => {
             // 닉네임이 없다면 임베드를 안 보낸다.
             if (createFields(userDocument).length <= 0) return;
 
-            await channel.send({ embeds: [embed] });
+            const sentMessage = await channel.send({ embeds: [embed] });
+            messageIds[newState.id] = sentMessage.id;
 
         }
     } catch (error) {
