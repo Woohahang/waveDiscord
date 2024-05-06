@@ -24,7 +24,6 @@ connectToDatabase();
 
 // 이벤트 핸들러 모듈 가져오기
 const saveNickname = require('./userManagement/saveNickname.js');
-const voiceJoin = require('./userManagement/voiceJoinMessage.js');
 const removeNickname = require('./userManagement/removeNickname.js');
 const createGuideChannel = require('./adminManagement/createGuideChannel.js');
 const submitNicknameHandler = require('./userManagement/submitNicknameHandler.js');
@@ -210,41 +209,35 @@ client.on(Events.InteractionCreate, async interaction => {
 })
 
 
-
-
-
-
-const messageIds = {};
+// 단순이 id 만 담을 용도라 Map() 사용, discord.js 의 함수나 객체를 담을 때는 Collection() 쓸 예정
+const userMessageId = new Map();
+const voiceJoin = require('./userManagement/voiceJoinMessage.js');
+const voiceExit = require('./userManagement/voiceExit.js');
 
 // index.js
 client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
 
     // 사용자가 음성 채널에 들어온 경우
     if (!oldState.channel && newState.channel) {
-        console.log('채널 입장');
-
-        voiceJoin(newState);
-
+        try {
+            const messageId = await voiceJoin(newState);
+            userMessageId.set(newState.id, messageId);
+        } catch (error) {
+            console.error('voiceJoin error:', error);
+        }
     }
+
     // 사용자가 음성 채널에서 나간 경우
     else if (oldState.channel && !newState.channel) {
-        console.log('채널 나감');
-
-
-        // 메시지 ID를 사용하여 메시지 삭제
-        // const userId = oldState.id;
-        // const messageId = messageIds[userId];
-        // if (messageId) {
-        //     const channel = oldState.channel;
-        //     try {
-        //         const message = await channel.messages.fetch(messageId);
-        //         message.delete();
-        //         delete messageIds[userId]; // 사용 후 메시지 ID 정보 삭제
-        //     } catch (error) {
-        //         console.error("메시지 삭제 중 오류 발생:", error);
-        //     }
-        // }
-
+        try {
+            const messageId = userMessageId.get(oldState.id);
+            if (messageId) {
+                voiceExit(oldState, messageId);
+                userMessageId.delete(oldState.id);
+            }
+        } catch (error) {
+            console.error('voiceExit error:', error);
+        }
     }
 });
 

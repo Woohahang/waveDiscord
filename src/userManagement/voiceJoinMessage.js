@@ -112,7 +112,8 @@ module.exports = async (newState) => {
             if (createFields(userDocument).length <= 0) return;
 
             const sentMessage = await channel.send({ embeds: [embed] });
-            messageIds[newState.id] = sentMessage.id;
+
+            return sentMessage.id;
 
         }
     } catch (error) {
