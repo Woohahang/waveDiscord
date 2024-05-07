@@ -1,7 +1,7 @@
 const { InteractionType } = require('discord.js');
 
 
-module.exports = async (interaction) => {
+// module.exports = async (interaction) => {
 
 
-}
+// }

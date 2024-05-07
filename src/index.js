@@ -3,12 +3,12 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
-const { token, clientId } = require('../../config.json');
+const { testtoken, clientId } = require('../../config.json');
 const connectToDatabase = require('./mongoDB/database.js');
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
+        // GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildVoiceStates,
         GatewayIntentBits.GuildMembers,
@@ -28,16 +28,14 @@ const removeNickname = require('./userManagement/removeNickname.js');
 const createGuideChannel = require('./adminManagement/createGuideChannel.js');
 const submitNicknameHandler = require('./userManagement/submitNicknameHandler.js');
 
-
 // 권한 모듈
 const { checkAdminPermissionOnGuild, checkAdminPermissionOnVoice } = require('./module/checkAdminPermissionOnGuild.js');
 
 // 길드 모듈
 const guildInviteMessage = require('./adminManagement/guildInviteMessage.js');
 const adminChannel = require('./adminManagement/adminChannel.js');
-const hideMenu = require('./adminManagement/hideMenu.js');
-const upDateButton = require('./adminManagement/upDateButton.js');
 
+const upDateButton = require('./adminManagement/upDateButton.js');
 
 // 커맨드 파일 읽기
 for (const folder of commandFolders) {
@@ -52,30 +50,7 @@ for (const folder of commandFolders) {
             console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
         }
     }
-}
-
-client.once(Events.ClientReady, readyClient => {
-    console.log(`Ready! Logged in as ${readyClient.user.tag}`);
-});
-
-// 가이드 채널 생성
-client.on(Events.GuildCreate, async guild => {
-
-    if (checkAdminPermissionOnGuild(clientId, guild)) { // Wave 가 관리자 권한 받았는지 체크
-        try {
-            createGuideChannel(guild); // 받았다면 가이드 채널 생성 !
-            adminChannel(guild);
-        } catch (error) {
-            console.error(error);
-        }
-    } else {
-        guildInviteMessage(guild); // 관리자 권한을 못 받았다면 DM 전송
-    }
-
-});
-
-
-
+};
 
 // 슬래시 커맨더만 작동한다.
 client.on(Events.InteractionCreate, async interaction => {
@@ -100,12 +75,64 @@ client.on(Events.InteractionCreate, async interaction => {
     }
 });
 
-// 기능 구현중
-const hideIsVisible = require('./adminManagement/hideIsVisible.js');
 
-// 클릭 메서드
+client.once(Events.ClientReady, readyClient => {
+    console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+});
+
+// 가이드 채널 생성
+client.on(Events.GuildCreate, async guild => {
+
+    if (checkAdminPermissionOnGuild(clientId, guild)) { // Wave 가 관리자 권한 받았는지 체크
+        try {
+            createGuideChannel(guild); // 받았다면 가이드 채널 생성 !
+            adminChannel(guild);
+        } catch (error) {
+            console.error(error);
+        }
+    } else {
+        guildInviteMessage(guild); // 관리자 권한을 못 받았다면 DM 전송
+    }
+
+});
+
 client.on(Events.InteractionCreate, async interaction => {
-    if (!interaction.isMessageComponent()) return;
+    if (!interaction.isButton()) return;
+
+    try {
+        switch (interaction.customId) {
+            case 'upDate':
+                upDateButton(interaction);
+                break;
+
+            case 'removeButton':
+                const command = await interaction.client.commands.get('닉네임삭제')
+                await command.execute(interaction);
+                break;
+
+            default:
+                console.log('isButton 에서 알 수 없는 customId : ' + interaction.customId);
+        }
+
+    } catch (error) {
+        console.error('isButton 에서 Interaction 처리 중 오류 발생:', error);
+        await interaction.reply({ content: '상호 작용 처리 중 오류가 발생했습니다!', ephemeral: true });
+    }
+
+});
+
+
+// 구현 완료
+const { toggleMenuHandler } = require('./adminManagement/toggleMenuHandler.js');
+
+const { gameMenuToggle } = require('./adminManagement/gameMenuToggle.js');
+
+
+// 메뉴 처리
+client.on(Events.InteractionCreate, async interaction => {
+    if (!interaction.isStringSelectMenu()) return;
+
+    const value = interaction.values[0];
 
     try {
         switch (interaction.customId) {
@@ -117,13 +144,18 @@ client.on(Events.InteractionCreate, async interaction => {
                 removeNickname(interaction);
                 break;
 
-            case 'removeButton':
-                const command = await interaction.client.commands.get('닉네임삭제')
-                await command.execute(interaction);
+            case 'adminMenuId':
+                if (value === 'changeOrderValue') {
+                    interaction.reply({ content: '개발 단계입니다.', ephemeral: true })
+                } else { gameMenuToggle(interaction, value); }
                 break;
 
-            case 'hideGameMenu':
-                hideIsVisible(interaction);
+            case 'hideMenuHandler':
+                toggleMenuHandler(interaction, 'hideMenu');
+                break;
+
+            case 'showMenuHandler':
+                toggleMenuHandler(interaction, 'showMenu');
                 break;
 
             default:
@@ -133,10 +165,12 @@ client.on(Events.InteractionCreate, async interaction => {
         console.error('isMessageComponent 에서 Interaction 처리 중 오류 발생:', error);
         await interaction.reply({ content: '상호 작용 처리 중 오류가 발생했습니다!', ephemeral: true });
     }
-})
+});
 
+// 모달 처리
 client.on(Events.InteractionCreate, async interaction => {
-    if (!interaction.isModalSubmit()) return; // 모달 처리
+    if (!interaction.isModalSubmit()) return;
+
 
     try {
         // customId에서 '-'를 기준으로 분리하고, 마지막 요소를 가져옵니다.
@@ -155,66 +189,12 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 
-// 관리자 채널
-client.on(Events.InteractionCreate, async interaction => {
-    if (interaction.isStringSelectMenu()) {
-
-        switch (interaction.values[0]) {
-            case 'hideMenu':
-                // hideMenu(interaction);
-                interaction.reply({
-                    content: '개발 단계입니다.',
-                    ephemeral: true
-                })
-                break;
-
-            case 'showMenu':
-                interaction.reply({
-                    content: '개발 단계입니다.',
-                    ephemeral: true
-                })
-                break;
-
-            case 'changeOrder':
-                interaction.reply({
-                    content: '개발 단계입니다.',
-                    ephemeral: true
-                })
-                break;
-
-        }
-    }
-})
-
-
-client.on(Events.InteractionCreate, async interaction => {
-    if (!interaction.isButton()) return;
-
-    try {
-
-        switch (interaction.customId) {
-            case 'upDate':
-                upDateButton(interaction);
-                break;
-
-            default:
-                console.log('isButton 에서 알 수 없는 customId : ' + interaction.customId);
-        }
-
-    } catch (error) {
-        console.error('isButton 에서 Interaction 처리 중 오류 발생:', error);
-        await interaction.reply({ content: '상호 작용 처리 중 오류가 발생했습니다!', ephemeral: true });
-    }
-
-})
-
-
 // 단순이 id 만 담을 용도라 Map() 사용, discord.js 의 함수나 객체를 담을 때는 Collection() 쓸 예정
-const userMessageId = new Map();
 const voiceJoin = require('./userManagement/voiceJoinMessage.js');
 const voiceExit = require('./userManagement/voiceExit.js');
+const userMessageId = new Map();
 
-// index.js
+// 음성 채널 처리
 client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
 
     // 사용자가 음성 채널에 들어온 경우
@@ -242,8 +222,4 @@ client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
 });
 
 
-
-
-
-
-client.login(token);
+client.login(testtoken);

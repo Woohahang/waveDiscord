@@ -21,7 +21,7 @@ function adminMenuLoader() {
             new StringSelectMenuOptionBuilder()
                 .setLabel('ChangeOrder')
                 .setDescription('메뉴 순서 바꾸기')
-                .setValue('changeOrder'),
+                .setValue('changeOrderValue'),
         );
 
     let row = new ActionRowBuilder()
