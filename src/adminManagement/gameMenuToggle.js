@@ -1,7 +1,7 @@
-// gameMenuToggle.js
+// // gameMenuToggle.js
 
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
-const visibilitySchema = require('../mongoDB/visibilitySchema.js');
+const guildSettingsSchema = require('../mongoDB/guildSettingsSchema.js');
 
 const gameLabels = {
     steam: 'Steam',
@@ -25,24 +25,24 @@ async function gameMenuToggle(interaction, type) {
 
         const targetGuildId = interaction.guildId;
 
-        let visibilityData = await visibilitySchema.findOne({ guildId: targetGuildId });
+        let guildSettingsData = await guildSettingsSchema.findOne({ guildId: targetGuildId });
 
-        if (!visibilityData) {
-            visibilityData = new visibilitySchema({ guildId: targetGuildId });
-            await visibilityData.save();
+        if (!guildSettingsData) {
+            guildSettingsData = new guildSettingsSchema({ guildId: targetGuildId });
+            await guildSettingsData.save();
         }
 
         let games;
         if (type === 'showMenu') {
-            games = Object.entries(visibilityData.toObject()).filter(([key, value]) => value === true).map(([key]) => key);
+            games = Object.entries(guildSettingsData.toObject()).filter(([key, value]) => value === false).map(([key]) => key);
         } else if (type === 'hideMenu') {
-            games = Object.entries(visibilityData.toObject()).filter(([key, value]) => value === false).map(([key]) => key);
+            games = Object.entries(guildSettingsData.toObject()).filter(([key, value]) => value === true).map(([key]) => key);
         }
 
         // 숨길 게임이 없는 경우 사용자에게 알림
         if (games.length === 0) {
             await interaction.reply({
-                content: type === 'hideMenu' ? '숨길 수 있는 메뉴가 없습니다.' : '보여줄 수 있는 메뉴가 없습니다.',
+                content: type === 'showMenu' ? '모든 메뉴가 표기된 상태입니다.' : '숨길 수 있는 메뉴가 없습니다.',
                 ephemeral: true
             });
             return; // 함수 종료
@@ -52,14 +52,14 @@ async function gameMenuToggle(interaction, type) {
         let options = games.map(field => {
             return new StringSelectMenuOptionBuilder()
                 .setLabel(gameLabels[field])
-                .setDescription(`${description[field]} ${type === 'showMenu' ? '보이기' : '숨기기'}`)
+                .setDescription(`${description[field]} ${type === 'hideMenu' ? '숨기기' : '보이기'}`)
                 .setValue(type + field);
         });
 
         // 숨기기 요청 이라면 CustomId : hideMenu // 보이기 요청이라면 CustomId : showMenu
         const select = new StringSelectMenuBuilder()
             .setCustomId(`${type}Handler`)
-            .setPlaceholder(`메뉴 ${type === 'showMenu' ? '보이기 !' : '숨기기 !'}`)
+            .setPlaceholder(`메뉴 ${type === 'hideMenu' ? '숨기기 !' : '보이기 !'}`)
             .setMinValues(1)
             .setMaxValues(options.length)
             .addOptions(options);

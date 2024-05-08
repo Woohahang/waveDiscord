@@ -80,21 +80,36 @@ client.once(Events.ClientReady, readyClient => {
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
-// 가이드 채널 생성
+
+
+// index.js 리팩토링 완료 해볼 예정 //
+
+const { handleGuildCreate } = require('./handlers/guildCreate.js');
+
 client.on(Events.GuildCreate, async guild => {
+    handleGuildCreate(guild);
+})
 
-    if (checkAdminPermissionOnGuild(clientId, guild)) { // Wave 가 관리자 권한 받았는지 체크
-        try {
-            createGuideChannel(guild); // 받았다면 가이드 채널 생성 !
-            adminChannel(guild);
-        } catch (error) {
-            console.error(error);
-        }
-    } else {
-        guildInviteMessage(guild); // 관리자 권한을 못 받았다면 DM 전송
-    }
 
-});
+// ---------------------- //
+
+
+
+// 가이드 채널 생성
+// client.on(Events.GuildCreate, async guild => {
+
+//     if (checkAdminPermissionOnGuild(clientId, guild)) { // Wave 가 관리자 권한 받았는지 체크
+//         try {
+//             createGuideChannel(guild); // 받았다면 가이드 채널 생성 !
+//             adminChannel(guild);
+//         } catch (error) {
+//             console.error(error);
+//         }
+//     } else {
+//         guildInviteMessage(guild); // 관리자 권한을 못 받았다면 DM 전송
+//     }
+
+// });
 
 client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isButton()) return;
@@ -150,13 +165,15 @@ client.on(Events.InteractionCreate, async interaction => {
                 } else { gameMenuToggle(interaction, value); }
                 break;
 
+            case 'showMenuHandler':
+                toggleMenuHandler(interaction, 'showMenu');
+                break;
+
             case 'hideMenuHandler':
                 toggleMenuHandler(interaction, 'hideMenu');
                 break;
 
-            case 'showMenuHandler':
-                toggleMenuHandler(interaction, 'showMenu');
-                break;
+
 
             default:
                 console.log('isMessageComponent 에서 알 수 없는 customId : ' + interaction.customId);

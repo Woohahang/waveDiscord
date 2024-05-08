@@ -23,7 +23,7 @@ module.exports = async (guild) => {
         // 메시지 보내기 off
         channel.permissionOverwrites.create(channel.guild.roles.everyone, { ViewChannel: false, SendMessages: false });
 
-        let adminMessage = await channel.send({
+        await channel.send({
             content: "## ⭐ Wave 관리자 채널",
             components: [adminMenuLoader(), adminButton()],
         })
