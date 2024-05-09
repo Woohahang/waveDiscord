@@ -1,12 +1,12 @@
 const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
 const guildSettingsSchema = require('../mongoDB/guildSettingsSchema.js');
 
-async function gameMenuLoader(guild) {
+async function gameMenuLoader(guildId) {
     try {
-        let guildSettingsData = await guildSettingsSchema.findOne({ guildId: guild.id });
+        let guildSettingsData = await guildSettingsSchema.findOne({ guildId: guildId });
 
         if (!guildSettingsData) {
-            guildSettingsData = new guildSettingsSchema({ guildId: guild.id });
+            guildSettingsData = new guildSettingsSchema({ guildId: guildId });
             await guildSettingsData.save();
         }
 

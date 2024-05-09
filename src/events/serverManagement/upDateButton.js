@@ -1,9 +1,8 @@
 // upDateButton.js
 
-const { clientId } = require('../../../../config.json');
-
-const { adminMenuLoader } = require('../../module/adminModules/adminMenuLoader.js');
-const { adminButton } = require('../../module/adminModules/adminButton.js');
+const guildSettingsSchema = require('../../mongoDB/guildSettingsSchema');
+const { mainMessage } = require('../../events/guildCreate/mainChannel/mainChannelMessage');
+const { adminMessage } = require('../guildCreate/adminChannel/adminChannelMessage');
 
 function upDateMessage() {
     let message;
@@ -11,68 +10,63 @@ function upDateMessage() {
     message = '## 업데이트 완료' + '\n';
     message += '> * 현재 **Wave** 는 보완과 개발 단계에 있습니다. ' + '\n';
     message += '> * 개발은 지금도 진행 중이며 가끔 업데이트 버튼을 눌러주세요.' + '\n';
-    message += '## 기획 중인 기능' + '\n';
-    message += '> * 관리자 채널에 있는 선택 메뉴 기능' + '\n';
-    message += '> * 유저 검색' + '\n';
-    message += '> * [ ON/OFF ] 닉네임 정보 옆 티어 자동 표기' + '\n';
+    message += '## 안내' + '\n';
+    message += '> * 14일이 지난 메시지는 Discord 프로그래밍 방식에 의해 삭제가 불가능 합니다.' + '\n';
+    message += '> * 삭제가 되지 않은 메시지가 있다면 이전 메시지는 편의를 위해 삭제해주세요.'
 
     return message;
+};
+
+async function deleteMessages(channel) {
+    try {
+        const messages = await channel.messages.fetch({ limit: 10 });
+        await channel.bulkDelete(messages);
+    } catch (error) {
+        console.error(`메시지 삭제 중 오류 발생: ${error}`);
+    };
+};
+
+async function adminChannelUpDate(interaction) {
+    const channel = interaction.channel;
+
+    // 관리자 채널 메시지 전부 삭제
+    await deleteMessages(channel);
+
+    // 관리자 채널 메시지 전송
+    await adminMessage(channel);
 }
 
-async function upDateButton(interaction) {
+async function mainChannelUpDate(interaction) {
     try {
-        const channel = interaction.channel;
-        const messages = await channel.messages.fetch({ limit: 10 });
-        const waveMessages = messages.filter(message => message.author.id === clientId);
-        // 이전 메시지 삭제
-        waveMessages.forEach(message => {
-            message?.delete(); // 메시지가 없더라도 작업을 중단하지 않고 undefined 반환
-        });
+        // 길드 메인 채널 id 가지고 오기
+        const guildId = interaction.guild.id;
+        const guildSettings = await guildSettingsSchema.findOne({ guildId: guildId });
 
-        // 메시지 전송
-        await channel.send({
-            content: '## ⭐ Wave 관리자 채널',
-            components: [adminMenuLoader(), adminButton()],
-        })
 
-        await channel.send({ content: '> * **채널 보기 권한 OFF 적용 상태 **\n> * **채널을 옮기는 과정** 중에 권한이 풀릴 수도 있습니다.' });
+        if (guildSettings && guildSettings.mainChannelId) {
+            const mainChannel = await interaction.guild.channels.resolve(guildSettings.mainChannelId);
+            if (mainChannel) {
+                // 길드 메인 채널 메시지 전부 삭제
+                await deleteMessages(mainChannel);
 
-        // 업데이트 내용 알림
-        await interaction.reply({
-            content: upDateMessage(),
-            ephemeral: true
-        })
-
+                // 길드 메인 채널 메시지 전송
+                await mainMessage(mainChannel, guildId);
+            }
+        }
     } catch (error) {
-        console.error(error);
+        console.error(`메인 채널 업데이트 중 오류 발생: ${error}`);
     }
 }
 
-module.exports = { upDateButton }
+async function upDateButton(interaction) {
+    await Promise.all([adminChannelUpDate(interaction), mainChannelUpDate(interaction)]);
+
+    // 업데이트 내용 알림
+    await interaction.reply({
+        content: upDateMessage(),
+        ephemeral: true
+    });
+}
 
 
-/*
-    업데이트 기능 구현하기
-    상호작용 받은 채널에서
-    
-    메시지 10개를 들고 와서
-    wave가 보낸 메시지를 다 삭제하고
-    
-    객체를 하나 들고와서
-    채팅 보내기!
-    완벽한데?
-
-    계획을 안 보이게 띄우면 좋을듯?
-
-*/
-
-
-
-/*
-
-    채팅은 파일 내에서 가지고 올 수 있으나 채널이 또 생성되는걸 막지 못 한다.
-    따라서, 채팅을 함수화 시켜 다른 모듈로 분리한다.
-    유지 보수가 더 쉬워질듯?
-    그러나 폴더 분류를 어떻게 해야될지 고민해야 될듯
-
-*/
+module.exports = { upDateButton };

@@ -4,10 +4,23 @@ const guildSettingsSchema = require('../../../mongoDB/guildSettingsSchema');
 const { gameMenuLoader } = require('../../../module/gameMenuLoader');
 const { waveButton } = require('../../../module/adminModules/waveButton');
 
+
+
+async function mainMessage(channel, guildId) {
+    await channel.send({
+        content: "## :star: Wave 메인 명령어\n## /닉네임등록  /닉네임삭제",
+        components: [await gameMenuLoader(guildId)],
+    });
+
+    await channel.send({ components: [waveButton()] });
+};
+
+
 async function mainChannelMessage(guild) {
     try {
         // 길드 설정을 데이터베이스에서 찾기
-        const guildSettingsData = await guildSettingsSchema.findOne({ guildId: guild.id });
+        const guildId = guild.id;
+        const guildSettingsData = await guildSettingsSchema.findOne({ guildId: guildId });
 
         // 찾은 데이터에서 mainChannelId 추출
         if (guildSettingsData && guildSettingsData.mainChannelId) {
@@ -18,13 +31,13 @@ async function mainChannelMessage(guild) {
 
             // 채널이 존재하면 메시지 전송
             if (channel) {
+                mainMessage(guildId);
+                // await channel.send({
+                //     content: "## :star: Wave 메인 명령어\n## /닉네임등록  /닉네임삭제",
+                //     components: [await gameMenuLoader(guildId)],
+                // });
 
-                await channel.send({
-                    content: "## :star: Wave 메인 명령어\n## /닉네임등록  /닉네임삭제",
-                    components: [await gameMenuLoader(guild)],
-                });
-
-                await channel.send({ components: [waveButton()] });
+                // await channel.send({ components: [waveButton()] });
 
             } else {
                 console.error('채널을 찾을 수 없습니다.');
@@ -39,4 +52,4 @@ async function mainChannelMessage(guild) {
     }
 }
 
-module.exports = { mainChannelMessage }
+module.exports = { mainChannelMessage, mainMessage }
