@@ -1,6 +1,6 @@
-// src/userMangerment/voiceExit.js
+// voiceExit.js
 
-module.exports = async (oldState, messageId) => {
+async function voiceExit(oldState, messageId) {
     try {
         const channel = oldState.channel;
         if (!channel) return;
@@ -12,3 +12,5 @@ module.exports = async (oldState, messageId) => {
         console.error("메시지 삭제 중 오류 발생:", error);
     }
 };
+
+module.exports = { voiceExit };

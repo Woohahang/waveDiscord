@@ -19,6 +19,6 @@ function adminButton() {
 
     return row;
 
-}
+};
 
-module.exports = { adminButton }
+module.exports = { adminButton };

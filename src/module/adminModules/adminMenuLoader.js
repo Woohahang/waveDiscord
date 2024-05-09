@@ -28,7 +28,6 @@ function adminMenuLoader() {
         .addComponents(adminMenuSelect);
 
     return row;
+};
 
-}
-
-module.exports = { adminMenuLoader }
+module.exports = { adminMenuLoader };

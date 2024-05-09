@@ -6,6 +6,7 @@ const { checkAdminPermissionOnGuild } = require('../module/checkAdminPermissionO
 const { mainChannelCreate } = require('../events/guildCreate/mainChannel/mainChannelCreate');
 const { mainChannelMessage } = require('../events/guildCreate/mainChannel/mainChannelMessage');
 const { adminChannelCreate } = require('../events/guildCreate/adminChannel/adminChannelCreate');
+const { adminChannelMessage } = require('../events/guildCreate/adminChannel/adminChannelMessage');
 const { guildInviteMessage } = require('../events/guildCreate/userChannel/guildInviteMessage');
 
 async function handleGuildCreate(guild) {
@@ -17,7 +18,9 @@ async function handleGuildCreate(guild) {
             await mainChannelCreate(guild); // main 채널 생성
             await mainChannelMessage(guild); // main 채널 메시지 전송
 
+
             await adminChannelCreate(guild); // admin 채널 생성
+            await adminChannelMessage(guild); // admin 채널 메시지 전송
 
         } else {
             await guildInviteMessage(guild); // 관리자 권한을 못 받았다면 1:1 DM 전송

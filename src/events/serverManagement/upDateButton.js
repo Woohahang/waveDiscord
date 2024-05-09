@@ -5,35 +5,6 @@ const { clientId } = require('../../../../config.json');
 const { adminMenuLoader } = require('../../module/adminModules/adminMenuLoader.js');
 const { adminButton } = require('../../module/adminModules/adminButton.js');
 
-// module.exports = async (interaction) => {
-//     try {
-//         const channel = interaction.channel;
-//         const messages = await channel.messages.fetch({ limit: 10 });
-//         const waveMessages = messages.filter(message => message.author.id === clientId);
-//         // 이전 메시지 삭제
-//         waveMessages.forEach(message => {
-//             message?.delete(); // 메시지가 없더라도 작업을 중단하지 않고 undefined 반환
-//         });
-
-//         // 메시지 전송
-//         await channel.send({
-//             content: '## ⭐ Wave 관리자 채널',
-//             components: [adminMenuLoader(), adminButton()],
-//         })
-
-//         await channel.send({ content: '> * **채널 보기 권한 OFF 적용 상태 **\n> * **채널을 옮기는 과정** 중에 권한이 풀릴 수도 있습니다.' });
-
-//         // 업데이트 내용 알림
-//         await interaction.reply({
-//             content: upDateMessage(),
-//             ephemeral: true
-//         })
-
-//     } catch (error) {
-//         console.error(error);
-//     }
-// };
-
 function upDateMessage() {
     let message;
 

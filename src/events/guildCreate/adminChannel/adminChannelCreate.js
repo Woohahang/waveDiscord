@@ -1,25 +1,27 @@
-const { adminMenuLoader } = require('../../../module/adminModules/adminMenuLoader');
-const { adminButton } = require('../../../module/adminModules/adminButton');
+const guildSettingsSchema = require('../../../mongoDB/guildSettingsSchema');
 
 async function adminChannelCreate(guild) {
 
     try {
-        // 채널 이름
+        // 채널 생성 : 채팅 채널
         const channel = await guild.channels.create({ name: '📘ㆍwave 관리자', type: 0 });
 
-        // 메시지 보내기 off
+        // 채널 설정 : 메시지 보내기 off
         channel.permissionOverwrites.create(channel.guild.roles.everyone, { ViewChannel: false, SendMessages: false });
 
-        await channel.send({
-            content: "## ⭐ Wave 관리자 채널",
-            components: [adminMenuLoader(), adminButton()],
-        })
+        // 채널 Id -> DB에 저장
+        const guildSettings = await guildSettingsSchema.findOne({ guildId: guild.id });
 
-        await channel.send({ content: '> * **채널 보기 권한 OFF 적용 상태 **\n> * **채널을 옮기는 과정** 중에 권한이 풀릴 수도 있습니다.' });
+        if (guildSettings) {
+            guildSettings.adminChannelId = channel.id;
+            await guildSettings.save();
+        } else {
+            console.log('길드 id 를 찾을 수 없습니다 : adminChannelCreate.js')
+        };
 
     } catch (error) {
-        console.error(error);
-    }
+        console.error(`관리자 채널 생성 중 에러 발생: ${error}`);
+    };
 
 };
 

@@ -66,8 +66,6 @@ client.once(Events.ClientReady, readyClient => {
 });
 
 
-// ------------------- //
-
 const { handleGuildCreate } = require('./handlers/guildCreate');
 const { handleinteraction } = require('./handlers/interaction');
 const { handleVoiceStateUpdate } = require('./handlers/voiceStateUpdate');
@@ -84,6 +82,5 @@ client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
     handleVoiceStateUpdate(oldState, newState);
 });
 
-// ------------------- //
 
 client.login(testtoken);
