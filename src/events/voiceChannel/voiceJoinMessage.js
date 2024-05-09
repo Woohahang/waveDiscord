@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
-const userSchema = require('../mongoDB/userSchema.js');
-const { clientId } = require('../../../config.json');
+const userSchema = require('../../mongoDB/userSchema.js');
+const { clientId } = require('../../../../config.json');
 
 // 모든 공백을 제거하고 반환
 function removeSpaces(inputString) {

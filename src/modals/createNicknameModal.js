@@ -1,4 +1,4 @@
-// // src/events/saveNickname.js
+// /saveNickname.js
 
 const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, Component } = require('discord.js');
 
@@ -59,36 +59,34 @@ function getModalConfig(selectedValue) {
     return { title, customId, label };
 };
 
+async function createNicknameModal(interaction) {
+    try {
+        guideMessageEdit(interaction);
 
-module.exports = async (interaction) => {
-    if (interaction.isStringSelectMenu() && interaction.customId === "gameMenu") {
+        if (!interaction.values[0]) return;
+        const selectedValue = interaction.values[0];
 
-        try {
-            guideMessageEdit(interaction);
+        let { title, customId, label } = getModalConfig(selectedValue);
 
-            if (!interaction.values[0]) return;
-            const selectedValue = interaction.values[0];
+        const modal = new ModalBuilder();
+        modal.setTitle(title);
+        modal.setCustomId(customId);
 
-            let { title, customId, label } = getModalConfig(selectedValue);
+        const input = new TextInputBuilder()
+            .setCustomId(customId)
+            .setLabel(label)
+            .setStyle(TextInputStyle.Short);
 
-            const modal = new ModalBuilder();
-            modal.setTitle(title);
-            modal.setCustomId(customId);
+        const box = new ActionRowBuilder().addComponents(input);
 
-            const input = new TextInputBuilder()
-                .setCustomId(customId)
-                .setLabel(label)
-                .setStyle(TextInputStyle.Short);
+        modal.addComponents(box);
 
-            const box = new ActionRowBuilder().addComponents(input);
+        await interaction.showModal(modal);
 
-            modal.addComponents(box);
-
-            await interaction.showModal(modal);
-
-        } catch (error) {
-            console.error(error);
-        }
-
+    } catch (error) {
+        console.error(error);
     }
 };
+
+
+module.exports = { createNicknameModal };

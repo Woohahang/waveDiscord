@@ -1,9 +1,8 @@
 //  src/services/removeNickname.js , 등록된 닉네임 삭제
 
-const userSchema = require('../mongoDB/userSchema.js');
+const userSchema = require('../../mongoDB/userSchema.js');
 
-module.exports = async (interaction) => {
-
+async function removeNickname(interaction) {
     const userId = interaction.member.id;
     const selectedOptions = interaction.values.map(value => interaction.message.components[0].components[0].options.find(option => option.value === value));
 
@@ -32,4 +31,6 @@ module.exports = async (interaction) => {
     });
 
     console.log('선택된 닉네임들이 성공적으로 삭제되었습니다.');
-};
+}
+
+module.exports = { removeNickname }

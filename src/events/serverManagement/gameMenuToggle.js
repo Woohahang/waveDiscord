@@ -1,7 +1,7 @@
 // // gameMenuToggle.js
 
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
-const guildSettingsSchema = require('../mongoDB/guildSettingsSchema.js');
+const guildSettingsSchema = require('../../mongoDB/guildSettingsSchema.js');
 
 const gameLabels = {
     steam: 'Steam',
