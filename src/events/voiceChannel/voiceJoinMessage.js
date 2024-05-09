@@ -7,7 +7,7 @@ const guildSettingsSchema = require('../../mongoDB/guildSettingsSchema.js');
 // 모든 공백을 제거하고 반환
 function removeSpaces(inputString) {
     return inputString.replace(/ /g, '');
-}
+};
 
 async function createFields(userDocument, targetGuildId) {
     const fields = [];
@@ -19,12 +19,12 @@ async function createFields(userDocument, targetGuildId) {
     if (guildSettings.steam && userDocument.steam.length > 0) {
         let includesSteamCommunity;
         userDocument.steam.forEach(nickname => {
-            includesSteamCommunity = nickname.includes("https://steamcommunity.com/profiles/");
+            includesSteamCommunity = nickname.includes("https://steamcommunity.com/");
             steamNickNames += `${nickname}\n`;
         });
 
         fields.push({ name: 'Steam', value: includesSteamCommunity ? `[스팀 친구 추가](${removeSpaces(steamNickNames)})` : steamNickNames });
-    }
+    };
 
     // 라이엇
     let riotGamesNickNames = '';
@@ -37,7 +37,7 @@ async function createFields(userDocument, targetGuildId) {
         });
 
         fields.push({ name: '라이엇 게임즈', value: riotGamesNickNames });
-    }
+    };
 
     // 스팀 배그
     let steamBGNicknames = '';
@@ -47,7 +47,7 @@ async function createFields(userDocument, targetGuildId) {
         });
 
         fields.push({ name: '스팀 배틀 그라운드', value: steamBGNicknames });
-    }
+    };
 
     // 카카오
     let kakaonicknames = '';
@@ -57,7 +57,7 @@ async function createFields(userDocument, targetGuildId) {
         });
 
         fields.push({ name: '카카오 배틀 그라운드', value: kakaonicknames });
-    }
+    };
 
     // 오버워치 2
     let overWatchTwoNicknames = '';
@@ -67,10 +67,10 @@ async function createFields(userDocument, targetGuildId) {
         });
 
         fields.push({ name: '오버워치 2', value: overWatchTwoNicknames });
-    }
+    };
 
     return fields;
-}
+};
 
 async function voiceJoin(newState) {
     try {
@@ -102,7 +102,7 @@ async function voiceJoin(newState) {
 
     } catch (error) {
         console.error("오류가 발생했습니다:", error);
-    }
+    };
 };
 
 module.exports = { voiceJoin };

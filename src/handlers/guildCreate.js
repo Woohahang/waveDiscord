@@ -2,7 +2,7 @@
 
 const resetGuildDatabase = require('../mongoDB/resetGuildDatabase');
 
-const { checkAdminPermissionOnGuild } = require('../module/checkAdminPermissionOnGuild');
+const { checkGuildAdmin } = require('../module/checkAdminPermissionOn');
 const { mainChannelCreate } = require('../events/guildCreate/mainChannel/mainChannelCreate');
 const { mainChannelMessage } = require('../events/guildCreate/mainChannel/mainChannelMessage');
 const { adminChannelCreate } = require('../events/guildCreate/adminChannel/adminChannelCreate');
@@ -11,7 +11,7 @@ const { guildInviteMessage } = require('../events/guildCreate/userChannel/guildI
 
 async function handleGuildCreate(guild) {
     try {
-        if (await checkAdminPermissionOnGuild(guild)) { // 봇이 관리자 권한을 받았는지 체크
+        if (checkGuildAdmin(guild)) { // 봇이 관리자 권한을 받았는지 체크
 
             await resetGuildDatabase(guild); // 길드 DB 초기화
 

@@ -1,5 +1,7 @@
 // interactionCreate.js
 
+const { checkInteractionAdmin } = require('../module/checkAdminPermissionOn')
+
 const { createNicknameModal } = require('../modals/createNicknameModal');
 const { removeNickname } = require('../events/userNickName/removeNickname');
 const { toggleMenuHandler } = require('../events/serverManagement/toggleMenuHandler');
@@ -7,8 +9,13 @@ const { gameMenuToggle } = require('../events/serverManagement/gameMenuToggle');
 const { saveUserNickname } = require('../events/userNickName/saveUserNickname');
 const { upDateButton } = require('../events/serverManagement/upDateButton');
 
+const { checkAdminRole } = require('../module/checkAdminRole');
+
+
 async function handleinteraction(interaction) {
     try {
+        if (!checkInteractionAdmin(interaction)) return;
+
         const customId = interaction.customId;
 
         let value;
@@ -69,10 +76,15 @@ async function handleStringSelectMenu(interaction, customId, value) {
             break;
 
         case 'adminMenuId': // 관리자 게임 메뉴
-            if (value === 'changeOrderValue') {
-                interaction.reply({ content: '개발 단계입니다.', ephemeral: true })
-            }
-            else { gameMenuToggle(interaction, value); }
+            if (checkAdminRole(interaction)) {
+                if (value === 'changeOrderValue') {
+                    interaction.reply({ content: '개발 단계입니다.', ephemeral: true });
+                }
+                else { gameMenuToggle(interaction, value); };
+            } else {
+                // 권한이 없을 경우 사용자에게 알림
+                interaction.reply({ content: '관리자 메뉴에 접근할 권한이 없습니다.', ephemeral: true });
+            };
             break;
 
         case 'showMenuHandler': // 메뉴 숨기기 -> DB 저장 

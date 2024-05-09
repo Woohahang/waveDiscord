@@ -15,7 +15,7 @@ async function toggleMenuHandler(interaction, action) {
         if (!visibilityData) {
             console.error('길드 데이터를 찾을 수 없습니다.');
             return;
-        }
+        };
 
         selections.forEach(selection => {
             const gameKey = selection.replace(`${action}`, '');
@@ -26,7 +26,7 @@ async function toggleMenuHandler(interaction, action) {
         await visibilityData.save();
 
         await interaction.reply({
-            content: action === 'showMenu' ? '선택한 게임이 메뉴에 나타납니다.' : '선택한 게임 메뉴를 숨깁니다.',
+            content: action === 'showMenu' ? '> * 선택한 게임이 메뉴에 나타납니다.\n> * 업데이트 버튼을 눌러주세요.' : '> * 선택한 게임 메뉴를 숨깁니다.\n> * 업데이트 버튼을 눌러주세요.',
             ephemeral: true
         });
 

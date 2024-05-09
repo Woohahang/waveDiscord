@@ -31,7 +31,7 @@ async function mainChannelMessage(guild) {
 
             // 채널이 존재하면 메시지 전송
             if (channel) {
-                mainMessage(guildId);
+                mainMessage(channel, guildId);
                 // await channel.send({
                 //     content: "## :star: Wave 메인 명령어\n## /닉네임등록  /닉네임삭제",
                 //     components: [await gameMenuLoader(guildId)],

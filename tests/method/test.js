@@ -33,13 +33,26 @@ client.on('messageCreate', async message => {
     }
 });
 
-// 역할마다 비트 필드 알아보기
-client.on('messageCreate', async message => {
-    if (message.member.id === '282793473462239232' && message.content === "1") {
 
-        const server = message.guild;
-        const user = message.member;
-        user.roles.cache.filter(role => console.log(role.permissions));
 
-    }
+const { PermissionsBitField } = require('discord.js');
+
+// 역할 확인하기
+client.on(Events.InteractionCreate, async interaction => {
+    if (!interaction.member.id === '282793473462239232' || !interaction.member.id === '386134294508339210') return;
+
+    // 멤버 객체 가지고 오기
+    const member = interaction.member;
+
+    // 역할 객체 뭐 있는지 싹 다 확인 가능
+    console.log(PermissionsBitField.Flags);
+
+    // 관리자 권한 가지고 오기 없으면 언디파인
+    const hasAdminRole = member.permissions.has(PermissionsBitField.Flags.Administrator);
+
+    if (hasAdminRole) {
+        console.log(`${interaction.user.tag}는 관리자 권한을 가지고 있습니다.`);
+    } else {
+        console.log(`${interaction.user.tag}는 관리자 권한을 가지고 있지 않습니다.`);
+    };
 });

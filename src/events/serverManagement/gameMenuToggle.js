@@ -46,7 +46,7 @@ async function gameMenuToggle(interaction, type) {
                 ephemeral: true
             });
             return; // 함수 종료
-        }
+        };
 
         // true, 또는 false 요청에 따라 DB에서 가지고 온 데이터들 SelectMenu 로 객체화
         let options = games.map(field => {
@@ -71,7 +71,6 @@ async function gameMenuToggle(interaction, type) {
             components: [row],
             ephemeral: true
         });
-
 
     } catch (error) {
         console.error(`관리자 채널 ${type}Menu.js 에서 에러 발생 : `, error);

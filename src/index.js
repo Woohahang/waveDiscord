@@ -8,10 +8,10 @@ const connectToDatabase = require('./mongoDB/database.js');
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
-        // GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildVoiceStates,
         GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildMessages
     ]
 });
 
@@ -60,11 +60,9 @@ client.on(Events.InteractionCreate, async interaction => {
     }
 });
 
-
 client.once(Events.ClientReady, readyClient => {
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
-
 
 const { handleGuildCreate } = require('./handlers/guildCreate');
 const { handleinteraction } = require('./handlers/interaction');
