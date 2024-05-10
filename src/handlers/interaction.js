@@ -11,11 +11,11 @@ const { upDateButton } = require('../events/serverManagement/upDateButton');
 
 const { checkAdminRole } = require('../module/checkAdminRole');
 
+// const { userSearch } = require('../events/userNickName/userSearch');
 
 async function handleinteraction(interaction) {
     try {
         if (!checkInteractionAdmin(interaction)) return; // 봇이 관리자 권한을 받았는지 체크
-
         const customId = interaction.customId;
 
         let value;
@@ -31,8 +31,8 @@ async function handleinteraction(interaction) {
 
         } else if (interaction.isStringSelectMenu()) {
             await handleStringSelectMenu(interaction, customId, value);
+        };
 
-        }
     } catch (error) {
         console.error('isMessageComponent 에서 처리 중 오류 발생:', error);
         await interaction.reply({ content: '상호 작용 처리 중 오류가 발생했습니다!', ephemeral: true });
@@ -50,6 +50,11 @@ async function handleButtonInteraction(interaction, customId) {
             await command.execute(interaction);
             break;
 
+        // discord.js v13 부터 사용 안 하는 것 같다. 유저빌더
+        // case 'userSearchButton':
+        //     await userSearch(interaction);
+        //     break;
+
         default:
             console.log('isButton 에서 알 수 없는 customId : ' + customId);
     };
@@ -62,7 +67,13 @@ async function handleSubmitModal(interaction, customId) {
     switch (lastPart) {
         case 'submitNickname': // 닉네임 제출 -> DB 저장
             saveUserNickname(interaction);
+
+        case 'users':
+            console.log('선택 완료');
+            break;
+
     };
+
 };
 
 async function handleStringSelectMenu(interaction, customId, value) {
@@ -99,7 +110,6 @@ async function handleStringSelectMenu(interaction, customId, value) {
             console.log('isMessageComponent 에서 알 수 없는 customId : ' + customId);
     };
 };
-
 
 
 module.exports = { handleinteraction };

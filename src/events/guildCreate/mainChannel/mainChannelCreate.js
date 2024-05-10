@@ -27,7 +27,7 @@ async function mainChannelCreate(guild) {
 
     } catch (error) {
         console.error(error);
-    }
-}
+    };
+};
 
 module.exports = { mainChannelCreate };

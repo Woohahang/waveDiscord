@@ -28,7 +28,7 @@ async function handleVoiceStateUpdate(oldState, newState) {
             const messageId = userMessageId.get(oldState.id);
 
             if (messageId) {
-                voiceExit(oldState, messageId); // 전송한 메시지 삭제
+                await voiceExit(oldState, messageId); // 전송한 메시지 삭제
                 userMessageId.delete(oldState.id); // 전송한 메시지 id Map() 삭제
             };
 

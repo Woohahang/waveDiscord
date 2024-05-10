@@ -10,14 +10,13 @@ async function menuSelectionResetter(interaction) {
         // 해당 채널의 메시지 배열로 가지고 오기
         const messages = await channel.messages.fetch({ limit: 10 });
 
-
         for (const message of messages.values()) { // messages는 Map이거나 Collection일 수 있으므로, .values()를 사용하여 반복
             // 컴포넌트가 있는 메시지만 가지고 온다.
             if (message.components.length > 0) {
                 let filed = [];
                 for (let i = 0; i < message.components.length; i++) {
                     filed.push(message.components[i]);
-                }
+                };
                 await message.edit({ components: filed }); // 각 메시지를 순차적으로 처리
             };
         };

@@ -3,6 +3,10 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 function waveButton() {
+    const search = new ButtonBuilder()
+        .setCustomId('userSearchButton')
+        .setLabel('유저 검색')
+        .setStyle(ButtonStyle.Success);
 
     const remove = new ButtonBuilder()
         .setCustomId('removeButton')
@@ -21,4 +25,4 @@ function waveButton() {
 
 };
 
-module.exports = { waveButton }
+module.exports = { waveButton };

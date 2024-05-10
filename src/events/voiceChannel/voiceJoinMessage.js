@@ -99,6 +99,10 @@ async function voiceJoin(newState) {
             .setTimestamp(new Date(userDocument.updatedAt))
             .setFooter({ text: '━━━━━━━━━━━ update', iconURL: 'https://cdn-icons-png.flaticon.com/512/5052/5052710.png' });
 
+
+
+        await deleteDuplicateEmbeds(channel, user);
+
         // 메시지 전송
         const sentMessage = await channel.send({ embeds: [embed] });
         return sentMessage.id;
@@ -109,6 +113,26 @@ async function voiceJoin(newState) {
 };
 
 module.exports = { voiceJoin };
+
+async function deleteDuplicateEmbeds(channel, user) {
+
+    const messages = await channel.messages.fetch({ limit: 20 });
+    // 내가 보낸 Embed 만 가지고 오기
+    const filterEmbeds = messages.filter(message => message.author.id === clientId && message.embeds.length > 0);
+
+    // 사용자의 중복 임베드만 삭제하기
+    filterEmbeds.forEach(message => {
+        message.embeds.forEach(embed => {
+            if (embed.author?.name == user.globalName && embed.author?.url == user.avatarURL() && embed.author?.iconURL == user.displayAvatarURL()) {
+                if (message) {
+                    message.delete();
+                } else {
+                    console.log("삭제할 메시지를 찾을 수 없습니다. / 간혹 API 문제");
+                }
+            };
+        });
+    });
+};
 
 // // 채널의 최근 메시지 20개 가지고 오기
 // const messages = await channel.messages.fetch({ limit: 20 });
