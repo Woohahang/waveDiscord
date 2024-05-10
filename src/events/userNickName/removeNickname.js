@@ -15,7 +15,7 @@ async function removeNickname(interaction) {
 
     // 선택된 닉네임들을 유저의 스키마에서 제거
     selectedOptions.forEach(option => {
-        const optionType = option.value.replace(/\d+/g, ''); // 'steam', 'kakao', 'riotGames' 중 하나
+        const optionType = option.value.replace(/\d+/g, ''); // 'steam', 'kakao', 'loL' 중 하나
         const index = parseInt(option.value.replace(/\D+/g, '')); // 배열에서 삭제할 인덱스
         if (userData[optionType] && userData[optionType].length > index) {
             userData[optionType].splice(index, 1);

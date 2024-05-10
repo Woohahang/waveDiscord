@@ -14,7 +14,7 @@ const { checkAdminRole } = require('../module/checkAdminRole');
 
 async function handleinteraction(interaction) {
     try {
-        if (!checkInteractionAdmin(interaction)) return;
+        if (!checkInteractionAdmin(interaction)) return; // 봇이 관리자 권한을 받았는지 체크
 
         const customId = interaction.customId;
 

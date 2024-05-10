@@ -26,17 +26,17 @@ async function createFields(userDocument, targetGuildId) {
         fields.push({ name: 'Steam', value: includesSteamCommunity ? `[스팀 친구 추가](${removeSpaces(steamNickNames)})` : steamNickNames });
     };
 
-    // 라이엇
-    let riotGamesNickNames = '';
-    if (guildSettings.riotGames && userDocument.riotGames.length > 0) {
-        userDocument.riotGames.forEach(nickname => {
+    // 리그 오브 레전드
+    let loLNickNames = '';
+    if (guildSettings.loL && userDocument.loL.length > 0) {
+        userDocument.loL.forEach(nickname => {
             if (nickname && !nickname.includes('#')) {
                 nickname += '#KR1';
             }
-            riotGamesNickNames += `[${nickname}](https://www.op.gg/summoners/kr/${removeSpaces(nickname)})\n`;
+            loLNickNames += `[${nickname}](https://www.op.gg/summoners/kr/${removeSpaces(nickname)})\n`;
         });
 
-        fields.push({ name: '라이엇 게임즈', value: riotGamesNickNames });
+        fields.push({ name: '리그 오브 레전드', value: loLNickNames });
     };
 
     // 스팀 배그
@@ -58,6 +58,9 @@ async function createFields(userDocument, targetGuildId) {
 
         fields.push({ name: '카카오 배틀 그라운드', value: kakaonicknames });
     };
+
+
+
 
     // 오버워치 2
     let overWatchTwoNicknames = '';

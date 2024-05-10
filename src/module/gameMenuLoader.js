@@ -13,7 +13,7 @@ async function gameMenuLoader(guildId) {
         // 각 게임의 가시성 설정을 확인하고, true 설정된 게임만 메뉴에 추가
         const allGames = [
             { label: 'Steam', description: '스팀 친구 코드 또는 스팀 프로필 주소', value: 'steam', visible: guildSettingsData.steam },
-            { label: 'Riot Games', description: '라이엇 게임즈 닉네임', value: 'riotGames', visible: guildSettingsData.riotGames },
+            { label: 'League of Legends', description: '리그 오브 레전드 닉네임', value: 'loL', visible: guildSettingsData.loL },
             { label: 'Steam Battle Grounds', description: '스팀 배틀 그라운드 닉네임', value: 'steamBG', visible: guildSettingsData.steamBG },
             { label: 'KaKao Battle Grounds', description: '카카오 배틀 그라운드 닉네임', value: 'kaKaoBG', visible: guildSettingsData.kakaoBG },
             { label: 'OVERWATCH 2', description: '오버워치 2', value: 'overWatchTwo', visible: guildSettingsData.overWatchTwo },

@@ -4,7 +4,6 @@ const guildSettingsSchema = require('../../../mongoDB/guildSettingsSchema');
 const { adminMenuLoader } = require('../../../module/adminModules/adminMenuLoader');
 const { adminButton } = require('../../../module/adminModules/adminButton');
 
-
 async function adminMessage(channel) {
     try {
         await channel.send({

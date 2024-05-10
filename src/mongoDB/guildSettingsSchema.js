@@ -7,7 +7,7 @@ let guildSettingsSchema = new mongoose.Schema({
     adminChannelId: String, // 관리자 채널
 
     steam: { type: Boolean, default: true },
-    riotGames: { type: Boolean, default: true },
+    loL: { type: Boolean, default: true },
     steamBG: { type: Boolean, default: true },
     kakaoBG: { type: Boolean, default: true },
     overWatchTwo: { type: Boolean, default: true },

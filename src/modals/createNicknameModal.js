@@ -1,18 +1,7 @@
 // /saveNickname.js
 
 const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, Component } = require('discord.js');
-
-
-async function guideMessageEdit(interaction) { // 목적 : 가이드 채널 메시지에서 메뉴를 선택했을 때, 셀렉트 메뉴의 선택하세요! 로 초기 값 만들게 하기 위함.
-    const guideChannel = interaction.channel;
-    const guideChannelMessage = await guideChannel.messages.fetch({ limit: 10 });
-    const guideMessage = guideChannelMessage.find(message => message.content.includes('Wave 메인 명령어')); // 메시지 내용 중에 Wave 메인 명령어 가 있는 것만 가지고 온다.
-
-    if (guideMessage) {
-        guideMessage.edit({ components: [guideMessage.components[0]] });
-
-    }
-}
+const { menuSelectionResetter } = require('../module/common/menuSelectionResetter');
 
 function getModalConfig(selectedValue) {
 
@@ -25,9 +14,9 @@ function getModalConfig(selectedValue) {
             label = "Steam 친구 코드 또는 프로필 주소를 작성해주세요.";
             break;
 
-        case 'riotGames':
-            title = "라이엇 게임즈 닉네임";
-            customId = "riotGamesName";
+        case 'loL':
+            title = "리그 오브 레전드 닉네임";
+            customId = "loLName";
             label = "✔️ 최대 세개의 닉네임을 등록할 수 있습니다.";
             break;
 
@@ -61,7 +50,7 @@ function getModalConfig(selectedValue) {
 
 async function createNicknameModal(interaction) {
     try {
-        guideMessageEdit(interaction);
+        menuSelectionResetter(interaction);
 
         if (!interaction.values[0]) return;
         const selectedValue = interaction.values[0];

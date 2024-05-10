@@ -7,7 +7,7 @@ let userSchema = new mongoose.Schema({
     userId: String,
 
     steam: [String],
-    riotGames: [String],
+    loL: [String],
     steamBG: [String],
     kakao: [String],
     overWatchTwo: [String],

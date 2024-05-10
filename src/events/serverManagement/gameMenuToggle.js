@@ -1,11 +1,15 @@
 // // gameMenuToggle.js
 
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
+const { menuSelectionResetter } = require('../../module/common/menuSelectionResetter');
+
 const guildSettingsSchema = require('../../mongoDB/guildSettingsSchema.js');
+
+
 
 const gameLabels = {
     steam: 'Steam',
-    riotGames: 'Riot Games',
+    loL: 'League of Legends',
     steamBG: 'Steam Battle Grounds',
     kakaoBG: 'KaKao Battle Grounds',
     overWatchTwo: 'OVERWATCH 2'
@@ -13,15 +17,19 @@ const gameLabels = {
 
 const description = {
     steam: '스팀',
-    riotGames: '라이엇 게임즈',
+    loL: '리그 오브 레전드',
     steamBG: '스팀 배틀 그라운드',
     kakaoBG: '카카오 배틀 그라운드',
     overWatchTwo: '오버워치 2'
 }
 
+
 // 관리자 채널에서 메뉴 보이기 또는 메뉴 숨기기 메뉴를 클릭하면 데이터 베이스에서 숨겨진 게임 종류 또는 보이고 있는 게임 종류를 나타냄
 async function gameMenuToggle(interaction, type) {
     try {
+
+        // 관리자 메뉴 초기화 ex) 메뉴 보이기 창에서 선택하세요! 로 바뀜
+        menuSelectionResetter(interaction);
 
         const targetGuildId = interaction.guildId;
 

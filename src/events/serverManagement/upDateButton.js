@@ -20,7 +20,10 @@ function upDateMessage() {
 async function deleteMessages(channel) {
     try {
         const messages = await channel.messages.fetch({ limit: 10 });
-        await channel.bulkDelete(messages);
+        // await channel.bulkDelete(messages);
+        messages.forEach(message => {
+            message.delete().catch(error => console.error(`deleteMessages() 메시지 삭제 중 오류 발생: ${error}`));
+        });
     } catch (error) {
         console.error(`메시지 삭제 중 오류 발생: ${error}`);
     };

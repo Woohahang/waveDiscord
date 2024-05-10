@@ -14,11 +14,11 @@ function generateOptions(userData) {
         });
     }
 
-    for (let i = 0; i < userData.riotGames.length; i++) {
+    for (let i = 0; i < userData.loL.length; i++) {
         options.push({
-            value: 'riotGames' + i,
-            label: userData.riotGames[i],
-            description: '라이엇 게임즈'
+            value: 'loL' + i,
+            label: userData.loL[i],
+            description: '리그 오브 레전드'
         });
     }
 
