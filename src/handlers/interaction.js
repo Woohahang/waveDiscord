@@ -16,19 +16,19 @@ async function handleinteraction(interaction) {
         if (!checkInteractionAdmin(interaction)) return; // 봇이 관리자 권한을 받았는지 체크
         const customId = interaction.customId;
 
-        let value;
+        let values;
         if (interaction.values) {
-            value = interaction.values[0];
+            values = interaction.values;
         };
 
         if (interaction.isButton()) {
             handleButtonInteraction(interaction, customId);
 
         } else if (interaction.isModalSubmit()) {
-            handleSubmitModal(interaction, customId);
+            handleSubmitModal(interaction, customId, values);
 
         } else if (interaction.isStringSelectMenu()) {
-            await handleStringSelectMenu(interaction, customId, value);
+            await handleStringSelectMenu(interaction, customId, values);
 
         } else if (interaction.isChatInputCommand()) {
             await handleChatInputCommand(interaction);
@@ -81,7 +81,7 @@ async function handleButtonInteraction(interaction, customId) {
     };
 };
 
-async function handleSubmitModal(interaction, customId) {
+async function handleSubmitModal(interaction, customId, values) {
     const customIdParts = customId.split('-');
     const lastPart = customIdParts[customIdParts.length - 1];
 
@@ -93,12 +93,16 @@ async function handleSubmitModal(interaction, customId) {
             console.log('선택 완료');
             break;
 
+        case 'teamNumberModal':
+            excludeMembers(interaction, values);
+
     };
 };
 
 const { teamShufflerHandler } = require('../events/multitools/teamShuffler/teamShufflerHandler');
+const { showTeamNumberModal } = require('../events/multitools/teamShuffler/showTeamNumberModal');
 
-async function handleStringSelectMenu(interaction, customId, value) {
+async function handleStringSelectMenu(interaction, customId, values) {
 
     switch (customId) {
         case 'gameMenu': // 닉네임 등록 모달 메뉴 생성
@@ -111,11 +115,11 @@ async function handleStringSelectMenu(interaction, customId, value) {
 
         case 'adminMenuId': // 관리자 게임 메뉴
             if (checkAdminRole(interaction)) {
-                if (value === 'changeOrderValue') {
+                if (values[0] === 'changeOrderValue') {
                     interaction.reply({ content: '개발 단계입니다.', ephemeral: true });
 
                 }
-                else { gameMenuToggle(interaction, value); };
+                else { gameMenuToggle(interaction, values[0]); };
             } else {
                 // 권한이 없을 경우 사용자에게 알림
                 interaction.reply({ content: '관리자 메뉴에 접근할 권한이 없습니다.', ephemeral: true });
@@ -130,19 +134,25 @@ async function handleStringSelectMenu(interaction, customId, value) {
             toggleMenuHandler(interaction, 'hideMenu');
             break;
 
-        // 멀티 툴
+        /* 멀티 툴 */
         case 'multitoolsMenu': // 몇팀으로 나눌까요?
-            if (value === 'teamShuffler') {
+            if (values[0] === 'teamShuffler') {
                 return teamShuffler(interaction);
             }
             break;
 
-        case 'teamShufflerMenu': // 제외할 인원을 선택해주세요.
-            excludeMembers(interaction);
+        /* 팀 섞기 */
+        case 'teamShufflerMenu':
+            if (values[0] === '0_') { // 몇 팀으로 나누나요?
+                showTeamNumberModal(interaction, values);
+                console.log('직접 입력'); // 몇 팀으로 나눌지 직접 입력 하겠다.
+            } else {
+                excludeMembers(interaction, values); // 두 개의 팀, 세 개의 팀 으로 나눈다.
+            }
             break;
 
         case 'excludeMembers': // 몇 팀인지 + 제외 인원 받고 최종적으로 처리하기
-            teamShufflerHandler(interaction);
+            teamShufflerHandler(interaction, values);
             break;
 
         default:

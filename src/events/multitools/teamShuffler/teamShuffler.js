@@ -11,15 +11,15 @@ function teamShufflerMenu() {
             new StringSelectMenuOptionBuilder()
                 .setLabel('두 팀으로 나누기')
                 .setDescription('현재 인원에서 두 팀으로 나눌게요')
-                .setValue('divideIntoTwo'),
+                .setValue('2_'),
             new StringSelectMenuOptionBuilder()
                 .setLabel('세 팀으로 나누기')
                 .setDescription('현재 인원에서 세 팀으로 나눌게요')
-                .setValue('divideIntoThree'),
+                .setValue('3_'),
             new StringSelectMenuOptionBuilder()
                 .setLabel('직접 입력하기')
                 .setDescription('메뉴에 없나요? 클릭해주세요.')
-                .setValue('customInput'),
+                .setValue('0_'),
         );
 
     return row = new ActionRowBuilder()

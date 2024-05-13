@@ -36,7 +36,7 @@ async function sendEmbedOnVoiceJoin(newState) {
 
     } catch (error) {
         console.error('sendEmbedOnVoiceJoin 에러 : ' + error);
-    }
+    };
 
 };
 

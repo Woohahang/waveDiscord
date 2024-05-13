@@ -1,3 +1,5 @@
+// moveEmbedOnVoiceChannelChange.js
+
 const { deleteEmbed } = require('../../voiceChannelEmbed/modules/deleteEmbed');
 
 const userSchema = require('../../../mongoDB/userSchema');
@@ -12,7 +14,6 @@ async function moveEmbedOnVoiceChannelChange(oldState, newState) {
     const guildId = newState.guild.id;
 
     await deleteEmbed(oldState, oldState.member);
-    await deleteEmbed(newState, newState.member);
 
     // 유저 닉네임 조회
     const userData = await userSchema.findOne({ userId: newState.id });

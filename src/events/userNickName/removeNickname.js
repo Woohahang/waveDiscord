@@ -6,10 +6,6 @@ async function removeNickname(interaction) {
     const userId = interaction.member.id;
     const selectedOptions = interaction.values.map(value => interaction.message.components[0].components[0].options.find(option => option.value === value));
 
-    // 선택된 옵션의 라벨 출력
-    console.log('선택된 닉네임:');
-    selectedOptions.forEach(option => console.log(option.label));
-
     // 선택된 닉네임을 가진 유저의 스키마 찾기
     const userData = await userSchema.findOne({ userId });
 
@@ -25,8 +21,9 @@ async function removeNickname(interaction) {
     // 변경된 스키마를 저장
     await userData.save();
 
-    await interaction.reply({
+    await interaction.update({
         content: '닉네임 삭제 완료',
+        components: [],
         ephemeral: true
     });
 

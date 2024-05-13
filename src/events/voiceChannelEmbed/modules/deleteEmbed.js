@@ -1,3 +1,5 @@
+// deleteEmbed.js
+
 const { clientId } = require('../../../../../config.json');
 
 async function deleteEmbed(State, member) {

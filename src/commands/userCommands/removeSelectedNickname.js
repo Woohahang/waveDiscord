@@ -3,61 +3,6 @@
 const { SlashCommandBuilder, StringSelectMenuBuilder, ActionRowBuilder } = require('discord.js');
 const userSchema = require('../../mongoDB/userSchema.js');
 
-// function generateOptions(userData) {
-//     const options = [];
-
-//     for (let i = 0; i < userData.steam.length; i++) {
-//         options.push({
-//             value: 'steam' + i,
-//             label: userData.steam[i],
-//             description: '스팀'
-//         });
-//     };
-
-//     for (let i = 0; i < userData.loL.length; i++) {
-//         options.push({
-//             value: 'loL' + i,
-//             label: userData.loL[i],
-//             description: '리그 오브 레전드'
-//         });
-//     }
-
-//     for (let i = 0; i < userData.tfT.length; i++) {
-//         options.push({
-//             value: 'tfT' + i,
-//             label: userData.loL[i],
-//             description: '롤토체스'
-//         });
-//     };
-
-//     for (let i = 0; i < userData.steamBG.length; i++) {
-//         options.push({
-//             value: 'steamBG' + i,
-//             label: userData.steamBG[i],
-//             description: '스팀 배틀 그라운드'
-//         });
-//     };
-
-//     for (let i = 0; i < userData.kakao.length; i++) {
-//         options.push({
-//             value: 'kakao' + i,
-//             label: userData.kakao[i],
-//             description: '카카오 배틀 그라운드'
-//         });
-//     };
-
-//     for (let i = 0; i < userData.overWatchTwo.length; i++) {
-//         options.push({
-//             value: 'overWatchTwo' + i,
-//             label: userData.overWatchTwo[i],
-//             description: '오버워치 2'
-//         });
-//     };
-
-//     return options;
-// };
-
-
 function generateOptions(userData) {
     const options = [];
 
@@ -73,10 +18,7 @@ function generateOptions(userData) {
     // 배열 가지고 오기
     platforms.forEach(platform => {
 
-        // 
         userData[platform.key].forEach((item, index) => {
-            console.log(item);
-            console.log(index);
 
             options.push({
                 value: `${platform.key}${index}`,
@@ -88,7 +30,6 @@ function generateOptions(userData) {
 
     return options;
 };
-
 
 module.exports = {
     data: new SlashCommandBuilder()

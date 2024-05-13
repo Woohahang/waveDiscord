@@ -5,6 +5,17 @@ function removeSpaces(inputString) {
     return inputString.replace(/ /g, '');
 };
 
+function loLCustom(nickname) {
+    if (nickname && !nickname.includes('#')) {
+        nickname += '#KR1';
+    };
+
+    nickname = nickname.replace(/ /g, '%20');
+    nickname = nickname.replace(/#/g, '-');
+
+    return nickname;
+};
+
 async function createFields(userData, guildSettings) {
     const fields = [];
 
@@ -24,12 +35,8 @@ async function createFields(userData, guildSettings) {
     let loLNickNames = '';
     if (guildSettings.loL && userData.loL.length > 0) {
         userData.loL.forEach(nickname => {
-            if (nickname && !nickname.includes('#')) {
-                nickname += '#KR1';
-            };
-            loLNickNames += `[${nickname}](https://www.op.gg/summoners/kr/${removeSpaces(nickname)})\n`;
+            loLNickNames += `[${nickname}](https://www.op.gg/summoners/kr/${loLCustom(nickname)})\n`;
         });
-
         fields.push({ name: '리그 오브 레전드', value: loLNickNames });
     };
 

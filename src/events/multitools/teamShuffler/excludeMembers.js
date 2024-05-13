@@ -7,7 +7,7 @@ function voiceChannelUsers(voiceChannel) {
 
         const displayName = member.nickname ? member.nickname : member.user.globalName;
         const userName = member.user.username;
-        const userValue = `${displayName}(${userName})`;
+        const userValue = member.id;
         // const userId = member.user.id
 
         users.push({
@@ -19,7 +19,7 @@ function voiceChannelUsers(voiceChannel) {
     return users;
 };
 
-function excludeMembersMenu(users) {
+function excludeMembersMenu(users, values) {
 
     const select = new StringSelectMenuBuilder()
         .setCustomId('excludeMembers')
@@ -32,7 +32,7 @@ function excludeMembersMenu(users) {
         {
             label: '없음',
             description: '모두가 참여합니다.',
-            value: 'a'
+            value: values + 'allParticipants'
         }
     ]);
 
@@ -42,7 +42,7 @@ function excludeMembersMenu(users) {
             {
                 label: user.label,
                 description: '팀 섞기 인원에서 제외할게요',
-                value: user.value
+                value: values + user.value
             }
         ]);
     });
@@ -53,7 +53,12 @@ function excludeMembersMenu(users) {
 };
 
 // 잠수 유저를 선택해주세요 인원에서 제외할게요
-async function excludeMembers(interaction) {
+async function excludeMembers(interaction, values) {
+
+    // 만약 모달 제출이면 값을 values 에 저장
+    if (interaction.isModalSubmit()) {
+        values = [interaction.fields.getTextInputValue('teamNumberModal') + '_'];
+    };
 
     const voiceChannel = interaction.member.voice.channel;
     if (!voiceChannel) {
@@ -63,7 +68,7 @@ async function excludeMembers(interaction) {
     const users = voiceChannelUsers(voiceChannel);
 
     await interaction.update({
-        components: [excludeMembersMenu(users)],
+        components: [excludeMembersMenu(users, values)],
         ephemeral: true
     });
 
