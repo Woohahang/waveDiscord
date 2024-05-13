@@ -19,7 +19,7 @@ async function removeNickname(interaction) {
         const index = parseInt(option.value.replace(/\D+/g, '')); // 배열에서 삭제할 인덱스
         if (userData[optionType] && userData[optionType].length > index) {
             userData[optionType].splice(index, 1);
-        }
+        };
     });
 
     // 변경된 스키마를 저장
@@ -31,6 +31,6 @@ async function removeNickname(interaction) {
     });
 
     console.log('선택된 닉네임들이 성공적으로 삭제되었습니다.');
-}
+};
 
-module.exports = { removeNickname }
+module.exports = { removeNickname };

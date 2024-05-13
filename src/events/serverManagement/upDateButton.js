@@ -71,5 +71,16 @@ async function upDateButton(interaction) {
     });
 }
 
+// 메뉴 수정해서 자동 업데이트
+async function upDateButtonMenu(interaction) {
+    await Promise.all([adminChannelUpDate(interaction), mainChannelUpDate(interaction)]);
 
-module.exports = { upDateButton };
+    // 업데이트 내용 알림
+    await interaction.update({
+        content: '## 업데이트 완료',
+        ephemeral: true,
+        components: [],
+    });
+}
+
+module.exports = { upDateButton, upDateButtonMenu };

@@ -8,6 +8,7 @@ let userSchema = new mongoose.Schema({
 
     steam: [String],
     loL: [String],
+    tfT: [String],
     steamBG: [String],
     kakao: [String],
     overWatchTwo: [String],

@@ -20,6 +20,12 @@ function getModalConfig(selectedValue) {
             label = "✔️ 최대 세개의 닉네임을 등록할 수 있습니다.";
             break;
 
+        case 'tfT':
+            title = "롤토체스";
+            customId = "tfTName";
+            label = "✔️ 최대 세개의 닉네임을 등록할 수 있습니다.";
+            break;
+
         case 'steamBG':
             title = "스팀 배틀 그라운드 닉네임";
             customId = "steamBGName";

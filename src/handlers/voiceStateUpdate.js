@@ -1,42 +1,21 @@
-const { voiceJoin } = require('../events/voiceChannel/voiceJoinMessage');
-const { voiceExit } = require('../events/voiceChannel/voiceExit');
 const { checkVoiceAdmin } = require('../module/checkAdminPermissionOn');
-
-const userMessageId = new Map();
+const { sendEmbedOnVoiceJoin } = require('../events/voiceChannelEmbed/handlers/sendEmbedOnVoiceJoin');
+const { moveEmbedOnVoiceChannelChange } = require('../events/voiceChannelEmbed/handlers/moveEmbedOnVoiceChannelChange');
+const { deleteEmbedOnVoiceLeave } = require('../events/voiceChannelEmbed/handlers/deleteEmbedOnVoiceLeave');
 
 async function handleVoiceStateUpdate(oldState, newState) {
+    if (!checkVoiceAdmin(newState) || !checkVoiceAdmin(oldState)) return; // Wave 봇이 관리자 권한 받았는지 체크
 
+    if (!oldState.channel && newState.channel) { // 입장 조건문
+        await sendEmbedOnVoiceJoin(newState);
 
-    // 사용자가 음성 채널 입장했을 경우
-    if (!oldState.channel && newState.channel) {
-        try {
-            if (!checkVoiceAdmin(newState)) return; // 봇이 관리자 권한을 받았는지 체크
+    } else if (oldState.channel && newState.channel && oldState.channel.id !== newState.channel.id) { // 채널 이동 조건문
+        await moveEmbedOnVoiceChannelChange(oldState, newState);
 
-            const messageId = await voiceJoin(newState); // 등록 된 닉네임 전송 음성 채널에 전송
-            userMessageId.set(newState.id, messageId); // 전송한 메시지 id Map() 저장
-
-        } catch (error) {
-            console.error('voiceJoin error:', error);
-        };
-    }
-
-    // 사용자가 음성 채널에서 나간 경우
-    else if (oldState.channel && !newState.channel) {
-        try {
-            if (!checkVoiceAdmin(oldState)) return; // 봇이 관리자 권한을 받았는지 체크
-
-            const messageId = userMessageId.get(oldState.id);
-
-            if (messageId) {
-                await voiceExit(oldState, messageId); // 전송한 메시지 삭제
-                userMessageId.delete(oldState.id); // 전송한 메시지 id Map() 삭제
-            };
-
-        } catch (error) {
-            console.error('voiceExit error:', error);
-        };
+    } else if (oldState.channel && !newState.channel) { // 퇴장 조건문
+        deleteEmbedOnVoiceLeave(oldState);
     };
 
-}
+};
 
-module.exports = { handleVoiceStateUpdate }
+module.exports = { handleVoiceStateUpdate };

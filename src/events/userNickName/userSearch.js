@@ -24,8 +24,6 @@ async function userSearch(interaction) {
 
 module.exports = { userSearch };
 
-
-
 // if (!interaction.member.voice.channel) {
 //     return await interaction.reply({ content: '음성 채널에 있어야 이 기능을 사용할 수 있습니다.', ephemeral: true });
 // };

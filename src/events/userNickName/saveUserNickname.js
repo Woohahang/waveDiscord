@@ -1,6 +1,7 @@
 const userSchema = require('../../mongoDB/userSchema.js');
 
 async function saveUserNickname(interaction) {
+
     const customId = interaction.customId.split('-')[0]; // "-submitNickname" 부분 제거
     let content = interaction.fields.getTextInputValue(`${customId}-submitNickname`);
 
@@ -12,7 +13,7 @@ async function saveUserNickname(interaction) {
     if (!userData) {
         userData = new userSchema({ userId: interaction.member.id });
         await userData.save();
-    }
+    };
 
     let limitReached = false;
     switch (customId) {
@@ -26,7 +27,15 @@ async function saveUserNickname(interaction) {
             } else {
                 userData.loL.push(content.substr(0, 20));
                 break;
-            }
+            };
+
+        case 'tfTName':
+            if (userData.tfT.length > 2) {
+                limitReached = true;
+            } else {
+                userData.tfT.push(content.substr(0, 20));
+                break;
+            };
 
         case 'steamBGName':
             if (userData.steamBG.length > 2) {
@@ -34,14 +43,14 @@ async function saveUserNickname(interaction) {
             } else {
                 userData.steamBG.push(content.substr(0, 20));
                 break;
-            }
+            };
 
         case 'kaKaoBGName':
             if (userData.kakao.length > 2) {
                 limitReached = true;
             } else {
                 userData.kakao.push(content.substr(0, 20));
-            }
+            };
             break;
 
         case 'overWatchTwoName':
@@ -50,16 +59,16 @@ async function saveUserNickname(interaction) {
             } else {
                 userData.overWatchTwo.push(content.substr(0, 20));
                 break;
-            }
+            };
 
-    }
+    };
 
     if (limitReached) {
         return await interaction.reply({ content: "해당 항목의 닉네임 개수를 초과했습니다.", ephemeral: true });
     } else {
         await userData.save();
         return await interaction.reply({ content: "닉네임 등록 완료 !", ephemeral: true });
-    }
+    };
 };
 
 module.exports = { saveUserNickname };

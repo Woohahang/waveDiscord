@@ -3,15 +3,15 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 function waveButton() {
-    const search = new ButtonBuilder()
-        .setCustomId('userSearchButton')
-        .setLabel('유저 검색')
-        .setStyle(ButtonStyle.Success);
+    const utilityTools = new ButtonBuilder()
+        .setCustomId('multitoolsButton')
+        .setLabel('편의 기능')
+        .setStyle(ButtonStyle.Primary);
 
     const remove = new ButtonBuilder()
         .setCustomId('removeButton')
         .setLabel('닉네임 삭제')
-        .setStyle(ButtonStyle.Primary);
+        .setStyle(ButtonStyle.Success);
 
     const waveLink = new ButtonBuilder()
         .setLabel('Wave 초대하기')

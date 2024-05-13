@@ -10,12 +10,12 @@ function adminMenuLoader() {
         .addOptions(
             new StringSelectMenuOptionBuilder()
                 .setLabel('ShowMenu')
-                .setDescription('메뉴 보이기')
+                .setDescription('서버에서 메뉴 보이기')
                 .setValue('showMenu'),
 
             new StringSelectMenuOptionBuilder()
                 .setLabel('HideMenu')
-                .setDescription('메뉴 숨기기')
+                .setDescription('서버에서 메뉴 숨기기')
                 .setValue('hideMenu'),
 
             new StringSelectMenuOptionBuilder()

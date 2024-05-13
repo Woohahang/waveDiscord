@@ -4,8 +4,6 @@ const guildSettingsSchema = require('../../../mongoDB/guildSettingsSchema');
 const { gameMenuLoader } = require('../../../module/gameMenuLoader');
 const { waveButton } = require('../../../module/adminModules/waveButton');
 
-
-
 async function mainMessage(channel, guildId) {
     await channel.send({
         content: "## :star: Wave 메인 명령어\n## /닉네임등록  /닉네임삭제",
@@ -13,8 +11,8 @@ async function mainMessage(channel, guildId) {
     });
 
     await channel.send({ components: [waveButton()] });
-};
 
+};
 
 async function mainChannelMessage(guild) {
     try {
@@ -32,12 +30,10 @@ async function mainChannelMessage(guild) {
             // 채널이 존재하면 메시지 전송
             if (channel) {
                 mainMessage(channel, guildId);
-
             } else {
                 console.error('채널을 찾을 수 없습니다.');
                 // 기존에 있던 Wave 메인 채널을 찾을 수 없습니다.
-
-            }
+            };
         } else {
             console.error('길드 설정 데이터를 찾을 수 없습니다.');
         }

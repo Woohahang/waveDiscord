@@ -3,7 +3,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
-const { token } = require('../../config.json');
+const { testtoken } = require('../../config.json');
 const connectToDatabase = require('./mongoDB/database.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages,] });
 
@@ -25,32 +25,11 @@ for (const folder of commandFolders) {
             client.commands.set(command.data.name, command);
         } else {
             console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
-        }
-    }
+        };
+    };
 };
 
-// 슬래시 커맨더만 작동한다.
-client.on(Events.InteractionCreate, async interaction => {
-    if (!interaction.isChatInputCommand()) return; // 상호작용이 채팅 입력 명령어에 해당 하는지 체크. -> SlashCommandBuilder 를 체크
-
-    const command = interaction.client.commands.get(interaction.commandName);
-
-    if (!command) { // 상호작용에서 받은 명령어 이름을 사용하여 해당 명령어가 클라이언트의 명령어 콜렉션에 있는지 확인
-        console.error(`${interaction.commandName} 의 일치하는 명령어를 찾을 수 없습니다.`);
-        return; // 못 찾았으니 리턴하라
-    }
-
-    try {
-        await command.execute(interaction); // execute 메서드는 명령어 객체에 속한 메서드로, 사용자가 명령어를 실행했을 때 실행되는 함수입니다. 이 메서드는 명령어의 동작을 정의하고, 해당 동작을 실행합니다.
-    } catch (error) {
-        console.error(error);
-        if (interaction.replied || interaction.deferred) {
-            await interaction.followUp({ content: '이 명령을 실행하는 동안 오류가 발생했습니다!', ephemeral: true });
-        } else {
-            await interaction.reply({ content: '이 명령을 실행하는 동안 오류가 발생했습니다!', ephemeral: true });
-        }
-    }
-});
+// 최종적으로 처리하는 파일의 이름 마지막은 핸들러로 고치기
 
 client.once(Events.ClientReady, readyClient => {
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
@@ -72,4 +51,4 @@ client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
     handleVoiceStateUpdate(oldState, newState);
 });
 
-client.login(token);
+client.login(testtoken);

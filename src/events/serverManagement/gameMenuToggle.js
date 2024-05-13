@@ -10,6 +10,7 @@ const guildSettingsSchema = require('../../mongoDB/guildSettingsSchema.js');
 const gameLabels = {
     steam: 'Steam',
     loL: 'League of Legends',
+    tfT: 'Teamfight Tactics',
     steamBG: 'Steam Battle Grounds',
     kakaoBG: 'KaKao Battle Grounds',
     overWatchTwo: 'OVERWATCH 2'
@@ -18,6 +19,7 @@ const gameLabels = {
 const description = {
     steam: '스팀',
     loL: '리그 오브 레전드',
+    tfT: '롤토체스',
     steamBG: '스팀 배틀 그라운드',
     kakaoBG: '카카오 배틀 그라운드',
     overWatchTwo: '오버워치 2'
@@ -86,7 +88,7 @@ async function gameMenuToggle(interaction, type) {
             content: '오류가 발생했습니다. 다시 시도해주세요.',
             ephemeral: true
         });
-    }
-}
+    };
+};
 
 module.exports = { gameMenuToggle };

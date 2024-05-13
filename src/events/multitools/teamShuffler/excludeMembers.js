@@ -1,0 +1,72 @@
+const { StringSelectMenuBuilder, ActionRowBuilder } = require('discord.js');
+
+function voiceChannelUsers(voiceChannel) {
+    let users = [];
+
+    voiceChannel.members.forEach(member => {
+
+        const displayName = member.nickname ? member.nickname : member.user.globalName;
+        const userName = member.user.username;
+        const userValue = `${displayName}(${userName})`;
+        // const userId = member.user.id
+
+        users.push({
+            label: displayName + `(${userName})`, // 라벨 길이 제한
+            value: userValue // 상호작용을 줄이기 위해 필요한 정보를 value 에 담음
+        });
+    });
+
+    return users;
+};
+
+function excludeMembersMenu(users) {
+
+    const select = new StringSelectMenuBuilder()
+        .setCustomId('excludeMembers')
+        .setPlaceholder('게임을 하지 않는 인원이 있나요 ?')
+        .setMinValues(1) // 최소 1개의 옵션을 선택해야 함
+        .setMaxValues(users.length + 1); // '없음' 옵션을 포함한 최대 선택 가능 수 설정
+
+    // '없음' 옵션을 추가합니다. 이 옵션은 항상 단 한 번만 추가되어야 합니다.
+    select.addOptions([
+        {
+            label: '없음',
+            description: '모두가 참여합니다.',
+            value: 'a'
+        }
+    ]);
+
+    // 사용자 목록을 바탕으로 다른 옵션들을 반복적으로 추가합니다.
+    users.forEach(user => {
+        select.addOptions([
+            {
+                label: user.label,
+                description: '팀 섞기 인원에서 제외할게요',
+                value: user.value
+            }
+        ]);
+    });
+
+    return row = new ActionRowBuilder()
+        .addComponents(select);
+
+};
+
+// 잠수 유저를 선택해주세요 인원에서 제외할게요
+async function excludeMembers(interaction) {
+
+    const voiceChannel = interaction.member.voice.channel;
+    if (!voiceChannel) {
+        return await interaction.update('음성 채널에 있어야 이 기능을 사용할 수 있습니다.');
+    };
+
+    const users = voiceChannelUsers(voiceChannel);
+
+    await interaction.update({
+        components: [excludeMembersMenu(users)],
+        ephemeral: true
+    });
+
+};
+
+module.exports = { excludeMembers };

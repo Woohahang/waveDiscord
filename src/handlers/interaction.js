@@ -11,8 +11,6 @@ const { upDateButton } = require('../events/serverManagement/upDateButton');
 
 const { checkAdminRole } = require('../module/checkAdminRole');
 
-// const { userSearch } = require('../events/userNickName/userSearch');
-
 async function handleinteraction(interaction) {
     try {
         if (!checkInteractionAdmin(interaction)) return; // 봇이 관리자 권한을 받았는지 체크
@@ -31,6 +29,9 @@ async function handleinteraction(interaction) {
 
         } else if (interaction.isStringSelectMenu()) {
             await handleStringSelectMenu(interaction, customId, value);
+
+        } else if (interaction.isChatInputCommand()) {
+            await handleChatInputCommand(interaction);
         };
 
     } catch (error) {
@@ -38,6 +39,27 @@ async function handleinteraction(interaction) {
         await interaction.reply({ content: '상호 작용 처리 중 오류가 발생했습니다!', ephemeral: true });
     };
 };
+
+async function handleChatInputCommand(interaction) {
+    const command = interaction.client.commands.get(interaction.commandName);
+    if (!command) { return console.log('commandName 을 찾을 수 없습니다.') };
+
+    try {
+        await command.execute(interaction);
+    } catch (error) {
+        console.error(error);
+        if (interaction.replied || interaction.deferred) {
+            await interaction.followUp({ content: '이 명령을 실행하는 동안 오류가 발생했습니다!', ephemeral: true });
+        } else {
+            await interaction.reply({ content: '이 명령을 실행하는 동안 오류가 발생했습니다!', ephemeral: true });
+        };
+    };
+};
+
+
+const { multitools } = require('../events/multitools/multitools');
+const { teamShuffler } = require('../events/multitools/teamShuffler/teamShuffler');
+const { excludeMembers } = require('../events/multitools/teamShuffler/excludeMembers');
 
 async function handleButtonInteraction(interaction, customId) {
     switch (customId) {
@@ -50,10 +72,9 @@ async function handleButtonInteraction(interaction, customId) {
             await command.execute(interaction);
             break;
 
-        // discord.js v13 부터 사용 안 하는 것 같다. 유저빌더
-        // case 'userSearchButton':
-        //     await userSearch(interaction);
-        //     break;
+        case 'multitoolsButton':
+            multitools(interaction);
+            break;
 
         default:
             console.log('isButton 에서 알 수 없는 customId : ' + customId);
@@ -73,10 +94,12 @@ async function handleSubmitModal(interaction, customId) {
             break;
 
     };
-
 };
 
+const { teamShufflerHandler } = require('../events/multitools/teamShuffler/teamShufflerHandler');
+
 async function handleStringSelectMenu(interaction, customId, value) {
+
     switch (customId) {
         case 'gameMenu': // 닉네임 등록 모달 메뉴 생성
             await createNicknameModal(interaction);
@@ -90,6 +113,7 @@ async function handleStringSelectMenu(interaction, customId, value) {
             if (checkAdminRole(interaction)) {
                 if (value === 'changeOrderValue') {
                     interaction.reply({ content: '개발 단계입니다.', ephemeral: true });
+
                 }
                 else { gameMenuToggle(interaction, value); };
             } else {
@@ -104,6 +128,21 @@ async function handleStringSelectMenu(interaction, customId, value) {
 
         case 'hideMenuHandler': // 메뉴 보이기 -> DB 저장
             toggleMenuHandler(interaction, 'hideMenu');
+            break;
+
+        // 멀티 툴
+        case 'multitoolsMenu': // 몇팀으로 나눌까요?
+            if (value === 'teamShuffler') {
+                return teamShuffler(interaction);
+            }
+            break;
+
+        case 'teamShufflerMenu': // 제외할 인원을 선택해주세요.
+            excludeMembers(interaction);
+            break;
+
+        case 'excludeMembers': // 몇 팀인지 + 제외 인원 받고 최종적으로 처리하기
+            teamShufflerHandler(interaction);
             break;
 
         default:

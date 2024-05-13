@@ -8,6 +8,7 @@ let guildSettingsSchema = new mongoose.Schema({
 
     steam: { type: Boolean, default: true },
     loL: { type: Boolean, default: true },
+    tfT: { type: Boolean, default: true },
     steamBG: { type: Boolean, default: true },
     kakaoBG: { type: Boolean, default: true },
     overWatchTwo: { type: Boolean, default: true },
