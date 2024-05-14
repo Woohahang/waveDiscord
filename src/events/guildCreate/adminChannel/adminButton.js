@@ -1,11 +1,11 @@
-// src/module/adminModules/adminButtion.js
+// adminButtion.js
 
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 function adminButton() {
 
     const upDate = new ButtonBuilder()
-        .setCustomId('upDate')
+        .setCustomId('upDateButton')
         .setLabel('업데이트')
         .setStyle(ButtonStyle.Primary)
 

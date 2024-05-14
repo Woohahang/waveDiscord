@@ -18,10 +18,10 @@ function adminMenuLoader() {
                 .setDescription('서버에서 메뉴 숨기기')
                 .setValue('hideMenu'),
 
-            new StringSelectMenuOptionBuilder()
-                .setLabel('ChangeOrder')
-                .setDescription('메뉴 순서 바꾸기')
-                .setValue('changeOrderValue'),
+            // new StringSelectMenuOptionBuilder()
+            //     .setLabel('ChangeOrder')
+            //     .setDescription('메뉴 순서 바꾸기')
+            //     .setValue('changeOrderValue'),
         );
 
     let row = new ActionRowBuilder()

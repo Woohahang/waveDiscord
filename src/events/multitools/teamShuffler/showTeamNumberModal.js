@@ -11,7 +11,7 @@ async function showTeamNumberModal(interaction, values) {
 
     const teamNumberInput = new TextInputBuilder()
         .setCustomId('teamNumberModal')
-        .setLabel('몇 팀으로 구성할까요?')
+        .setLabel('몇 팀으로 구성할까요? (최대 : 15)')
         .setStyle(TextInputStyle.Short)
         .setMinLength(1)
         .setMaxLength(2)

@@ -60,10 +60,11 @@ async function handleChatInputCommand(interaction) {
 const { multitools } = require('../events/multitools/multitools');
 const { teamShuffler } = require('../events/multitools/teamShuffler/teamShuffler');
 const { excludeMembers } = require('../events/multitools/teamShuffler/excludeMembers');
+const { teamEmbedDelete } = require('../events/multitools/teamShuffler/teamEmbedDeleteHandler');
 
 async function handleButtonInteraction(interaction, customId) {
     switch (customId) {
-        case 'upDate':
+        case 'upDateButton':
             upDateButton(interaction);
             break;
 
@@ -74,6 +75,10 @@ async function handleButtonInteraction(interaction, customId) {
 
         case 'multitoolsButton':
             multitools(interaction);
+            break;
+
+        case 'teamEmbedDeleteButton':
+            teamEmbedDelete(interaction);
             break;
 
         default:
@@ -115,11 +120,13 @@ async function handleStringSelectMenu(interaction, customId, values) {
 
         case 'adminMenuId': // 관리자 게임 메뉴
             if (checkAdminRole(interaction)) {
-                if (values[0] === 'changeOrderValue') {
-                    interaction.reply({ content: '개발 단계입니다.', ephemeral: true });
+                // if (values[0] === 'changeOrderValue') {
+                //     interaction.reply({ content: '개발 단계입니다.', ephemeral: true });
 
-                }
-                else { gameMenuToggle(interaction, values[0]); };
+                // }
+                // else {
+                gameMenuToggle(interaction, values[0]);
+                // };
             } else {
                 // 권한이 없을 경우 사용자에게 알림
                 interaction.reply({ content: '관리자 메뉴에 접근할 권한이 없습니다.', ephemeral: true });

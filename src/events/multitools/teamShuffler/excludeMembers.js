@@ -19,6 +19,12 @@ function voiceChannelUsers(voiceChannel) {
     return users;
 };
 
+// 숫자만 작성할 수 있습니다.
+function checkIfNumeric(values) {
+    const value = values[0].replace(/_/g, '');
+    return isNaN(value);
+}
+
 function excludeMembersMenu(users, values) {
 
     const select = new StringSelectMenuBuilder()
@@ -57,7 +63,16 @@ async function excludeMembers(interaction, values) {
 
     // 만약 모달 제출이면 값을 values 에 저장
     if (interaction.isModalSubmit()) {
+
         values = [interaction.fields.getTextInputValue('teamNumberModal') + '_'];
+
+        if (checkIfNumeric(values)) {
+            return interaction.update({
+                content: '숫자만 입력할 수 있습니다.',
+                components: [],
+                ephemeral: true
+            })
+        };
     };
 
     const voiceChannel = interaction.member.voice.channel;

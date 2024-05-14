@@ -1,6 +1,0 @@
-
-let filde = '★';
-
-let stear = '☆';
-
-
