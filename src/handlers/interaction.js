@@ -22,7 +22,7 @@ async function handleinteraction(interaction) {
         };
 
         if (interaction.isButton()) {
-            handleButtonInteraction(interaction, customId);
+            handleButtonInteraction(interaction, customId, values);
 
         } else if (interaction.isModalSubmit()) {
             handleSubmitModal(interaction, customId, values);
@@ -61,9 +61,15 @@ const { multitools } = require('../events/multitools/multitools');
 const { teamShuffler } = require('../events/multitools/teamShuffler/teamShuffler');
 const { excludeMembers } = require('../events/multitools/teamShuffler/excludeMembers');
 const { teamEmbedDelete } = require('../events/multitools/teamShuffler/teamEmbedDeleteHandler');
+// const { teamReshuffleButton } = require('../events/multitools/teamShuffler/teamReshuffle');
 
-async function handleButtonInteraction(interaction, customId) {
+const { teamShufflerHandler } = require('../events/multitools/teamShuffler/teamShufflerHandler');
+const { showTeamNumberModal } = require('../events/multitools/teamShuffler/showTeamNumberModal');
+
+async function handleButtonInteraction(interaction, customId, values) {
     switch (customId) {
+
+        case 'upDate':
         case 'upDateButton':
             upDateButton(interaction);
             break;
@@ -79,6 +85,15 @@ async function handleButtonInteraction(interaction, customId) {
 
         case 'teamEmbedDeleteButton':
             teamEmbedDelete(interaction);
+            break;
+
+        // 다시 섞기
+        case 'teamReshuffleButton':
+
+            // 커스텀 아이디에 벨류를 넣는다면 ..? _ 뒤에 붙이면 되잖아 // 괜찮은데? 그전에 리팩토링 ㄱㄱ
+            // 이건 맵 써야겠네 커스텀 아이디 문자열 제한 100자
+            // 맵 써도 되는 이유 : 이전과 달리 사용자의 동작에 영향을 받지 않음 걍 버튼에 띡 넣어주고 딱 삭제하면 끝
+
             break;
 
         default:
@@ -104,8 +119,6 @@ async function handleSubmitModal(interaction, customId, values) {
     };
 };
 
-const { teamShufflerHandler } = require('../events/multitools/teamShuffler/teamShufflerHandler');
-const { showTeamNumberModal } = require('../events/multitools/teamShuffler/showTeamNumberModal');
 
 async function handleStringSelectMenu(interaction, customId, values) {
 

@@ -4,14 +4,20 @@ const { ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 
 function teamEmbedDeleteButton(isDisabled = true) {
 
-    const confirm = new ButtonBuilder()
-        .setCustomId('teamEmbedDeleteButton')
-        .setLabel('삭제')
+    const teamReshuffleButton = new ButtonBuilder()
+        .setCustomId('teamReshuffleButton')
+        .setLabel('다시 섞기')
         .setStyle(ButtonStyle.Success)
         .setDisabled(isDisabled);
 
+    const EmbedDeleteButton = new ButtonBuilder()
+        .setCustomId('teamEmbedDeleteButton')
+        .setLabel('삭제')
+        .setStyle(ButtonStyle.Primary)
+        .setDisabled(isDisabled);
+
     const row = new ActionRowBuilder()
-        .addComponents(confirm);
+        .addComponents(EmbedDeleteButton);
 
     return row;
 

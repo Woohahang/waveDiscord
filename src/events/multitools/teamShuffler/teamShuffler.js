@@ -2,7 +2,7 @@
 
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
 
-function teamShufflerMenu() {
+async function teamShuffler(interaction) {
 
     const multitoolsMenu = new StringSelectMenuBuilder()
         .setCustomId('teamShufflerMenu')
@@ -22,15 +22,11 @@ function teamShufflerMenu() {
                 .setValue('0_'),
         );
 
-    return row = new ActionRowBuilder()
+    const row = new ActionRowBuilder()
         .addComponents(multitoolsMenu);
 
-};
-
-async function teamShuffler(interaction) {
-
     await interaction.update({
-        components: [teamShufflerMenu()],
+        components: [row],
         ephemeral: true
     });
 

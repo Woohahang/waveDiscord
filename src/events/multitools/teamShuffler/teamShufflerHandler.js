@@ -11,6 +11,7 @@ const TEAM_EMOJIS = ['🔵', '🔴', '🟢', '🟡', '🟣', '🟠', '⚪'];
 // values 안에는 ['팀 수_유저id', '팀 수_유저id', '팀 수_유저id']; 이렇게 담겨 있다.
 async function teamShufflerHandler(interaction, values) {
     try {
+
         let teamCount = 0;
         const excludedUserIds = [];
 
@@ -92,7 +93,6 @@ async function teamShufflerHandler(interaction, values) {
 
             const teamEmoji = TEAM_EMOJIS[index % TEAM_EMOJIS.length];
 
-
             if ((index % 2) === 0) {
                 embed.addFields({ name: `${teamEmoji}  ${index + 1}팀`, value: team.join('\n'), inline: true });
                 embed.addFields({ name: ' ', value: ' ', inline: true });
@@ -106,13 +106,6 @@ async function teamShufflerHandler(interaction, values) {
         embed.addFields({ name: '\u200B', value: '\u200B' });
         embed.setFooter({ text: '행운을 빕니다 !', iconURL: interaction.member.displayAvatarURL() });
 
-        const dddd = embed;
-        // dddd 을 넣고 셋타임 아웃으로 수정하면 내용 변경 안 될듯? 아닌가?
-
-
-        // 같은 옵션으로 재구성 버튼, 삭제 버튼 어떰?
-
-
         const sentMessage = await voiceChannel.send({
             embeds: [embed],
             components: [teamEmbedDeleteButton()]
@@ -123,7 +116,6 @@ async function teamShufflerHandler(interaction, values) {
             components: [],
             ephemeral: true
         });
-
 
         // 5초 뒤 삭제 버튼 활성화
         setTimeout(async () => {
