@@ -19,7 +19,7 @@ function waveButton() {
         .setStyle(ButtonStyle.Link);
 
     const row = new ActionRowBuilder()
-        .addComponents(remove, waveLink);
+        .addComponents(utilityTools, remove, waveLink);
 
     return row;
 

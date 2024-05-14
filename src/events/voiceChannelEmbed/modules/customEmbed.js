@@ -6,10 +6,6 @@ function removeSpaces(inputString) {
 };
 
 function loLCustom(nickname) {
-    if (nickname && !nickname.includes('#')) {
-        nickname += '#KR1';
-    };
-
     nickname = nickname.replace(/ /g, '%20');
     nickname = nickname.replace(/#/g, '-');
 
@@ -35,6 +31,9 @@ async function createFields(userData, guildSettings) {
     let loLNickNames = '';
     if (guildSettings.loL && userData.loL.length > 0) {
         userData.loL.forEach(nickname => {
+            if (nickname && !nickname.includes('#')) {
+                nickname += '#KR1';
+            };
             loLNickNames += `[${nickname}](https://www.op.gg/summoners/kr/${loLCustom(nickname)})\n`;
         });
         fields.push({ name: '리그 오브 레전드', value: loLNickNames });
@@ -47,7 +46,7 @@ async function createFields(userData, guildSettings) {
             if (nickname && !nickname.includes('#')) {
                 nickname += '#KR1';
             };
-            tfTNickNames += `[${nickname}](https://lolchess.gg/profile/kr/${removeSpaces(nickname)})\n`;
+            tfTNickNames += `[${nickname}](https://lolchess.gg/profile/kr/${loLCustom(nickname)})\n`;
         });
 
         fields.push({ name: '롤토체스', value: tfTNickNames });
