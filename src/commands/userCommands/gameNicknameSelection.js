@@ -10,19 +10,17 @@ module.exports = {
 
     async execute(interaction) {
         try {
+            const guildId = interaction.member.guild.id;
 
             // 게임 리스트를 불러옵니다.
             await interaction.reply({
                 content: '닉네임 등록할 게임을 선택해주세요 !',
-                components: [await gameMenuLoader(interaction)],
+                components: [await gameMenuLoader(guildId)],
                 ephemeral: true
             });
 
         } catch (error) {
             console.error("메뉴 생성 중 오류 발생:", error.message);
-        }
+        };
     },
 };
-
-
-// 지울까 고민중 커맨드 그냥 초기화 정도 하나만?

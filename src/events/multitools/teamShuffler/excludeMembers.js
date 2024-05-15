@@ -1,4 +1,5 @@
 const { StringSelectMenuBuilder, ActionRowBuilder } = require('discord.js');
+const { verifyVoiceChannel } = require('./module/verifyVoiceChannel');
 
 function voiceChannelUsers(voiceChannel) {
     let users = [];
@@ -75,10 +76,8 @@ async function excludeMembers(interaction, values) {
         };
     };
 
-    const voiceChannel = interaction.member.voice.channel;
-    if (!voiceChannel) {
-        return await interaction.update('음성 채널에 있어야 이 기능을 사용할 수 있습니다.');
-    };
+    // 음성 채널 체크와 음성 채널 객체
+    const voiceChannel = verifyVoiceChannel(interaction);
 
     const users = voiceChannelUsers(voiceChannel);
 
@@ -86,7 +85,6 @@ async function excludeMembers(interaction, values) {
         components: [excludeMembersMenu(users, values)],
         ephemeral: true
     });
-
 };
 
 module.exports = { excludeMembers };

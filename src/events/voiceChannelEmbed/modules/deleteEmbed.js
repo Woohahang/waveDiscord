@@ -13,19 +13,21 @@ async function deleteEmbed(State, member) {
     // 내 봇(wave) 가 보낸 임베드
     const waveEmbeds = messages.filter(message => message.author.id === clientId && message.embeds.length > 0);
 
-    waveEmbeds.forEach(message => {
-        message.embeds.forEach(embed => {
-            if (embed.author?.url.includes(member.user.avatar) && embed.author?.name == displayName) {
-                if (message) message.delete().catch(error => console.error('메시지를 삭제하지 못 했습니다.'));
-            };
+    try {
+        waveEmbeds.forEach(message => {
+            message.embeds.forEach(embed => {
+                if (embed.author && embed.author.url && embed.author.url.includes(member.user.avatar) && embed.author.name == displayName) {
+                    if (message) message.delete().catch(error => console.error('메시지를 삭제하지 못 했습니다.'));
+                };
+            });
         });
-    });
+    } catch (error) {
+        console.error('deleteEmbed.js 에러 : ' + error);
+    };
 
 };
 
 module.exports = { deleteEmbed };
-
-
 
 /* .includes() 란,
 embed.author?.url.includes(member.user.avatar)

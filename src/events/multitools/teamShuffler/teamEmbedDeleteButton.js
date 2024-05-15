@@ -17,7 +17,7 @@ function teamEmbedDeleteButton(isDisabled = true) {
         .setDisabled(isDisabled);
 
     const row = new ActionRowBuilder()
-        .addComponents(EmbedDeleteButton);
+        .addComponents(teamReshuffleButton, EmbedDeleteButton);
 
     return row;
 
