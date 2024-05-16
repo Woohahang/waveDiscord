@@ -1,7 +1,7 @@
 // adminChannelMessage.js
 
 const guildSettingsSchema = require('../../../mongoDB/guildSettingsSchema');
-const { adminMenuLoader } = require('../../../module/adminModules/adminMenuLoader');
+const { adminMenuLoader } = require('./adminMenuLoader');
 const { adminButton } = require('./adminButton');
 
 async function adminMessage(channel) {

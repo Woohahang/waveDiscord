@@ -1,7 +1,7 @@
 // /saveNickname.js
 
 const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, Component } = require('discord.js');
-const { menuSelectionResetter } = require('../module/common/menuSelectionResetter');
+const { menuSelectionResetter } = require('../../module/common/menuSelectionResetter');
 
 function getModalConfig(selectedValue) {
 

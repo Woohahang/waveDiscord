@@ -29,7 +29,7 @@ async function teamShufflerHandler(interaction, values) {
         }, 5000);
 
         await interaction.update({
-            content: '## :star: 팀 구성 완료 ! ' + `\n > ## <#${voiceChannel.id}> 채널의 채팅 확인해주세요 !`,
+            content: '## :star: 팀 구성 완료 ! ' + `\n > <#${voiceChannel.id}> 의 채팅을 확인해주세요 !`,
             components: [],
             ephemeral: true
         });

@@ -10,15 +10,12 @@ const UserSettings = require('../../../services/UserSettings');
 // 채널 입장시 임베드 전송.js // 입장 하면 이전 중복 메시지 삭제, 이후 메시지 전송
 async function sendEmbedOnVoiceJoin(newState) {
     try {
-
         const member = newState.member;
-        const userId = newState.id;
         const channel = newState.channel;
         const guildId = newState.guild.id;
 
-
         // 유저 닉네임 조회
-        const userSettingsInstance = new UserSettings(userId);
+        const userSettingsInstance = new UserSettings(member.user.id);
         const userNicknames = await userSettingsInstance.load();
 
         // 길드 셋팅 조회

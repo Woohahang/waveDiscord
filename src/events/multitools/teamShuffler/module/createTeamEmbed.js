@@ -81,19 +81,6 @@ function createTeamEmbed(teams, EMBED_COLOR) {
     return embed;
 };
 
-// async function verifyVoiceChannel(interaction) {
-//     let voiceChannel = interaction.member.voice.channel;
-
-//     if (!voiceChannel) {
-//         await interaction.update({ content: '음성 채널에 있어야 이 기능을 사용할 수 있습니다.', components: [], ephemeral: true });
-//         return;
-//     };
-
-//     return voiceChannel;
-// };
-
-// const { verifyVoiceChannel } = require('./verifyVoiceChannel');
-
 
 const { EmbedBuilder } = require('discord.js');
 const { shuffleArray } = require('../../../../module/common/shuffleArray');
@@ -105,33 +92,37 @@ const TEAM_EMOJIS = ['🔵', '🔴', '🟢', '🟡', '🟣', '🟠', '⚪'];
 
 
 async function generateTeamEmbed(interaction, voiceChannel, values) {
+    try {
 
-    // 음성 채널 입장 되어 있는지 체크
-    // let voiceChannel = await verifyVoiceChannel(interaction);
+        // 음성 채널 입장 되어 있는지 체크
+        // let voiceChannel = await verifyVoiceChannel(interaction);
 
-    // values 안에 팀과 유저 아이디 분리
-    let { teamCount, excludedUserIds } = parseValue(values);
+        // values 안에 팀과 유저 아이디 분리
+        let { teamCount, excludedUserIds } = parseValue(values);
 
-    // 채널 인원들 배열에 [ 현우(hyeonWoo_), ... ] 담기
-    const members = voiceChannel.members;
-    const memberInfoList = channelMembersNameList(members, excludedUserIds);
+        // 채널 인원들 배열에 [ 현우(hyeonWoo_), ... ] 담기
+        const members = voiceChannel.members;
+        const memberInfoList = channelMembersNameList(members, excludedUserIds);
 
-    // 모든 인원 제외시 알림 전송
-    await checkAndNotifyEmptyMembers(interaction, memberInfoList);
+        // 모든 인원 제외시 알림 전송
+        await checkAndNotifyEmptyMembers(interaction, memberInfoList);
 
-    // 팀 수를 조정한다.
-    teamCount = adjustTeamCount(teamCount, memberInfoList, MAX_TEAM_COUNT);
+        // 팀 수를 조정한다.
+        teamCount = adjustTeamCount(teamCount, memberInfoList, MAX_TEAM_COUNT);
 
-    // 순서 랜덤으로 섞기
-    shuffleArray(memberInfoList);
+        // 순서 랜덤으로 섞기
+        shuffleArray(memberInfoList);
 
-    // 팀 나누기
-    let teams = divideIntoTeams(memberInfoList, teamCount);
+        // 팀 나누기
+        let teams = divideIntoTeams(memberInfoList, teamCount);
 
-    // 임베드 구성
-    const embed = createTeamEmbed(teams, EMBED_COLOR);
+        // 임베드 구성
+        const embed = createTeamEmbed(teams, EMBED_COLOR);
 
-    return embed;
+        return embed;
+    } catch (error) {
+        console.error('generateTeamEmbed 에러 : ' + error);
+    };
 
 };
 

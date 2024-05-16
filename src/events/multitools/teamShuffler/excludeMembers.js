@@ -2,22 +2,32 @@ const { StringSelectMenuBuilder, ActionRowBuilder } = require('discord.js');
 const { verifyVoiceChannel } = require('./module/verifyVoiceChannel');
 
 function voiceChannelUsers(voiceChannel) {
-    let users = [];
+    try {
 
-    voiceChannel.members.forEach(member => {
+        // let voiceChanneltest = interaction.member.voice.channel;
 
-        const displayName = member.nickname ? member.nickname : member.user.globalName;
-        const userName = member.user.username;
-        const userValue = member.id;
-        // const userId = member.user.id
+        // console.log(voiceChanneltest.members);
 
-        users.push({
-            label: displayName + `(${userName})`, // 라벨 길이 제한
-            value: userValue // 상호작용을 줄이기 위해 필요한 정보를 value 에 담음
+        let users = [];
+
+        voiceChannel.members.forEach(member => {
+
+            const displayName = member.nickname ? member.nickname : member.user.globalName;
+            const userName = member.user.username;
+            const userValue = member.id;
+
+            users.push({
+                label: displayName + `(${userName})`, // 라벨 길이 제한
+                value: userValue // 상호작용을 줄이기 위해 필요한 정보를 value 에 담음
+            });
         });
-    });
 
-    return users;
+        return users;
+    } catch (error) {
+        console.error('voiceChannelUsers 에러 : ' + error);
+        throw error;
+    };
+
 };
 
 // 숫자만 작성할 수 있습니다.
@@ -61,30 +71,36 @@ function excludeMembersMenu(users, values) {
 
 // 잠수 유저를 선택해주세요 인원에서 제외할게요
 async function excludeMembers(interaction, values) {
+    try {
 
-    // 만약 모달 제출이면 값을 values 에 저장
-    if (interaction.isModalSubmit()) {
+        // 만약 모달 제출이면 값을 values 에 저장
+        if (interaction.isModalSubmit()) {
 
-        values = [interaction.fields.getTextInputValue('teamNumberModal') + '_'];
+            values = [interaction.fields.getTextInputValue('teamNumberModal') + '_'];
 
-        if (checkIfNumeric(values)) {
-            return interaction.update({
-                content: '숫자만 입력할 수 있습니다.',
-                components: [],
-                ephemeral: true
-            })
+            if (checkIfNumeric(values)) {
+                return interaction.update({
+                    content: '숫자만 입력할 수 있습니다.',
+                    components: [],
+                    ephemeral: true
+                })
+            };
         };
+
+        // 음성 채널 체크와 음성 채널 객체
+        const voiceChannel = await verifyVoiceChannel(interaction);
+
+        const users = voiceChannelUsers(voiceChannel);
+
+        await interaction.update({
+            components: [excludeMembersMenu(users, values)],
+            ephemeral: true
+        });
+
+    } catch (error) {
+        console.error('excludeMembers 에러 : ' + error);
     };
 
-    // 음성 채널 체크와 음성 채널 객체
-    const voiceChannel = verifyVoiceChannel(interaction);
-
-    const users = voiceChannelUsers(voiceChannel);
-
-    await interaction.update({
-        components: [excludeMembersMenu(users, values)],
-        ephemeral: true
-    });
 };
 
 module.exports = { excludeMembers };

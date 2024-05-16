@@ -2,7 +2,7 @@
 
 const { checkInteractionAdmin } = require('../module/checkAdminPermissionOn')
 
-const { createNicknameModal } = require('../modals/createNicknameModal');
+const { createNicknameModal } = require('../events/userNickName/createNicknameModal');
 const { removeNickname } = require('../events/userNickName/removeNickname');
 const { toggleMenuHandler } = require('../events/serverManagement/toggleMenuHandler');
 const { gameMenuToggle } = require('../events/serverManagement/gameMenuToggle');
@@ -134,15 +134,9 @@ async function handleStringSelectMenu(interaction, customId, values) {
 
         case 'adminMenuId': // 관리자 게임 메뉴
             if (checkAdminRole(interaction)) {
-                // if (values[0] === 'changeOrderValue') {
-                //     interaction.reply({ content: '개발 단계입니다.', ephemeral: true });
-
-                // }
-                // else {
                 gameMenuToggle(interaction, values[0]);
-                // };
-            } else {
-                // 권한이 없을 경우 사용자에게 알림
+
+            } else { // 권한이 없을 경우 사용자에게 알림
                 interaction.reply({ content: '관리자 메뉴에 접근할 권한이 없습니다.', ephemeral: true });
             };
             break;

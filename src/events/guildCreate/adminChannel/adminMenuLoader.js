@@ -1,4 +1,4 @@
-// src/module/adminModules/adminMenuLoader.js
+// adminMenuLoader.js
 
 const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
 
