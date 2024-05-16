@@ -17,8 +17,8 @@ async function guildInviteMessage(guild) {
         await owner.send(message);
     } catch (error) {
         console.error('Error sending guild invite message:', error);
-    }
-}
+    };
+};
 
 function createInviteMessage() {
     return `## 반가워요 ! 먼저 Wave 를 초대해주셔서 감사합니다.

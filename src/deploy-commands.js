@@ -19,7 +19,6 @@ for (const folder of commandFolders) {
         const filePath = path.join(commandsPath, file);
         const command = require(filePath);
         if ('data' in command && 'execute' in command) {
-
             commands.push(command.data.toJSON());
         } else {
             console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
@@ -51,8 +50,8 @@ const rest = new REST().setToken(testtoken);
         // And of course, make sure you catch and log any errors!
         console.error(error);
     };
-});
-// 원래 ; 앞에 () 이거 있었는데 지워봄 지워도 될듯?
+})();
+
 
 
 // 아래는 커맨드 삭제를 원할 때 주석을 풀고 node deploy-commands.js

@@ -13,7 +13,7 @@ async function adminMessage(channel) {
 
         await channel.send({ content: '> * **채널 보기 권한 OFF 적용 상태 **\n> * **채널 보기 OFF** 를 유지해 주세요.' });
     } catch (error) {
-        console.error('메시지 전송 중 오류가 발생했습니다:', error);
+        console.error('adminMessage 에러 : ', error);
     };
 };
 

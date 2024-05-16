@@ -1,3 +1,14 @@
+// createTeamEmbed.js
+
+const { EmbedBuilder } = require('discord.js');
+const { shuffleArray } = require('../../../../module/common/shuffleArray');
+
+
+const MAX_TEAM_COUNT = 15;
+const EMBED_COLOR = 0x1E90FF;
+const TEAM_EMOJIS = ['🔵', '🔴', '🟢', '🟡', '🟣', '🟠', '⚪'];
+
+
 function parseValue(values) {
     let teamCount;
     const excludedUserIds = [];
@@ -82,26 +93,16 @@ function createTeamEmbed(teams, EMBED_COLOR) {
 };
 
 
-const { EmbedBuilder } = require('discord.js');
-const { shuffleArray } = require('../../../../module/common/shuffleArray');
-
-
-const MAX_TEAM_COUNT = 15;
-const EMBED_COLOR = 0x1E90FF;
-const TEAM_EMOJIS = ['🔵', '🔴', '🟢', '🟡', '🟣', '🟠', '⚪'];
 
 
 async function generateTeamEmbed(interaction, voiceChannel, values) {
     try {
-
-        // 음성 채널 입장 되어 있는지 체크
-        // let voiceChannel = await verifyVoiceChannel(interaction);
-
         // values 안에 팀과 유저 아이디 분리
         let { teamCount, excludedUserIds } = parseValue(values);
 
         // 채널 인원들 배열에 [ 현우(hyeonWoo_), ... ] 담기
         const members = voiceChannel.members;
+
         const memberInfoList = channelMembersNameList(members, excludedUserIds);
 
         // 모든 인원 제외시 알림 전송

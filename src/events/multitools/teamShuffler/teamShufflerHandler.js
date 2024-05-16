@@ -4,8 +4,10 @@ const { teamEmbedDeleteButton } = require('./teamEmbedDeleteButton');
 const { generateTeamEmbed } = require('./module/createTeamEmbed');
 const { verifyVoiceChannel } = require('./module/verifyVoiceChannel');
 
+// 팀 섞기 임베드 전송
 async function teamShufflerHandler(interaction, values) {
     try {
+
         // 음성 채널 체크, 음성 채널 입장 객체
         const voiceChannel = await verifyVoiceChannel(interaction);
 

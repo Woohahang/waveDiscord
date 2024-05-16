@@ -1,5 +1,6 @@
 // interactionCreate.js
 
+/* 관리자 권한 체크 */
 const { checkInteractionAdmin } = require('../module/checkAdminPermissionOn')
 
 const { createNicknameModal } = require('../events/userNickName/createNicknameModal');
@@ -10,14 +11,17 @@ const { saveUserNickname } = require('../events/userNickName/saveUserNickname');
 const { upDateButton } = require('../events/serverManagement/upDateButton');
 const { checkAdminRole } = require('../module/checkAdminRole');
 
-/*멀티 툴*/
+/* 멀티 툴 */
 const { multitools } = require('../events/multitools/multitools');
 
+/* 팀 섞기 */
 const { teamShuffler } = require('../events/multitools/teamShuffler/teamShuffler');
 const { excludeMembers } = require('../events/multitools/teamShuffler/excludeMembers');
 const { teamEmbedDelete } = require('../events/multitools/teamShuffler/teamEmbedDeleteHandler');
 const { teamShufflerHandler } = require('../events/multitools/teamShuffler/teamShufflerHandler');
 const { showTeamNumberModal } = require('../events/multitools/teamShuffler/showTeamNumberModal');
+const { teamReshuffle } = require('../events/multitools/teamShuffler/teamReshuffle');
+
 
 const teamShufflerMap = new Map();
 
@@ -67,7 +71,6 @@ async function handleChatInputCommand(interaction) {
 };
 
 
-const { teamReshuffle } = require('../events/multitools/teamShuffler/teamReshuffle');
 
 async function handleButtonInteraction(interaction, customId, values) {
     switch (customId) {

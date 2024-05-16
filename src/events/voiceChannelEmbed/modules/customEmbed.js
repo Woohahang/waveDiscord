@@ -90,7 +90,6 @@ function customEmbed(member, fields, updatedAt) {
 
     const displayName = member.nickname ? member.nickname : member.user.globalName;
 
-
     const embed = new EmbedBuilder()
         .setColor('#0099ff')
         .setColor(0x0099FF)

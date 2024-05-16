@@ -3,11 +3,6 @@ const { verifyVoiceChannel } = require('./module/verifyVoiceChannel');
 
 function voiceChannelUsers(voiceChannel) {
     try {
-
-        // let voiceChanneltest = interaction.member.voice.channel;
-
-        // console.log(voiceChanneltest.members);
-
         let users = [];
 
         voiceChannel.members.forEach(member => {
@@ -83,7 +78,7 @@ async function excludeMembers(interaction, values) {
                     content: '숫자만 입력할 수 있습니다.',
                     components: [],
                     ephemeral: true
-                })
+                });
             };
         };
 
