@@ -30,7 +30,7 @@ async function saveUserNickname(interaction) {
             break;
 
         case 'loLName':
-            if (userData.loL.length > 2) {
+            if (userData.loL.length > 4) {
                 limitReached = true;
             } else {
                 userData.loL.push(content.substr(0, 20));
@@ -38,7 +38,7 @@ async function saveUserNickname(interaction) {
             };
 
         case 'tfTName':
-            if (userData.tfT.length > 2) {
+            if (userData.tfT.length > 4) {
                 limitReached = true;
             } else {
                 userData.tfT.push(content.substr(0, 20));
@@ -46,7 +46,7 @@ async function saveUserNickname(interaction) {
             };
 
         case 'steamBGName':
-            if (userData.steamBG.length > 2) {
+            if (userData.steamBG.length > 4) {
                 limitReached = true;
             } else {
                 userData.steamBG.push(content.substr(0, 20));
@@ -54,7 +54,7 @@ async function saveUserNickname(interaction) {
             };
 
         case 'kaKaoBGName':
-            if (userData.kakao.length > 2) {
+            if (userData.kakao.length > 4) {
                 limitReached = true;
             } else {
                 userData.kakao.push(content.substr(0, 20));
@@ -62,7 +62,7 @@ async function saveUserNickname(interaction) {
             break;
 
         case 'overWatchTwoName':
-            if (userData.overWatchTwo.length > 2) {
+            if (userData.overWatchTwo.length > 4) {
                 limitReached = true;
             } else {
                 userData.overWatchTwo.push(content.substr(0, 20));

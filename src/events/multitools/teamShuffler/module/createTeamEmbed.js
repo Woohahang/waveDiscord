@@ -37,12 +37,14 @@ function channelMembersNameList(members, excludedUserIds) {
 
 async function checkAndNotifyEmptyMembers(interaction, memberInfoList) {
     if (memberInfoList.length === 0) {
-        return await interaction.update({
+        await interaction.update({
             content: '모든 인원이 제외되어 처리할 수 있는 멤버가 없습니다.',
             components: [],
             ephemeral: true
         });
+        return false;
     };
+    return true;
 };
 
 
@@ -106,7 +108,8 @@ async function generateTeamEmbed(interaction, voiceChannel, values) {
         const memberInfoList = channelMembersNameList(members, excludedUserIds);
 
         // 모든 인원 제외시 알림 전송
-        await checkAndNotifyEmptyMembers(interaction, memberInfoList);
+        const checkMembers = await checkAndNotifyEmptyMembers(interaction, memberInfoList);
+        if (!checkMembers) return false;
 
         // 팀 수를 조정한다.
         teamCount = adjustTeamCount(teamCount, memberInfoList, MAX_TEAM_COUNT);

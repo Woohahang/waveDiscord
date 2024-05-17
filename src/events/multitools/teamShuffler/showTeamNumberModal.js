@@ -2,8 +2,13 @@
 
 const { ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require('discord.js');
 
+const { checkVoiceChannel } = require('./module/checkVoiceChannel');
 
-async function showTeamNumberModal(interaction, values) {
+
+async function showTeamNumberModal(interaction) {
+
+    const voiceChannel = await checkVoiceChannel(interaction);
+    if (!voiceChannel) return;
 
     const modal = new ModalBuilder()
         .setCustomId('teamNumberModal')

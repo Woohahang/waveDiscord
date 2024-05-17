@@ -162,8 +162,7 @@ async function handleStringSelectMenu(interaction, customId, values) {
         /* 팀 섞기 */
         case 'teamShufflerMenu':
             if (values[0] === '0_') { // 몇 팀으로 나누나요?
-                showTeamNumberModal(interaction, values);
-                console.log('직접 입력'); // 몇 팀으로 나눌지 직접 입력 하겠다.
+                showTeamNumberModal(interaction);
             } else {
                 excludeMembers(interaction, values); // 두 개의 팀, 세 개의 팀 으로 나눈다.
             }

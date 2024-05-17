@@ -3,7 +3,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
-const { testtoken } = require('../../config.json');
+const { token } = require('../../config.json');
 const connectToDatabase = require('./mongoDB/database.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages,] });
 
@@ -51,4 +51,4 @@ client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
     handleVoiceStateUpdate(oldState, newState);
 });
 
-client.login(testtoken);
+client.login(token);

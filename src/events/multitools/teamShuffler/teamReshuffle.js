@@ -2,29 +2,15 @@
 
 const { generateTeamEmbed } = require('./module/createTeamEmbed');
 const { teamEmbedDeleteButton } = require('./teamEmbedDeleteButton');
-const { verifyVoiceChannel } = require('./module/verifyVoiceChannel');
-
-
-const verifyButtonVoiceChannelMatch = (interaction) => {
-
-};
-
-
+const { checkVoiceChannelMatch } = require('./module/checkVoiceChannel');
 
 // 팀 섞기 : 다시 섞기
 async function teamReshuffle(interaction, values) {
     try {
 
-        // 멤버가 음성 채널에 있는지
-        // const voiceChannel = await verifyVoiceChannel(interaction);
-
-        // 멤버가 있는 음성 채널과 버튼을 누른 음성 채널이 다르다면
-        if (interaction.member.voice && interaction.member.voice.channel.id !== interaction.channel.id) {
-            return await interaction.reply({ content: `<#${interaction.channel.id}> 와 사용자의 채널이 다릅니다 !\n이동해주세요 !`, ephemeral: true })
-        };
-
-        const voiceChannel = interaction.member.voice.channel;
-
+        // 음성 채널 위치와 버튼 위치 일치하는지 체크
+        const voiceChannel = await checkVoiceChannelMatch(interaction);
+        if (!voiceChannel) return;
 
         // 팀 섞기 임베드 생성
         const embed = await generateTeamEmbed(interaction, voiceChannel, values);
@@ -50,7 +36,7 @@ async function teamReshuffle(interaction, values) {
         });
 
     } catch (error) {
-        console.error('' + error);
+        console.error('teamReshuffle 에러 : ' + error);
     };
 };
 

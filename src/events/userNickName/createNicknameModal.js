@@ -17,31 +17,31 @@ function getModalConfig(selectedValue) {
         case 'loL':
             title = "리그 오브 레전드 닉네임";
             customId = "loLName";
-            label = "✔️ 최대 세개의 닉네임을 등록할 수 있습니다.";
+            label = "✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.";
             break;
 
         case 'tfT':
             title = "롤토체스";
             customId = "tfTName";
-            label = "✔️ 최대 세개의 닉네임을 등록할 수 있습니다.";
+            label = "✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.";
             break;
 
         case 'steamBG':
             title = "스팀 배틀 그라운드 닉네임";
             customId = "steamBGName";
-            label = "✔️ 최대 세개의 닉네임을 등록할 수 있습니다.";
+            label = "✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.";
             break;
 
         case 'kaKaoBG':
             title = "카카오 배틀 그라운드 닉네임";
             customId = "kaKaoBGName";
-            label = "✔️ 최대 세개의 닉네임을 등록할 수 있습니다.";
+            label = "✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.";
             break;
 
         case 'overWatchTwo':
             title = "오버워치 2 닉네임";
             customId = "overWatchTwoName";
-            label = "✔️ 최대 세개의 닉네임을 등록할 수 있습니다.";
+            label = "✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.";
             break;
 
         default:

@@ -1,5 +1,5 @@
 const { StringSelectMenuBuilder, ActionRowBuilder } = require('discord.js');
-const { verifyVoiceChannel } = require('./module/verifyVoiceChannel');
+const { checkVoiceChannel } = require('./module/checkVoiceChannel');
 
 function voiceChannelUsers(voiceChannel) {
     try {
@@ -67,12 +67,13 @@ function excludeMembersMenu(users, values) {
 // 잠수 유저를 선택해주세요 인원에서 제외할게요
 async function excludeMembers(interaction, values) {
     try {
+        // 음성 채널 체크
+        const voiceChannel = await checkVoiceChannel(interaction);
+        if (!voiceChannel) return;
 
         // 만약 모달 제출이면 값을 values 에 저장
         if (interaction.isModalSubmit()) {
-
             values = [interaction.fields.getTextInputValue('teamNumberModal') + '_'];
-
             if (checkIfNumeric(values)) {
                 return interaction.update({
                     content: '숫자만 입력할 수 있습니다.',
@@ -81,9 +82,6 @@ async function excludeMembers(interaction, values) {
                 });
             };
         };
-
-        // 음성 채널 체크와 음성 채널 객체
-        const voiceChannel = await verifyVoiceChannel(interaction);
 
         const users = voiceChannelUsers(voiceChannel);
 
