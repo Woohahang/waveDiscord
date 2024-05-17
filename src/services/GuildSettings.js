@@ -20,9 +20,10 @@ class GuildSettings {
             let guildSettingsData = await guildSettingsSchema.findOne({ guildId: this.guildId });
 
             if (!guildSettingsData) {
+
                 guildSettingsData = new guildSettingsSchema({ guildId: this.guildId });
                 await guildSettingsData.save();
-            }
+            };
 
             this.settingsData = guildSettingsData;
             return this.settingsData;

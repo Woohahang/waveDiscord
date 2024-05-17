@@ -1,15 +1,23 @@
 const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
-const guildSettingsSchema = require('../mongoDB/guildSettingsSchema.js');
+const GuildSettings = require('../services/GuildSettings');
 
-async function gameMenuLoader(guildId) {
+function getVisibleGames(allGames) {
+    return allGames.filter(games => games.visible);
+}
+
+function createGameOption(game) {
+    return new StringSelectMenuOptionBuilder()
+        .setLabel(game.label)
+        .setDescription(game.description)
+        .setValue(game.value);
+};
+
+
+module.exports = async (guildId) => {
     try {
 
-        let guildSettingsData = await guildSettingsSchema.findOne({ guildId: guildId });
-
-        if (!guildSettingsData) {
-            guildSettingsData = new guildSettingsSchema({ guildId: guildId });
-            await guildSettingsData.save();
-        };
+        const guildData = new GuildSettings(guildId);
+        const guildSettingsData = await guildData.loadOrCreate();
 
         // 각 게임의 가시성 설정을 확인하고, true 설정된 게임만 메뉴에 추가
         const allGames = [
@@ -40,18 +48,4 @@ async function gameMenuLoader(guildId) {
     } catch (error) {
         console.error(error);
     };
-};
-
-module.exports = { gameMenuLoader };
-
-
-function getVisibleGames(allGames) {
-    return allGames.filter(games => games.visible);
-}
-
-function createGameOption(game) {
-    return new StringSelectMenuOptionBuilder()
-        .setLabel(game.label)
-        .setDescription(game.description)
-        .setValue(game.value);
 };

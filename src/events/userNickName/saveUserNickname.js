@@ -1,7 +1,6 @@
 // saveUserNickName.js
 
 const userSchema = require('../../mongoDB/userSchema.js');
-// const UserSettings = require('../../services/UserSettings.js');
 
 async function saveUserNickname(interaction) {
 
@@ -17,11 +16,6 @@ async function saveUserNickname(interaction) {
         userData = new userSchema({ userId: interaction.member.id });
         await userData.save();
     };
-
-    // 이건 자고 일어나서 리팩터링 하기
-    // const userId = interaction.user.id;
-    // let userData = UserSettings(userId);
-    // await userData.loadOrCreate();
 
     let limitReached = false;
     switch (customId) {

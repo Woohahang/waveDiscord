@@ -54,6 +54,7 @@ function getModalConfig(selectedValue) {
     return { title, customId, label };
 };
 
+// 닉네임 등록 모달
 async function createNicknameModal(interaction) {
     try {
         menuSelectionResetter(interaction);

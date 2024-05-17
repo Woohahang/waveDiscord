@@ -1,7 +1,7 @@
 // src//commands/admin/gameNicknameSelection.js
 
 const { SlashCommandBuilder } = require('discord.js');
-const { gameMenuLoader } = require('../../module/gameMenuLoader.js');
+const gameMenuLoader = require('../../module/gameMenuLoader.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -10,6 +10,7 @@ module.exports = {
 
     async execute(interaction) {
         try {
+            // 길드 id
             const guildId = interaction.member.guild.id;
 
             // 게임 리스트를 불러옵니다.

@@ -1,7 +1,7 @@
 // mainChannelMessage.js
 
 const guildSettingsSchema = require('../../../mongoDB/guildSettingsSchema');
-const { gameMenuLoader } = require('../../../module/gameMenuLoader');
+const gameMenuLoader = require('../../../module/gameMenuLoader');
 const { waveButton } = require('./waveButton');
 
 async function mainMessage(channel, guildId) {

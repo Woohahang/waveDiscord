@@ -1,7 +1,7 @@
 // voiceStateUpdate.js
 
 const { checkVoiceAdmin } = require('../module/checkAdminPermissionOn');
-const { sendEmbedOnVoiceJoin } = require('../events/voiceChannelEmbed/handlers/sendEmbedOnVoiceJoin');
+const sendEmbedOnVoiceJoin = require('../events/voiceChannelEmbed/handlers/sendEmbedOnVoiceJoin');
 const { moveEmbedOnVoiceChannelChange } = require('../events/voiceChannelEmbed/handlers/moveEmbedOnVoiceChannelChange');
 const { deleteEmbedOnVoiceLeave } = require('../events/voiceChannelEmbed/handlers/deleteEmbedOnVoiceLeave');
 

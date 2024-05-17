@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 let guildSettingsSchema = new mongoose.Schema({
 
     guildId: String,
+    guildName: String,
     mainChannelId: String, // 내 봇을 다루는 메인 채널
     adminChannelId: String, // 관리자 채널
 
@@ -15,6 +16,6 @@ let guildSettingsSchema = new mongoose.Schema({
 
 });
 
-const GuildSettingsSchema = mongoose.model('guildSettingsSchema', guildSettingsSchema);
+const GuildSettingsSchema = mongoose.model('guildSettingsSchemaTest', guildSettingsSchema);
 
 module.exports = GuildSettingsSchema;
