@@ -12,7 +12,7 @@ const upDateButton = require('../events/serverManagement/upDateButton');
 const { checkAdminRole } = require('../module/checkAdminRole');
 
 /* 멀티 툴 */
-const { multitools } = require('../events/multitools/multitools');
+const multitools = require('../events/multitools/multitools');
 
 /* 팀 섞기 */
 const { teamShuffler } = require('../events/multitools/teamShuffler/teamShuffler');
