@@ -15,7 +15,6 @@ function createGameOption(game) {
 
 module.exports = async (guildId) => {
     try {
-
         const guildData = new GuildSettings(guildId);
         const guildSettingsData = await guildData.loadOrCreate();
 
@@ -36,10 +35,19 @@ module.exports = async (guildId) => {
         // 각 열마다 가시성이 true 인지 false 인지 배열 식으로 순서대로 가지고 온다.
         let visibleGames = getVisibleGames(allGames);
 
-        // 가시성이 true 인 것만 옵션에 추가한다.
-        visibleGames.forEach(game => {
-            gameMenuSelect.addOptions(createGameOption(game));
-        });
+        if (visibleGames.length === 0) {
+            gameMenuSelect.addOptions(
+                new StringSelectMenuOptionBuilder()
+                    .setLabel('등록 가능한 메뉴 없음')
+                    .setDescription('관리자에 의해 모든 메뉴 숨김 상태.')
+                    .setValue('noOptions')
+            );
+        } else {
+            visibleGames.forEach(game => {
+                gameMenuSelect.addOptions(createGameOption(game));
+            });
+        }
+
 
         let row = new ActionRowBuilder().addComponents(gameMenuSelect);
 

@@ -41,6 +41,13 @@ function buildModal({ title, customId, label }) {
 
 module.exports = async (interaction) => {
     try {
+        if (interaction.values[0] === 'noOptions') {
+            interaction.deferUpdate();
+
+            menuSelectionResetter(interaction);
+            return;
+        };
+
         // 메뉴 초기화
         menuSelectionResetter(interaction);
 

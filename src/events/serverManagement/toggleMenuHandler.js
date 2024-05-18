@@ -36,7 +36,7 @@ async function toggleMenuHandler(interaction, action) {
             content: '오류가 발생했습니다. 다시 시도해주세요.',
             ephemeral: true
         });
-    }
-}
+    };
+};
 
 module.exports = { toggleMenuHandler };
