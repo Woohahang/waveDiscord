@@ -5,8 +5,6 @@ const { menuSelectionResetter } = require('../../module/common/menuSelectionRese
 
 const guildSettingsSchema = require('../../mongoDB/guildSettingsSchema.js');
 
-
-
 const gameLabels = {
     steam: 'Steam',
     loL: 'League of Legends',
@@ -23,7 +21,7 @@ const description = {
     steamBG: '스팀 배틀 그라운드',
     kakaoBG: '카카오 배틀 그라운드',
     overWatchTwo: '오버워치 2'
-}
+};
 
 
 // 관리자 채널에서 메뉴 보이기 또는 메뉴 숨기기 메뉴를 클릭하면 데이터 베이스에서 숨겨진 게임 종류 또는 보이고 있는 게임 종류를 나타냄

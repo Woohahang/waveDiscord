@@ -11,6 +11,7 @@ const message =
     '\n' + '## 따라서, 현재의 기능에는 관리자 권한이 필요해요.' +
     '\n' + '🟢 Wave 를 서버에서 추방한 후 다시 관리자 권한을 체크한 상태로 초대해 주시겠어요?';
 
+// 의도 : 봇이 관리자 권한을 못 받았다 ! 서버 주인에게 메세지를 보낸다 !
 module.exports = async (guild) => {
     try {
         // 서버 주인의 id
@@ -26,6 +27,7 @@ module.exports = async (guild) => {
         const messages = await dmChannel.messages.fetch({ limit: 5 });
         await Promise.all(messages.map(message => message.delete()));
 
+        // 메세지 전송
         await owner.send(message);
     } catch (error) {
         console.error('guildInviteMessage 에러 : ', error);
