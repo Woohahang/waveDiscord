@@ -1,12 +1,18 @@
 // guildCreate.js
 
+const { checkGuildAdmin } = require('../module/checkAdminPermissionOn');
+
 const resetGuildDatabase = require('../mongoDB/resetGuildDatabase');
 
-const { checkGuildAdmin } = require('../module/checkAdminPermissionOn');
+/* 메인 채널 메시지 */
 const mainChannelCreate = require('../events/guildCreate/mainChannel/mainChannelCreate');
 const mainChannelMessage = require('../events/guildCreate/mainChannel/mainChannelMessage');
+
+/* 관리자 채널 메시지*/
 const adminChannelCreate = require('../events/guildCreate/adminChannel/adminChannelCreate');
 const adminChannelMessage = require('../events/guildCreate/adminChannel/adminChannelMessage');
+
+/* 개인 DM */
 const guildInviteMessage = require('../events/guildCreate/userChannel/guildInviteMessage');
 
 async function handleGuildCreate(guild) {

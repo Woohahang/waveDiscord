@@ -1,88 +1,61 @@
 // /saveNickname.js
 
-const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, Component } = require('discord.js');
+const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle } = require('discord.js');
 const { menuSelectionResetter } = require('../../module/common/menuSelectionResetter');
 
-function getModalConfig(selectedValue) {
-
-    let title, customId, label;
-
-    switch (selectedValue) {
-        case 'steam':
-            title = "스팀 프로필 주소 또는 코드";
-            customId = "steamCode";
-            label = "Steam 친구 코드 또는 프로필 주소를 작성해주세요.";
-            break;
-
-        case 'loL':
-            title = "리그 오브 레전드 닉네임";
-            customId = "loLName";
-            label = "✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.";
-            break;
-
-        case 'tfT':
-            title = "롤토체스";
-            customId = "tfTName";
-            label = "✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.";
-            break;
-
-        case 'steamBG':
-            title = "스팀 배틀 그라운드 닉네임";
-            customId = "steamBGName";
-            label = "✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.";
-            break;
-
-        case 'kaKaoBG':
-            title = "카카오 배틀 그라운드 닉네임";
-            customId = "kaKaoBGName";
-            label = "✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.";
-            break;
-
-        case 'overWatchTwo':
-            title = "오버워치 2 닉네임";
-            customId = "overWatchTwoName";
-            label = "✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.";
-            break;
-
-        default:
-            console.log('알 수 없는 선택 발생 : events/saveNickname.js ');
-            break;
-    }
-
-    customId = customId + '-submitNickname';
-
-    return { title, customId, label };
+const modalConfigs = {
+    steam: { title: "스팀 프로필 주소 또는 코드", customId: "steamCode", label: "Steam 친구 코드 또는 프로필 주소를 작성해주세요." },
+    loL: { title: "리그 오브 레전드 닉네임", customId: "loLName", label: "✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다." },
+    tfT: { title: '롤토체스', customId: 'tfTName', label: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.' },
+    steamBG: { title: '스팀 배틀 그라운드 닉네임', customId: 'steamBGName', label: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.' },
+    kaKaoBG: { title: '카카오 배틀 그라운드 닉네임', customId: 'kaKaoBGName', label: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.' },
+    overWatchTwo: { title: '오버워치 2 닉네임', customId: 'overWatchTwoName', label: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.' },
 };
 
-// 닉네임 등록 모달
-async function createNicknameModal(interaction) {
+// 유저가 선택한 메뉴에 맞는 셋팅 가지고 오기
+function getModalConfig(gameTitle) {
+    const config = modalConfigs[gameTitle];
+    if (!config) {
+        console.log('알 수 없는 선택 발생: events/saveNickname.js');
+        return null;
+    }
+
+    // 펼쳐서 수정하고 리턴
+    return { ...config, customId: `${config.customId}-submitNickname` };
+};
+
+// 제목, 내용, id  모달에 집어 넣기
+function buildModal({ title, customId, label }) {
+    const modal = new ModalBuilder().setTitle(title).setCustomId(customId);
+
+    const input = new TextInputBuilder()
+        .setCustomId(customId)
+        .setLabel(label)
+        .setStyle(TextInputStyle.Short);
+    const box = new ActionRowBuilder().addComponents(input);
+
+    modal.addComponents(box);
+    return modal;
+};
+
+
+module.exports = async (interaction) => {
     try {
+        // 메뉴 초기화
         menuSelectionResetter(interaction);
 
-        if (!interaction.values[0]) return;
-        const selectedValue = interaction.values[0];
+        // 게임 이름
+        const gameTitle = interaction.values[0];
 
-        let { title, customId, label } = getModalConfig(selectedValue);
+        // 모달 제목, 라벨, Id 들고옴
+        const modalConfig = getModalConfig(gameTitle);
 
-        const modal = new ModalBuilder();
-        modal.setTitle(title);
-        modal.setCustomId(customId);
+        // 모달에 집어 넣기
+        const modal = buildModal(modalConfig);
 
-        const input = new TextInputBuilder()
-            .setCustomId(customId)
-            .setLabel(label)
-            .setStyle(TextInputStyle.Short);
-
-        const box = new ActionRowBuilder().addComponents(input);
-
-        modal.addComponents(box);
-
+        // 모달 띄우기
         await interaction.showModal(modal);
-
     } catch (error) {
-        console.error(error);
-    }
+        console.error('createNicknameModal.js 예외 : ', error);
+    };
 };
-
-
-module.exports = { createNicknameModal };

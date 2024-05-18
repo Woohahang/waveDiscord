@@ -3,7 +3,7 @@
 /* 관리자 권한 체크 */
 const { checkInteractionAdmin } = require('../module/checkAdminPermissionOn')
 
-const { createNicknameModal } = require('../events/userNickName/createNicknameModal');
+const createNicknameModal = require('../events/userNickName/createNicknameModal');
 const { removeNickname } = require('../events/userNickName/removeNickname');
 const { toggleMenuHandler } = require('../events/serverManagement/toggleMenuHandler');
 const { gameMenuToggle } = require('../events/serverManagement/gameMenuToggle');
@@ -53,6 +53,12 @@ async function handleinteraction(interaction) {
         await interaction.reply({ content: '상호 작용 처리 중 오류가 발생했습니다!', ephemeral: true });
     };
 };
+
+
+
+
+
+
 
 async function handleChatInputCommand(interaction) {
     const command = interaction.client.commands.get(interaction.commandName);

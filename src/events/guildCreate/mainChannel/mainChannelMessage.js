@@ -5,7 +5,6 @@ const GuildSettings = require('../../../services/GuildSettings');
 const gameMenuLoader = require('../../../module/gameMenuLoader');
 const { waveButton } = require('./waveButton');
 
-
 module.exports = async (guild) => {
     try {
         // GuildSettings 인스턴스 생성
