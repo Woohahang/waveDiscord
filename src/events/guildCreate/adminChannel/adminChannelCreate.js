@@ -1,28 +1,37 @@
-const guildSettingsSchema = require('../../../mongoDB/guildSettingsSchema');
+// adminChannelCreate.js
 
-async function adminChannelCreate(guild) {
+const { PermissionsBitField } = require('discord.js');
+const GuildSettings = require('../../../services/GuildSettings');
 
-    try {
-        // 채널 생성 : 채팅 채널
-        const channel = await guild.channels.create({ name: '📘ㆍwave 관리자', type: 0 });
-
-        // 채널 설정 : 메시지 보내기 off
-        channel.permissionOverwrites.create(channel.guild.roles.everyone, { ViewChannel: false, SendMessages: false });
-
-        // 채널 Id -> DB에 저장
-        const guildSettings = await guildSettingsSchema.findOne({ guildId: guild.id });
-
-        if (guildSettings) {
-            guildSettings.adminChannelId = channel.id;
-            await guildSettings.save();
-        } else {
-            console.log('길드 id 를 찾을 수 없습니다 : adminChannelCreate.js')
-        };
-
-    } catch (error) {
-        console.error(`관리자 채널 생성 중 에러 발생: ${error}`);
-    };
-
+async function createAdminChannel(guild) {
+    // 채널 생성 : 채팅 채널
+    return await guild.channels.create({
+        name: '📘ㆍwave 관리자',
+        type: 0,
+        permissionOverwrites: [
+            {
+                id: guild.roles.everyone.id,
+                deny: [PermissionsBitField.Flags.ViewChannel], // 메시지 보내기 권한을 끕니다.
+            },
+        ],
+    });
 };
 
-module.exports = { adminChannelCreate };
+module.exports = async (guild) => {
+    try {
+        // 관리자 채널 생성
+        const channel = await createAdminChannel(guild);
+
+        // 길드 DB 셋팅
+        const guildSettings = new GuildSettings(guild.id);
+        await guildSettings.loadOrCreate();
+
+        const adminChannelId = channel.id;
+
+        // admin 채널 id, DB 저장
+        await guildSettings.updateAdminChannelId(adminChannelId);
+
+    } catch (error) {
+        console.error('adminChannelCreate.js 에러 : ', error);
+    };
+};

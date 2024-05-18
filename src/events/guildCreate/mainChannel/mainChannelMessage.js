@@ -1,45 +1,40 @@
 // mainChannelMessage.js
 
-const guildSettingsSchema = require('../../../mongoDB/guildSettingsSchema');
+const GuildSettings = require('../../../services/GuildSettings');
+
 const gameMenuLoader = require('../../../module/gameMenuLoader');
 const { waveButton } = require('./waveButton');
 
-async function mainMessage(channel, guildId) {
-    await channel.send({
-        content: "## :star: Wave 메인 명령어\n## /닉네임등록  /닉네임삭제",
-        components: [await gameMenuLoader(guildId)],
-    });
 
-    await channel.send({ components: [waveButton()] });
-
-};
-
-async function mainChannelMessage(guild) {
+module.exports = async (guild) => {
     try {
-        // 길드 설정을 데이터베이스에서 찾기
-        const guildId = guild.id;
-        const guildSettingsData = await guildSettingsSchema.findOne({ guildId: guildId });
+        // GuildSettings 인스턴스 생성
+        const guildSettings = new GuildSettings(guild.id);
 
-        // 찾은 데이터에서 mainChannelId 추출
-        if (guildSettingsData && guildSettingsData.mainChannelId) {
-            const channelId = guildSettingsData.mainChannelId;
+        // 길드 설정을 불러오거나 생성
+        await guildSettings.loadOrCreate();
 
-            // 채널 ID를 이용하여 채널 객체 가져오기
-            const channel = await guild.channels.cache.get(channelId);
+        // 메인 채널 Id를 불러옴
+        const mainChannelId = await guildSettings.loadMainChannelId();
 
-            // 채널이 존재하면 메시지 전송
-            if (channel) {
-                mainMessage(channel, guildId);
-            } else {
-                console.error('채널을 찾을 수 없습니다.');
-                // 기존에 있던 Wave 메인 채널을 찾을 수 없습니다.
-            };
+        // 메인 채널 Id 객체 얻음
+        const channel = await guild.channels.cache.get(mainChannelId);
+
+        // 채널 찾으면 채팅 전송
+        if (channel) {
+            await channel.send({
+                content: "## :star: Wave 메인 명령어\n## /닉네임등록  /닉네임삭제",
+                components: [await gameMenuLoader(guild.id)],
+            });
+
+            await channel.send({ components: [waveButton()] });
+
+            // 못 찾으면  ... 구현 해야 됨
         } else {
-            console.error('길드 설정 데이터를 찾을 수 없습니다.');
-        }
-    } catch (error) {
-        console.error(error);
-    }
-}
+            console.log('채널 없을 때 그 머냐 다시 만드는거 해야될듯');
+        };
 
-module.exports = { mainChannelMessage, mainMessage }
+    } catch (error) {
+        console.error('mainChannelMessage.js 에러 : ', error);
+    };
+};

@@ -1,36 +1,39 @@
 // moveEmbedOnVoiceChannelChange.js
 
+const UserSettings = require('../../../services/UserSettings');
+const GuildSettings = require('../../../services/GuildSettings');
+
 const { deleteEmbed } = require('../../voiceChannelEmbed/modules/deleteEmbed');
-
-const userSchema = require('../../../mongoDB/userSchema');
-const guildSettingsSchema = require('../../../mongoDB/guildSettingsSchema');
-
 const { createFields } = require('../modules/customEmbed');
 const { customEmbed } = require('../modules/customEmbed');
 
-async function moveEmbedOnVoiceChannelChange(oldState, newState) {
+module.exports = async (oldState, newState) => {
+    try {
+        const member = newState.member;
+        const guildId = newState.guild.id;
 
-    const member = newState.member;
-    const guildId = newState.guild.id;
+        await deleteEmbed(oldState, oldState.member);
 
-    await deleteEmbed(oldState, oldState.member);
+        // 유저 닉네임들
+        const userSettings = new UserSettings(member.id);
+        const userData = await userSettings.load();
+        if (!userData) return;
 
-    // 유저 닉네임 조회
-    const userData = await userSchema.findOne({ userId: newState.id });
-    if (!userData) return;
+        // 길드 셋팅
+        const guildData = new GuildSettings(guildId);
+        const guildSettings = await guildData.loadOrCreate();
+        if (!guildSettings) return;
 
-    // 길드 셋팅 조회
-    const guildSettings = await guildSettingsSchema.findOne({ guildId: guildId });
-    if (!guildSettings) return;
+        // 유저 닉네임 가공
+        const fields = await createFields(userData, guildSettings);
+        if (fields.length <= 0) return;
 
-    // 유저 닉네임 양식에 맞게 가공
-    const fields = await createFields(userData, guildSettings);
-    if (fields.length <= 0) return;
+        // 임베드 가공
+        const embed = customEmbed(member, fields, userData.updatedAt);
 
-    // 임베드 가공
-    const embed = customEmbed(member, fields, userData.updatedAt);
+        await newState.channel.send({ embeds: [embed] });
 
-    await newState.channel.send({ embeds: [embed] });
+    } catch (error) {
+        console.error('moveEmbedOnVoiceChannelChange.js 에러 : ' + error);
+    };
 };
-
-module.exports = { moveEmbedOnVoiceChannelChange };

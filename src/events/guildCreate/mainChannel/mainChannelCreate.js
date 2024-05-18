@@ -1,33 +1,32 @@
-const guildSettingsSchema = require('../../../mongoDB/guildSettingsSchema');
+// mainChannelCreate.js
 
-async function mainChannelCreate(guild) {
+const { PermissionsBitField } = require('discord.js');
+const GuildSettings = require('../../../services/GuildSettings');
+
+module.exports = async (guild) => {
     try {
         // 길드 초대시 채팅 채널 생성
-        const channel = await guild.channels.create({ name: '📘ㆍwave', type: 0 });
+        const channel = await guild.channels.create({
+            name: '📘ㆍwave',
+            type: 0,
+            permissionOverwrites: [
+                {
+                    id: guild.roles.everyone.id,
+                    deny: [PermissionsBitField.Flags.SendMessages], // 메시지 보내기 권한을 끕니다.
+                },
+            ],
+        });
 
-        // 채팅 채널 : 메시지 보내기 off
-        channel.permissionOverwrites.create(channel.guild.roles.everyone, { SendMessages: false });
+        // 길드 DB 찾기 or 생성
+        const guildSettings = new GuildSettings(guild.id);
+        await guildSettings.loadOrCreate();
 
-        // 채널 ID만 저장
+        // Wave 채널 id
         const channelId = channel.id;
 
-        // 길드 설정 데이터 찾기 또는 새로 생성
-        let guildSettingsData = await guildSettingsSchema.findOne({ guildId: guild.id });
-        if (!guildSettingsData) {
-            // 찾는 데이터가 없으면 새로 생성
-            guildSettingsData = new guildSettingsSchema({
-                guildId: guild.id,
-                mainChannelId: channelId
-            });
-        } else {
-            // 찾은 데이터가 있으면 채널 ID만 업데이트
-            guildSettingsData.mainChannelId = channelId;
-        }
-        await guildSettingsData.save();
+        await guildSettings.updateMainChannelId(channelId);
 
     } catch (error) {
-        console.error(error);
+        console.error('mainChannelCreate.js 에러 : ', error);
     };
 };
-
-module.exports = { mainChannelCreate };

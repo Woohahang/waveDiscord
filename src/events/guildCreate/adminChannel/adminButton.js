@@ -3,7 +3,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 function adminButton() {
-
     const upDate = new ButtonBuilder()
         .setCustomId('upDateButton')
         .setLabel('업데이트')
@@ -18,7 +17,6 @@ function adminButton() {
         .addComponents(upDate, contactSupport);
 
     return row;
-
 };
 
 module.exports = { adminButton };

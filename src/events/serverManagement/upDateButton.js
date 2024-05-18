@@ -1,8 +1,9 @@
 // upDateButton.js
 
 const guildSettingsSchema = require('../../mongoDB/guildSettingsSchema');
-const { mainMessage } = require('../../events/guildCreate/mainChannel/mainChannelMessage');
-const { adminMessage } = require('../guildCreate/adminChannel/adminChannelMessage');
+const mainChannelMessage = require('../../events/guildCreate/mainChannel/mainChannelMessage');
+
+const adminMessage = require('../guildCreate/adminChannel/adminChannelMessage');
 
 function upDateMessage() {
     let message;
@@ -10,9 +11,6 @@ function upDateMessage() {
     message = '## 업데이트 완료' + '\n';
     message += '> * 현재 **Wave** 는 보완과 개발 단계에 있습니다. ' + '\n';
     message += '> * 개발은 지금도 진행 중이며 가끔 업데이트 버튼을 눌러주세요.' + '\n';
-    // message += '## 안내' + '\n';
-    // message += '> * 14일이 지난 메시지는 Discord 프로그래밍 방식에 의해 삭제가 불가능 합니다.' + '\n';
-    // message += '> * 삭제가 되지 않은 메시지가 있다면 이전 메시지는 편의를 위해 삭제해 주세요.'
 
     return message;
 };
@@ -31,13 +29,14 @@ async function deleteMessages(channel) {
 
 async function adminChannelUpDate(interaction) {
     const channel = interaction.channel;
+    const guild = interaction.guild;
 
     // 관리자 채널 메시지 전부 삭제
     await deleteMessages(channel);
 
     // 관리자 채널 메시지 전송
-    await adminMessage(channel);
-}
+    await adminMessage(guild);
+};
 
 async function mainChannelUpDate(interaction) {
     try {
@@ -52,14 +51,14 @@ async function mainChannelUpDate(interaction) {
                 // 길드 메인 채널 메시지 전부 삭제
                 await deleteMessages(mainChannel);
 
-                // 길드 메인 채널 메시지 전송
-                await mainMessage(mainChannel, guildId);
+                // 메인 채널 메시지 전송
+                await mainChannelMessage(interaction.guild);
             }
         }
     } catch (error) {
         console.error(`메인 채널 업데이트 중 오류 발생: ${error}`);
-    }
-}
+    };
+};
 
 async function upDateButton(interaction) {
     await Promise.all([adminChannelUpDate(interaction), mainChannelUpDate(interaction)]);
@@ -69,7 +68,7 @@ async function upDateButton(interaction) {
         content: upDateMessage(),
         ephemeral: true
     });
-}
+};
 
 // 메뉴 수정해서 자동 업데이트
 async function upDateButtonMenu(interaction) {

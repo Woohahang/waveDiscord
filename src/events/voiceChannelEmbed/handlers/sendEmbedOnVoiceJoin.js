@@ -37,6 +37,6 @@ module.exports = async (newState) => {
         await channel.send({ embeds: [embed] });
 
     } catch (error) {
-        console.error('sendEmbedOnVoiceJoin 에러 : ' + error);
+        console.error('sendEmbedOnVoiceJoin 에러 : ', error);
     };
 };

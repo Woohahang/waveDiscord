@@ -3,7 +3,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
-const { testtoken } = require('../../config.json');
+const { token } = require('../../config.json');
 const connectToDatabase = require('./mongoDB/database.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages,] });
 
@@ -29,7 +29,6 @@ for (const folder of commandFolders) {
     };
 };
 
-// 최종적으로 처리하는 파일의 이름 마지막은 핸들러로 고치기
 
 client.once(Events.ClientReady, readyClient => {
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
@@ -51,4 +50,4 @@ client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
     handleVoiceStateUpdate(oldState, newState);
 });
 
-client.login(testtoken);
+client.login(token);

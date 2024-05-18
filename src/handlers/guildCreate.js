@@ -3,11 +3,11 @@
 const resetGuildDatabase = require('../mongoDB/resetGuildDatabase');
 
 const { checkGuildAdmin } = require('../module/checkAdminPermissionOn');
-const { mainChannelCreate } = require('../events/guildCreate/mainChannel/mainChannelCreate');
-const { mainChannelMessage } = require('../events/guildCreate/mainChannel/mainChannelMessage');
-const { adminChannelCreate } = require('../events/guildCreate/adminChannel/adminChannelCreate');
-const { adminChannelMessage } = require('../events/guildCreate/adminChannel/adminChannelMessage');
-const { guildInviteMessage } = require('../events/guildCreate/userChannel/guildInviteMessage');
+const mainChannelCreate = require('../events/guildCreate/mainChannel/mainChannelCreate');
+const mainChannelMessage = require('../events/guildCreate/mainChannel/mainChannelMessage');
+const adminChannelCreate = require('../events/guildCreate/adminChannel/adminChannelCreate');
+const adminChannelMessage = require('../events/guildCreate/adminChannel/adminChannelMessage');
+const guildInviteMessage = require('../events/guildCreate/userChannel/guildInviteMessage');
 
 async function handleGuildCreate(guild) {
     try {
@@ -17,7 +17,6 @@ async function handleGuildCreate(guild) {
 
             await mainChannelCreate(guild); // main 채널 생성
             await mainChannelMessage(guild); // main 채널 메시지 전송
-
 
             await adminChannelCreate(guild); // admin 채널 생성
             await adminChannelMessage(guild); // admin 채널 메시지 전송

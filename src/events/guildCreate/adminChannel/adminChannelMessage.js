@@ -1,8 +1,9 @@
 // adminChannelMessage.js
 
-const guildSettingsSchema = require('../../../mongoDB/guildSettingsSchema');
 const { adminMenuLoader } = require('./adminMenuLoader');
 const { adminButton } = require('./adminButton');
+
+const GuildSettings = require('../../../services/GuildSettings');
 
 async function adminMessage(channel) {
     try {
@@ -17,22 +18,28 @@ async function adminMessage(channel) {
     };
 };
 
-// 길드 채널이 만들어 지면 Collection 객체에 채널 객체를 그대로 저장 이후 여기에 채널 인자를 받고 거기에 메시지 전송하면 될듯
-async function adminChannelMessage(guild) {
+module.exports = async (guild) => {
+    try {
+        // GuildSettings 인스턴스 생성
+        let guildSettings = new GuildSettings(guild.id);
 
-    // 길드 id 를 조회하여 관리자 채널 id 얻기
-    const guildSettings = await guildSettingsSchema.findOne({ guildId: guild.id });
-    const adminChannelId = guildSettings.adminChannelId;
+        // 길드 설정을 불러오거나 생성
+        await guildSettings.loadOrCreate();
 
-    if (!adminChannelId) {
-        return console.log('관리자 채널 id를 찾을 수 없습니다.');
+        // 관리자 채널 ID를 불러옴
+        const adminChannelId = await guildSettings.loadAdminChannelId();
+
+        // 관리자 채널 객체를 얻음
+        const channel = guild.channels.cache.get(adminChannelId);
+
+        if (channel) {
+            // 메시지 전송
+            await adminMessage(channel);
+        } else {
+            console.log('채널이 존재하지 않습니다. 나중에 처리하기');
+        };
+
+    } catch (error) {
+        console.error('adminChannelMessage.js 에러 : ', error);
     };
-
-    // 관리자 채널 객체 선언
-    const channel = guild.channels.cache.get(adminChannelId);
-
-    // 메시지 전송
-    adminMessage(channel);
 };
-
-module.exports = { adminChannelMessage, adminMessage };
