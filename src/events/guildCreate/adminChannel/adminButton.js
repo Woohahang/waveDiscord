@@ -10,7 +10,7 @@ function adminButton() {
 
     const contactSupport = new ButtonBuilder()
         .setLabel('문의 하기')
-        .setURL('https://discord.gg/kuuWBEjun6')
+        .setURL('https://discord.gg/JWvCakpdmP')
         .setStyle(ButtonStyle.Link)
 
     const row = new ActionRowBuilder()
