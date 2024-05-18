@@ -4,16 +4,12 @@ const GuildSettings = require('../../services/GuildSettings');
 
 const adminChannelMessage = require('../guildCreate/adminChannel/adminChannelMessage');
 const mainChannelMessage = require('../guildCreate/mainChannel/mainChannelMessage');
+const { messagesDelete } = require('../../module/common/messagesDelete');
 
 async function adminUpDate(interaction) {
     try {
-        // 채널 메시지 수집
-        const messages = await interaction.channel.messages.fetch({ limit: 10 });
-
-        // 메시지 모두 삭제
-        messages.forEach(message => {
-            message.delete().catch(error => console.error(`deleteMessages() 메시지 삭제 중 오류 발생: ${error}`));
-        });
+        // 이 전 메세지 삭제
+        await messagesDelete(interaction.channel);
 
         // 메시지 전송
         await adminChannelMessage(interaction.guild);
@@ -33,13 +29,8 @@ async function mainUpDate(interaction) {
 
         const mainChannel = await interaction.guild.channels.resolve(mainChannelId);
         if (mainChannel) {
-            // 채널 메시지 수집
-            const messages = await mainChannel.messages.fetch({ limit: 10 });
-
-            // 메시지 모두 삭제
-            messages.forEach(message => {
-                message.delete().catch(error => console.error(`deleteMessages() 메시지 삭제 중 오류 발생: ${error}`));
-            });
+            // 이 전 메세지 삭제
+            await messagesDelete(mainChannel);
 
             // 메시지 전송
             await mainChannelMessage(interaction.guild);
@@ -60,5 +51,5 @@ module.exports = async (interaction) => {
 
     } catch (error) {
         console.error('upDateButton.js 에러', error);
-    }
+    };
 };
