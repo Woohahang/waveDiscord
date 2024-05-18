@@ -1,85 +1,64 @@
 // upDateButton.js
 
-const guildSettingsSchema = require('../../mongoDB/guildSettingsSchema');
-const mainChannelMessage = require('../../events/guildCreate/mainChannel/mainChannelMessage');
+const GuildSettings = require('../../services/GuildSettings');
 
-const adminMessage = require('../guildCreate/adminChannel/adminChannelMessage');
+const adminChannelMessage = require('../guildCreate/adminChannel/adminChannelMessage');
+const mainChannelMessage = require('../guildCreate/mainChannel/mainChannelMessage');
 
-function upDateMessage() {
-    let message;
-
-    message = '## 업데이트 완료' + '\n';
-    message += '> * 현재 **Wave** 는 보완과 개발 단계에 있습니다. ' + '\n';
-    message += '> * 개발은 지금도 진행 중이며 가끔 업데이트 버튼을 눌러주세요.' + '\n';
-
-    return message;
-};
-
-async function deleteMessages(channel) {
+async function adminUpDate(interaction) {
     try {
-        const messages = await channel.messages.fetch({ limit: 10 });
-        // await channel.bulkDelete(messages);
+        // 채널 메시지 수집
+        const messages = await interaction.channel.messages.fetch({ limit: 10 });
+
+        // 메시지 모두 삭제
         messages.forEach(message => {
             message.delete().catch(error => console.error(`deleteMessages() 메시지 삭제 중 오류 발생: ${error}`));
         });
+
+        // 메시지 전송
+        await adminChannelMessage(interaction.guild);
     } catch (error) {
-        console.error(`메시지 삭제 중 오류 발생: ${error}`);
+        console.error('adminUpDate 에러 : ', error);
+        throw error;
     };
 };
 
-async function adminChannelUpDate(interaction) {
-    const channel = interaction.channel;
-    const guild = interaction.guild;
-
-    // 관리자 채널 메시지 전부 삭제
-    await deleteMessages(channel);
-
-    // 관리자 채널 메시지 전송
-    await adminMessage(guild);
-};
-
-async function mainChannelUpDate(interaction) {
+async function mainUpDate(interaction) {
     try {
-        // 길드 메인 채널 id 가지고 오기
-        const guildId = interaction.guild.id;
-        const guildSettings = await guildSettingsSchema.findOne({ guildId: guildId });
+        // GuildSettings 인스턴스 생성
+        const guildSettings = new GuildSettings(interaction.guild.id);
 
+        // 길드 메인 채널 id
+        const mainChannelId = await guildSettings.loadMainChannelId();
 
-        if (guildSettings && guildSettings.mainChannelId) {
-            const mainChannel = await interaction.guild.channels.resolve(guildSettings.mainChannelId);
-            if (mainChannel) {
-                // 길드 메인 채널 메시지 전부 삭제
-                await deleteMessages(mainChannel);
+        const mainChannel = await interaction.guild.channels.resolve(mainChannelId);
+        if (mainChannel) {
+            // 채널 메시지 수집
+            const messages = await mainChannel.messages.fetch({ limit: 10 });
 
-                // 메인 채널 메시지 전송
-                await mainChannelMessage(interaction.guild);
-            }
-        }
+            // 메시지 모두 삭제
+            messages.forEach(message => {
+                message.delete().catch(error => console.error(`deleteMessages() 메시지 삭제 중 오류 발생: ${error}`));
+            });
+
+            // 메시지 전송
+            await mainChannelMessage(interaction.guild);
+        };
     } catch (error) {
-        console.error(`메인 채널 업데이트 중 오류 발생: ${error}`);
+        console.error('mainUpDate 에러 : ', error);
+        throw error;
     };
 };
 
-async function upDateButton(interaction) {
-    await Promise.all([adminChannelUpDate(interaction), mainChannelUpDate(interaction)]);
+module.exports = async (interaction) => {
+    try {
+        // 관리자 채널 업데이트
+        await adminUpDate(interaction);
 
-    // 업데이트 내용 알림
-    await interaction.reply({
-        content: upDateMessage(),
-        ephemeral: true
-    });
+        // 메인 채널 업데이트
+        await mainUpDate(interaction);
+
+    } catch (error) {
+        console.error('upDateButton.js 에러', error);
+    }
 };
-
-// 메뉴 수정해서 자동 업데이트
-async function upDateButtonMenu(interaction) {
-    await Promise.all([adminChannelUpDate(interaction), mainChannelUpDate(interaction)]);
-
-    // 업데이트 내용 알림
-    await interaction.update({
-        content: '## 업데이트 완료',
-        ephemeral: true,
-        components: [],
-    });
-}
-
-module.exports = { upDateButton, upDateButtonMenu };

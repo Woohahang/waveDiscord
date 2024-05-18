@@ -16,6 +16,6 @@ let guildSettingsSchema = new mongoose.Schema({
 
 });
 
-const GuildSettingsSchema = mongoose.model('guildSettingsSchema', guildSettingsSchema);
+const GuildSettingsSchema = mongoose.model('guildSettingsSchemaTest', guildSettingsSchema);
 
 module.exports = GuildSettingsSchema;

@@ -26,12 +26,6 @@ async function toggleMenuHandler(interaction, action) {
 
         await visibilityData.save();
 
-        // await interaction.update({
-        //     content: action === 'showMenu' ? '> * 선택한 게임이 메뉴에 나타납니다.\n> * 업데이트 버튼을 눌러주세요.' : '> * 선택한 게임 메뉴를 숨깁니다.\n> * 업데이트 버튼을 눌러주세요.',
-        //     components: [],
-        //     ephemeral: true
-        // });
-
         upDateButtonMenu(interaction);
 
 

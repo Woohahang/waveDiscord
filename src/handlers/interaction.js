@@ -8,7 +8,7 @@ const { removeNickname } = require('../events/userNickName/removeNickname');
 const { toggleMenuHandler } = require('../events/serverManagement/toggleMenuHandler');
 const { gameMenuToggle } = require('../events/serverManagement/gameMenuToggle');
 const { saveUserNickname } = require('../events/userNickName/saveUserNickname');
-const { upDateButton } = require('../events/serverManagement/upDateButton');
+const upDateButton = require('../events/serverManagement/upDateButton');
 const { checkAdminRole } = require('../module/checkAdminRole');
 
 /* 멀티 툴 */
