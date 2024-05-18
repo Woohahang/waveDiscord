@@ -6,7 +6,6 @@ const adminChannelMessage = require('../guildCreate/adminChannel/adminChannelMes
 const mainChannelMessage = require('../guildCreate/mainChannel/mainChannelMessage');
 const { messagesDelete } = require('../../module/common/messagesDelete');
 
-
 const mainChannelCreate = require('../guildCreate/mainChannel/mainChannelCreate');
 
 async function adminUpDate(interaction) {
@@ -18,7 +17,6 @@ async function adminUpDate(interaction) {
         await adminChannelMessage(interaction.guild);
     } catch (error) {
         console.error('adminUpDate 에러 : ', error);
-        throw error;
     };
 };
 
@@ -49,13 +47,18 @@ async function mainUpDate(interaction) {
             // 메인 채널 메세지 전송
             await mainChannelMessage(interaction.guild);
 
-            await interaction.reply({ content: '> 닉네임 등록 채널을 찾지 못해 하나 만들었어요 !\n> 혹시 옛날 닉네임 등록 채널이 남아있다면 삭제 부탁해요 !', ephemeral: true });
+            return true;
         };
     } catch (error) {
         console.error('mainUpDate 에러 : ', error);
-        throw error;
     };
 };
+
+const message =
+    '\n' + '## 업데이트 완료' +
+    '\n' + '> * 현재 **Wave** 는 보완과 개발 단계에 있습니다. ' +
+    '\n' + '> * 개발은 지금도 진행 중이며 가끔 업데이트 버튼을 눌러주세요.';
+
 
 module.exports = async (interaction) => {
     try {
@@ -63,7 +66,13 @@ module.exports = async (interaction) => {
         await adminUpDate(interaction);
 
         // 메인 채널 업데이트
-        await mainUpDate(interaction);
+        const create = await mainUpDate(interaction);
+
+        if (create) {
+            await interaction.reply({ content: '> 닉네임 등록 채널을 찾지 못해 하나 만들었어요 !\n> 혹시 옛날 닉네임 등록 채널이 남아있다면 삭제 부탁해요 !', ephemeral: true });
+        } else {
+            await interaction.reply({ content: message, components: [], ephemeral: true });
+        };
 
     } catch (error) {
         console.error('upDateButton.js 에러', error);

@@ -1,7 +1,7 @@
 // toggleMenuHandler.js
 
 const guildSettingsSchema = require('../../mongoDB/guildSettingsSchema.js');
-const { upDateButtonMenu } = require('../../events/serverManagement/upDateButton.js');
+const upDateButtonMenu = require('../../events/serverManagement/upDateButton.js');
 
 async function toggleMenuHandler(interaction, action) {
     if (!interaction.isStringSelectMenu()) return;
