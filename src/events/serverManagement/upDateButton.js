@@ -54,7 +54,7 @@ async function mainUpDate(interaction) {
     };
 };
 
-const message =
+const updateCompleted =
     '\n' + '## 업데이트 완료' +
     '\n' + '> * 현재 **Wave** 는 보완과 개발 단계에 있습니다. ' +
     '\n' + '> * 개발은 지금도 진행 중이며 가끔 업데이트 버튼을 눌러주세요.';
@@ -71,7 +71,7 @@ module.exports = async (interaction) => {
         if (create) {
             await interaction.reply({ content: '> 닉네임 등록 채널을 찾지 못해 하나 만들었어요 !\n> 혹시 옛날 닉네임 등록 채널이 남아있다면 삭제 부탁해요 !', ephemeral: true });
         } else {
-            await interaction.reply({ content: message, components: [], ephemeral: true });
+            await interaction.reply({ content: updateCompleted, components: [], ephemeral: true });
         };
 
     } catch (error) {
