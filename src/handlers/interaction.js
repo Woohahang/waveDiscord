@@ -4,7 +4,7 @@
 const { checkInteractionAdmin } = require('../module/checkAdminPermissionOn')
 
 const createNicknameModal = require('../events/userNickName/createNicknameModal');
-const { removeNickname } = require('../events/userNickName/removeNickname');
+const removeNickname = require('../events/userNickName/removeNickname');
 const { toggleMenuHandler } = require('../events/serverManagement/toggleMenuHandler');
 const { gameMenuToggle } = require('../events/serverManagement/gameMenuToggle');
 const saveUserNickname = require('../events/userNickName/saveUserNickname');

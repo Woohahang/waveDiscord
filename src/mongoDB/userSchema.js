@@ -6,7 +6,7 @@ let userSchema = new mongoose.Schema({
 
     userId: String,
 
-    steam: [String],
+    steam: String,
     loL: [String],
     tfT: [String],
     steamBG: [String],

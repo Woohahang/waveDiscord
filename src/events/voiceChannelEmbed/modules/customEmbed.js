@@ -16,15 +16,16 @@ async function createFields(userData, guildSettings) {
     const fields = [];
 
     // 스팀
-    let steamNickNames = '';
-    if (guildSettings.steam && userData.steam.length > 0) {
-        let includesSteamCommunity;
-        userData.steam.forEach(nickname => {
-            includesSteamCommunity = nickname.includes("https://steamcommunity.com/");
-            steamNickNames += `${nickname}\n`;
-        });
+    if (guildSettings.steam) {
+        // 스팀 닉네임
+        let steamNickName = userData.steam;
 
-        fields.push({ name: 'Steam', value: includesSteamCommunity ? `[스팀 친구 추가](${removeSpaces(steamNickNames)})` : steamNickNames });
+        // 스팀 닉네임이 주소인지 체크
+        let steamLinkIncluded = steamNickName.includes("https://steamcommunity.com/");
+
+        // 주소라면 클릭할 수 있는 링크, 친구 코드만 적었다면 클릭 없는 문자열
+        fields.push({ name: 'Steam', value: steamLinkIncluded ? `[스팀 친구 추가](${removeSpaces(steamNickName)})` : steamNickName });
+
     };
 
     // 리그 오브 레전드
@@ -32,8 +33,21 @@ async function createFields(userData, guildSettings) {
     if (guildSettings.loL && userData.loL.length > 0) {
         userData.loL.forEach(nickname => {
             if (nickname && !nickname.includes('#')) {
+
                 nickname += '#KR1';
             };
+
+            // 태그 이름
+            let riotTag = nickname.split('#')[1];
+
+            // 태그를 대문자로 변환
+            let defaultTag = riotTag.toUpperCase();
+
+            // kr1 -> KR1 로 변환 (일관성을 위해)
+            if (defaultTag === 'KR1') {
+                nickname = nickname.split('#')[0] + riotTag.toUpperCase();
+            };
+
             loLNickNames += `[${nickname}](https://www.op.gg/summoners/kr/${loLCustom(nickname)})\n`;
         });
         fields.push({ name: '리그 오브 레전드', value: loLNickNames });

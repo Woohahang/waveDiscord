@@ -44,12 +44,12 @@ module.exports = async (interaction) => {
         if (interaction.values[0] === 'noOptions') {
             interaction.deferUpdate();
 
-            menuSelectionResetter(interaction);
+            await menuSelectionResetter(interaction);
             return;
         };
 
         // 메뉴 초기화
-        menuSelectionResetter(interaction);
+        await menuSelectionResetter(interaction);
 
         // 게임 이름
         const gameTitle = interaction.values[0];

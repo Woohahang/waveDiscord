@@ -53,7 +53,15 @@ class UserSettings {
 
             let nickNameSave = null;
 
-            if (this.settingsData[customId].length < 5) {
+            if (customId === 'steam') {
+
+                this.settingsData.steam = content;
+
+                await this.settingsData.save();
+
+                nickNameSave = true;
+
+            } else if (this.settingsData[customId].length < 5 && customId !== 'steam') {
 
                 // 닉네임 업데이트
                 this.settingsData[customId].push(content);
