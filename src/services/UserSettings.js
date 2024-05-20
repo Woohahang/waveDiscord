@@ -23,7 +23,7 @@ class UserSettings {
             return this.settingsData;
         } catch (error) {
             console.error('UserSettings load 오류 : ' + error);
-        }
+        };
     };
 
     // 유저 설정을 불러옴 + 없으면 만들어서 불러옴
@@ -43,7 +43,32 @@ class UserSettings {
         } catch (error) {
             console.error('UserSettings loadOrCreate 오류 : ' + error);
         };
+    };
 
+    async saveNickName(customId, content) {
+        try {
+            if (!this.settingsData) {
+                throw new Error('유저 데이터가 로드되지 않았습니다.');
+            };
+
+            let nickNameSave = null;
+
+            if (this.settingsData[customId].length < 5) {
+
+                // 닉네임 업데이트
+                this.settingsData[customId].push(content);
+
+                await this.settingsData.save();
+                nickNameSave = true;
+            } else {
+                nickNameSave = false;
+            };
+
+            return nickNameSave;
+
+        } catch (error) {
+            console.error('saveNickName 에러 : ', error);
+        };
     };
 
 };

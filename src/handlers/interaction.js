@@ -7,7 +7,7 @@ const createNicknameModal = require('../events/userNickName/createNicknameModal'
 const { removeNickname } = require('../events/userNickName/removeNickname');
 const { toggleMenuHandler } = require('../events/serverManagement/toggleMenuHandler');
 const { gameMenuToggle } = require('../events/serverManagement/gameMenuToggle');
-const { saveUserNickname } = require('../events/userNickName/saveUserNickname');
+const saveUserNickname = require('../events/userNickName/saveUserNickname');
 const upDateButton = require('../events/serverManagement/upDateButton');
 const { checkAdminRole } = require('../module/checkAdminRole');
 
@@ -21,7 +21,6 @@ const { teamEmbedDelete } = require('../events/multitools/teamShuffler/teamEmbed
 const { teamShufflerHandler } = require('../events/multitools/teamShuffler/teamShufflerHandler');
 const { showTeamNumberModal } = require('../events/multitools/teamShuffler/showTeamNumberModal');
 const { teamReshuffle } = require('../events/multitools/teamShuffler/teamReshuffle');
-
 
 const teamShufflerMap = new Map();
 
@@ -115,8 +114,10 @@ async function handleSubmitModal(interaction, customId, values) {
     const customIdParts = customId.split('-');
     const lastPart = customIdParts[customIdParts.length - 1];
 
+
     switch (lastPart) {
-        case 'submitNickname': // 닉네임 제출 -> DB 저장
+        case 'submitNickname': // 닉네임 제출 -> DB 저장 // 이게 원래거임 나중에 풀기
+
             saveUserNickname(interaction);
 
         case 'users':

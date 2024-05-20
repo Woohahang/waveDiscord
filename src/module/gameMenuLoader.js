@@ -46,8 +46,7 @@ module.exports = async (guildId) => {
             visibleGames.forEach(game => {
                 gameMenuSelect.addOptions(createGameOption(game));
             });
-        }
-
+        };
 
         let row = new ActionRowBuilder().addComponents(gameMenuSelect);
 

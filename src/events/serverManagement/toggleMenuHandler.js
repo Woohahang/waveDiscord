@@ -1,7 +1,8 @@
 // toggleMenuHandler.js
 
 const guildSettingsSchema = require('../../mongoDB/guildSettingsSchema.js');
-const upDateButtonMenu = require('../../events/serverManagement/upDateButton.js');
+// const upDateButtonMenu = require('../../events/serverManagement/upDateButton.js');
+const { serverUpDate } = require('../../events/guildCreate/adminChannel/module/serverUpDate');
 
 async function toggleMenuHandler(interaction, action) {
     if (!interaction.isStringSelectMenu()) return;
@@ -24,10 +25,21 @@ async function toggleMenuHandler(interaction, action) {
             visibilityData[gameKey] = action === 'showMenu' ? true : false;
         });
 
+        // DB 저장
         await visibilityData.save();
 
-        upDateButtonMenu(interaction);
 
+
+        // 서버 모든 메뉴 업데이트
+        await serverUpDate(interaction);
+
+        const updateCompleted =
+            '\n' + '## 업데이트 완료' +
+            '\n' + '> * 닉네임 등록 채널 메뉴' +
+            '\n' + '> * 음성 채널 입장 메뉴';
+
+        // 업데이트 완료 알림 전송
+        await interaction.update({ content: updateCompleted, components: [], ephemeral: true });
 
     } catch (error) {
         console.error(`메뉴 ${action} 처리 중 에러 발생:`, error);
