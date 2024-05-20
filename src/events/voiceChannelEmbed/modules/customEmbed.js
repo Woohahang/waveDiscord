@@ -99,6 +99,7 @@ function customEmbed(member, fields, updatedAt) {
         .setFooter({ text: '――――――――― update', iconURL: 'https://cdn-icons-png.flaticon.com/512/5052/5052710.png' });
 
     return embed;
+
 };
 
 module.exports = { createFields, customEmbed };

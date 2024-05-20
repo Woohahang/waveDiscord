@@ -16,6 +16,18 @@ async function deleteEmbed(State, member) {
     try {
         waveEmbeds.forEach(message => {
             message.embeds.forEach(embed => {
+
+                // console.log('나갈 때');
+                // console.log('embed.author.url : ', embed.author.url);
+
+                // console.log('이거 트루여야 된다..');
+                // console.log(embed.author.url.includes(member.user.avatar));
+
+
+                // console.log('embed.author.name : ', embed.author.name)
+                // console.log('displayName : ', displayName);
+
+
                 if (embed.author && embed.author.url && embed.author.url.includes(member.user.avatar) && embed.author.name == displayName) {
                     if (message) message.delete().catch(error => console.error('메시지를 삭제하지 못 했습니다.'));
                 };
