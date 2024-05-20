@@ -36,15 +36,6 @@ module.exports = async (newState) => {
         // 임베드 전송
         await channel.send({ embeds: [embed] });
 
-
-
-        // console.log('보내다.');
-        // console.log('member.user.displayAvatarURL() : ', member.user.displayAvatarURL());
-        // console.log('member.user.avatarURL()', member.user.avatarURL());
-
-
-
-
     } catch (error) {
         console.error('sendEmbedOnVoiceJoin 에러 : ', error);
     };
