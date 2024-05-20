@@ -1,28 +1,28 @@
 // userSearch.js
 
-const { UserSelectMenuBuilder, ActionRowBuilder } = require('discord.js');
+// const { UserSelectMenuBuilder, ActionRowBuilder } = require('discord.js');
 
 
-async function userSearch(interaction) {
+// async function userSearch(interaction) {
 
-    const userSelect = new UserSelectMenuBuilder()
-        .setCustomId('users')
-        .setPlaceholder('Select multiple users.')
-        .setMinValues(1)
-        .setMaxValues(5)
+//     const userSelect = new UserSelectMenuBuilder()
+//         .setCustomId('users')
+//         .setPlaceholder('Select multiple users.')
+//         .setMinValues(1)
+//         .setMaxValues(5)
 
-    const row = new ActionRowBuilder()
-        .addComponents(userSelect);
+//     const row = new ActionRowBuilder()
+//         .addComponents(userSelect);
 
-    await interaction.reply({
-        content: '테스트',
-        components: [row],
-        ephemeral: true
-    });
+//     await interaction.reply({
+//         content: '테스트',
+//         components: [row],
+//         ephemeral: true
+//     });
 
-};
+// };
 
-module.exports = { userSearch };
+// module.exports = { userSearch };
 
 /*
 

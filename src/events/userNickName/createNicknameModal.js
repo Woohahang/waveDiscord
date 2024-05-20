@@ -21,7 +21,7 @@ function getModalConfig(gameTitle) {
     };
 
     // 펼쳐서 수정하고 리턴
-    return { ...config, customId: `${config.customId}-submitNickname` };
+    return { ...config, customId: `submitNickname_${config.customId}` };
 };
 
 // 제목, 내용, id  모달에 집어 넣기

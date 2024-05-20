@@ -59,6 +59,8 @@ class UserSettings {
                 this.settingsData[customId].push(content);
 
                 await this.settingsData.save();
+
+                // 닉네임 저장 성공 여부
                 nickNameSave = true;
             } else {
                 nickNameSave = false;

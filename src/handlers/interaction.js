@@ -75,8 +75,6 @@ async function handleChatInputCommand(interaction) {
     };
 };
 
-
-
 async function handleButtonInteraction(interaction, customId, values) {
     switch (customId) {
 
@@ -111,22 +109,16 @@ async function handleButtonInteraction(interaction, customId, values) {
 };
 
 async function handleSubmitModal(interaction, customId, values) {
-    const customIdParts = customId.split('-');
-    const lastPart = customIdParts[customIdParts.length - 1];
+    const customIdParts = customId.split('_')[0];
 
-
-    switch (lastPart) {
-        case 'submitNickname': // 닉네임 제출 -> DB 저장 // 이게 원래거임 나중에 풀기
-
+    switch (customIdParts) {
+        case 'submitNickname':
             saveUserNickname(interaction);
-
-        case 'users':
-            console.log('선택 완료');
             break;
 
         case 'teamNumberModal':
             excludeMembers(interaction, values);
-
+            break;
     };
 };
 
