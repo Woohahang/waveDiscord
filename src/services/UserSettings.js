@@ -29,7 +29,6 @@ class UserSettings {
     // 유저 설정을 불러옴 + 없으면 만들어서 불러옴
     async loadOrCreate() {
         try {
-
             let userData = await userSchema.findOne({ userId: this.userId });
 
             if (!userData) {

@@ -44,7 +44,7 @@ async function createFields(userData, guildSettings) {
 
             // kr1 -> KR1 로 변환 (일관성을 위해)
             if (defaultTag === 'KR1') {
-                nickname = nickname.split('#')[0] + riotTag.toUpperCase();
+                nickname = nickname.split('#')[0] + '#' + riotTag.toUpperCase();
             };
 
             loLNickNames += `[${nickname}](https://www.op.gg/summoners/kr/${loLCustom(nickname)})\n`;

@@ -30,7 +30,7 @@ class GuildSettings {
         } catch (error) {
             console.error(`GuildSettings loadOrCreate 오류: ${error}`);
             throw error; // 오류를 다시 던져서 상위 호출자가 이를 처리할 수 있도록 함
-        }
+        };
     };
 
     // 채널 Id 업데이트
@@ -89,8 +89,6 @@ class GuildSettings {
             throw error;
         };
     };
-
-
 
 };
 

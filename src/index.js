@@ -29,7 +29,6 @@ for (const folder of commandFolders) {
     };
 };
 
-
 client.once(Events.ClientReady, readyClient => {
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
@@ -49,5 +48,6 @@ client.on(Events.InteractionCreate, async interaction => {
 client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
     handleVoiceStateUpdate(oldState, newState);
 });
+
 
 client.login(token);
