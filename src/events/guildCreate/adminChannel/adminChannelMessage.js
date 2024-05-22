@@ -30,19 +30,13 @@ module.exports = async (guild) => {
         const adminChannelId = await guildSettings.loadAdminChannelId();
 
         // 관리자 채널 객체를 얻음
-        const channel = guild.channels.cache.get(adminChannelId);
+        const channel = await guild.channels.cache.get(adminChannelId);
 
-        if (channel) {
-            // 메시지 전송
-            await adminMessage(channel);
-        } else {
-            console.log('채널이 존재하지 않습니다. 나중에 처리하기');
-            // 이거 여기에 관리자에게 직접 1:1 DM 보내면 되겠다.
-            // 알 수 없는 에러로 관리자 채널의 데이터를 날렸다고
-            //  번거롭지만 추방 이후 다시 초대해달라고
-        };
+        await adminMessage(channel);
+
 
     } catch (error) {
         console.error('adminChannelMessage.js 에러 : ', error);
     };
 };
+

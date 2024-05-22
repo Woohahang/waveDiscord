@@ -1,34 +1,28 @@
 // toggleMenuHandler.js
 
-const guildSettingsSchema = require('../../mongoDB/guildSettingsSchema.js');
-// const upDateButtonMenu = require('../../events/serverManagement/upDateButton.js');
 const { serverUpDate } = require('../../events/guildCreate/adminChannel/module/serverUpDate');
+const GuildSettings = require('../../services/GuildSettings');
 
 async function toggleMenuHandler(interaction, action) {
-    if (!interaction.isStringSelectMenu()) return;
-
     try {
+        if (!interaction.isStringSelectMenu()) return;
+
         const selections = interaction.values;
 
-        const targetGuildId = interaction.guildId;
+        // 길드 인스턴스 생성
+        const guildSettings = new GuildSettings(interaction.guild.id);
 
-        let visibilityData = await guildSettingsSchema.findOne({ guildId: targetGuildId });
-
-        if (!visibilityData) {
-            console.error('길드 데이터를 찾을 수 없습니다.');
-            return;
-        };
+        // 길드 데이터
+        let guildData = await guildSettings.loadOrCreate();
 
         selections.forEach(selection => {
             const gameKey = selection.replace(`${action}`, '');
             // 의도, DB 의 게임에 true 또는 false 적용
-            visibilityData[gameKey] = action === 'showMenu' ? true : false;
+            guildData[gameKey] = action === 'showMenu' ? true : false;
         });
 
         // DB 저장
-        await visibilityData.save();
-
-
+        await guildData.save();
 
         // 서버 모든 메뉴 업데이트
         await serverUpDate(interaction);
@@ -42,7 +36,7 @@ async function toggleMenuHandler(interaction, action) {
         await interaction.update({ content: updateCompleted, components: [], ephemeral: true });
 
     } catch (error) {
-        console.error(`메뉴 ${action} 처리 중 에러 발생:`, error);
+        console.error('toggleMenuHandler.js 에러 : ', error);
 
         await interaction.reply({
             content: '오류가 발생했습니다. 다시 시도해주세요.',

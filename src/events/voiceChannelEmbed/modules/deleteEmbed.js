@@ -6,7 +6,6 @@ async function deleteEmbed(State, member) {
     const channel = State.channel;
     const displayName = member.nickname ? member.nickname : member.user.globalName;
 
-
     const messages = await channel.messages.fetch({ limit: 15 });
     if (!messages) return;
 
@@ -30,10 +29,3 @@ async function deleteEmbed(State, member) {
 };
 
 module.exports = { deleteEmbed };
-
-/* .includes() 란,
-embed.author?.url.includes(member.user.avatar)
-embed.author?.url 안에 member.user.avatar 포함 되어 있으면 true
-embed.author?.url === https://cdn.discordapp.com/avatars/386134294508339210/bbb8107f2e9b6e961be173b0601c99ac.webp
-member.user.avatar === bbb8107f2e9b6e961be173b0601c99ac
-*/

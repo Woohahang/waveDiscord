@@ -3,7 +3,7 @@
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
 const { menuSelectionResetter } = require('../../module/common/menuSelectionResetter');
 
-const guildSettingsSchema = require('../../mongoDB/guildSettingsSchema.js');
+const GuildSettings = require('../../services/GuildSettings');
 
 const gameLabels = {
     steam: 'Steam',
@@ -31,20 +31,18 @@ async function gameMenuToggle(interaction, type) {
         // 관리자 메뉴 초기화 ex) 메뉴 보이기 창에서 선택하세요! 로 바뀜
         menuSelectionResetter(interaction);
 
-        const targetGuildId = interaction.guildId;
+        // 길드 인스턴스 생성
+        const guildSettings = new GuildSettings(interaction.guild.id);
 
-        let guildSettingsData = await guildSettingsSchema.findOne({ guildId: targetGuildId });
+        // 길드 데이터
+        const guildData = await guildSettings.loadOrCreate();
 
-        if (!guildSettingsData) {
-            guildSettingsData = new guildSettingsSchema({ guildId: targetGuildId });
-            await guildSettingsData.save();
-        }
 
         let games;
         if (type === 'showMenu') {
-            games = Object.entries(guildSettingsData.toObject()).filter(([key, value]) => value === false).map(([key]) => key);
+            games = Object.entries(guildData.toObject()).filter(([key, value]) => value === false).map(([key]) => key);
         } else if (type === 'hideMenu') {
-            games = Object.entries(guildSettingsData.toObject()).filter(([key, value]) => value === true).map(([key]) => key);
+            games = Object.entries(guildData.toObject()).filter(([key, value]) => value === true).map(([key]) => key);
         }
 
         // 숨길 게임이 없는 경우 사용자에게 알림

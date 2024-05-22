@@ -38,7 +38,6 @@ function buildModal({ title, customId, label }) {
     return modal;
 };
 
-
 module.exports = async (interaction) => {
     try {
         if (interaction.values[0] === 'noOptions') {

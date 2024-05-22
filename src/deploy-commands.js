@@ -53,7 +53,6 @@ const rest = new REST().setToken(token);
 })();
 
 
-
 // 아래는 커맨드 삭제를 원할 때 주석을 풀고 node deploy-commands.js
 // rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: [] })
 //     .then(() => console.log('Successfully deleted all guild commands.'))

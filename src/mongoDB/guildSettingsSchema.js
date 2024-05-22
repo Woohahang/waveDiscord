@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { guildSetting } = require('../../../config.json');
 
 let guildSettingsSchema = new mongoose.Schema({
 
@@ -16,6 +17,6 @@ let guildSettingsSchema = new mongoose.Schema({
 
 });
 
-const GuildSettingsSchema = mongoose.model('guildSettingsSchemaTest', guildSettingsSchema);
+const GuildSettingsSchema = mongoose.model(guildSetting, guildSettingsSchema);
 
 module.exports = GuildSettingsSchema;
