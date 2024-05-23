@@ -3,11 +3,10 @@
 const { generateTeamEmbed } = require('./module/createTeamEmbed');
 const { teamEmbedDeleteButton } = require('./teamEmbedDeleteButton');
 const { checkVoiceChannelMatch } = require('./module/checkVoiceChannel');
+const { enableButtonsLater } = require('./module/enableButtonsLater');
 
-// 팀 섞기 : 다시 섞기
-async function teamReshuffle(interaction, values) {
+module.exports = async (interaction, values) => {
     try {
-
         // 음성 채널 위치와 버튼 위치 일치하는지 체크
         const voiceChannel = await checkVoiceChannelMatch(interaction);
         if (!voiceChannel) return;
@@ -20,15 +19,8 @@ async function teamReshuffle(interaction, values) {
             components: [teamEmbedDeleteButton()]
         });
 
-        // 5초 뒤 삭제 버튼 활성화
-        setTimeout(async () => {
-            // 버튼을 활성화 상태로 업데이트
-            const updatedRow = teamEmbedDeleteButton(false); // false를 전달하여 버튼을 활성화
-            await sentMessage.edit({
-                embeds: [embed], // embed 변수는 여전히 유효한 범위 내에 있어야 합니다.
-                components: [updatedRow]
-            });
-        }, 5000);
+        // 5초 후 버튼 활성화
+        enableButtonsLater(sentMessage, embed);
 
         await interaction.reply({
             content: '같은 옵션으로 팀을 재구성 했습니다.',
@@ -39,5 +31,3 @@ async function teamReshuffle(interaction, values) {
         console.error('teamReshuffle 에러 : ' + error);
     };
 };
-
-module.exports = { teamReshuffle };

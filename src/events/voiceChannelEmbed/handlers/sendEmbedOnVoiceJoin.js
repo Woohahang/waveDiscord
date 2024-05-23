@@ -14,11 +14,11 @@ module.exports = async (newState) => {
         const channel = newState.channel;
         const guildId = newState.guild.id;
 
-        // 유저 닉네임 조회
-        const userSettingsInstance = new UserSettings(member.user.id);
-        const userNicknames = await userSettingsInstance.load();
+        // 유저 정보 조회
+        const userNicknames = await UserSettings.load(member.id);
         if (!userNicknames) return;
 
+        // 이건 인스턴스로 제대로 팍 쓰는게 좋을듯?
         // 길드 셋팅 조회
         const guildSettingsInstance = new GuildSettings(guildId);
         const guildSettings = await guildSettingsInstance.loadOrCreate();

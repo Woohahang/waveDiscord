@@ -14,9 +14,8 @@ module.exports = async (oldState, newState) => {
 
         await deleteEmbed(oldState, oldState.member);
 
-        // 유저 닉네임들
-        const userSettings = new UserSettings(member.id);
-        const userData = await userSettings.load();
+        // 유저 정보 조회
+        const userData = await UserSettings.load(member.id);
         if (!userData) return;
 
         // 길드 셋팅

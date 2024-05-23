@@ -15,12 +15,12 @@ const { checkAdminRole } = require('../module/checkAdminRole');
 const multitools = require('../events/multitools/multitools');
 
 /* 팀 섞기 */
-const { teamShuffler } = require('../events/multitools/teamShuffler/teamShuffler');
+const teamShuffler = require('../events/multitools/teamShuffler/teamShuffler');
 const { excludeMembers } = require('../events/multitools/teamShuffler/excludeMembers');
 const { teamEmbedDelete } = require('../events/multitools/teamShuffler/teamEmbedDeleteHandler');
-const { teamShufflerHandler } = require('../events/multitools/teamShuffler/teamShufflerHandler');
-const { showTeamNumberModal } = require('../events/multitools/teamShuffler/showTeamNumberModal');
-const { teamReshuffle } = require('../events/multitools/teamShuffler/teamReshuffle');
+const teamShufflerHandler = require('../events/multitools/teamShuffler/teamShufflerHandler');
+const showTeamNumberModal = require('../events/multitools/teamShuffler/showTeamNumberModal');
+const teamReshuffle = require('../events/multitools/teamShuffler/teamReshuffle');
 
 const teamShufflerMap = new Map();
 
