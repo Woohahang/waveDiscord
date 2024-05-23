@@ -17,10 +17,10 @@ function generateOptions(userData) {
 
     platforms.forEach(platform => {
         if (userData[platform.key]) {
-            userData[platform.key].forEach((item, index) => {
+            userData[platform.key].forEach(nickName => {
                 options.push({
-                    value: `${platform.key}${index}`,
-                    label: item,
+                    value: platform.key + '_' + nickName,
+                    label: nickName,
                     description: platform.description
                 });
             });
