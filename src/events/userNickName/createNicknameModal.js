@@ -47,9 +47,6 @@ module.exports = async (interaction) => {
             return;
         };
 
-        // 메뉴 초기화
-        await menuSelectionResetter(interaction);
-
         // 게임 이름
         const gameTitle = interaction.values[0];
 
@@ -61,6 +58,10 @@ module.exports = async (interaction) => {
 
         // 모달 띄우기
         await interaction.showModal(modal);
+
+        // 메뉴 초기화
+        await menuSelectionResetter(interaction);
+
     } catch (error) {
         console.error('createNicknameModal.js 예외 : ', error);
     };

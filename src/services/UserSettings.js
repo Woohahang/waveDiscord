@@ -17,7 +17,6 @@ class UserSettings {
         };
     };
 
-
     static async loadOrCreate(userId) {
         // 유저 ID가 문자열인지 확인
         if (typeof userId !== 'string') {
@@ -37,40 +36,54 @@ class UserSettings {
         }
     }
 
-
     static async saveNickName(userId, customId, content) {
-        // 유저 ID가 문자열인지 확인
         if (typeof userId !== 'string') {
-            throw new Error('현우야 실수 했어 유저 ID는 문자열로 해야 돼 !!');
-        }
+            throw new Error('UserSettings.saveNickName 의 userId 타입이 String이 아닙니다.', userId);
+        };
+
         try {
-            // 유저 데이터를 데이터베이스에서 찾기
-            let userData = await userSchema.findOne({ userId });
+            // 유저 데이터 불러오기
+            const userData = await userSchema.findOne({ userId });
             if (!userData) {
                 throw new Error('유저 데이터가 로드되지 않았습니다.');
             }
 
-            let nickNameSave = false;
-
-            // steam ID를 저장하거나 다른 ID를 저장
-            if (customId === 'steam') {
-                userData.steam = content;
-                await userData.save();
-                nickNameSave = true;
-            } else if (userData[customId].length < 5 && customId !== 'steam') {
-                userData[customId].push(content);
-                await userData.save();
-                nickNameSave = true;
+            // 중복 닉네임 체크
+            if (this.isNicknameDuplicate(userData, customId, content)) {
+                return 'nicknameDuplicate';
             }
 
-            return nickNameSave;
+            // 닉네임 5개 제한
+            if (this.isNicknameLimitExceeded(userData, customId)) {
+                return 'nicknameLimitExceeded';
+            }
+
+            // 닉네임 저장
+            await this.storeNickname(userData, customId, content);
+            return 'saveSuccess';
+
         } catch (error) {
             console.error('saveNickName 오류 : ', error);
-            return false;
-        }
-    }
+            return 'saveError';
+        };
+    };
 
+    static isNicknameDuplicate(userData, customId, content) {
+        return userData[customId] && userData[customId].includes(content);
+    };
 
+    static isNicknameLimitExceeded(userData, customId) {
+        return customId === 'steam' ? false : (userData[customId].length > 4);
+    };
+
+    static async storeNickname(userData, customId, content) {
+        if (customId === 'steam') {
+            userData.steam = content;
+        } else {
+            userData[customId].push(content);
+        };
+        await userData.save();
+    };
 
 
 
@@ -123,42 +136,6 @@ class UserSettings {
 
         } catch (error) {
             console.error('UserSettings loadOrCreate 오류 : ' + error);
-        };
-    };
-
-    async saveNickName(customId, content) {
-        try {
-            if (!this.settingsData) {
-                throw new Error('유저 데이터가 로드되지 않았습니다.');
-            };
-
-            let nickNameSave = null;
-
-            if (customId === 'steam') {
-
-                this.settingsData.steam = content;
-
-                await this.settingsData.save();
-
-                nickNameSave = true;
-
-            } else if (this.settingsData[customId].length < 5 && customId !== 'steam') {
-
-                // 닉네임 업데이트
-                this.settingsData[customId].push(content);
-
-                await this.settingsData.save();
-
-                // 닉네임 저장 성공 여부
-                nickNameSave = true;
-            } else {
-                nickNameSave = false;
-            };
-
-            return nickNameSave;
-
-        } catch (error) {
-            console.error('saveNickName 에러 : ', error);
         };
     };
 
