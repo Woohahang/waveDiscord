@@ -22,8 +22,8 @@ module.exports = async (interaction) => {
                 const index = userData[gameType].indexOf(nickName);
                 if (index > -1) {
                     userData[gameType].splice(index, 1);
-                }
-            }
+                };
+            };
         });
 
         // 변경된 스키마를 저장
@@ -37,7 +37,7 @@ module.exports = async (interaction) => {
 
     } catch (error) {
         console.error('removeNickname.js', error);
-    }
+    };
 };
 
 

@@ -2,39 +2,64 @@
 
 const userSchema = require('../mongoDB/userSchema');
 
-class UserSettings {
+const settingsCache = {};
 
-    static async load(userId) {
-        try {
-            if (typeof userId !== 'string') {
-                throw new Error('현우야 실수 했어 유저 ID는 문자열로 해야 돼 !!');
-            }
-            let userData = await userSchema.findOne({ userId });
-            return userData || null;
-        } catch (error) {
-            console.error('UserSettings load 오류 : ', error);
-            return null;
+class UserSettingsCache {
+    static async getInstance(userId) {
+
+        if (!settingsCache[userId]) {
+            const userSettings = new UserSettings(userId);
+            await userSettings.loadOrCreate();
+            settingsCache[userId] = userSettings;
+        };
+
+        return settingsCache[userId];
+    };
+};
+
+class UserSettings {
+    constructor(userId) {
+        this.validateUserId(userId);
+        this.userId = userId;
+        this.settingsData = null;
+    };
+
+    // 유저 ID 검증
+    validateUserId(userId) {
+        if (typeof userId !== 'string') {
+            throw new Error('유저 ID는 문자열로 해야 합니다.');
         };
     };
 
-    static async loadOrCreate(userId) {
-        // 유저 ID가 문자열인지 확인
-        if (typeof userId !== 'string') {
-            throw new Error('현우야 실수 했어 유저 ID는 문자열로 해야 돼 !!');
-        }
+    // 유저 데이터 불러오기
+    static async load(userId) {
         try {
-            // 유저 데이터를 데이터베이스에서 찾거나 새로 생성
+            // 캐시 되어 있다면 로드
+            if (settingsCache[userId]) {
+                console.log('유저 캐시가 있습니다. : ', userId);
+                return settingsCache[userId];
+            };
+
             let userData = await userSchema.findOne({ userId });
-            if (!userData) {
-                userData = new userSchema({ userId });
-                await userData.save();
-            }
+            if (!userData) { return null; };
+
             return userData;
+
         } catch (error) {
-            console.error('UserSettings loadOrCreate 오류 : ', error);
-            return null;
-        }
-    }
+            console.error('UserStettings.js 에러 : ', error);
+        };
+    };
+
+
+    // 데이터베이스에서 유저 설정을 불러오거나 새로 생성
+    static async loadOrCreateById(userId) {
+        let userData = await userSchema.findOne({ userId });
+        if (!userData) {
+            userData = new userSchema({ userId });
+            await userData.save();
+        };
+        return userData;
+    };
 
     static async saveNickName(userId, customId, content) {
         if (typeof userId !== 'string') {
@@ -45,22 +70,32 @@ class UserSettings {
             // 유저 데이터 불러오기
             const userData = await userSchema.findOne({ userId });
             if (!userData) {
-                throw new Error('유저 데이터가 로드되지 않았습니다.');
-            }
+                await this.loadOrCreateById(userId);
 
-            // 중복 닉네임 체크
-            if (this.isNicknameDuplicate(userData, customId, content)) {
+                // 중복 닉네임 체크
+            } else if (userData[customId] && userData[customId].includes(content)) {
                 return 'nicknameDuplicate';
-            }
 
-            // 닉네임 5개 제한
-            if (this.isNicknameLimitExceeded(userData, customId)) {
+                // 닉네임 5개 초과 체크
+            } else if (customId === 'steam' && userData[customId].length > 4) {
                 return 'nicknameLimitExceeded';
-            }
 
-            // 닉네임 저장
-            await this.storeNickname(userData, customId, content);
-            return 'saveSuccess';
+                // 스팀이면 배열 없이 저장
+            } else if (customId === 'steam') {
+
+                userData.steam = content;
+
+                await userData.save();
+
+                return 'saveSuccess';
+
+                // 모든 조건을 피하면 게임 닉네임 저장
+            } else {
+                userData[customId].push(content);
+                await userData.save();
+
+                return 'saveSuccess';
+            };
 
         } catch (error) {
             console.error('saveNickName 오류 : ', error);
@@ -68,77 +103,8 @@ class UserSettings {
         };
     };
 
-    static isNicknameDuplicate(userData, customId, content) {
-        return userData[customId] && userData[customId].includes(content);
-    };
-
-    static isNicknameLimitExceeded(userData, customId) {
-        return customId === 'steam' ? false : (userData[customId].length > 4);
-    };
-
-    static async storeNickname(userData, customId, content) {
-        if (customId === 'steam') {
-            userData.steam = content;
-        } else {
-            userData[customId].push(content);
-        };
-        await userData.save();
-    };
-
-
-
-
-
-
-
-
-
-
-
-    // 아래는 언젠가 지울 코드들
-
-
-    constructor(userId) {
-
-        if (typeof userId !== 'string') {
-            throw new Error('현우야 실수 했어 유저 ID는 문자열로 해야 돼 !!');
-        };
-
-        this.userId = userId;
-        this.settingsData = null;
-    };
-
-    // 유저 설정을 불러옴
-    async load() {
-        try {
-            let userData = await userSchema.findOne({ userId: this.userId });
-            if (!userData) return undefined;
-
-            this.settingsData = userData;
-            return this.settingsData;
-        } catch (error) {
-            console.error('UserSettings load 오류 : ' + error);
-        };
-    };
-
-    // 유저 설정을 불러옴 + 없으면 만들어서 불러옴
-    async loadOrCreate() {
-        try {
-            let userData = await userSchema.findOne({ userId: this.userId });
-
-            if (!userData) {
-                userData = new userSchema({ userId: this.userId });
-                await userData.save();
-            };
-
-            this.settingsData = userData;
-            return this.settingsData;
-
-        } catch (error) {
-            console.error('UserSettings loadOrCreate 오류 : ' + error);
-        };
-    };
-
 };
+
+
 
 module.exports = UserSettings;

@@ -2,6 +2,9 @@
 
 const guildSettingsSchema = require('../mongoDB/guildSettingsSchema');
 
+// 캐시 관리를 위한 객체 추가
+const settingsCache = {};
+
 class GuildSettings {
 
     constructor(guildId) {
@@ -11,12 +14,30 @@ class GuildSettings {
         };
 
         this.guildId = guildId;
+        this.settingsData = null;
+    };
+
+    static async getInstance(guildId) {
+        try {
+            // 캐시에서 인스턴스를 찾는다
+            if (!settingsCache[guildId]) {
+                // 캐시에 없으면 새 인스턴스를 생성하고, loadOrCreate를 호출한다
+                const guildSettings = new GuildSettings(guildId);
+                await guildSettings.loadOrCreate();
+                settingsCache[guildId] = guildSettings; // 캐시에 저장
+            };
+
+            // 캐시에서 인스턴스를 반환한다
+            return settingsCache[guildId];
+
+        } catch (error) {
+            console.error('GuildSettings.js 의 getInstance() 에러 : ', error);
+        };
     };
 
     // MongoDB 에서 길드 셋팅을 가지고 온다. 없다면 생성한다.
     async loadOrCreate() {
         try {
-
             let guildSettingsData = await guildSettingsSchema.findOne({ guildId: this.guildId });
 
             if (!guildSettingsData) {

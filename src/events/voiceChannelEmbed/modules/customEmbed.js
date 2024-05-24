@@ -74,6 +74,20 @@ async function createFields(userData, guildSettings) {
             fields.push({ name: '롤토체스', value: tfTNickNames });
         };
 
+        // 발로란트
+        let valorantNames = '';
+        if (guildSettings.valorant && userData.valorant.length > 0) {
+            userData.valorant.forEach(nickname => {
+
+                nickname = riotGames(nickname);
+
+                valorantNames += `[${nickname}](https://valorant.op.gg/profile/${loLCustom(nickname)})\n`;
+            });
+
+            fields.push({ name: '발로란트', value: valorantNames });
+        };
+
+
         // 스팀 배그
         let steamBGNicknames = '';
         if (guildSettings.steamBG && userData.steamBG.length > 0) {
