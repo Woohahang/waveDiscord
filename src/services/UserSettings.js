@@ -4,18 +4,6 @@ const userSchema = require('../mongoDB/userSchema');
 
 const settingsCache = {};
 
-class UserSettingsCache {
-    static async getInstance(userId) {
-
-        if (!settingsCache[userId]) {
-            const userSettings = new UserSettings(userId);
-            await userSettings.loadOrCreate();
-            settingsCache[userId] = userSettings;
-        };
-
-        return settingsCache[userId];
-    };
-};
 
 class UserSettings {
     constructor(userId) {
@@ -69,15 +57,17 @@ class UserSettings {
         try {
             // 유저 데이터 불러오기
             const userData = await userSchema.findOne({ userId });
+
             if (!userData) {
+                // userData 가 없다면 생성
                 await this.loadOrCreateById(userId);
 
                 // 중복 닉네임 체크
-            } else if (userData[customId] && userData[customId].includes(content)) {
+            } else if (userData[customId].includes(content)) {
                 return 'nicknameDuplicate';
 
                 // 닉네임 5개 초과 체크
-            } else if (customId === 'steam' && userData[customId].length > 4) {
+            } else if (userData[customId].length > 4) {
                 return 'nicknameLimitExceeded';
 
                 // 스팀이면 배열 없이 저장
@@ -101,6 +91,11 @@ class UserSettings {
             console.error('saveNickName 오류 : ', error);
             return 'saveError';
         };
+    };
+
+
+    static async removeNickName() {
+
     };
 
 };
