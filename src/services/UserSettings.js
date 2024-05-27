@@ -2,14 +2,13 @@
 
 const userSchema = require('../mongoDB/userSchema');
 
-const settingsCache = {};
-
+// const settingsCache = {};
 
 class UserSettings {
     constructor(userId) {
         this.validateUserId(userId);
         this.userId = userId;
-        this.settingsData = null;
+        this.userData = null;
     };
 
     // 유저 ID 검증
@@ -51,19 +50,20 @@ class UserSettings {
 
     static async saveNickName(userId, customId, content) {
         if (typeof userId !== 'string') {
-            throw new Error('UserSettings.saveNickName 의 userId 타입이 String이 아닙니다.', userId);
+            throw new Error('UserSettings.saveNickName 의 userId 타입이 String이 아닙니다. userId 타입 : ', typeof userId);
         };
 
         try {
-            // 유저 데이터 불러오기
-            const userData = await userSchema.findOne({ userId });
+
+            let userData = this.userData;
 
             if (!userData) {
-                // userData 가 없다면 생성
-                await this.loadOrCreateById(userId);
+                userData = await this.loadOrCreateById(userId);
+                this.userData = userData; // 캐시 갱신
+            };
 
-                // 중복 닉네임 체크
-            } else if (userData[customId].includes(content)) {
+            // 중복 닉네임 체크
+            if (userData[customId].includes(content)) {
                 return 'nicknameDuplicate';
 
                 // 닉네임 5개 초과 체크
@@ -77,6 +77,7 @@ class UserSettings {
 
                 await userData.save();
 
+                this.userData = userData; // 캐시 갱신
                 return 'saveSuccess';
 
                 // 모든 조건을 피하면 게임 닉네임 저장
@@ -84,6 +85,7 @@ class UserSettings {
                 userData[customId].push(content);
                 await userData.save();
 
+                this.userData = userData; // 캐시 갱신
                 return 'saveSuccess';
             };
 
@@ -94,8 +96,33 @@ class UserSettings {
     };
 
 
-    static async removeNickName() {
+    static async removeNickName(userId, values) {
+        try {
+            // userId 객체
+            const userData = await userSchema.findOne({ userId });
 
+            // values 의 예시 { loL_끼매누, kakaoBG_카카오닉네임 }
+            values.forEach(value => {
+                // _ 를 기준으로 선언
+                const [gameType, nickName] = value.split('_');
+
+                if (userData[gameType]) {
+                    // 게임 종류에서 닉네임이 몇 번째 위치에 있는지 파악
+                    const index = userData[gameType].indexOf(nickName);
+                    if (index > -1) {
+                        // 그 위치 삭제
+                        userData[gameType].splice(index, 1);
+                    };
+                };
+
+            });
+
+            // userData 저장
+            await userData.save();
+
+        } catch (error) {
+            console.error('UserStettings.js 의 removeNickName 에러 : ', error);
+        };
     };
 
 };

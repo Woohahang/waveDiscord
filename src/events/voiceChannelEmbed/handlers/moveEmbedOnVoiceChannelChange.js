@@ -33,6 +33,6 @@ module.exports = async (oldState, newState) => {
         await newState.channel.send({ embeds: [embed] });
 
     } catch (error) {
-        console.error('moveEmbedOnVoiceChannelChange.js 에러 : ' + error);
+        console.error('moveEmbedOnVoiceChannelChange.js 에러 : ', error);
     };
 };

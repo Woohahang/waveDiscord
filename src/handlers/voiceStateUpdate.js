@@ -21,7 +21,7 @@ async function handleVoiceStateUpdate(oldState, newState) {
 
             // 퇴장 조건문
         } else if (oldState.channel && !newState.channel) {
-            deleteEmbedOnVoiceLeave(oldState);
+            await deleteEmbedOnVoiceLeave(oldState);
 
         };
 

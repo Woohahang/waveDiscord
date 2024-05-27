@@ -3,10 +3,14 @@
 const { clientId } = require('../../../../../config.json');
 
 async function deleteEmbed(State, member) {
+
     const channel = State.channel;
+    if (!channel) return; // 음성 채널 접속 상태에서 관리자가 채널 삭제하면 예외 발생함 ;;
+
     const displayName = member.nickname ? member.nickname : member.user.globalName;
 
     const messages = await channel.messages.fetch({ limit: 15 });
+
     if (!messages) return;
 
     // 내 봇(wave) 가 보낸 임베드

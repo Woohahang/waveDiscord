@@ -1,7 +1,7 @@
 // saveUserNickName.js
 
-const UserSettings = require('../../services/UserSettings');
 const { menuSelectionResetter } = require('../../module/common/menuSelectionResetter');
+const UserSettings = require('../../services/UserSettings_test');
 
 function generateSaveMessage(nicknameSaveStatus) {
     let message;
@@ -38,8 +38,11 @@ module.exports = async (interaction) => {
         // customId === 게임변수 ex) kakao 또는 steam 등등
         customId = customId.split('_')[1];
 
-        // 닉네임 DB에 저장 ex) id, loL, 끼매누
-        let nicknameSaveStatus = await UserSettings.saveNickName(userId, customId, content);
+        // 인스턴스 생성
+        const userSettings = new UserSettings(userId);
+
+        // 닉네임 저장 이후 성공여부 반환
+        const nicknameSaveStatus = await userSettings.saveNickName(customId, content);
 
         // 닉네임 성공 여부에 따른 메세지
         const message = generateSaveMessage(nicknameSaveStatus);
@@ -52,6 +55,5 @@ module.exports = async (interaction) => {
 
     } catch (error) {
         console.error('saveUserNickName.js 에러 : ', error);
-        await interaction.reply({ content: "문제가 발생했습니다. 관리자님, 업데이트 버튼을 눌러주세요.", ephemeral: true });
     };
 };

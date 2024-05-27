@@ -1,7 +1,9 @@
 // removeSelectedNickname.js
 
 const { SlashCommandBuilder, StringSelectMenuBuilder, ActionRowBuilder } = require('discord.js');
-const UserSettings = require('../../services/UserSettings');
+// const UserSettings = require('../../services/UserSettings');
+
+const UserSettings = require('../../services/UserSettings_test');
 
 function generateOptions(userData) {
     const options = [];
@@ -53,8 +55,25 @@ module.exports = {
     async execute(interaction) {
         try {
             // 유저 정보 조회
-            let userData = await UserSettings.load(interaction.member.id);
-            if (!userData) { return await interaction.reply({ content: '등록된 정보가 없습니다.', ephemeral: true }); }
+            // let userData = await UserSettings.load(interaction.member.id);
+            // if (!userData) { return await interaction.reply({ content: '등록된 정보가 없습니다.', ephemeral: true }); }
+
+            const userId = interaction.member.id;
+
+            // 인스턴스 생성
+            const userSettings = new UserSettings(userId);
+
+            // 유저 데이터 불러오기
+            const userData = await userSettings.load();
+
+            if (!userData) {
+                await interaction.reply({
+                    content: '등록된 정보가 없습니다.',
+                    ephemeral: true
+                });
+
+                return;
+            };
 
             // 등록 된 닉네임 가공 : 제목, 설명, 값
             const userNicknames = generateOptions(userData);
