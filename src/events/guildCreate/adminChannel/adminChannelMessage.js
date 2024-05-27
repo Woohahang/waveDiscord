@@ -20,23 +20,24 @@ async function adminMessage(channel) {
 
 module.exports = async (guild) => {
     try {
-        // GuildSettings 인스턴스 생성
-        let guildSettings = new GuildSettings(guild.id);
+        // 길드 인스턴스 생성
+        const guildSettings = new GuildSettings(guild.id);
+
+        const channelType = 'adminChannel';
 
         // 길드 설정을 불러오거나 생성
         await guildSettings.loadOrCreate();
 
         // 관리자 채널 ID를 불러옴
-        const adminChannelId = await guildSettings.loadAdminChannelId();
+        const adminChannelId = await guildSettings.loadChannelId(channelType);
 
         // 관리자 채널 객체를 얻음
         const channel = await guild.channels.cache.get(adminChannelId);
 
+        // 메세지 전송
         await adminMessage(channel);
-
 
     } catch (error) {
         console.error('adminChannelMessage.js 에러 : ', error);
     };
 };
-

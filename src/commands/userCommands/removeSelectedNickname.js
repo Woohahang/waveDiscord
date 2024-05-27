@@ -1,9 +1,8 @@
 // removeSelectedNickname.js
 
 const { SlashCommandBuilder, StringSelectMenuBuilder, ActionRowBuilder } = require('discord.js');
-// const UserSettings = require('../../services/UserSettings');
 
-const UserSettings = require('../../services/UserSettings_test');
+const UserSettings = require('../../services/UserSettings');
 
 function generateOptions(userData) {
     const options = [];

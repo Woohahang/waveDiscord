@@ -2,66 +2,68 @@
 
 const userSchema = require('../mongoDB/userSchema');
 
-// const settingsCache = {};
-
 class UserSettings {
     constructor(userId) {
-        this.validateUserId(userId);
-        this.userId = userId;
-        this.userData = null;
-    };
 
-    // 유저 ID 검증
-    validateUserId(userId) {
-        if (typeof userId !== 'string') {
-            throw new Error('유저 ID는 문자열로 해야 합니다.');
+        if (typeof userId !== 'string' || userId.trim() === '') {
+            throw new Error('유효하지 않은 userId입니다.');
         };
+
+        // 싱글톤 패턴
+        if (!UserSettings.instances[userId]) {
+            this.userId = userId;
+            this.userData = null;
+            UserSettings.instances[userId] = this;
+            // 타이머 설정
+            this.#resetTimer(userId);
+        } else {
+            // 이미 인스턴스가 존재한다면 타이머만 리셋
+            UserSettings.instances[userId].#resetTimer(userId);
+        };
+        return UserSettings.instances[userId];
     };
 
-    // 유저 데이터 불러오기
-    static async load(userId) {
+    #resetTimer(userId) {
+        // 기존 타이머가 있다면 취소
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+        }
+
+        // 새 타이머 설정
+        this.timeout = setTimeout(() => {
+            // 타이머가 완료되면 인스턴스 삭제
+            if (UserSettings.instances[userId]) {
+                delete UserSettings.instances[userId];
+            } else {
+                console.error('인스턴스 삭제 실패: 인스턴스가 이미 존재하지 않습니다.');
+            }
+        }, 180_000); // 3분
+    };
+
+    async load() {
         try {
-            // 캐시 되어 있다면 로드
-            if (settingsCache[userId]) {
-                console.log('유저 캐시가 있습니다. : ', userId);
-                return settingsCache[userId];
+
+            if (!this.userData) {
+                this.userData = await userSchema.findOne({ userId: this.userId });
             };
 
-            let userData = await userSchema.findOne({ userId });
-            if (!userData) { return null; };
-
-            return userData;
-
+            return this.userData;
         } catch (error) {
-            console.error('UserStettings.js 에러 : ', error);
+            console.error('UserStettings.js 의 load 에러 : ', error);
         };
     };
 
 
-    // 데이터베이스에서 유저 설정을 불러오거나 새로 생성
-    static async loadOrCreateById(userId) {
-        let userData = await userSchema.findOne({ userId });
-        if (!userData) {
-            userData = new userSchema({ userId });
-            await userData.save();
-        };
-        return userData;
-    };
+    // 닉네임 저장 메서드
+    async saveNickName(customId, content) {
 
-    static async saveNickName(userId, customId, content) {
-        if (typeof userId !== 'string') {
-            throw new Error('UserSettings.saveNickName 의 userId 타입이 String이 아닙니다. userId 타입 : ', typeof userId);
+        if (!this.userData) {
+            this.userData = await userSchema.findOne({ userId: this.userId });
         };
+
+        let userData = this.userData;
 
         try {
-
-            let userData = this.userData;
-
-            if (!userData) {
-                userData = await this.loadOrCreateById(userId);
-                this.userData = userData; // 캐시 갱신
-            };
-
             // 중복 닉네임 체크
             if (userData[customId].includes(content)) {
                 return 'nicknameDuplicate';
@@ -90,16 +92,18 @@ class UserSettings {
             };
 
         } catch (error) {
-            console.error('saveNickName 오류 : ', error);
+            console.error('saveNickName 에러 : ', error);
             return 'saveError';
         };
     };
 
-
-    static async removeNickName(userId, values) {
+    async removeNickName(values) {
         try {
-            // userId 객체
-            const userData = await userSchema.findOne({ userId });
+            if (!this.userData) {
+                this.userData = await userSchema.findOne({ userId: this.userId });
+            };
+
+            let userData = this.userData;
 
             // values 의 예시 { loL_끼매누, kakaoBG_카카오닉네임 }
             values.forEach(value => {
@@ -120,13 +124,16 @@ class UserSettings {
             // userData 저장
             await userData.save();
 
+            // 캐시 갱신
+            this.userData = userData;
+
         } catch (error) {
-            console.error('UserStettings.js 의 removeNickName 에러 : ', error);
-        };
+            console.error('removeNickName 에러 : ', error)
+        }
     };
 
 };
 
-
+UserSettings.instances = {};
 
 module.exports = UserSettings;

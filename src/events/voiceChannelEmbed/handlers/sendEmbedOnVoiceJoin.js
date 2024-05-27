@@ -14,17 +14,22 @@ module.exports = async (newState) => {
         const channel = newState.channel;
         const guildId = newState.guild.id;
 
-        // 유저 정보 조회
-        const userNicknames = await UserSettings.load(member.id);
+        // 인스턴스 생성
+        const userStettings = new UserSettings(member.id);
+
+        // 유저 데이터 불러오기
+        const userNicknames = await userStettings.load();
         if (!userNicknames) return;
 
-        // 이건 인스턴스로 제대로 팍 쓰는게 좋을듯?
-        // 길드 셋팅 조회
-        const guildSettingsInstance = new GuildSettings(guildId);
-        const guildSettings = await guildSettingsInstance.loadOrCreate();
+        // 길드 인스턴스 생성
+        const guildSettings = new GuildSettings(guildId);
+
+        // 길드 데이터 불러오기
+        const guildData = await guildSettings.loadOrCreate();
+        if (!guildData) { return console.log('길드 데이터를 찾을 수 없을 때 나오는 콘솔인데 나올리가 없겠지?') };
 
         // 유저 닉네임 양식에 맞게 가공
-        const fields = await createFields(userNicknames, guildSettings);
+        const fields = await createFields(userNicknames, guildData);
         if (fields.length <= 0) return;
 
         // 이 전 임베드 삭제

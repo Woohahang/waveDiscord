@@ -3,28 +3,36 @@
 const { PermissionsBitField } = require('discord.js');
 const GuildSettings = require('../../../services/GuildSettings');
 
+async function createMainChannel(guild) {
+    const channel = await guild.channels.create({
+        name: '📘ㆍwave',
+        type: 0,
+        permissionOverwrites: [
+            {
+                id: guild.roles.everyone.id,
+                deny: [PermissionsBitField.Flags.SendMessages], // 메시지 보내기 권한을 끕니다.
+            },
+        ],
+    });
+
+    return channel;
+};
+
 module.exports = async (guild) => {
     try {
-        // 길드 초대시 채팅 채널 생성
-        const channel = await guild.channels.create({
-            name: '📘ㆍwave',
-            type: 0,
-            permissionOverwrites: [
-                {
-                    id: guild.roles.everyone.id,
-                    deny: [PermissionsBitField.Flags.SendMessages], // 메시지 보내기 권한을 끕니다.
-                },
-            ],
-        });
+        // 메인 채널 생성
+        const channel = await createMainChannel(guild);
 
-        // 길드 DB 찾기 or 생성
+        const channelType = 'mainChannel';
+
+        // 길드 인스턴스 생성
         const guildSettings = new GuildSettings(guild.id);
+
+        // 길드 셋팅 불러오기
         await guildSettings.loadOrCreate();
 
-        // Wave 채널 id
-        const channelId = channel.id;
-
-        await guildSettings.updateMainChannelId(channelId);
+        // 메인 채널 id 저장
+        await guildSettings.saveChannelId(channelType, channel.id);
 
     } catch (error) {
         console.error('mainChannelCreate.js 에러 : ', error);

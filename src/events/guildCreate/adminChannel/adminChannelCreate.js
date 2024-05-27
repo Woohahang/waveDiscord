@@ -22,14 +22,17 @@ module.exports = async (guild) => {
         // 관리자 채널 생성
         const channel = await createAdminChannel(guild);
 
-        // 길드 DB 셋팅
+        // 채널 타입 admin
+        const channelType = 'adminChannel';
+
+        // 길드 인스턴스 생성
         const guildSettings = new GuildSettings(guild.id);
+
+        // 길드 데이터 생성
         await guildSettings.loadOrCreate();
 
-        const adminChannelId = channel.id;
-
-        // admin 채널 id, DB 저장
-        await guildSettings.updateAdminChannelId(adminChannelId);
+        // 관리자 채널 id 길드 데이터에 저장
+        await guildSettings.saveChannelId(channelType, channel.id);
 
     } catch (error) {
         console.error('adminChannelCreate.js 에러 : ', error);

@@ -28,8 +28,10 @@ async function mainChannelUpdate(interaction) {
         // GuildSettings 인스턴스 생성
         const guildSettings = new GuildSettings(interaction.guild.id);
 
+        const channelType = 'mainChannel';
+
         // 길드 메인 채널 id
-        const mainChannelId = await guildSettings.loadMainChannelId();
+        const mainChannelId = await guildSettings.loadChannelId(channelType);
 
         // 메인 채널 객체 가지고 오기
         const mainChannel = await interaction.guild.channels.resolve(mainChannelId);

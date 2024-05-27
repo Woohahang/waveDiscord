@@ -1,7 +1,7 @@
 // saveUserNickName.js
 
 const { menuSelectionResetter } = require('../../module/common/menuSelectionResetter');
-const UserSettings = require('../../services/UserSettings_test');
+const UserSettings = require('../../services/UserSettings');
 
 function generateSaveMessage(nicknameSaveStatus) {
     let message;
