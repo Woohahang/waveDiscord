@@ -56,7 +56,6 @@ async function gameMenuToggle(interaction, type) {
 
         // true, 또는 false 요청에 따라 DB에서 가지고 온 데이터들 SelectMenu 로 객체화
         let options = games.map(field => {
-            console.log(field);
             return new StringSelectMenuOptionBuilder()
                 .setLabel(gameLabels[field])
                 .setDescription(`${description[field]} ${type === 'hideMenu' ? '숨기기' : '보이기'}`)

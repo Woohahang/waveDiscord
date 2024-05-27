@@ -42,7 +42,6 @@ class UserSettings {
 
     async load() {
         try {
-
             if (!this.userData) {
                 this.userData = await userSchema.findOne({ userId: this.userId });
             };
