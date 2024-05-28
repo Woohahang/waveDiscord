@@ -15,7 +15,6 @@ async function deleteEmbed(State, member) {
         // 내 봇(wave) 가 보낸 임베드
         const waveEmbeds = messages.filter(message => message.author.id === clientId && message.embeds.length > 0);
 
-
         waveEmbeds.forEach(message => {
             message.embeds.forEach(embed => {
 
@@ -25,8 +24,12 @@ async function deleteEmbed(State, member) {
                 };
             });
         });
+
     } catch (error) {
-        console.error('deleteEmbed.js 에러 : ', error);
+        // 'Unknown Channel' 에러 무시(음성 채널 접속 상태에서 채널 삭제)
+        if (error.rawError && error.rawError.code !== 10003) {
+            console.error('deleteEmbed.js 에러 : ', error);
+        };
     };
 
 };

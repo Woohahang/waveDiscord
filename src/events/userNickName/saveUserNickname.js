@@ -25,6 +25,13 @@ function generateSaveMessage(nicknameSaveStatus) {
     return message;
 };
 
+// 성공 여부 메세지 10초 뒤 삭제
+function deleteEphemeralMessage(ephemeralMessage) {
+    setTimeout(() => {
+        ephemeralMessage.delete();
+    }, 10_000);
+};
+
 module.exports = async (interaction) => {
     try {
         const userId = interaction.member.id;
@@ -48,7 +55,10 @@ module.exports = async (interaction) => {
         const message = generateSaveMessage(nicknameSaveStatus);
 
         // 메세지 전송
-        await interaction.reply({ content: message, ephemeral: true });
+        const ephemeralMessage = await interaction.reply({ content: message, ephemeral: true });
+
+        // 성공 여부 메세지 10초 뒤 삭제
+        deleteEphemeralMessage(ephemeralMessage);
 
         // 메뉴 초기화
         await menuSelectionResetter(interaction);

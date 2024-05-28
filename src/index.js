@@ -37,6 +37,7 @@ const { handleGuildCreate } = require('./handlers/guildCreate');
 const { handleinteraction } = require('./handlers/interaction');
 const { handleVoiceStateUpdate } = require('./handlers/voiceStateUpdate');
 
+
 client.on(Events.GuildCreate, async guild => {
     handleGuildCreate(guild);
 });
@@ -44,6 +45,7 @@ client.on(Events.GuildCreate, async guild => {
 client.on(Events.InteractionCreate, async interaction => {
     handleinteraction(interaction);
 });
+
 
 client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
     handleVoiceStateUpdate(oldState, newState);
