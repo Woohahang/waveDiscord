@@ -6,10 +6,16 @@ async function getMemberVoiceChannel(interaction) {
         const voiceChannel = interaction.member.voice.channel;
 
         if (!voiceChannel) {
-            await interaction.reply({
+            const message = await interaction.reply({
                 content: '음성 채널 입장 후 사용할 수 있습니다.',
                 ephemeral: true
             });
+
+            // 메세지 10초 뒤 삭제
+            setTimeout(() => {
+                message.delete();
+            }, 10_000);
+
             return null;
         };
         return voiceChannel;

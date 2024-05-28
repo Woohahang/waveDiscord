@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { guildSetting } = require('../../../config.json');
 
 let guildSettingsSchema = new mongoose.Schema({
 

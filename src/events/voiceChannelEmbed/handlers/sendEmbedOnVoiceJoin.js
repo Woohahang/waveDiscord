@@ -39,7 +39,9 @@ module.exports = async (newState) => {
         const embed = customEmbed(member, fields, userNicknames.updatedAt);
 
         // 임베드 전송
-        await channel.send({ embeds: [embed] });
+        await channel.send({
+            embeds: [embed],
+        });
 
     } catch (error) {
         console.error('sendEmbedOnVoiceJoin 에러 : ', error);

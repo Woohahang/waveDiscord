@@ -37,9 +37,10 @@ class UserSettings {
             } else {
                 console.error('인스턴스 삭제 실패: 인스턴스가 이미 존재하지 않습니다.');
             }
-        }, 180_000); // 3분
+        }, 3_600_000); // 한시간
     };
 
+    // 유저 데이터 불러오기
     async load() {
         try {
             if (!this.userData) {
@@ -52,12 +53,42 @@ class UserSettings {
         };
     };
 
+    // 유저 데이터 불러오기 또는 생성
+    async loadOrCreateById() {
+        try {
+            // 유저 데이터가 메모리에 없다면 데이터베이스에서 불러오기
+            if (!this.userData) {
+                this.userData = await userSchema.findOne({ userId: this.userId });
+            }
+
+            // 데이터가 데이터베이스에도 없다면 새로 생성
+            if (!this.userData) {
+                // 새로운 유저 데이터 객체 생성
+                // 이 부분은 실제 userSchema의 구조에 맞춰서 수정이 필요합니다.
+                const newUser = new userSchema({
+                    userId: this.userId,
+                    // 추가적인 필드 초기화
+                });
+
+                // 데이터베이스에 저장
+                await newUser.save();
+
+                // 메모리에 캐시
+                this.userData = newUser;
+            };
+
+            return this.userData;
+        } catch (error) {
+            console.error('UserStettings.js 의 loadOrCreateById 에러 : ', error);
+        }
+    };
 
     // 닉네임 저장 메서드
     async saveNickName(customId, content) {
 
+        // 없다면 불러오기 또는 생성
         if (!this.userData) {
-            this.userData = await userSchema.findOne({ userId: this.userId });
+            this.userData = await this.loadOrCreateById();
         };
 
         let userData = this.userData;
