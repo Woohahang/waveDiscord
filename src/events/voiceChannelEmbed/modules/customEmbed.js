@@ -183,7 +183,7 @@ module.exports = async (newState, nickNames, guildData) => {
         .setAuthor({ name: displayName, iconURL: member.user.displayAvatarURL(), url: member.user.avatarURL() })
         .addFields(fields)
         .setTimestamp(new Date(nickNames.updatedAt))
-        .setFooter({ text: '―――――――― update', iconURL: 'https://koreanbots.dev/api/image/discord/avatars/1227561479801409566.webp?size=256' });
+        .setFooter({ text: '―――――――― update', iconURL: 'https://drive.google.com/uc?export=view&id=19W-rsIvrkFJSJcZ7-PHXOfZcPRO1HYTi' });
 
     return embed;
 };
