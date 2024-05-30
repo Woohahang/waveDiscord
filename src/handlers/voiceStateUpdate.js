@@ -5,14 +5,17 @@ const sendEmbedOnVoiceJoin = require('../events/voiceChannelEmbed/handlers/sendE
 const moveEmbedOnVoiceChannelChange = require('../events/voiceChannelEmbed/handlers/moveEmbedOnVoiceChannelChange');
 const deleteEmbedOnVoiceLeave = require('../events/voiceChannelEmbed/handlers/deleteEmbedOnVoiceLeave');
 
+const newEmbed = require('../events/voiceChannelEmbed/handlers/newEmbed');
+
 async function handleVoiceStateUpdate(oldState, newState) {
     try {
         if (!checkVoiceAdmin(newState) || !checkVoiceAdmin(oldState)) return; // Wave 봇이 관리자 권한 받았는지 체크
 
         // 입장 조건문
         if (!oldState.channel && newState.channel) {
-            await sendEmbedOnVoiceJoin(newState);
+            // await sendEmbedOnVoiceJoin(newState);
 
+            await newEmbed(newState);
 
             // 채널 이동 조건문
         } else if (oldState.channel && newState.channel && oldState.channel.id !== newState.channel.id) {

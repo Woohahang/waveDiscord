@@ -15,6 +15,9 @@ const adminChannelMessage = require('../events/guildCreate/adminChannel/adminCha
 /* 개인 DM */
 const guildInviteMessage = require('../events/guildCreate/userChannel/guildInviteMessage');
 
+/* 이모지 등록 */
+const emojiRegistrar = require('../events/guildCreate/guildEmoji/emojiRegistrar');
+
 async function handleGuildCreate(guild) {
     try {
         if (checkGuildAdmin(guild)) { // 봇이 관리자 권한을 받았는지 체크
@@ -26,6 +29,8 @@ async function handleGuildCreate(guild) {
 
             await adminChannelCreate(guild); // admin 채널 생성
             await adminChannelMessage(guild); // admin 채널 메시지 전송
+
+            await emojiRegistrar(guild); // 이모지 등록
 
         } else {
             await guildInviteMessage(guild); // 관리자 권한을 못 받았다면 1:1 DM 전송

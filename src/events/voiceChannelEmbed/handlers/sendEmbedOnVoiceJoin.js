@@ -7,6 +7,7 @@ const { customEmbed } = require('../modules/customEmbed');
 const GuildSettings = require('../../../services/GuildSettings');
 const UserSettings = require('../../../services/UserSettings');
 
+
 /* 채널 입장 임베드 전송, 이전 중복 메시지 삭제 */
 module.exports = async (newState) => {
     try {
@@ -43,7 +44,39 @@ module.exports = async (newState) => {
             embeds: [embed],
         });
 
+
+
     } catch (error) {
         console.error('sendEmbedOnVoiceJoin 에러 : ', error);
     };
+};
+
+
+
+
+
+
+
+const { EmbedBuilder } = require('discord.js');
+
+
+
+function embedTest() {
+    const exampleEmbed = new EmbedBuilder()
+        .setColor(0x0099FF)
+        // .setTitle('끼매누')
+        // .setURL('https://discord.js.org/')
+        .setAuthor({ name: '끼매누', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
+        // .setDescription('Some description here')
+        // .setThumbnail('https://i.imgur.com/AfFp7pu.png')
+        .addFields(
+            { name: 'Riot Games', value: '<:lol:1245155439205814355> 끼매누#KR1\n우당탕#KR1' },
+            { name: '\u200B', value: '\u200B' },
+        )
+        // .addFields({ name: 'Inline field title', value: 'Some value here', inline: true })
+        // .setImage('https://i.imgur.com/AfFp7pu.png')
+        .setTimestamp()
+        .setFooter({ text: 'Some footer text here', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
+
+    return exampleEmbed;
 };
