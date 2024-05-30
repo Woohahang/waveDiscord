@@ -1,9 +1,8 @@
-// deleteEmbed.js
+// voiceDeleteEmbed.js
 
 const { clientId } = require('../../../../../config.json');
 
-async function deleteEmbed(oldState) {
-
+module.exports = async (oldState) => {
     const channel = oldState.channel;
     const member = oldState.member;
 
@@ -30,10 +29,7 @@ async function deleteEmbed(oldState) {
     } catch (error) {
         // 'Unknown Channel' 에러 무시(음성 채널 접속 상태에서 채널 삭제)
         if (error.rawError && error.rawError.code !== 10003) {
-            console.error('deleteEmbed.js 에러 : ', error);
+            console.error('voiceDeleteEmbed.js 에러 : ', error);
         };
     };
-
 };
-
-module.exports = { deleteEmbed };

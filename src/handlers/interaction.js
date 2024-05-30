@@ -80,7 +80,7 @@ async function handleButtonInteraction(interaction, customId, values) {
 
         case 'upDate':
         case 'upDateButton':
-            upDateButton(interaction);
+            await upDateButton(interaction);
             break;
 
         case 'removeButton':

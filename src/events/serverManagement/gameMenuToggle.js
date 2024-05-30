@@ -37,7 +37,6 @@ async function gameMenuToggle(interaction, type) {
         // 길드 데이터
         const guildData = await guildSettings.loadOrCreate();
 
-
         let games;
         if (type === 'showMenu') {
             games = Object.entries(guildData.toObject()).filter(([key, value]) => value === false).map(([key]) => key);

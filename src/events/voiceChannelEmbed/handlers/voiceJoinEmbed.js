@@ -2,9 +2,9 @@
 
 const GuildSettings = require('../../../services/GuildSettings');
 const UserSettings = require('../../../services/UserSettings');
-const { deleteEmbed } = require('../modules/deleteEmbed');
-const customEmbed = require('../modules/customEmbed');
 
+const voiceDeleteEmbed = require('./voiceDeleteEmbed');
+const customEmbed = require('../modules/customEmbed');
 
 /* 채널 입장 임베드 전송, 이전 중복 메시지 삭제 */
 module.exports = async (oldState, newState) => {
@@ -16,7 +16,7 @@ module.exports = async (oldState, newState) => {
     try {
         // 만약 채널 이동을 했다면 전송 했던 메세지 삭제
         if (oldState) {
-            await deleteEmbed(oldState);
+            await voiceDeleteEmbed(oldState);
         };
 
         // 유저 인스턴스 생성 -> 유저 데이터 불러오기

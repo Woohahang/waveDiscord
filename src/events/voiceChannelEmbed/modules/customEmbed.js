@@ -186,3 +186,11 @@ module.exports = async (newState, nickNames, guildData) => {
 
     return embed;
 };
+
+// setInterval을 사용하여 24시간 마다 emojiMaps 초기화
+setInterval(() => {
+    Object.keys(emojiMaps).forEach(guildId => {
+        delete emojiMaps[guildId]; // emojiMaps의 각 항목을 삭제하여 초기화
+    });
+    console.log('emojiMaps가 초기화되었습니다.');
+}, 86_400_000); // 24시간은 86400000 밀리초

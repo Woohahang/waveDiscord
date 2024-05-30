@@ -63,7 +63,83 @@ module.exports = async (interaction) => {
         // 메뉴 초기화
         await menuSelectionResetter(interaction);
 
+
+        // console.log('--------api 테스트--------');
+        // await steamApiTest();
+
+
     } catch (error) {
         console.error('saveUserNickName.js 에러 : ', error);
     };
 };
+
+
+
+// const https = require('https');
+// const { promisify } = require('util');
+// const { steamApiKey } = require('../../../../config.json');
+// const steamId = 'glass1726';
+
+// // 도메인 이름: localhost
+// const url = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamApiKey}&steamids=${steamId}`;
+
+// // https.get을 프로미스로 변환
+// const get = promisify(https.get);
+
+// // 비동기 함수 정의
+// async function steamApiTest() {
+//     try {
+//         const resp = await get(url, { headers: { 'Content-Type': 'application/json' } });
+//         let data = '';
+
+//         // 데이터가 조각조각 들어옴
+//         for await (const chunk of resp) {
+//             data += chunk;
+//         };
+
+//         // 데이터 수신 완료
+//         const profileData = JSON.parse(data);
+//         const playerName = profileData.response.players[0].personaname;
+
+//         console.log(playerName);
+
+//     } catch (error) {
+//         console.log("Error: ", error.message);
+//     }
+// };
+
+
+
+const axios = require('axios');
+const { steamApiKey } = require('../../../../config.json');
+const steamId = '76561198311685982';
+
+const url = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamApiKey}&steamids=${steamId}`;
+
+async function steamApiTest() {
+    try {
+        const response = await axios.get(url);
+
+
+        // console.log('response : ', response);
+
+        console.log('-----------------------------------------------------');
+
+        console.log('response.data : ', response.data);
+
+        console.log('-----------------------------------------------------');
+
+        console.log('response.data.response : ', response.data.response);
+
+        console.log('-----------------------------------------------------');
+
+        console.log('response.data.response.players : ', response.data.response.players);
+
+        return;
+
+        const playerName = response.data.response.players[0].personaname;
+        console.log(playerName);
+    } catch (error) {
+        console.log("Error: ", error.message); // 에러 메시지만 출력
+    }
+}
