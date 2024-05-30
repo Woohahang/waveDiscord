@@ -5,14 +5,15 @@ const { EmbedBuilder } = require('discord.js');
 const { emojiNames } = require('../../../module/server/emojiNames')
 const emojiRegistrar = require('../../guildCreate/guildEmoji/emojiRegistrar');
 
-// 이모지 맵을 저장할 변수
-let emojiMap;
-
+// 서버별로 이모지 맵을 저장할 변수
+const emojiMaps = {};
 
 // 이모지 불러오기
 async function loadEmojiMap(newState) {
+    const guildId = newState.guild.id;
 
-    emojiMap = new Map();
+    // 해당 서버의 이모지 맵 초기화
+    emojiMaps[guildId] = new Map();
 
     // 서버에 등록된 모든 이모지를 가져옵니다.
     const serverEmojis = newState.guild.emojis.cache;
@@ -30,11 +31,10 @@ async function loadEmojiMap(newState) {
 
     // 찾은 이모지의 이름과 ID를 맵에 저장합니다.
     foundEmojis.forEach(emoji => {
-        emojiMap.set(emoji.name, emoji.id);
-        // console.log(`이름: ${emoji.name}, ID: ${emoji.id}`);
+        emojiMaps[guildId].set(emoji.name, emoji.id);
     });
 
-    return emojiMap;
+    return emojiMaps[guildId];
 };
 
 
@@ -72,9 +72,7 @@ function removeSpaces(inputString) {
     return inputString.replace(/ /g, '');
 };
 
-
-
-function createFields(nickNames, guildData, emojiMap) {
+function createFields(guildId, nickNames, guildData, emojiMaps) {
     const fields = [];
 
     // 스팀
@@ -82,7 +80,7 @@ function createFields(nickNames, guildData, emojiMap) {
         // 스팀 닉네임
         let steamNickName = nickNames.steam[0];
 
-        let steamEmoji = emojiMap.get('wave_steam');
+        let steamEmoji = emojiMaps[guildId].get('wave_steam');
 
         // 스팀 닉네임이 주소인지 체크
         let steamLinkIncluded = steamNickName.includes("https://steamcommunity.com/");
@@ -95,9 +93,9 @@ function createFields(nickNames, guildData, emojiMap) {
     if (guildData.loL && nickNames.loL.length > 0 || guildData.tfT && nickNames.tfT.length > 0 || guildData.valorant && nickNames.valorant.length > 0) {
 
         let riotGames = '';
-        let loLEmoji = emojiMap.get('wave_loL');
-        let tfTEmoji = emojiMap.get('wave_tfT');
-        let valorantEmoji = emojiMap.get('wave_valorant');
+        let loLEmoji = emojiMaps[guildId].get('wave_loL');
+        let tfTEmoji = emojiMaps[guildId].get('wave_tfT');
+        let valorantEmoji = emojiMaps[guildId].get('wave_valorant');
 
         nickNames.loL.forEach(nickname => {
 
@@ -128,8 +126,8 @@ function createFields(nickNames, guildData, emojiMap) {
     // 배틀 그라운드
     if (guildData.steamBG && nickNames.steamBG.length > 0) {
         let battleGround = '';
-        let steamEmoji = emojiMap.get('wave_steamBG');
-        let kakaoEmoji = emojiMap.get('wave_kakaoBG');
+        let steamEmoji = emojiMaps[guildId].get('wave_steamBG');
+        let kakaoEmoji = emojiMaps[guildId].get('wave_kakaoBG');
 
         nickNames.steamBG.forEach(nickname => {
             battleGround += `[<:wave_steamBG:${steamEmoji}> ${nickname}](https://pubg.op.gg/user/${removeSpaces(nickname)})\n`;
@@ -149,7 +147,7 @@ function createFields(nickNames, guildData, emojiMap) {
 
         let Blizzard = '';
 
-        let overWatchEmoji = emojiMap.get('wave_overWatchTwo');
+        let overWatchEmoji = emojiMaps[guildId].get('wave_overWatchTwo');
 
         nickNames.overWatchTwo.forEach(nickname => {
             Blizzard += `<:wave_overWatchTwo:${overWatchEmoji}> ${nickname}\n`;
@@ -165,13 +163,14 @@ function createFields(nickNames, guildData, emojiMap) {
 module.exports = async (newState, nickNames, guildData) => {
 
     const member = newState.member;
+    const guildId = newState.guild.id;
 
     // 이모지 맵 로드
-    emojiMap = emojiMap || await loadEmojiMap(newState);
-    if (!emojiMap) return;
+    emojiMaps[guildId] = emojiMaps[guildId] || await loadEmojiMap(newState);
+    if (!emojiMaps[guildId]) return;
 
     // .addFields
-    const fields = createFields(nickNames, guildData, emojiMap);
+    const fields = createFields(guildId, nickNames, guildData, emojiMaps);
 
     // 서버 별명 또는 유저 이름
     const displayName = member.nickname ? member.nickname : member.user.globalName;

@@ -7,6 +7,8 @@ const { emojiNames } = require('../../../module/server/emojiNames');
 // 디스코드 서버에 여러 이모지 등록하기
 module.exports = async (guild) => {
 
+    console.log('이모지 생성 시도');
+
     // 각 이모지에 대해 반복
     for (const emojiName of emojiNames) {
 

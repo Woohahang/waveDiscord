@@ -17,7 +17,7 @@ module.exports = async (oldState, newState) => {
         // 만약 채널 이동을 했다면 전송 했던 메세지 삭제
         if (oldState) {
             await deleteEmbed(oldState);
-        }
+        };
 
         // 유저 인스턴스 생성 -> 유저 데이터 불러오기
         const userStettings = new UserSettings(memberId);
@@ -30,6 +30,7 @@ module.exports = async (oldState, newState) => {
 
         // 임베드 커스텀
         const embed = await customEmbed(newState, nickNames, guildData);
+        if (!embed) return;
 
         // 임베드 전송
         await channel.send({
