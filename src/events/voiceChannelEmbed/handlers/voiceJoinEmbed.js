@@ -14,7 +14,7 @@ module.exports = async (oldState, newState) => {
     const channel = newState.channel;
 
     try {
-        // 만약 채널 이동을 했다면 전송 했던 메세지 삭제
+        // 이전 채널 메세지 삭제
         if (oldState) {
             await voiceDeleteEmbed(oldState);
         };

@@ -151,11 +151,24 @@ class UserSettings {
 
             });
 
-            // userData 저장
-            await userData.save();
+            // userData 의 모든 배열 요소만 확인하고, 모든 배열 길이가 0이라면 true
+            const allNicknamesRemoved = !Object.keys(userData.toObject()).some(key =>
+                Array.isArray(userData[key]) && userData[key].length > 0
+            );
 
-            // 캐시 갱신
-            this.userData = userData;
+            if (allNicknamesRemoved) {
+                // 모든 닉네임이 삭제되었으면 유저 정보 삭제
+                await userSchema.deleteOne({ userId: this.userId });
+                // 메모리에서도 인스턴스 삭제
+                if (UserSettings.instances[this.userId]) {
+                    delete UserSettings.instances[this.userId];
+                }
+            } else {
+                // 아니라면 변경사항 저장
+                await userData.save();
+                // 캐시 갱신
+                this.userData = userData;
+            };
 
         } catch (error) {
             console.error('removeNickName 에러 : ', error)
