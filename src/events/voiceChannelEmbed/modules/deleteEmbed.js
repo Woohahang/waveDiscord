@@ -2,14 +2,16 @@
 
 const { clientId } = require('../../../../../config.json');
 
-async function deleteEmbed(State, member) {
+async function deleteEmbed(oldState) {
+
+    const channel = oldState.channel;
+    const member = oldState.member;
+
+    // 서버 별명 또는 유저 닉네임
+    const displayName = member.nickname ? member.nickname : member.user.globalName;
+
     try {
-        const channel = State.channel;
-
-        const displayName = member.nickname ? member.nickname : member.user.globalName;
-
         const messages = await channel.messages.fetch({ limit: 20 });
-
         if (!messages) return;
 
         // 내 봇(wave) 가 보낸 임베드

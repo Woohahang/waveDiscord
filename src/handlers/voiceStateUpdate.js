@@ -1,11 +1,8 @@
 // voiceStateUpdate.js
 
 const { checkVoiceAdmin } = require('../module/checkAdminPermissionOn');
-const sendEmbedOnVoiceJoin = require('../events/voiceChannelEmbed/handlers/sendEmbedOnVoiceJoin');
-const moveEmbedOnVoiceChannelChange = require('../events/voiceChannelEmbed/handlers/moveEmbedOnVoiceChannelChange');
 const deleteEmbedOnVoiceLeave = require('../events/voiceChannelEmbed/handlers/deleteEmbedOnVoiceLeave');
-
-const newEmbed = require('../events/voiceChannelEmbed/handlers/newEmbed');
+const voiceJoinEmbed = require('../events/voiceChannelEmbed/handlers/voiceJoinEmbed');
 
 async function handleVoiceStateUpdate(oldState, newState) {
     try {
@@ -13,14 +10,11 @@ async function handleVoiceStateUpdate(oldState, newState) {
 
         // 입장 조건문
         if (!oldState.channel && newState.channel) {
-            // await sendEmbedOnVoiceJoin(newState);
-
-            await newEmbed(newState);
+            await voiceJoinEmbed(oldState, newState);
 
             // 채널 이동 조건문
         } else if (oldState.channel && newState.channel && oldState.channel.id !== newState.channel.id) {
-            await moveEmbedOnVoiceChannelChange(oldState, newState);
-
+            await voiceJoinEmbed(oldState, newState);
 
             // 퇴장 조건문
         } else if (oldState.channel && !newState.channel) {
@@ -28,9 +22,8 @@ async function handleVoiceStateUpdate(oldState, newState) {
 
         };
 
-
     } catch (error) {
-        console.error('handleVoiceStateUpdate 에러 : ' + error);
+        console.error('handleVoiceStateUpdate 에러 : ', error);
     };
 };
 
