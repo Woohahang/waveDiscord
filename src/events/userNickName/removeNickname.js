@@ -16,6 +16,8 @@ module.exports = async (interaction) => {
         // 닉네임 삭제 메서드
         await userSettings.removeNickName(values);
 
+        // console.log(userSettings);
+
         // 완료 메세지 전송
         await interaction.update({
             content: '닉네임 삭제 완료',

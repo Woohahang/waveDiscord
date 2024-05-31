@@ -63,11 +63,6 @@ module.exports = async (interaction) => {
         // 메뉴 초기화
         await menuSelectionResetter(interaction);
 
-
-        // console.log('--------api 테스트--------');
-        // await steamApiTest();
-
-
     } catch (error) {
         console.error('saveUserNickName.js 에러 : ', error);
     };

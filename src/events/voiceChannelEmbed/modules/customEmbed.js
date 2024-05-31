@@ -38,13 +38,14 @@ async function loadEmojiMap(newState) {
 };
 
 
-
+// 라이엇 주소 : 띄어쓰기 -> %20 변경, # -> - 변경
 function loLCustom(nickname) {
     nickname = nickname.replace(/ /g, '%20');
     nickname = nickname.replace(/#/g, '-');
 
     return nickname;
 };
+
 
 function formatRiotTag(nickname) {
     // # 이 없다면 기본 값 #KR1
@@ -63,8 +64,14 @@ function formatRiotTag(nickname) {
         nickname = nickname.split('#')[0] + '#' + riotTag.toUpperCase();
     };
 
-    return nickname;
+    // 한글 두 글자 닉네임에 대해 가운데에 띄어쓰기 추가
+    let namePart = nickname.split('#')[0];
+    if (/^[가-힣]{2}$/.test(namePart)) {
+        namePart = namePart[0] + ' ' + namePart[1];
+        nickname = namePart + '#' + riotTag;
+    }
 
+    return nickname;
 };
 
 // 모든 공백을 제거하고 반환
@@ -96,6 +103,8 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
         let loLEmoji = emojiMaps[guildId].get('wave_loL');
         let tfTEmoji = emojiMaps[guildId].get('wave_tfT');
         let valorantEmoji = emojiMaps[guildId].get('wave_valorant');
+
+
 
         nickNames.loL.forEach(nickname => {
 

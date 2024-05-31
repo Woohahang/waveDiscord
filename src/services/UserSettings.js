@@ -2,6 +2,9 @@
 
 const userSchema = require('../mongoDB/userSchema');
 
+const ONE_HOUR = 3_600_000; // 1시간을 밀리세컨드로
+const THREE_HOURS = 3 * ONE_HOUR; // 3시간
+
 class UserSettings {
     constructor(userId) {
 
@@ -37,7 +40,7 @@ class UserSettings {
             } else {
                 console.error('인스턴스 삭제 실패: 인스턴스가 이미 존재하지 않습니다.');
             }
-        }, 3_600_000); // 한시간
+        }, THREE_HOURS);
     };
 
     // 유저 데이터 불러오기
@@ -64,7 +67,6 @@ class UserSettings {
             // 데이터가 데이터베이스에도 없다면 새로 생성
             if (!this.userData) {
                 // 새로운 유저 데이터 객체 생성
-                // 이 부분은 실제 userSchema의 구조에 맞춰서 수정이 필요합니다.
                 const newUser = new userSchema({
                     userId: this.userId,
                     // 추가적인 필드 초기화
@@ -163,6 +165,7 @@ class UserSettings {
                 if (UserSettings.instances[this.userId]) {
                     delete UserSettings.instances[this.userId];
                 }
+
             } else {
                 // 아니라면 변경사항 저장
                 await userData.save();
