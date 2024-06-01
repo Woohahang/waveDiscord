@@ -21,7 +21,7 @@ async function loadEmojiMap(newState) {
     // emojiNames 배열에 정의된 이름을 가진 이모지를 찾습니다.
     const foundEmojis = emojiNames.map(name => serverEmojis.find(emoji => emoji.name === name)).filter(emoji => emoji);
 
-    if (foundEmojis.length !== 7) {
+    if (foundEmojis.length !== 8) {
         console.log('누락 된 이모지를 생성합니다.');
         await emojiRegistrar(newState.guild);
 
@@ -104,8 +104,6 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
         let tfTEmoji = emojiMaps[guildId].get('wave_tfT');
         let valorantEmoji = emojiMaps[guildId].get('wave_valorant');
 
-
-
         nickNames.loL.forEach(nickname => {
 
             nickname = formatRiotTag(nickname);
@@ -150,14 +148,20 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
     };
 
 
-
-    // 오버워치 2
-    if (guildData.overWatchTwo && nickNames.overWatchTwo.length > 0) {
+    // 블리자드
+    if (guildData.blizzard && nickNames.blizzard.length > 0 || guildData.overWatchTwo && nickNames.overWatchTwo.length > 0) {
 
         let Blizzard = '';
 
         let overWatchEmoji = emojiMaps[guildId].get('wave_overWatchTwo');
+        let blizzardEmoji = emojiMaps[guildId].get('wave_blizzard');
 
+        // 블리자드
+        nickNames.blizzard.forEach(nickname => {
+            Blizzard += `<:wave_blizzard:${blizzardEmoji}> ${nickname}\n`;
+        });
+
+        // 오버워치
         nickNames.overWatchTwo.forEach(nickname => {
             Blizzard += `<:wave_overWatchTwo:${overWatchEmoji}> ${nickname}\n`;
         });

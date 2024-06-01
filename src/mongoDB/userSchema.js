@@ -12,6 +12,7 @@ let userSchema = new mongoose.Schema({
     valorant: [String],
     steamBG: [String],
     kakao: [String],
+    blizzard: [String],
     overWatchTwo: [String],
 
     updatedAt: { type: Date, default: Date.now }

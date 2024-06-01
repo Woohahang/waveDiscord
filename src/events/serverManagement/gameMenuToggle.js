@@ -12,6 +12,7 @@ const gameLabels = {
     valorant: 'Valorant',
     steamBG: 'Steam Battle Grounds',
     kakaoBG: 'KaKao Battle Grounds',
+    blizzard: 'Blizzard',
     overWatchTwo: 'OVERWATCH 2'
 };
 
@@ -22,6 +23,7 @@ const description = {
     valorant: '발로란트',
     steamBG: '스팀 배틀 그라운드',
     kakaoBG: '카카오 배틀 그라운드',
+    blizzard: '블리자드',
     overWatchTwo: '오버워치 2'
 };
 

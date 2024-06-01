@@ -7,6 +7,7 @@ const emojiNames = [
     'wave_steam',
     'wave_steamBG',
     'wave_kakaoBG',
+    'wave_blizzard',
     'wave_overWatchTwo'
 ];
 

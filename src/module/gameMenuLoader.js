@@ -26,10 +26,11 @@ module.exports = async (guildId) => {
         const allGames = [
             { label: 'Steam', description: '스팀 친구 코드 또는 스팀 프로필 주소', value: 'steam', visible: guildData.steam },
             { label: 'League of Legends', description: '리그 오브 레전드', value: 'loL', visible: guildData.loL },
-            { label: 'Teamfight Tactics', description: '롤토체스 닉네임', value: 'tfT', visible: guildData.tfT },
-            { label: 'valorant', description: '발로란트 닉네임', value: 'valorant', visible: guildData.valorant },
+            { label: 'Teamfight Tactics', description: '롤토체스', value: 'tfT', visible: guildData.tfT },
+            { label: 'Valorant', description: '발로란트', value: 'valorant', visible: guildData.valorant },
             { label: 'Steam Battle Grounds', description: '스팀 배틀 그라운드', value: 'steamBG', visible: guildData.steamBG },
             { label: 'KaKao Battle Grounds', description: '카카오 배틀 그라운드', value: 'kaKaoBG', visible: guildData.kakaoBG },
+            { label: 'Blizzard', description: '블리자드', value: 'blizzard', visible: guildData.blizzard },
             { label: 'OVERWATCH 2', description: '오버워치 2', value: 'overWatchTwo', visible: guildData.overWatchTwo },
         ];
 

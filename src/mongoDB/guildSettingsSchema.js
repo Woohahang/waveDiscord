@@ -13,6 +13,7 @@ let guildSettingsSchema = new mongoose.Schema({
     valorant: { type: Boolean, default: true },
     steamBG: { type: Boolean, default: true },
     kakaoBG: { type: Boolean, default: true },
+    blizzard: { type: Boolean, default: true },
     overWatchTwo: { type: Boolean, default: true },
 
 });
