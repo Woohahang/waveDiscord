@@ -7,12 +7,16 @@ const GuildSettings = require('../../../services/GuildSettings');
 
 async function adminMessage(channel) {
     try {
-        await channel.send({
+        const messageComponents = await channel.send({
             content: "## ⭐ Wave 관리자 채널",
             components: [adminMenuLoader(), adminButton()]
         });
 
-        await channel.send({ content: '> * **채널 보기 권한 OFF 적용 상태 **\n> * **채널 보기 OFF** 를 유지해 주세요.' });
+        const message = await channel.send({ content: '> * **채널 보기 권한 OFF 적용 상태 **\n> * **채널 보기 OFF** 를 유지해 주세요.' });
+
+        // 삭제 될 메세지에서 제외하기 위해 id 리턴
+        return [messageComponents.id, message.id];
+
     } catch (error) {
         console.error('adminMessage 에러 : ', error);
     };
@@ -31,11 +35,18 @@ module.exports = async (guild) => {
         // 관리자 채널 ID를 불러옴
         const adminChannelId = await guildSettings.loadChannelId(channelType);
 
+        console.log('adminChannelMessage.js 의 adminChannelId : ', adminChannelId);
+
         // 관리자 채널 객체를 얻음
         const channel = await guild.channels.cache.get(adminChannelId);
 
+        console.log('adminChannelMessage.js 의 channel : ', channel.name);
+
         // 메세지 전송
-        await adminMessage(channel);
+        const messageId = await adminMessage(channel);
+
+        // 삭제에 제외 될 id 리턴
+        return messageId;
 
     } catch (error) {
         console.error('adminChannelMessage.js 에러 : ', error);

@@ -2,6 +2,9 @@
 
 const guildSettingsSchema = require('../mongoDB/guildSettingsSchema');
 
+const ONE_HOUR = 3_600_000; // 1시간을 밀리세컨드로
+const THREE_HOURS = 3 * ONE_HOUR; // 3시간
+
 class GuildSettings {
     constructor(guildId) {
         if (typeof guildId !== 'string' || guildId.trim() === '') {
@@ -26,7 +29,7 @@ class GuildSettings {
         // 기존 타이머가 있다면 취소
         if (this.timeout) {
             clearTimeout(this.timeout);
-        }
+        };
 
         // 새 타이머 설정
         this.timeout = setTimeout(() => {
@@ -36,7 +39,7 @@ class GuildSettings {
             } else {
                 console.error('인스턴스 삭제 실패: 인스턴스가 이미 존재하지 않습니다.');
             }
-        }, 3_600_000); // 한시간
+        }, THREE_HOURS);
     };
 
     async loadOrCreate() {

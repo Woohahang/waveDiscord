@@ -8,13 +8,14 @@ const { waveButton } = require('./waveButton');
 
 async function mainMessage(guild, channel) {
     try {
-        await channel.send({
+        const componentsMessage = await channel.send({
             content: "## :star: Wave 메인 명령어\n## /닉네임등록  /닉네임삭제",
             components: [await gameMenuLoader(guild.id)],
         });
 
-        await channel.send({ components: [waveButton()] });
+        const message = await channel.send({ components: [waveButton()] });
 
+        return [componentsMessage.id, message.id];
     } catch (error) {
         console.error('mainChannelMessage.js 의 mainMessage 에러 : ', error);
     }
@@ -37,8 +38,9 @@ module.exports = async (guild) => {
         const channel = await guild.channels.cache.get(mainChannelId);
 
         // 메세지 전송
-        await mainMessage(guild, channel);
+        const messageIds = await mainMessage(guild, channel);
 
+        return messageIds;
     } catch (error) {
         console.error('mainChannelMessage.js 에러 : ', error);
     };

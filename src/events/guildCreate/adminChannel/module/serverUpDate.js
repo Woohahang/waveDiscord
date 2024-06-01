@@ -12,14 +12,16 @@ const mainChannelMessage = require('../../mainChannel/mainChannelMessage');
 
 async function adminChannelUpDate(interaction) {
     try {
-        // 채널의 최근 메세지 삭제
-        await messagesDelete(interaction.channel);
-
         // 관리자 채널 메세지 보내기
-        await adminChannelMessage(interaction.guild);
+        const messageIds = await adminChannelMessage(interaction.guild)
+
+        // 변경 된 메세지 제외 전부 삭제
+        await messagesDelete(interaction.channel, messageIds);
 
     } catch (error) {
         console.error('adminChannelUpDate 에러 : ', error);
+
+        await interaction.reply({ content: '오류가 발생했습니다. 잠시 후 다시 시도해주세요.', ephemeral: true });
     };
 };
 
@@ -38,14 +40,15 @@ async function mainChannelUpdate(interaction) {
 
         // 메인 채널을 찾았다
         if (mainChannel) {
-            // 이 전 메세지 삭제
-            await messagesDelete(mainChannel);
 
             // 메시지 전송
-            await mainChannelMessage(interaction.guild);
-        } else {
-            // else : 메인 채널 삭제 했나? 못 찾았다면
+            const messageIds = await mainChannelMessage(interaction.guild);
 
+            // 최근 메세지 제외 삭제
+            await messagesDelete(mainChannel, messageIds);
+
+            // 메인 채널을 못 찾았다면
+        } else {
             // 메인 채널 생성
             await mainChannelCreate(interaction.guild);
 
@@ -54,6 +57,10 @@ async function mainChannelUpdate(interaction) {
 
             return true;
         };
+
+
+        // 여기 리팩토링 해야겠다. 메세지 전송 성공하면 메세지 삭제 하는걸로
+
 
     } catch (error) {
         console.error('mainChannelUpdate 에러 : ', error);
