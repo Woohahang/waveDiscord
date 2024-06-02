@@ -1,6 +1,6 @@
 // upDateButton.js
 
-const { serverUpDate } = require('../guildCreate/adminChannel/module/serverUpDate');
+const updateChannels = require('../guildCreate/update/updateChannels');
 
 const updateCompleted =
     '\n' + '## 업데이트 완료' +
@@ -13,7 +13,7 @@ module.exports = async (interaction) => {
         await interaction.deferUpdate();
 
         // 서버의 모든 메뉴 업데이트
-        const create = await serverUpDate(interaction);
+        const create = await updateChannels(interaction);
 
         if (create) {
             // 지연 된 처리를 받기 위한 followUp

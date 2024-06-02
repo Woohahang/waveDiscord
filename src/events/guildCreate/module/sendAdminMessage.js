@@ -1,7 +1,7 @@
 // sendAdminMessage.js
 
-const { adminMenuLoader } = require('../adminChannel/adminMenuLoader');
-const { adminButton } = require('../adminChannel/adminButton');
+const { adminMenuLoader } = require('./adminMenuLoader');
+const { adminButton } = require('../module/adminButton');
 
 async function sendAdminMessage(channel) {
     try {

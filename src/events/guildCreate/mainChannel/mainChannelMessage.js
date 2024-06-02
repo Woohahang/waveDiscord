@@ -4,7 +4,7 @@
 const GuildSettings = require('../../../services/GuildSettings');
 
 const gameMenuLoader = require('../../../module/gameMenuLoader');
-const { waveButton } = require('./waveButton');
+const { waveButton } = require('../module/waveButton');
 
 async function mainMessage(guild, channel) {
     try {

@@ -1,7 +1,7 @@
 // adminChannelMessage.js
 
-const { adminMenuLoader } = require('./adminMenuLoader');
-const { adminButton } = require('./adminButton');
+const { adminMenuLoader } = require('../module/adminMenuLoader');
+const { adminButton } = require('../module/adminButton');
 
 const GuildSettings = require('../../../services/GuildSettings');
 
