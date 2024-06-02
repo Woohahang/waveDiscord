@@ -44,21 +44,22 @@ class GuildSettings {
 
     async loadOrCreate() {
         try {
-            // guildData가 이미 로드되어 있다면 즉시 반환
+            // 메모리에 길드 데이터가 있다면 반환
             if (this.guildData) {
                 return this.guildData;
             }
 
-            // MongoDB에서 guildId로 guildData 조회
+            // DB 에서 길드 데이터 조회
             const guildData = await guildSettingsSchema.findOne({ guildId: this.guildId });
 
-            // 데이터베이스에서 조회된 데이터가 있다면 메모리에 저장 후 반환
+            // 길드 데이터가 있다면 메모리 저장 후 반환
             if (guildData) {
                 this.guildData = guildData;
                 return this.guildData;
             }
 
-            // 데이터베이스에 데이터가 없다면 새로 생성 후 저장
+            // 길드 데이터가 없다면 생성 이후 반환
+            console.log('새로운 서버에 추가 되었습니다.');
             this.guildData = new guildSettingsSchema({ guildId: this.guildId });
             await this.guildData.save();
             return this.guildData;

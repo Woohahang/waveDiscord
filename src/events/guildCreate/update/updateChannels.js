@@ -1,80 +1,14 @@
 // updateChannels.js
 
 const GuildSettings = require('../../../services/GuildSettings');
-const { sendAdminMessage } = require('../module/sendAdminMessage');
-const { messagesDelete } = require('../../../module/common/messagesDelete');
 
-const mainChannelCreate = require('../mainChannel/mainChannelCreate');
-const mainChannelMessage = require('../mainChannel/mainChannelMessage');
+const adminChannelUpDate = require('../module/adminChannelUpDate');
+const mainChannelUpdate = require('../module/mainChannelUpdate');
 
-// 관리자 채널 업데이트
-async function adminChannelUpDate(interaction, guildSettings) {
-
-    const guild = interaction.guild;
-    const channelType = 'adminChannel';
-
-    // 길드 관리자 채널 ID 얻기
-    const adminChannelId = await guildSettings.loadChannelId(channelType);
-
-    try {
-        // 관리자 채널 객체 얻기
-        const channel = await guild.channels.fetch(adminChannelId);
-
-        // 메세지 전송 시도
-        const messageIds = await sendAdminMessage(channel);
-
-        if (messageIds.length === 2) {
-            // 방금 보낸 메세지 제외, 나머지 삭제
-            await messagesDelete(channel, messageIds);
-        } else {
-            interaction.reply({ content: '오류가 발생해 이전 메시지를 삭제하지 못했습니다. 번거롭겠지만 이전 메시지 삭제를 부탁드립니다.', ephemeral: true })
-        };
-
-    } catch (error) {
-        console.error('updateChannels.js 의 adminChannelUpDate 에러 : ', error);
-    };
-
-};
-
-// 메인 채널 업데이트
-async function mainChannelUpdate(interaction, guildSettings) {
-
-    const guild = interaction.guild;
-    const channelType = 'mainChannel';
-
-    // 길드 메인 채널 id
-    const mainChannelId = await guildSettings.loadChannelId(channelType);
-
-    try {
-        // 메인 채널 객체 얻기
-        const mainChannel = await guild.channels.fetch(mainChannelId);
-
-        if (mainChannel) {
-            // 메세지 전송
-            const messageIds = await mainChannelMessage(guild);
-
-            // 메세지 두개를 전송 못 했다면 리턴하라.
-            if (messageIds.length !== 2) return interaction.reply({
-                content: '오류가 발생해 메인 채널의 이전 메시지를 삭제하지 못했습니다. 번거롭겠지만 이전 메시지 삭제를 부탁드립니다.',
-                ephemeral: true
-            });
-
-            // 메세지 두개를 잘 전송 했다면, 나머지 메세지를 삭제해라.
-            await messagesDelete(mainChannel, messageIds);
-
-        } else {
-            // 메인 채널 생성
-            await mainChannelCreate(guild);
-
-            // 메세지 전송
-            await mainChannelMessage(guild);
-        };
-
-    } catch (error) {
-        console.error('updateChannels.js 의 mainChannelUpdate 에러 : ', error);
-    }
-
-};
+// const updateCompleted =
+//     '\n' + '## 업데이트 완료' +
+//     '\n' + '> * 현재 **Wave** 는 보완과 개발 단계에 있습니다. ' +
+//     '\n' + '> * 개발은 지금도 진행 중이며 가끔 업데이트 버튼을 눌러주세요.';
 
 /* 목적, Wave 채널 업데이트 */
 module.exports = async (interaction) => {
@@ -98,6 +32,8 @@ module.exports = async (interaction) => {
 
 
 /*
+목적 : 채널 객체 얻기
+
 비동기 작업 : await guild.channels.fetch(adminChannelId);
 특징 : discord api를 통해 최신 정보를 받을 수 있다.
 
