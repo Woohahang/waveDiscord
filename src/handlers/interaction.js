@@ -8,8 +8,10 @@ const removeNickname = require('../events/userNickName/removeNickname');
 const { toggleMenuHandler } = require('../events/serverManagement/toggleMenuHandler');
 const { gameMenuToggle } = require('../events/serverManagement/gameMenuToggle');
 const saveUserNickname = require('../events/userNickName/saveUserNickname');
-const upDateButton = require('../events/serverManagement/upDateButton');
 const { checkAdminRole } = require('../module/checkAdminRole');
+
+/* 채널 업데이트 */
+const updateChannels = require('../events/guildCreate/update/updateChannels');
 
 /* 멀티 툴 */
 const multitools = require('../events/multitools/multitools');
@@ -54,11 +56,6 @@ async function handleinteraction(interaction) {
 };
 
 
-
-
-
-
-
 async function handleChatInputCommand(interaction) {
     const command = interaction.client.commands.get(interaction.commandName);
     if (!command) { return console.log('commandName 을 찾을 수 없습니다.') };
@@ -74,11 +71,6 @@ async function handleChatInputCommand(interaction) {
         };
     };
 };
-
-
-
-const updateChannels = require('../events/guildCreate/update/updateChannels');
-
 
 
 async function handleButtonInteraction(interaction, customId, values) {
