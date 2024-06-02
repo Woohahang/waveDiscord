@@ -75,12 +75,20 @@ async function handleChatInputCommand(interaction) {
     };
 };
 
+
+
+const updateChannels = require('../events/guildCreate/update/updateChannels');
+
+
+
 async function handleButtonInteraction(interaction, customId, values) {
     switch (customId) {
 
         case 'upDate':
         case 'upDateButton':
-            await upDateButton(interaction);
+            // await upDateButton(interaction);
+
+            await updateChannels(interaction);
             break;
 
         case 'removeButton':

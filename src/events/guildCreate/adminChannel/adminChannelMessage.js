@@ -38,17 +38,27 @@ module.exports = async (guild) => {
         console.log('adminChannelMessage.js 의 adminChannelId : ', adminChannelId);
 
         // 관리자 채널 객체를 얻음
-        const channel = await guild.channels.cache.get(adminChannelId);
-
-        console.log('adminChannelMessage.js 의 channel : ', channel.name);
+        const channel = await guild.channels.fetch(adminChannelId);
 
         // 메세지 전송
-        const messageId = await adminMessage(channel);
+        const messageIds = await adminMessage(channel);
 
         // 삭제에 제외 될 id 리턴
-        return messageId;
+        return messageIds;
 
     } catch (error) {
         console.error('adminChannelMessage.js 에러 : ', error);
     };
 };
+
+/*
+비동기 작업 : await guild.channels.fetch(adminChannelId);
+
+동기 작업 : guild.channels.cache.get(adminChannelId);
+
+즉, 현재 코드에서 채널을 가지고 올 때
+
+빠르지만 불안정한(봇이 막 시작 되었거나, 채널이 방금 생성 되었을 경우 캐시되지 않아 예외 발생) 캐시를 사용하는 것 보다,
+
+discord api 요청인 패치() 를 사용하여 항상 최신 상태의 정보를 제공 받는게 맞다.
+*/
