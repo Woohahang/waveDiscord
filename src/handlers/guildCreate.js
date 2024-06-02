@@ -18,7 +18,8 @@ const emojiRegistrar = require('../events/guildCreate/guildEmoji/emojiRegistrar'
 
 async function handleGuildCreate(guild) {
     try {
-        if (checkGuildAdmin(guild)) { // 봇이 관리자 권한을 받았는지 체크
+        // Wave 가 관리자 권한 받았는지 체크
+        if (await checkGuildAdmin(guild)) {
 
             // 메인 채널 생성 and 메세지 전송
             await mainChannelCreate(guild);

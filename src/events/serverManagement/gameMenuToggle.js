@@ -44,7 +44,7 @@ async function gameMenuToggle(interaction, type) {
             games = Object.entries(guildData.toObject()).filter(([key, value]) => value === false).map(([key]) => key);
         } else if (type === 'hideMenu') {
             games = Object.entries(guildData.toObject()).filter(([key, value]) => value === true).map(([key]) => key);
-        }
+        };
 
         // 숨길 게임이 없는 경우 사용자에게 알림
         if (games.length === 0) {

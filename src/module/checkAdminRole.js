@@ -1,6 +1,8 @@
 // checkAdminRole.js
+
 const { PermissionsBitField } = require('discord.js');
 
+// 사용자가 관리자 권한이 있는지 체크
 function checkAdminRole(interaction) {
     try {
         // 멤버 객체 가지고 오기

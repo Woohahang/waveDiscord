@@ -1,6 +1,6 @@
 // menuSelectionResetter.js
 
-// 용도 : 셀렉트 메뉴를 선택한 후 메뉴 초기화를 위함
+/* 셀렉트 메뉴 초기화 */
 async function menuSelectionResetter(interaction) {
 
     try {
