@@ -1,9 +1,9 @@
 // toggleMenuHandler.js
 
-// const { serverUpDate } = require('../../events/guildCreate/adminChannel/module/serverUpDate');
-
-const updateChannels = require('../guildCreate/update/updateChannels');
 const GuildSettings = require('../../services/GuildSettings');
+
+const adminChannelUpDate = require('../guildCreate/module/adminChannelUpDate');
+const mainChannelUpdate = require('../guildCreate/module/mainChannelUpdate');
 
 async function toggleMenuHandler(interaction, action) {
     try {
@@ -26,8 +26,11 @@ async function toggleMenuHandler(interaction, action) {
         // DB 저장
         await guildData.save();
 
-        // 서버 모든 메뉴 업데이트
-        await updateChannels(interaction);
+        // 서버 채널 업데이트
+        await Promise.all([
+            adminChannelUpDate(interaction, guildSettings),
+            mainChannelUpdate(interaction, guildSettings)
+        ]);
 
         const updateCompleted =
             '\n' + '## 업데이트 완료' +

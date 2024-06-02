@@ -86,8 +86,6 @@ async function handleButtonInteraction(interaction, customId, values) {
 
         case 'upDate':
         case 'upDateButton':
-            // await upDateButton(interaction);
-
             await updateChannels(interaction);
             break;
 

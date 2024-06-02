@@ -5,10 +5,10 @@ const GuildSettings = require('../../../services/GuildSettings');
 const adminChannelUpDate = require('../module/adminChannelUpDate');
 const mainChannelUpdate = require('../module/mainChannelUpdate');
 
-// const updateCompleted =
-//     '\n' + '## 업데이트 완료' +
-//     '\n' + '> * 현재 **Wave** 는 보완과 개발 단계에 있습니다. ' +
-//     '\n' + '> * 개발은 지금도 진행 중이며 가끔 업데이트 버튼을 눌러주세요.';
+const updateCompleted =
+    '\n' + '## 업데이트 완료' +
+    '\n' + '> * 현재 **Wave** 는 보완과 개발 단계에 있습니다. ' +
+    '\n' + '> * 개발은 지금도 진행 중이며 가끔 업데이트 버튼을 눌러주세요.';
 
 /* 목적, Wave 채널 업데이트 */
 module.exports = async (interaction) => {
@@ -22,6 +22,8 @@ module.exports = async (interaction) => {
             adminChannelUpDate(interaction, guildSettings),
             mainChannelUpdate(interaction, guildSettings)
         ]);
+
+        await interaction.reply({ content: updateCompleted, ephemeral: true });
 
     } catch (error) {
         console.error('serverUpDate.js 에러 : ', error)
