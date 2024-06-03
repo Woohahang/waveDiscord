@@ -1,16 +1,16 @@
 // mainChannelMessage.js
 
-// const GuildSettings = require('../../../services/GuildSettings');
 const GuildSettings = require('../../../services/GuildSettings');
 
-const gameMenuLoader = require('../../../module/gameMenuLoader');
+const gameMenu = require('../../../module/games/gameMenu');
 const { waveButton } = require('../module/waveButton');
 
-async function mainMessage(guild, channel) {
+
+async function mainMessage(guildData, channel) {
     try {
         const componentsMessage = await channel.send({
             content: "## :star: Wave 메인 명령어\n## /닉네임등록  /닉네임삭제",
-            components: [await gameMenuLoader(guild.id)],
+            components: [gameMenu(guildData)],
         });
 
         const message = await channel.send({ components: [waveButton()] });
@@ -22,15 +22,13 @@ async function mainMessage(guild, channel) {
 };
 
 module.exports = async (guild) => {
+    const channelType = 'mainChannel';
+
+    // 길드 인스턴스 생성 및 불러오기
+    const guildSettings = new GuildSettings(guild.id);
+    const guildData = await guildSettings.loadOrCreate();
+
     try {
-        // GuildSettings 인스턴스 생성
-        const guildSettings = new GuildSettings(guild.id);
-
-        const channelType = 'mainChannel';
-
-        // 길드 설정을 불러오거나 생성
-        await guildSettings.loadOrCreate();
-
         // 메인 채널 Id를 불러옴
         const mainChannelId = await guildSettings.loadChannelId(channelType);
 
@@ -38,7 +36,7 @@ module.exports = async (guild) => {
         const channel = await guild.channels.cache.get(mainChannelId);
 
         // 메세지 전송
-        const messageIds = await mainMessage(guild, channel);
+        const messageIds = await mainMessage(guildData, channel);
 
         return messageIds;
     } catch (error) {

@@ -1,9 +1,10 @@
 // adminChannelMessage.js
 
+const GuildSettings = require('../../../services/GuildSettings');
+
 const { adminMenuLoader } = require('../module/adminMenuLoader');
 const { adminButton } = require('../module/adminButton');
 
-const GuildSettings = require('../../../services/GuildSettings');
 
 async function adminMessage(channel) {
     try {
@@ -23,15 +24,15 @@ async function adminMessage(channel) {
 };
 
 module.exports = async (guild) => {
+
+    // 채널 타입
+    const channelType = 'adminChannel';
+
+    // 길드 인스턴스 생성 불러오기
+    const guildSettings = new GuildSettings(guild.id);
+    await guildSettings.loadOrCreate();
+
     try {
-        // 길드 인스턴스 생성
-        const guildSettings = new GuildSettings(guild.id);
-
-        const channelType = 'adminChannel';
-
-        // 길드 설정을 불러오거나 생성
-        await guildSettings.loadOrCreate();
-
         // 관리자 채널 ID를 불러옴
         const adminChannelId = await guildSettings.loadChannelId(channelType);
 
