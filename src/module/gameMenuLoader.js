@@ -16,10 +16,8 @@ function createGameOption(game) {
 
 module.exports = async (guildId) => {
     try {
-        // 길드 인스턴스 생성
+        // 길드 인스턴스 생성를 생성하고 불러옵니다.
         const guildSettings = new GuildSettings(guildId);
-
-        // 길드 데이터 로드
         const guildData = await guildSettings.loadOrCreate();
 
         // 각 게임의 가시성 설정을 확인하고, true 설정된 게임만 메뉴에 추가

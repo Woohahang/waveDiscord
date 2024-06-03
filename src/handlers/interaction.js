@@ -142,9 +142,11 @@ async function handleStringSelectMenu(interaction, customId, values) {
             if (!checkAdminRole(interaction))
                 return interaction.reply({ content: '관리자 메뉴에 접근할 권한이 없습니다.', ephemeral: true });
 
+            // 게임 메뉴 띄우기
             gameMenuToggle(interaction);
             break;
 
+        // 게임 메뉴 DB에 저장하고 서버 채널 업데이트
         case 'showMenu':
         case 'hideMenu':
             toggleMenuHandler(interaction);

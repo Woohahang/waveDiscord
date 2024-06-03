@@ -12,7 +12,7 @@ const gameLabels = {
     steamBG: 'Steam Battle Grounds',
     kakaoBG: 'KaKao Battle Grounds',
     blizzard: 'Blizzard',
-    overWatchTwo: 'OVERWATCH 2'
+    overWatchTwo: 'OVERWATCH 2',
 };
 
 const description = {
@@ -60,7 +60,7 @@ function buildMenuActionRow(options, value) {
         .addComponents(select);
 
     return row;
-}
+};
 
 // 용도, 관리자 채널에서 메뉴 숨기기 또는 보이기에 해당하는 메뉴를 출력
 module.exports = async (interaction) => {
@@ -96,6 +96,10 @@ module.exports = async (interaction) => {
             });
             return;
         };
+
+        // gameLabels 순서에 맞게 options 정렬
+        options = Object.keys(gameLabels).filter(label => options.includes(label));
+
 
         // 메뉴 구성
         const row = buildMenuActionRow(options, value);
