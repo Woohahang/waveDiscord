@@ -78,11 +78,11 @@ module.exports = async (interaction) => {
     try {
         switch (value) {
             case 'showMenu':
-                options = filterOptions(guildData, true);
+                options = filterOptions(guildData, false);
                 break;
 
             case 'hideMenu':
-                options = filterOptions(guildData, false);
+                options = filterOptions(guildData, true);
                 break;
 
             default:

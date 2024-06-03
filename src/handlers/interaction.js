@@ -137,29 +137,16 @@ async function handleStringSelectMenu(interaction, customId, values) {
             break;
 
         /* 서버 메뉴 보이기 or 숨기기 */
-        case 'adminMenuId': // 관리자 게임 메뉴
-            if (checkAdminRole(interaction)) {
-                // gameMenuToggle(interaction, values[0]);
+        case 'adminMenuId':
+            // 사용자가 관리자 권한이 없다면 리턴
+            if (!checkAdminRole(interaction))
+                return interaction.reply({ content: '관리자 메뉴에 접근할 권한이 없습니다.', ephemeral: true });
 
-                // 현재 테스트중
-                gameMenuToggle(interaction);
-
-            } else { // 권한이 없을 경우 사용자에게 알림
-                interaction.reply({ content: '관리자 메뉴에 접근할 권한이 없습니다.', ephemeral: true });
-            };
+            gameMenuToggle(interaction);
             break;
-
-        // case 'showMenuHandler': // 메뉴 숨기기 -> DB 저장
-        // toggleMenuHandler(interaction, 'showMenu');
-        // break;
-
-        // case 'hideMenuHandler': // 메뉴 보이기 -> DB 저장
-        // toggleMenuHandler(interaction, 'hideMenu');
-        // break;
 
         case 'showMenu':
         case 'hideMenu':
-            // 현재 테스트 중
             toggleMenuHandler(interaction);
             break;
 
