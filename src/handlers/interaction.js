@@ -5,10 +5,14 @@ const { checkInteractionAdmin } = require('../module/checkAdminPermissionOn')
 
 const createNicknameModal = require('../events/userNickName/createNicknameModal');
 const removeNickname = require('../events/userNickName/removeNickname');
-const { toggleMenuHandler } = require('../events/serverManagement/toggleMenuHandler');
-const { gameMenuToggle } = require('../events/serverManagement/gameMenuToggle');
+// const { toggleMenuHandler } = require('../events/serverManagement/toggleMenuHandler');
+// const { gameMenuToggle } = require('../events/serverManagement/gameMenuToggle');
 const saveUserNickname = require('../events/userNickName/saveUserNickname');
 const { checkAdminRole } = require('../module/checkAdminRole');
+
+/* 길드 메뉴 컨트롤 */
+const gameMenuToggle = require('../events/guildCreate/guildMenuControls/gameMenuToggle');
+const toggleMenuHandler = require('../events/guildCreate/guildMenuControls/toggleMenuHandler');
 
 /* 채널 업데이트 */
 const updateChannels = require('../events/guildCreate/update/updateChannels');
@@ -132,22 +136,33 @@ async function handleStringSelectMenu(interaction, customId, values) {
             removeNickname(interaction);
             break;
 
+        /* 서버 메뉴 보이기 or 숨기기 */
         case 'adminMenuId': // 관리자 게임 메뉴
             if (checkAdminRole(interaction)) {
-                gameMenuToggle(interaction, values[0]);
+                // gameMenuToggle(interaction, values[0]);
+
+                // 현재 테스트중
+                gameMenuToggle(interaction);
 
             } else { // 권한이 없을 경우 사용자에게 알림
                 interaction.reply({ content: '관리자 메뉴에 접근할 권한이 없습니다.', ephemeral: true });
             };
             break;
 
-        case 'showMenuHandler': // 메뉴 숨기기 -> DB 저장 
-            toggleMenuHandler(interaction, 'showMenu');
+        // case 'showMenuHandler': // 메뉴 숨기기 -> DB 저장
+        // toggleMenuHandler(interaction, 'showMenu');
+        // break;
+
+        // case 'hideMenuHandler': // 메뉴 보이기 -> DB 저장
+        // toggleMenuHandler(interaction, 'hideMenu');
+        // break;
+
+        case 'showMenu':
+        case 'hideMenu':
+            // 현재 테스트 중
+            toggleMenuHandler(interaction);
             break;
 
-        case 'hideMenuHandler': // 메뉴 보이기 -> DB 저장
-            toggleMenuHandler(interaction, 'hideMenu');
-            break;
 
         /* 멀티 툴 */
         case 'multitoolsMenu': // 몇팀으로 나눌까요?

@@ -1,4 +1,4 @@
-// // gameMenuToggle.js
+// gameMenuToggle.js
 
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
 const { menuSelectionResetter } = require('../../module/common/menuSelectionResetter');

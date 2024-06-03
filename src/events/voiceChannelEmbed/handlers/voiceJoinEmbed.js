@@ -1,4 +1,4 @@
-// newEmbed.js
+// voiceJoinEmbed.js
 
 const GuildSettings = require('../../../services/GuildSettings');
 const UserSettings = require('../../../services/UserSettings');
@@ -38,6 +38,6 @@ module.exports = async (oldState, newState) => {
         });
 
     } catch (error) {
-        console.error('sendEmbedOnVoiceJoin 에러 : ', error);
+        console.error('voiceJoinEmbed.js 에러 : ', error);
     };
 };
