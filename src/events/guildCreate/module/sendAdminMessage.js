@@ -5,7 +5,6 @@ const { adminButton } = require('../module/adminButton');
 
 async function sendAdminMessage(channel) {
     try {
-
         const message1 = await channel.send({
             content: "## ⭐ Wave 관리자 채널",
             components: [adminMenuLoader(), adminButton()]

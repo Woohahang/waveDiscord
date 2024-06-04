@@ -3,28 +3,9 @@
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
 const GuildSettings = require('../../../services/GuildSettings');
 const { menuSelectionResetter } = require('../../../module/common/menuSelectionResetter');
+const checkAdminRole = require('../../../module/role/checkAdminRole');
+const { gameLabels, description } = require('../../../module/games/gameData');
 
-const gameLabels = {
-    steam: 'Steam',
-    loL: 'League of Legends',
-    tfT: 'Teamfight Tactics',
-    valorant: 'Valorant',
-    steamBG: 'Steam Battle Grounds',
-    kakaoBG: 'KaKao Battle Grounds',
-    blizzard: 'Blizzard',
-    overWatchTwo: 'OVERWATCH 2',
-};
-
-const description = {
-    steam: '스팀',
-    loL: '리그 오브 레전드',
-    tfT: '롤토체스',
-    valorant: '발로란트',
-    steamBG: '스팀 배틀 그라운드',
-    kakaoBG: '카카오 배틀 그라운드',
-    blizzard: '블리자드',
-    overWatchTwo: '오버워치 2'
-};
 
 // guildData 객체에서 condition과 일치하는 값을 가진 항목만 필터링하는 함수
 function filterOptions(guildData, condition) {
@@ -62,20 +43,25 @@ function buildMenuActionRow(options, value) {
     return row;
 };
 
-// 용도, 관리자 채널에서 메뉴 숨기기 또는 보이기에 해당하는 메뉴를 출력
+/* 관리자 채널에서 메뉴 숨기기 또는 보이기에 해당하는 메뉴를 출력 */
 module.exports = async (interaction) => {
-
-    // 메뉴 초기화
-    menuSelectionResetter(interaction);
-
-    let options = [];
-    const value = interaction.values[0];
-
-    // 길드 인스턴스 생성 -> 불러오기
-    const guildSettings = new GuildSettings(interaction.guild.id);
-    const guildData = await guildSettings.loadOrCreate();
-
     try {
+        // 메뉴 초기화
+        menuSelectionResetter(interaction);
+
+        // 사용자 권한 체크
+        if (!checkAdminRole(interaction)) {
+            await interaction.reply({ content: '관리자 메뉴에 접근할 권한이 없습니다.', ephemeral: true });
+            return;
+        };
+
+        let options = [];
+        const value = interaction.values[0];
+
+        // 길드 인스턴스 생성 -> 불러오기
+        const guildSettings = new GuildSettings(interaction.guild.id);
+        const guildData = await guildSettings.loadOrCreate();
+
         switch (value) {
             case 'showMenu':
                 options = filterOptions(guildData, false);

@@ -17,7 +17,7 @@ function checkAdminRole(interaction) {
     };
 };
 
-module.exports = { checkAdminRole };
+module.exports = checkAdminRole;
 
 
 // 역할 객체 뭐 있는지 싹 다 확인 가능

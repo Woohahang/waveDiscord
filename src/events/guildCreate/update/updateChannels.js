@@ -2,6 +2,7 @@
 
 const GuildSettings = require('../../../services/GuildSettings');
 
+const checkAdminRole = require('../../../module/role/checkAdminRole');
 const adminChannelUpDate = require('../module/adminChannelUpDate');
 const mainChannelUpdate = require('../module/mainChannelUpdate');
 
@@ -12,11 +13,16 @@ const updateCompleted =
 
 /* 목적, Wave 채널 업데이트 */
 module.exports = async (interaction) => {
-
-    // 길드 인스턴스 생성
-    const guildSettings = new GuildSettings(interaction.guild.id);
-
     try {
+        // 사용자 권한 체크
+        if (!checkAdminRole(interaction)) {
+            await interaction.reply({ content: '관리자 메뉴에 접근할 권한이 없습니다.', ephemeral: true });
+            return;
+        };
+
+        // 길드 인스턴스 생성
+        const guildSettings = new GuildSettings(interaction.guild.id);
+
         // 관리자 채널, 메인 채널 업데이트 : 병렬 처리를 위해 Promise.all 
         await Promise.all([
             adminChannelUpDate(interaction, guildSettings),

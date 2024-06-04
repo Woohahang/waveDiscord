@@ -24,12 +24,17 @@ function createOptions(trueValueKeys) {
             .setValue('noOptions')
 
     } else {
-        return trueValueKeys.map(field => (
-            new StringSelectMenuOptionBuilder()
+        return trueValueKeys.map(field => {
+            let fieldDescription = description[field] + ' 닉네임';
+            if (field === 'steam') {
+                fieldDescription = '스팀 프로필 주소';
+            }
+
+            return new StringSelectMenuOptionBuilder()
                 .setLabel(gameLabels[field])
-                .setDescription(description[field] + ' 닉네임')
-                .setValue(field)
-        ))
+                .setDescription(fieldDescription)
+                .setValue(field);
+        });
     };
 };
 
