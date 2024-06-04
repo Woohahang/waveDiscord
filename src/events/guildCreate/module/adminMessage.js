@@ -1,9 +1,9 @@
-// sendAdminMessage.js
+// adminMessage.js
 
 const { adminMenuLoader } = require('./adminMenuLoader');
-const { adminButton } = require('../module/adminButton');
+const { adminButton } = require('./adminButton');
 
-async function sendAdminMessage(channel) {
+async function adminMessage(channel) {
     try {
         const message1 = await channel.send({
             content: "## ⭐ Wave 관리자 채널",
@@ -19,4 +19,4 @@ async function sendAdminMessage(channel) {
     };
 };
 
-module.exports = { sendAdminMessage };
+module.exports = { adminMessage };

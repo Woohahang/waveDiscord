@@ -1,6 +1,6 @@
 // adminChannelUpDate.js
 
-const { sendAdminMessage } = require('../module/sendAdminMessage');
+const { adminMessage } = require('../module/adminMessage');
 const { messagesDelete } = require('../../../module/common/messagesDelete');
 
 // 관리자 채널 업데이트
@@ -17,7 +17,7 @@ async function adminChannelUpDate(interaction, guildSettings) {
         const channel = await guild.channels.fetch(adminChannelId);
 
         // 메세지 전송 시도
-        const messageIds = await sendAdminMessage(channel);
+        const messageIds = await adminMessage(channel);
 
         if (messageIds.length === 2) {
             // 방금 보낸 메세지 제외, 나머지 삭제

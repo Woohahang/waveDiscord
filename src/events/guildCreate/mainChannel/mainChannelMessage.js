@@ -1,25 +1,7 @@
 // mainChannelMessage.js
 
 const GuildSettings = require('../../../services/GuildSettings');
-
-const gameMenu = require('../../../module/games/gameMenu');
-const { waveButton } = require('../module/waveButton');
-
-
-async function mainMessage(guildData, channel) {
-    try {
-        const componentsMessage = await channel.send({
-            content: "## :star: Wave 메인 명령어\n## /닉네임등록  /닉네임삭제",
-            components: [gameMenu(guildData)],
-        });
-
-        const message = await channel.send({ components: [waveButton()] });
-
-        return [componentsMessage.id, message.id];
-    } catch (error) {
-        console.error('mainChannelMessage.js 의 mainMessage 에러 : ', error);
-    }
-};
+const mainMessage = require('../module/mainMessage');
 
 module.exports = async (guild) => {
     const channelType = 'mainChannel';
@@ -36,7 +18,7 @@ module.exports = async (guild) => {
         const channel = await guild.channels.cache.get(mainChannelId);
 
         // 메세지 전송
-        const messageIds = await mainMessage(guildData, channel);
+        const messageIds = await mainMessage(channel, guildData);
 
         return messageIds;
     } catch (error) {

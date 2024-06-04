@@ -1,8 +1,10 @@
 // mainChannelUpdate.js
 
 const mainChannelCreate = require('../mainChannel/mainChannelCreate');
-const mainChannelMessage = require('../mainChannel/mainChannelMessage');
 const { messagesDelete } = require('../../../module/common/messagesDelete');
+const mainMessage = require('./mainMessage');
+
+
 
 // 메인 채널 업데이트
 async function mainChannelUpdate(interaction, guildSettings) {
@@ -10,6 +12,8 @@ async function mainChannelUpdate(interaction, guildSettings) {
     const guild = interaction.guild;
     const channelType = 'mainChannel';
 
+
+    const guildData = await guildSettings.loadOrCreate();
     // 길드 메인 채널 id
     const mainChannelId = await guildSettings.loadChannelId(channelType);
 
@@ -19,7 +23,8 @@ async function mainChannelUpdate(interaction, guildSettings) {
 
         if (mainChannel) {
             // 메세지 전송
-            const messageIds = await mainChannelMessage(guild);
+            // const messageIds = await mainChannelMessage(guild);
+            const messageIds = await mainMessage(mainChannel, guildData);
 
             // 메세지 두개를 전송 못 했다면 리턴하라.
             if (messageIds.length !== 2) return interaction.reply({
@@ -35,7 +40,9 @@ async function mainChannelUpdate(interaction, guildSettings) {
             await mainChannelCreate(guild);
 
             // 메세지 전송
-            await mainChannelMessage(guild);
+            // await mainChannelMessage(guild);
+            await mainMessage(mainChannel, guildData);
+
         };
 
     } catch (error) {

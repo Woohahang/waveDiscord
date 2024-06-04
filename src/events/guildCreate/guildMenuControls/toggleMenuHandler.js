@@ -15,7 +15,6 @@ module.exports = async (interaction) => {
     const customid = interaction.customId;
     const selections = interaction.values;
 
-
     // 길드 인스턴스 생성를 생성하고 불러옵니다.
     const guildSettings = new GuildSettings(interaction.guild.id);
     let guildData = await guildSettings.loadOrCreate();
