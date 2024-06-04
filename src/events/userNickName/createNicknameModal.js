@@ -9,7 +9,7 @@ const modalConfigs = {
     tfT: { title: '롤토체스', customId: 'tfT', label: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.' },
     valorant: { title: '발로란트', customId: 'valorant', label: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.' },
     steamBG: { title: '스팀 배틀 그라운드 닉네임', customId: 'steamBG', label: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.' },
-    kaKaoBG: { title: '카카오 배틀 그라운드 닉네임', customId: 'kakao', label: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.' },
+    kakaoBG: { title: '카카오 배틀 그라운드 닉네임', customId: 'kakao', label: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.' },
     blizzard: { title: '블리자드 닉네임', customId: 'blizzard', label: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.' },
     overWatchTwo: { title: '오버워치 2 닉네임', customId: 'overWatchTwo', label: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.' },
 };

@@ -40,11 +40,4 @@ module.exports = async (guild) => {
     };
 
 
-
-
-
-
-
-
-
 };

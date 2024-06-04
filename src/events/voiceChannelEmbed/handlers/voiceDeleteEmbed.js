@@ -3,6 +3,7 @@
 const { clientId } = require('../../../../../config.json');
 
 module.exports = async (oldState) => {
+
     const channel = oldState.channel;
     const member = oldState.member;
 
@@ -21,7 +22,8 @@ module.exports = async (oldState) => {
 
                 if (embed.author && member.user.displayAvatarURL() === embed.author.iconURL && embed.author.name == displayName) {
 
-                    if (message) message.delete().catch(error => console.error('메시지를 삭제하지 못 했습니다.'));
+                    if (message) message.delete();
+
                 };
             });
         });

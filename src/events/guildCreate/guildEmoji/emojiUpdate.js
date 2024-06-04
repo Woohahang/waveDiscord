@@ -17,18 +17,30 @@ module.exports = async (guild) => {
 
         // 보이는 게임만 가지고 옵니다.
         const trueValueKeys = filterOptions(guildData, true);
+
         console.log('trueValueKeys : ', trueValueKeys);
+        console.log('emojiNames : ', emojiNames);
 
-        // 이모지 이름 필터링
-        const filteredEmojiNames = emojiNames.filter(emojiName => {
+        // trueValueKeys에 포함된 이름을 기반으로 emojiNames에서 해당하는 이모지 이름만 필터링
+        const filteredEmojiNames = emojiNames.filter(emojiName =>
+            trueValueKeys.some(key => emojiName.includes(key))
+        );
 
-            // return trueValueKeys.some(key => {
-            // console.log('key:', key);
-            // })
+        console.log('filteredEmojiNames : ', filteredEmojiNames);
 
-            // 이모지 이름의 접두사가 trueValueKeys에 있는지 확인
-            return trueValueKeys.some(key => emojiName.toLowerCase().startsWith(key.toLowerCase()));
-        });
+
+        return;
+
+        // // 이모지 이름 필터링
+        // const filteredEmojiNames = emojiNames.filter(emojiName => {
+
+        //     // return trueValueKeys.some(key => {
+        //     // console.log('key:', key);
+        //     // })
+
+        //     // 이모지 이름의 접두사가 trueValueKeys에 있는지 확인
+        //     return trueValueKeys.some(key => emojiName.toLowerCase().startsWith(key.toLowerCase()));
+        // });
 
         console.log('filteredEmojiNames : ', filteredEmojiNames);
 

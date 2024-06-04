@@ -40,5 +40,6 @@ module.exports = async (oldState, newState) => {
 
     } catch (error) {
         console.error('voiceJoinEmbed.js 에러 : ', error);
+        // 이거 채널이 없는 경우도있다. 예외 처리 나중에 하기.
     };
 };
