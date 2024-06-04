@@ -5,21 +5,8 @@ const GuildSettings = require('../../../services/GuildSettings');
 const { menuSelectionResetter } = require('../../../module/common/menuSelectionResetter');
 const checkAdminRole = require('../../../module/role/checkAdminRole');
 const { gameLabels, description } = require('../../../module/games/gameData');
+const filterOptions = require('../../../module/data/filterOptions');
 
-
-// guildData 객체에서 condition과 일치하는 값을 가진 항목만 필터링하는 함수
-function filterOptions(guildData, condition) {
-
-    // 객체를 가져옵니다.
-    const obj = guildData.toObject();
-
-    // 객체의 모든 키를 배열로 가져옵니다.
-    const keys = Object.keys(obj);
-
-    // 조건과 일치하는 값을 가진 키들만 필터링합니다.
-    return keys.filter(key => obj[key] === condition);
-
-};
 
 // 메뉴 선택을 위한 ActionRowBuilder 구성 함수
 function buildMenuActionRow(options, value) {

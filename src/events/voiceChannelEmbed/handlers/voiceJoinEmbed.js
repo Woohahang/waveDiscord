@@ -13,6 +13,7 @@ module.exports = async (oldState, newState) => {
     const guildId = newState.guild.id;
     const channel = newState.channel;
 
+
     try {
         // 이전 채널 메세지 삭제
         if (oldState) {

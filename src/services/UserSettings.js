@@ -164,7 +164,7 @@ class UserSettings {
                 // 메모리에서도 인스턴스 삭제
                 if (UserSettings.instances[this.userId]) {
                     delete UserSettings.instances[this.userId];
-                }
+                };
 
             } else {
                 // 아니라면 변경사항 저장

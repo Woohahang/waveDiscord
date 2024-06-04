@@ -2,18 +2,8 @@
 
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
 const { gameLabels, description } = require('../games/gameData');
+const filterOptions = require('../data/filterOptions');
 
-// guildData 객체에서 값이 true 만 가지고 옵니다.
-function filterOptions(guildData) {
-    // 객체를 가져옵니다.
-    const obj = guildData.toObject();
-
-    // 객체의 모든 키를 배열로 가져옵니다.
-    const keys = Object.keys(obj);
-
-    // true 만 필터링합니다.
-    return keys.filter(key => obj[key] === true);
-};
 
 // 모든 데이터가 숨김 상태인지 아닌지 체크
 function createOptions(trueValueKeys) {
@@ -42,7 +32,7 @@ function createOptions(trueValueKeys) {
 module.exports = (guildData) => {
     try {
         // 길드 데이터에서 true 메뉴만 가지고 오기
-        const trueValueKeys = filterOptions(guildData);
+        const trueValueKeys = filterOptions(guildData, true);
 
         // 길드 데이터에 따라 나타날 메뉴를 정합니다.
         const options = createOptions(trueValueKeys);

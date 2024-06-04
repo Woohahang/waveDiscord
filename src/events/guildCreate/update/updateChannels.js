@@ -6,6 +6,8 @@ const checkAdminRole = require('../../../module/role/checkAdminRole');
 const adminChannelUpDate = require('../module/adminChannelUpDate');
 const mainChannelUpdate = require('../module/mainChannelUpdate');
 
+const emojiUpdate = require('../guildEmoji/emojiUpdate');
+
 const updateCompleted =
     '\n' + '## 업데이트 완료' +
     '\n' + '> * 현재 **Wave** 는 보완과 개발 단계에 있습니다. ' +
@@ -19,6 +21,13 @@ module.exports = async (interaction) => {
             await interaction.reply({ content: '관리자 메뉴에 접근할 권한이 없습니다.', ephemeral: true });
             return;
         };
+
+
+
+        // test
+        // await emojiUpdate(interaction.guild);
+
+
 
         // 길드 인스턴스 생성
         const guildSettings = new GuildSettings(interaction.guild.id);

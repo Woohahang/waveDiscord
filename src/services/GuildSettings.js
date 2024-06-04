@@ -114,7 +114,6 @@ class GuildSettings {
                     throw new Error('유효하지 않은 채널 타입입니다.');
             };
 
-
         } catch (error) {
             console.error(`loadChannelId 에러: `, error);
         };

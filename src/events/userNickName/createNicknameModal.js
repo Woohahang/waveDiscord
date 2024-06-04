@@ -28,16 +28,23 @@ function getModalConfig(gameTitle) {
 
 // 제목, 내용, id  모달에 집어 넣기
 function buildModal({ title, customId, label }) {
-    const modal = new ModalBuilder().setTitle(title).setCustomId(customId);
+    try {
+        const modal = new ModalBuilder()
+            .setTitle(title)
+            .setCustomId(customId);
 
-    const input = new TextInputBuilder()
-        .setCustomId(customId)
-        .setLabel(label)
-        .setStyle(TextInputStyle.Short);
-    const box = new ActionRowBuilder().addComponents(input);
+        const input = new TextInputBuilder()
+            .setCustomId(customId)
+            .setLabel(label)
+            .setStyle(TextInputStyle.Short);
+        const box = new ActionRowBuilder().addComponents(input);
 
-    modal.addComponents(box);
-    return modal;
+        modal.addComponents(box);
+        return modal;
+
+    } catch (error) {
+        console.error('createNicknameModal.js 의 buildModal 에러 : ', error);
+    };
 };
 
 module.exports = async (interaction) => {
@@ -51,6 +58,8 @@ module.exports = async (interaction) => {
 
         // 게임 이름
         const gameTitle = interaction.values[0];
+
+        console.log('gameTitle : ', gameTitle);
 
         // 모달 제목, 라벨, Id 들고옴
         const modalConfig = getModalConfig(gameTitle);
@@ -66,5 +75,6 @@ module.exports = async (interaction) => {
 
     } catch (error) {
         console.error('createNicknameModal.js 예외 : ', error);
+
     };
-};
+}; 

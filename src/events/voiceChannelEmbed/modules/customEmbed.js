@@ -21,12 +21,12 @@ async function loadEmojiMap(newState) {
     // emojiNames 배열에 정의된 이름을 가진 이모지를 찾습니다.
     const foundEmojis = emojiNames.map(name => serverEmojis.find(emoji => emoji.name === name)).filter(emoji => emoji);
 
-    if (foundEmojis.length !== 8) {
-        console.log('누락 된 이모지를 생성합니다.');
-        await emojiRegistrar(newState.guild);
+    // if (foundEmojis.length !== 8) {
+    //     console.log('누락 된 이모지를 생성합니다.');
+    //     await emojiRegistrar(newState.guild);
 
-        return null;
-    };
+    //     return null;
+    // };
 
 
     // 찾은 이모지의 이름과 ID를 맵에 저장합니다.
