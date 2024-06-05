@@ -15,7 +15,7 @@ module.exports = async (guild) => {
         const mainChannelId = await guildSettings.loadChannelId(channelType);
 
         // 메인 채널 Id 객체 얻음
-        const channel = await guild.channels.cache.get(mainChannelId);
+        const channel = await guild.channels.fetch(mainChannelId);
 
         // 메세지 전송
         const messageIds = await mainMessage(channel, guildData);

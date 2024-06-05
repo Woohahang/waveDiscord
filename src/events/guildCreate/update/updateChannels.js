@@ -22,11 +22,8 @@ module.exports = async (interaction) => {
             return;
         };
 
-
-
         // test
         // await emojiUpdate(interaction.guild);
-
 
 
         // 길드 인스턴스 생성

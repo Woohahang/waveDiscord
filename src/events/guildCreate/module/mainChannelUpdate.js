@@ -23,7 +23,6 @@ async function mainChannelUpdate(interaction, guildSettings) {
 
         if (mainChannel) {
             // 메세지 전송
-            // const messageIds = await mainChannelMessage(guild);
             const messageIds = await mainMessage(mainChannel, guildData);
 
             // 메세지 두개를 전송 못 했다면 리턴하라.
@@ -40,7 +39,6 @@ async function mainChannelUpdate(interaction, guildSettings) {
             await mainChannelCreate(guild);
 
             // 메세지 전송
-            // await mainChannelMessage(guild);
             await mainMessage(mainChannel, guildData);
 
         };
