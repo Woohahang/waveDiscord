@@ -107,6 +107,7 @@ async function handleButtonInteraction(interaction, customId, values) {
     };
 };
 
+
 async function handleSubmitModal(interaction, customId, values) {
     const customIdParts = customId.split('_')[0];
 
@@ -121,12 +122,19 @@ async function handleSubmitModal(interaction, customId, values) {
     };
 };
 
+/* 테스트 */
+const nicknameModalCreator = require('../events/userNickName/nicknameModalCreator');
 
 async function handleStringSelectMenu(interaction, customId, values) {
 
     switch (customId) {
         case 'gameMenu': // 닉네임 등록 모달 메뉴 생성
             await createNicknameModal(interaction);
+
+            /*테스트*/
+            // nicknameModalCreator(interaction);
+            /*테스트*/
+
             break;
 
         case 'removeNickNames': // 닉네임 삭제 제출 -> DB 저장

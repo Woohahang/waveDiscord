@@ -131,7 +131,7 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
     };
 
     // 배틀 그라운드
-    if (guildData.steamBG && nickNames.steamBG.length > 0) {
+    if (guildData.steamBG && nickNames.steamBG.length > 0 || guildData.kakaoBG && nickNames.kakao.length > 0) {
         let battleGround = '';
         let steamEmoji = emojiMaps[guildId].get('wave_steamBG');
         let kakaoEmoji = emojiMaps[guildId].get('wave_kakaoBG');

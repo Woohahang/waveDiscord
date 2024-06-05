@@ -14,6 +14,7 @@ const modalConfigs = {
     overWatchTwo: { title: '오버워치 2 닉네임', customId: 'overWatchTwo', label: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.' },
 };
 
+
 // 유저가 선택한 메뉴에 맞는 셋팅 가지고 오기
 function getModalConfig(gameTitle) {
     const config = modalConfigs[gameTitle];
