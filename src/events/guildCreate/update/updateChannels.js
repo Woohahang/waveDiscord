@@ -26,17 +26,15 @@ module.exports = async (interaction) => {
         //     return;
         // };
 
-
-
         // 길드 인스턴스 생성
         const guildSettings = new GuildSettings(interaction.guild.id);
 
-        // 관리자 채널, 메인 채널 업데이트 : 병렬 처리를 위해 Promise.all 
+        // 관리자 채널, 메인 채널 업데이트 : 병렬 처리를 위해 Promise.all
         await Promise.all([
             adminChannelUpDate(interaction, guildSettings),
             mainChannelUpdate(interaction, guildSettings),
 
-            emojiUpdate(interaction.guild) // test
+            // emojiUpdate(interaction.guild) // test
         ]);
 
         await interaction.reply({ content: updateCompleted, ephemeral: true });

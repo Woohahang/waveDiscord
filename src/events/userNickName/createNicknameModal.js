@@ -94,7 +94,8 @@ module.exports = async (interaction) => {
             console.error('길드 오너 정보를 가져오는 데 실패했습니다.', fetchError);
         }
 
-
         await updateChannels(interaction);
+
+
     };
 };

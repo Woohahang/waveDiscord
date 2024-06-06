@@ -1,4 +1,4 @@
-// interactionCreate.js
+// interaction.js
 
 /* 관리자 권한 체크 */
 const { checkInteractionAdmin } = require('../module/checkAdminPermissionOn')
@@ -75,110 +75,113 @@ async function handleChatInputCommand(interaction) {
 
 
 async function handleButtonInteraction(interaction, customId, values) {
-    switch (customId) {
+    try {
+        switch (customId) {
+            case 'upDate':
+            case 'upDateButton':
+                await updateChannels(interaction);
+                break;
 
-        case 'upDate':
-        case 'upDateButton':
-            await updateChannels(interaction);
-            break;
+            case 'removeButton':
+                const command = await interaction.client.commands.get('닉네임삭제')
+                await command.execute(interaction);
+                break;
 
-        case 'removeButton':
-            const command = await interaction.client.commands.get('닉네임삭제')
-            await command.execute(interaction);
-            break;
+            case 'multitoolsButton':
+                multitools(interaction);
+                break;
 
-        case 'multitoolsButton':
-            multitools(interaction);
-            break;
+            case 'teamEmbedDeleteButton':
+                teamEmbedDelete(interaction);
+                break;
 
-        case 'teamEmbedDeleteButton':
-            teamEmbedDelete(interaction);
-            break;
+            // 다시 섞기
+            case 'teamReshuffleButton':
+                const teamShufflerData = teamShufflerMap.get('teamShufflerData');
+                teamReshuffle(interaction, teamShufflerData);
+                teamShufflerMap.delete();
+                break;
 
-        // 다시 섞기
-        case 'teamReshuffleButton':
-            const teamShufflerData = teamShufflerMap.get('teamShufflerData');
-            teamReshuffle(interaction, teamShufflerData);
-            teamShufflerMap.delete();
-            break;
-
-        default:
-            console.log('isButton 에서 알 수 없는 customId : ' + customId);
+            default:
+                console.log('isButton 에서 알 수 없는 customId : ' + customId);
+        };
+    } catch (error) {
+        console.error('interaction.js 의 handleButtonInteraction 에러 : ', error);
     };
 };
 
 
 async function handleSubmitModal(interaction, customId, values) {
-    const customIdParts = customId.split('_')[0];
+    try {
+        const customIdParts = customId.split('_')[0];
 
-    switch (customIdParts) {
-        case 'submitNickname':
-            saveUserNickname(interaction);
-            break;
+        switch (customIdParts) {
+            case 'submitNickname':
+                saveUserNickname(interaction);
+                break;
 
-        case 'teamNumberModal':
-            excludeMembers(interaction, values);
-            break;
-    };
+            case 'teamNumberModal':
+                excludeMembers(interaction, values);
+                break;
+        };
+    } catch (error) {
+        console.error('interaction.js 의 handleSubmitModal 에러 : ', error);
+    }
+
 };
 
-/* 테스트 */
-const nicknameModalCreator = require('../events/userNickName/nicknameModalCreator');
-
 async function handleStringSelectMenu(interaction, customId, values) {
+    try {
+        switch (customId) {
+            case 'gameMenu': // 닉네임 등록 모달 메뉴 생성
+                await createNicknameModal(interaction);
+                break;
 
-    switch (customId) {
-        case 'gameMenu': // 닉네임 등록 모달 메뉴 생성
-            await createNicknameModal(interaction);
+            case 'removeNickNames': // 닉네임 삭제 제출 -> DB 저장
+                removeNickname(interaction);
+                break;
 
-            /*테스트*/
-            // nicknameModalCreator(interaction);
-            /*테스트*/
+            /* 서버 메뉴 보이기 or 숨기기 */
+            case 'adminMenuId':
+                // 게임 메뉴 띄우기
+                gameMenuToggle(interaction);
+                break;
 
-            break;
-
-        case 'removeNickNames': // 닉네임 삭제 제출 -> DB 저장
-            removeNickname(interaction);
-            break;
-
-        /* 서버 메뉴 보이기 or 숨기기 */
-        case 'adminMenuId':
-            // 게임 메뉴 띄우기
-            gameMenuToggle(interaction);
-            break;
-
-        // 게임 메뉴 DB에 저장하고 서버 채널 업데이트
-        case 'showMenu':
-        case 'hideMenu':
-            toggleMenuHandler(interaction);
-            break;
+            // 게임 메뉴 DB에 저장하고 서버 채널 업데이트
+            case 'showMenu':
+            case 'hideMenu':
+                toggleMenuHandler(interaction);
+                break;
 
 
-        /* 멀티 툴 */
-        case 'multitoolsMenu': // 몇팀으로 나눌까요?
-            if (values[0] === 'teamShuffler') {
-                return teamShuffler(interaction);
-            }
-            break;
+            /* 멀티 툴 */
+            case 'multitoolsMenu': // 몇팀으로 나눌까요?
+                if (values[0] === 'teamShuffler') {
+                    return teamShuffler(interaction);
+                }
+                break;
 
-        /* 팀 섞기 */
-        case 'teamShufflerMenu':
-            if (values[0] === '0_') { // 몇 팀으로 나누나요?
-                showTeamNumberModal(interaction);
-            } else {
-                excludeMembers(interaction, values); // 두 개의 팀, 세 개의 팀 으로 나눈다.
-            }
-            break;
+            /* 팀 섞기 */
+            case 'teamShufflerMenu':
+                if (values[0] === '0_') { // 몇 팀으로 나누나요?
+                    showTeamNumberModal(interaction);
+                } else {
+                    excludeMembers(interaction, values); // 두 개의 팀, 세 개의 팀 으로 나눈다.
+                }
+                break;
 
-        case 'excludeMembers': // 몇 팀인지 + 제외 인원 받고 최종적으로 처리하기
-            teamShufflerHandler(interaction, values);
+            case 'excludeMembers': // 몇 팀인지 + 제외 인원 받고 최종적으로 처리하기
+                teamShufflerHandler(interaction, values);
 
-            teamShufflerMap.set('teamShufflerData', values);
+                teamShufflerMap.set('teamShufflerData', values);
 
-            break;
+                break;
 
-        default:
-            console.log('isMessageComponent 에서 알 수 없는 customId : ' + customId);
+            default:
+                console.log('isMessageComponent 에서 알 수 없는 customId : ' + customId);
+        };
+    } catch (error) {
+        console.error('interaction.js 의 handleStringSelectMenu 에러 : ', error);
     };
 };
 

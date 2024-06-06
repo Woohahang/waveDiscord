@@ -53,11 +53,20 @@ module.exports = async (guild) => {
 
 
 
+        // 등록되지 않은 이모지 제거 로직
+        const emojisToRemove = waveEmojis.filter(emoji => !emojiNames.includes(emoji.name));
+
+        for (const emoji of emojisToRemove) {
+            try {
+                // 이모지 삭제
+                await emoji.delete();
+                console.log(`${emoji.name} 이모지가 서버에서 제거되었습니다.`);
+            } catch (error) {
+                console.error(`${emoji.name} 이모지를 제거하는 도중 에러가 발생했습니다:`, error);
+            }
+        }
+
     } catch (error) {
         console.error('emojiUpdate.js 에러 : ', error);
     };
 };
-
-
-// 보이는 게임만 가지고 옵니다.
-// const trueValueKeys = filterOptions(guildData, true);
