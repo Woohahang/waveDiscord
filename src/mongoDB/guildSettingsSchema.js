@@ -7,12 +7,22 @@ let guildSettingsSchema = new mongoose.Schema({
     mainChannelId: String, // 내 봇을 다루는 메인 채널
     adminChannelId: String, // 관리자 채널
 
+    // steam: { type: Boolean, default: true },
+    // loL: { type: Boolean, default: true },
+    // tfT: { type: Boolean, default: true },
+    // valorant: { type: Boolean, default: true },
+    // steamBG: { type: Boolean, default: true },
+    // kakaoBG: { type: Boolean, default: true },
+    // blizzard: { type: Boolean, default: true },
+    // overWatchTwo: { type: Boolean, default: true },
+
+
     steam: { type: Boolean, default: true },
-    loL: { type: Boolean, default: true },
-    tfT: { type: Boolean, default: true },
+    leagueOfLegends: { type: Boolean, default: true },
+    teamfightTactics: { type: Boolean, default: true },
     valorant: { type: Boolean, default: true },
-    steamBG: { type: Boolean, default: true },
-    kakaoBG: { type: Boolean, default: true },
+    steamBattleGround: { type: Boolean, default: true },
+    kakaoBattleGround: { type: Boolean, default: true },
     blizzard: { type: Boolean, default: true },
     overWatchTwo: { type: Boolean, default: true },
 

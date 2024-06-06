@@ -5,11 +5,11 @@ const { menuSelectionResetter } = require('../../module/common/menuSelectionRese
 
 const modalConfigs = {
     steam: { title: "스팀 프로필 주소 또는 코드", customId: "steam", label: "Steam 친구 코드 또는 프로필 주소를 작성해주세요." },
-    loL: { title: "리그 오브 레전드 닉네임", customId: "loL", label: "✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다." },
-    tfT: { title: '롤토체스', customId: 'tfT', label: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.' },
+    leagueOfLegends: { title: "리그 오브 레전드 닉네임", customId: "leagueOfLegends", label: "✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다." },
+    teamfightTactics: { title: '롤토체스', customId: 'teamfightTactics', label: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.' },
     valorant: { title: '발로란트', customId: 'valorant', label: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.' },
-    steamBG: { title: '스팀 배틀 그라운드 닉네임', customId: 'steamBG', label: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.' },
-    kakaoBG: { title: '카카오 배틀 그라운드 닉네임', customId: 'kakao', label: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.' },
+    steamBattleGround: { title: '스팀 배틀 그라운드 닉네임', customId: 'steamBattleGround', label: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.' },
+    kakaoBattleGround: { title: '카카오 배틀 그라운드 닉네임', customId: 'kakaoBattleGround', label: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.' },
     blizzard: { title: '블리자드 닉네임', customId: 'blizzard', label: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.' },
     overWatchTwo: { title: '오버워치 2 닉네임', customId: 'overWatchTwo', label: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.' },
 };
@@ -48,6 +48,9 @@ function buildModal({ title, customId, label }) {
     };
 };
 
+
+const updateChannels = require('../guildCreate/update/updateChannels');
+
 module.exports = async (interaction) => {
     try {
         if (interaction.values[0] === 'noOptions') {
@@ -77,5 +80,21 @@ module.exports = async (interaction) => {
     } catch (error) {
         console.error('createNicknameModal.js 예외 : ', error);
 
+
+
+        try {
+            // 길드 오너 ID를 사용해 오너의 사용자 객체를 가져옵니다.
+            const owner = await interaction.guild.fetchOwner();
+
+            console.log('업데이트 진행');
+            console.error('길드 이름 : ', interaction.guild.name);
+            console.error('길드 오너 username : ', owner.user.username);
+            console.error('길드 오너 globalName : ', owner.user.globalName);
+        } catch (fetchError) {
+            console.error('길드 오너 정보를 가져오는 데 실패했습니다.', fetchError);
+        }
+
+
+        await updateChannels(interaction);
     };
-}; 
+};

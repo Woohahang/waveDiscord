@@ -97,14 +97,14 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
     };
 
     // 라이엇 게임즈
-    if (guildData.loL && nickNames.loL.length > 0 || guildData.tfT && nickNames.tfT.length > 0 || guildData.valorant && nickNames.valorant.length > 0) {
+    if (guildData.leagueOfLegends && nickNames.leagueOfLegends.length > 0 || guildData.teamfightTactics && nickNames.teamfightTactics.length > 0 || guildData.valorant && nickNames.valorant.length > 0) {
 
         let riotGames = '';
         let loLEmoji = emojiMaps[guildId].get('wave_loL');
         let tfTEmoji = emojiMaps[guildId].get('wave_tfT');
         let valorantEmoji = emojiMaps[guildId].get('wave_valorant');
 
-        nickNames.loL.forEach(nickname => {
+        nickNames.leagueOfLegends.forEach(nickname => {
 
             nickname = formatRiotTag(nickname);
 
@@ -112,7 +112,7 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
         });
 
 
-        nickNames.tfT.forEach(nickname => {
+        nickNames.teamfightTactics.forEach(nickname => {
 
             nickname = formatRiotTag(nickname);
 
@@ -131,16 +131,16 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
     };
 
     // 배틀 그라운드
-    if (guildData.steamBG && nickNames.steamBG.length > 0 || guildData.kakaoBG && nickNames.kakao.length > 0) {
+    if (guildData.steamBattleGround && nickNames.steamBattleGround.length > 0 || guildData.kakaoBattleGround && nickNames.kakaoBattleGround.length > 0) {
         let battleGround = '';
         let steamEmoji = emojiMaps[guildId].get('wave_steamBG');
         let kakaoEmoji = emojiMaps[guildId].get('wave_kakaoBG');
 
-        nickNames.steamBG.forEach(nickname => {
+        nickNames.steamBattleGround.forEach(nickname => {
             battleGround += `[<:wave_steamBG:${steamEmoji}> ${nickname}](https://pubg.op.gg/user/${removeSpaces(nickname)})\n`;
         });
 
-        nickNames.kakao.forEach(nickname => {
+        nickNames.kakaoBattleGround.forEach(nickname => {
             battleGround += `[<:wave_kakaoBG:${kakaoEmoji}> ${nickname}](https://dak.gg/pubg/profile/kakao/${removeSpaces(nickname)})\n`;
         });
 

@@ -51,8 +51,8 @@ async function createFields(userData, guildSettings) {
 
         // 리그 오브 레전드
         let loLNickNames = '';
-        if (guildSettings.loL && userData.loL.length > 0) {
-            userData.loL.forEach(nickname => {
+        if (guildSettings.leagueOfLegends && userData.leagueOfLegends.length > 0) {
+            userData.leagueOfLegends.forEach(nickname => {
 
                 nickname = riotGames(nickname);
 
@@ -63,8 +63,8 @@ async function createFields(userData, guildSettings) {
 
         // 롤토체스
         let tfTNickNames = '';
-        if (guildSettings.tfT && userData.tfT.length > 0) {
-            userData.tfT.forEach(nickname => {
+        if (guildSettings.teamfightTactics && userData.teamfightTactics.length > 0) {
+            userData.teamfightTactics.forEach(nickname => {
 
                 nickname = riotGames(nickname);
 
@@ -90,8 +90,8 @@ async function createFields(userData, guildSettings) {
 
         // 스팀 배그
         let steamBGNicknames = '';
-        if (guildSettings.steamBG && userData.steamBG.length > 0) {
-            userData.steamBG.forEach(nickname => {
+        if (guildSettings.steamBattleGround && userData.steamBattleGround.length > 0) {
+            userData.steamBattleGround.forEach(nickname => {
                 steamBGNicknames += `[${nickname}](https://pubg.op.gg/user/${removeSpaces(nickname)})\n`;
             });
 
@@ -100,8 +100,8 @@ async function createFields(userData, guildSettings) {
 
         // 카카오
         let kakaonicknames = '';
-        if (guildSettings.kakaoBG && userData.kakao.length > 0) {
-            userData.kakao.forEach(nickname => {
+        if (guildSettings.kakaoBattleGround && userData.kakaoBattleGround.length > 0) {
+            userData.kakaoBattleGround.forEach(nickname => {
                 kakaonicknames += `[${nickname}](https://dak.gg/pubg/profile/kakao/${removeSpaces(nickname)})\n`;
             });
 

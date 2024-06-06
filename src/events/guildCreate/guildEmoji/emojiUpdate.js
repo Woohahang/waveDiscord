@@ -21,6 +21,17 @@ module.exports = async (guild) => {
         console.log('trueValueKeys : ', trueValueKeys);
         console.log('emojiNames : ', emojiNames);
 
+        if (!trueValueKeys) return;
+
+        for (const emojiName of trueValueKeys) {
+            // 옵셔널 채이닝 생략
+            await guild.emojis.cache.find(e => e.name === 'wave_' + emojiName)?.delete()
+                .then(() => console.log('wave_' + emojiName + ' 이모지 삭제 완료'));
+        };
+
+
+        return;
+
         // trueValueKeys에 포함된 이름을 기반으로 emojiNames에서 해당하는 이모지 이름만 필터링
         const filteredEmojiNames = emojiNames.filter(emojiName =>
             trueValueKeys.some(key => emojiName.includes(key))

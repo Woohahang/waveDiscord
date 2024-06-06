@@ -9,11 +9,11 @@ function generateOptions(userData) {
 
     const platforms = [
         { key: 'steam', description: '스팀' },
-        { key: 'loL', description: '리그 오브 레전드' },
-        { key: 'tfT', description: '롤토체스' },
+        { key: 'leagueOfLegends', description: '리그 오브 레전드' },
+        { key: 'teamfightTactics', description: '롤토체스' },
         { key: 'valorant', description: '발로란트' },
-        { key: 'steamBG', description: '스팀 배틀 그라운드' },
-        { key: 'kakao', description: '카카오 배틀 그라운드' },
+        { key: 'steamBattleGround', description: '스팀 배틀 그라운드' },
+        { key: 'kakakaoBattleGroundkao', description: '카카오 배틀 그라운드' },
         { key: 'blizzard', description: '블리자드' },
         { key: 'overWatchTwo', description: '오버워치 2' }
     ];

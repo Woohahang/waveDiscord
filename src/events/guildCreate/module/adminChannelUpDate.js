@@ -23,7 +23,7 @@ async function adminChannelUpDate(interaction, guildSettings) {
             // 방금 보낸 메세지 제외, 나머지 삭제
             await messagesDelete(channel, messageIds);
         } else {
-            interaction.reply({ content: '오류가 발생해 이전 메시지를 삭제하지 못했습니다. 번거롭겠지만 이전 메시지 삭제를 부탁드립니다.', ephemeral: true })
+            await interaction.reply({ content: '오류가 발생해 이전 메시지를 삭제하지 못했습니다. 번거롭겠지만 이전 메시지 삭제를 부탁드립니다.', ephemeral: true })
         };
 
     } catch (error) {

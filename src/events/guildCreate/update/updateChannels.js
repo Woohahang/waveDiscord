@@ -7,6 +7,7 @@ const adminChannelUpDate = require('../module/adminChannelUpDate');
 const mainChannelUpdate = require('../module/mainChannelUpdate');
 
 const emojiUpdate = require('../guildEmoji/emojiUpdate');
+const emojiRegistrar = require('../guildEmoji/emojiRegistrar');
 
 const updateCompleted =
     '\n' + '## 업데이트 완료' +
@@ -17,14 +18,16 @@ const updateCompleted =
 module.exports = async (interaction) => {
     try {
         // 사용자 권한 체크
-        if (!checkAdminRole(interaction)) {
-            await interaction.reply({ content: '관리자 메뉴에 접근할 권한이 없습니다.', ephemeral: true });
-            return;
-        };
+        // if (!checkAdminRole(interaction)) {
+        //     await interaction.reply({ content: '관리자 메뉴에 접근할 권한이 없습니다.', ephemeral: true });
+        //     return;
+        // };
+
+        // 이모지 등록
+        // await emojiRegistrar(interaction.guild);
 
         // test
         // await emojiUpdate(interaction.guild);
-
 
         // 길드 인스턴스 생성
         const guildSettings = new GuildSettings(interaction.guild.id);
@@ -39,7 +42,7 @@ module.exports = async (interaction) => {
 
     } catch (error) {
         console.error('serverUpDate.js 에러 : ', error)
-        interaction.reply({ content: '에러가 발생했습니다. 나중에 다시 시도해주세요.', ephemeral: true })
+        await interaction.reply({ content: '에러가 발생했습니다. 나중에 다시 시도해주세요.', ephemeral: true })
     };
 };
 

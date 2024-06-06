@@ -14,7 +14,10 @@ function createOptions(trueValueKeys) {
             .setValue('noOptions')
 
     } else {
-        return trueValueKeys.map(field => {
+        // gameLabels 순서에 맞게 options 정렬
+        const orderedKeys = Object.keys(gameLabels).filter(key => trueValueKeys.includes(key));
+
+        return orderedKeys.map(field => {
             let fieldDescription = description[field] + ' 닉네임';
             if (field === 'steam') {
                 fieldDescription = '스팀 프로필 주소';
