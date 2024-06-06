@@ -8,7 +8,13 @@ const emojiNames = [
     'wave_steamBG',
     'wave_kakaoBG',
     'wave_blizzard',
-    'wave_overWatchTwo'
+    'wave_overWatchTwo',
+
+    'wave_leagueOfLegends',
+    'wave_teamfightTactics',
+    'wave_steamBattleGround',
+    'wave_kakaoBattleGround'
+
 ];
 
 module.exports = { emojiNames };

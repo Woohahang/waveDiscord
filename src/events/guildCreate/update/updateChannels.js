@@ -2,12 +2,15 @@
 
 const GuildSettings = require('../../../services/GuildSettings');
 
+/* 관리자 체크 */
 const checkAdminRole = require('../../../module/role/checkAdminRole');
+
+/* 채널 업데이트 */
 const adminChannelUpDate = require('../module/adminChannelUpDate');
 const mainChannelUpdate = require('../module/mainChannelUpdate');
 
+/* 이모지 업데이트 */
 const emojiUpdate = require('../guildEmoji/emojiUpdate');
-const emojiRegistrar = require('../guildEmoji/emojiRegistrar');
 
 const updateCompleted =
     '\n' + '## 업데이트 완료' +
@@ -23,11 +26,7 @@ module.exports = async (interaction) => {
         //     return;
         // };
 
-        // 이모지 등록
-        // await emojiRegistrar(interaction.guild);
 
-        // test
-        // await emojiUpdate(interaction.guild);
 
         // 길드 인스턴스 생성
         const guildSettings = new GuildSettings(interaction.guild.id);
@@ -35,13 +34,15 @@ module.exports = async (interaction) => {
         // 관리자 채널, 메인 채널 업데이트 : 병렬 처리를 위해 Promise.all 
         await Promise.all([
             adminChannelUpDate(interaction, guildSettings),
-            mainChannelUpdate(interaction, guildSettings)
+            mainChannelUpdate(interaction, guildSettings),
+
+            emojiUpdate(interaction.guild) // test
         ]);
 
         await interaction.reply({ content: updateCompleted, ephemeral: true });
 
     } catch (error) {
-        console.error('serverUpDate.js 에러 : ', error)
+        console.error('updateChannels.js 에러 : ', error)
         await interaction.reply({ content: '에러가 발생했습니다. 나중에 다시 시도해주세요.', ephemeral: true })
     };
 };

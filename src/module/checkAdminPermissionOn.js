@@ -3,15 +3,11 @@
 const { clientId } = require('../../../config.json');
 const { PermissionsBitField } = require('discord.js');
 
-// Wave 가 관리자 권한을 받았는지 discord api로 확인
-async function checkGuildAdmin(guild) {
-    try {
-        const wave = await guild.members.fetch(clientId);
-        return checkAdmin(wave);
-    } catch (error) {
-        console.error('checkGuildAdmin 에러:', error);
-        return false;
-    };
+
+// api 요청을 줄이기 위해 캐시 사용
+function checkGuildAdmin(guild) {
+    const wave = guild.members.cache.get(clientId);
+    return checkAdmin(wave);
 };
 
 // Wave 가 관리자 권한 받았는지 캐시에서 확인

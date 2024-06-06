@@ -28,9 +28,6 @@ module.exports = async (guild) => {
         // 길드 인스턴스 생성
         const guildSettings = new GuildSettings(guild.id);
 
-        // 길드 셋팅 불러오기
-        await guildSettings.loadOrCreate();
-
         // 메인 채널 id 저장
         await guildSettings.saveChannelId(channelType, channel.id);
 
