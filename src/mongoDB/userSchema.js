@@ -6,15 +6,6 @@ let userSchema = new mongoose.Schema({
 
     userId: String,
 
-    // steam: [String],
-    // loL: [String],
-    // tfT: [String],
-    // valorant: [String],
-    // steamBG: [String],
-    // kakao: [String],
-    // blizzard: [String],
-    // overWatchTwo: [String],
-
     steam: [String],
     leagueOfLegends: [String],
     teamfightTactics: [String],
@@ -23,7 +14,6 @@ let userSchema = new mongoose.Schema({
     kakaoBattleGround: [String],
     blizzard: [String],
     overWatchTwo: [String],
-
 
     updatedAt: { type: Date, default: Date.now }
 
