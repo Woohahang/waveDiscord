@@ -158,7 +158,7 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
             };
 
             if (blizzard.length !== 0)
-                fields.push({ name: 'Blizzard', value: Blizzard });
+                fields.push({ name: 'Blizzard', value: blizzard });
         };
 
         return fields;
