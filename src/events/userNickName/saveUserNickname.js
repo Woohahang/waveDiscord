@@ -2,6 +2,7 @@
 
 const { menuSelectionResetter } = require('../../module/common/menuSelectionResetter');
 const UserSettings = require('../../services/UserSettings');
+const messageAutoDelete = require('../../module/common/messageAutoDelete');
 
 function generateSaveMessage(nicknameSaveStatus) {
     let message;
@@ -23,13 +24,6 @@ function generateSaveMessage(nicknameSaveStatus) {
             break;
     };
     return message;
-};
-
-// 성공 여부 메세지 10초 뒤 삭제
-function deleteEphemeralMessage(ephemeralMessage) {
-    setTimeout(() => {
-        ephemeralMessage.delete();
-    }, 10_000);
 };
 
 module.exports = async (interaction) => {
@@ -57,11 +51,13 @@ module.exports = async (interaction) => {
         // 메세지 전송
         const ephemeralMessage = await interaction.reply({ content: message, ephemeral: true });
 
-        // 성공 여부 메세지 10초 뒤 삭제
-        deleteEphemeralMessage(ephemeralMessage);
+        await Promise.all([
+            // 메세지 10초 뒤 삭제
+            messageAutoDelete(ephemeralMessage),
 
-        // 메뉴 초기화
-        await menuSelectionResetter(interaction);
+            // 메뉴 초기화
+            menuSelectionResetter(interaction)
+        ]);
 
     } catch (error) {
         console.error('saveUserNickName.js 에러 : ', error);

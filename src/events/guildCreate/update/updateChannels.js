@@ -12,19 +12,12 @@ const mainChannelUpdate = require('../module/mainChannelUpdate');
 /* 이모지 업데이트 */
 const emojiUpdate = require('../guildEmoji/emojiUpdate');
 
+const messageAutoDelete = require('../../../module/common/messageAutoDelete');
+
 const updateCompleted =
     '\n' + '## 업데이트 완료' +
     '\n' + '> * 현재 **Wave** 는 보완과 개발 단계에 있습니다. ' +
     '\n' + '> * 개발은 지금도 진행 중이며 가끔 업데이트 버튼을 눌러주세요.';
-
-const updateFailed =
-    '\n' + '## 업데이트 실패' +
-    '\n' + '> * 일부 업데이트가 실패했습니다. 다시 시도해 주세요.';
-
-const noPermission =
-    '\n' + '## 권한 없음' +
-    '\n' + '> * 관리자 메뉴에 접근할 권한이 없습니다.';
-
 
 /* 목적, Wave 채널 업데이트 */
 module.exports = async (interaction) => {
@@ -45,14 +38,17 @@ module.exports = async (interaction) => {
             emojiUpdate(interaction.guild)
         ]);
 
-        await interaction.reply({ content: updateCompleted, ephemeral: true });
+        // 업데이트 완료 메세지 전송
+        const message = await interaction.reply({ content: updateCompleted, ephemeral: true });
+
+        // 10초 뒤 메세지 삭제
+        await messageAutoDelete(message);
 
     } catch (error) {
         console.error('updateChannels.js 에러 : ', error)
         await interaction.reply({ content: '에러가 발생했습니다. 나중에 다시 시도해주세요.', ephemeral: true })
     };
 };
-
 
 
 /*
