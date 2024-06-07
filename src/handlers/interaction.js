@@ -3,7 +3,8 @@
 /* 관리자 권한 체크 */
 const { checkInteractionAdmin } = require('../module/checkAdminPermissionOn')
 
-const createNicknameModal = require('../events/userNickName/createNicknameModal');
+/* 닉네임 저장 */
+const nicknameModalCreator = require('../events/userNickName/nicknameModalCreator');
 const removeNickname = require('../events/userNickName/removeNickname');
 const saveUserNickname = require('../events/userNickName/saveUserNickname');
 
@@ -130,11 +131,12 @@ async function handleSubmitModal(interaction, customId, values) {
 
 };
 
+
 async function handleStringSelectMenu(interaction, customId, values) {
     try {
         switch (customId) {
             case 'gameMenu': // 닉네임 등록 모달 메뉴 생성
-                await createNicknameModal(interaction);
+                nicknameModalCreator(interaction);
                 break;
 
             case 'removeNickNames': // 닉네임 삭제 제출 -> DB 저장
