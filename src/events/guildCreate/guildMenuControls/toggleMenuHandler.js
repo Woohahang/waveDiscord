@@ -3,6 +3,7 @@
 const GuildSettings = require('../../../services/GuildSettings');
 const adminChannelUpDate = require('../module/adminChannelUpDate');
 const mainChannelUpdate = require('../module/mainChannelUpdate');
+const emojiUpdate = require('../guildEmoji/emojiUpdate');
 
 const updateCompleted =
     '\n' + '## 업데이트 완료' +
@@ -33,7 +34,8 @@ module.exports = async (interaction) => {
         // 서버 채널을 업데이트합니다.
         await Promise.all([
             adminChannelUpDate(interaction, guildSettings),
-            mainChannelUpdate(interaction, guildSettings)
+            mainChannelUpdate(interaction, guildSettings),
+            emojiUpdate(interaction.guild)
         ]);
 
         // 업데이트 완료 알림 전송

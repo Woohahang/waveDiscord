@@ -34,7 +34,7 @@ module.exports = async (interaction) => {
             adminChannelUpDate(interaction, guildSettings),
             mainChannelUpdate(interaction, guildSettings),
 
-            // emojiUpdate(interaction.guild) // test
+            emojiUpdate(interaction.guild) // test
         ]);
 
         await interaction.reply({ content: updateCompleted, ephemeral: true });

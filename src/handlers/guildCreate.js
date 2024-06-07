@@ -14,7 +14,8 @@ const adminChannelMessage = require('../events/guildCreate/adminChannel/adminCha
 const guildInviteMessage = require('../events/guildCreate/userChannel/guildInviteMessage');
 
 /* 이모지 등록 */
-const emojiRegistrar = require('../events/guildCreate/guildEmoji/emojiRegistrar');
+// const emojiRegistrar = require('../events/guildCreate/guildEmoji/emojiRegistrar');
+const emojiUpdate = require('../events/guildCreate/guildEmoji/emojiUpdate');
 
 async function handleGuildCreate(guild) {
     try {
@@ -30,7 +31,7 @@ async function handleGuildCreate(guild) {
             adminChannelMessage(guild);
 
             // Wave 이모지 서버에 등록
-            emojiRegistrar(guild);
+            emojiUpdate(guild);
 
         } else {
             guildInviteMessage(guild); // 관리자 권한을 못 받았다면 1:1 DM 전송
