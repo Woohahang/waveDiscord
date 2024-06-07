@@ -13,7 +13,7 @@ function generateOptions(userData) {
         { key: 'teamfightTactics', description: '롤토체스' },
         { key: 'valorant', description: '발로란트' },
         { key: 'steamBattleGround', description: '스팀 배틀 그라운드' },
-        { key: 'kakakaoBattleGroundkao', description: '카카오 배틀 그라운드' },
+        { key: 'kakaoBattleGround', description: '카카오 배틀 그라운드' },
         { key: 'blizzard', description: '블리자드' },
         { key: 'overWatchTwo', description: '오버워치 2' }
     ];

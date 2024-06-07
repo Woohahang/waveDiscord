@@ -18,7 +18,7 @@ async function emojiDelete(guild, guildEmojis, trueValueKeys) {
         // 이모지 삭제
         deleteEmojis.forEach(async emoji => {
             await guild.emojis.delete(emoji.id)
-                .then(() => console.log(`이모지 삭제 ${emoji.name}`))
+                .then(() => console.log('이모지 삭제 : ', emoji.name))
                 .catch(() => console.error('이모지 삭제 실패 : ', emoji.name));
         });
     } catch (error) {

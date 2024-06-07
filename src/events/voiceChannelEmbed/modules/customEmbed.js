@@ -78,7 +78,7 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
             let tfTEmoji = emojiMaps[guildId].get('wave_teamfightTactics');
             let valorantEmoji = emojiMaps[guildId].get('wave_valorant');
 
-            if (nickNames.leagueOfLegends.length > 0) {
+            if (guildData.leagueOfLegends && nickNames.leagueOfLegends.length > 0) {
                 nickNames.leagueOfLegends.forEach(nickname => {
 
                     nickname = formatRiotTag(nickname);
@@ -87,7 +87,7 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
                 });
             };
 
-            if (nickNames.teamfightTactics.length > 0) {
+            if (guildData.teamfightTactics && nickNames.teamfightTactics.length > 0) {
                 nickNames.teamfightTactics.forEach(nickname => {
 
                     nickname = formatRiotTag(nickname);
@@ -96,7 +96,7 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
                 });
             };
 
-            if (nickNames.valorant.length > 0) {
+            if (guildData.valorant && nickNames.valorant.length > 0) {
                 nickNames.valorant.forEach(nickname => {
 
                     nickname = formatRiotTag(nickname);
@@ -105,8 +105,10 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
                 });
             };
 
-            fields.push({ name: 'Riot Games', value: riotGames });
+            if (riotGames.length !== 0)
+                fields.push({ name: 'Riot Games', value: riotGames });
         };
+
 
         // 배틀 그라운드
         if (guildData.steamBattleGround || guildData.kakaoBattleGround) {
@@ -114,26 +116,29 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
             let steamEmoji = emojiMaps[guildId].get('wave_steamBattleGround');
             let kakaoEmoji = emojiMaps[guildId].get('wave_kakaoBattleGround');
 
-            if (nickNames.steamBattleGround.length > 0) {
+            if (guildData.steamBattleGround && nickNames.steamBattleGround.length > 0) {
                 nickNames.steamBattleGround.forEach(nickname => {
                     battleGround += `[<:wave_steamBattleGround:${steamEmoji}> ${nickname}](https://pubg.op.gg/user/${removeSpaces(nickname)})\n`;
                 });
             };
 
-            if (nickNames.kakaoBattleGround.length > 0) {
+            if (guildData.kakaoBattleGround && nickNames.kakaoBattleGround.length > 0) {
                 nickNames.kakaoBattleGround.forEach(nickname => {
                     battleGround += `[<:wave_kakaoBattleGround:${kakaoEmoji}> ${nickname}](https://dak.gg/pubg/profile/kakao/${removeSpaces(nickname)})\n`;
                 });
             };
 
-            fields.push({ name: 'Battle Ground', value: battleGround });
+            if (battleGround.length !== 0)
+                fields.push({ name: 'Battle Ground', value: battleGround });
+
         };
+
 
 
         // 블리자드
         if (guildData.overWatchTwo || guildData.blizzard) {
 
-            let Blizzard = '';
+            let blizzard = '';
 
             let overWatchEmoji = emojiMaps[guildId].get('wave_overWatchTwo');
             let blizzardEmoji = emojiMaps[guildId].get('wave_blizzard');
@@ -141,18 +146,19 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
             // 블리자드
             if (nickNames.blizzard.length > 0) {
                 nickNames.blizzard.forEach(nickname => {
-                    Blizzard += `<:wave_blizzard:${blizzardEmoji}> ${nickname}\n`;
+                    blizzard += `<:wave_blizzard:${blizzardEmoji}> ${nickname}\n`;
                 });
             };
 
             // 오버워치
             if (nickNames.overWatchTwo.length > 0) {
                 nickNames.overWatchTwo.forEach(nickname => {
-                    Blizzard += `<:wave_overWatchTwo:${overWatchEmoji}> ${nickname}\n`;
+                    blizzard += `<:wave_overWatchTwo:${overWatchEmoji}> ${nickname}\n`;
                 });
             };
 
-            fields.push({ name: 'Blizzard', value: Blizzard });
+            if (blizzard.length !== 0)
+                fields.push({ name: 'Blizzard', value: Blizzard });
         };
 
         return fields;
@@ -230,6 +236,8 @@ module.exports = async (newState, nickNames, guildData) => {
         } else {
             fields = ({ name: '⭐ 업데이트 필요', value: '관리자님, 업데이트 버튼 한 번 눌러주세요.\n 자세한 내용은 Wave Discord에서 안내해 드리겠습니다.' });
         };
+
+        if (!fields) return;
 
         // 임베드 정의
         const embed = new EmbedBuilder()
