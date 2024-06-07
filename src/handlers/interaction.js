@@ -39,7 +39,7 @@ async function handleinteraction(interaction) {
         };
 
         if (interaction.isButton()) {
-            handleButtonInteraction(interaction, customId, values);
+            handleButtonInteraction(interaction, customId);
 
         } else if (interaction.isModalSubmit()) {
             handleSubmitModal(interaction, customId, values);
@@ -52,8 +52,7 @@ async function handleinteraction(interaction) {
         };
 
     } catch (error) {
-        console.error('isMessageComponent 에서 처리 중 오류 발생:', error);
-        await interaction.reply({ content: '상호 작용 처리 중 오류가 발생했습니다!', ephemeral: true });
+        console.error('interaction.js 에서 handleinteraction 에러 :', error);
     };
 };
 
@@ -75,7 +74,7 @@ async function handleChatInputCommand(interaction) {
 };
 
 
-async function handleButtonInteraction(interaction, customId, values) {
+async function handleButtonInteraction(interaction, customId) {
     try {
         switch (customId) {
             case 'upDate':
