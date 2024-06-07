@@ -160,10 +160,13 @@ function loadEmojiMap(newState) {
         const serverEmojis = newState.guild.emojis.cache;
 
         // Wave 이모지만 가지고 옵니다.
-        const waveEmoji = serverEmojis.filter(emoji => emoji.name.split('_')[0] === 'wave');
+        const waveEmojis = serverEmojis.filter(emoji => emoji.name.split('_')[0] === 'wave');
+
+      
+
 
         // 길드 id가 key 맵에 이모지 이름, 이모지 id 저장
-        waveEmoji.forEach(emoji => {
+        waveEmojis.forEach(emoji => {
             emojiMaps[guildId].set(emoji.name, emoji.id);
         });
 
@@ -188,8 +191,12 @@ async function checkEmoji(newState, guildData) {
     console.log(trueValueGames.length)
     console.log(waveEmojis.length)
 
+    // 만약 옛날 이모지가 있다면 리턴합니다.
+    const returnEmoji = waveEmojis.filter(emoji => emoji === 'wave_loL' || emoji === 'wave_kakaoBG' || emoji === 'wave_steamBG' || emoji === 'wave_tfT');
+    
+    console.log('returnEmoji:',returnEmoji)
 
-    if (trueValueGames.length === waveEmojis.length) {
+    if (trueValueGames.length === waveEmojis.length && returnEmoji.length === 0) {
         return true;
     } else {
         console.log('이모지 업데이트 해주세요.');
