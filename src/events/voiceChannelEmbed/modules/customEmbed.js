@@ -71,59 +71,67 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
         };
 
         // 라이엇 게임즈
-        if (guildData.leagueOfLegends && nickNames.leagueOfLegends.length > 0 || guildData.teamfightTactics && nickNames.teamfightTactics.length > 0 || guildData.valorant && nickNames.valorant.length > 0) {
+        if (nickNames.leagueOfLegends.length > 0 || nickNames.teamfightTactics.length > 0 || nickNames.valorant.length > 0) {
 
             let riotGames = '';
             let loLEmoji = emojiMaps[guildId].get('wave_leagueOfLegends');
             let tfTEmoji = emojiMaps[guildId].get('wave_teamfightTactics');
             let valorantEmoji = emojiMaps[guildId].get('wave_valorant');
 
-            nickNames.leagueOfLegends.forEach(nickname => {
+            if (guildData.leagueOfLegends) {
+                nickNames.leagueOfLegends.forEach(nickname => {
 
-                nickname = formatRiotTag(nickname);
+                    nickname = formatRiotTag(nickname);
 
-                riotGames += `[<:wave_leagueOfLegends:${loLEmoji}> ${nickname}](https://www.op.gg/summoners/kr/${loLCustom(nickname)})\n`;
-            });
+                    riotGames += `[<:wave_leagueOfLegends:${loLEmoji}> ${nickname}](https://www.op.gg/summoners/kr/${loLCustom(nickname)})\n`;
+                });
+            };
 
+            if (guildData.teamfightTactics) {
+                nickNames.teamfightTactics.forEach(nickname => {
 
-            nickNames.teamfightTactics.forEach(nickname => {
+                    nickname = formatRiotTag(nickname);
 
-                nickname = formatRiotTag(nickname);
+                    riotGames += `[<:wave_teamfightTactics:${tfTEmoji}> ${nickname}](https://lolchess.gg/profile/kr/${loLCustom(nickname)})\n`;
+                });
+            };
 
-                riotGames += `[<:wave_teamfightTactics:${tfTEmoji}> ${nickname}](https://lolchess.gg/profile/kr/${loLCustom(nickname)})\n`;
-            });
+            if (guildData.valorant) {
+                nickNames.valorant.forEach(nickname => {
 
+                    nickname = formatRiotTag(nickname);
 
-            nickNames.valorant.forEach(nickname => {
-
-                nickname = formatRiotTag(nickname);
-
-                riotGames += `[<:wave_valorant:${valorantEmoji}> ${nickname}](https://valorant.op.gg/profile/${loLCustom(nickname)})\n`;
-            });
+                    riotGames += `[<:wave_valorant:${valorantEmoji}> ${nickname}](https://valorant.op.gg/profile/${loLCustom(nickname)})\n`;
+                });
+            };
 
             fields.push({ name: 'Riot Games', value: riotGames });
         };
 
         // 배틀 그라운드
-        if (guildData.steamBattleGround && nickNames.steamBattleGround.length > 0 || guildData.kakaoBattleGround && nickNames.kakaoBattleGround.length > 0) {
+        if (nickNames.steamBattleGround.length > 0 || nickNames.kakaoBattleGround.length > 0) {
             let battleGround = '';
             let steamEmoji = emojiMaps[guildId].get('wave_steamBattleGround');
             let kakaoEmoji = emojiMaps[guildId].get('wave_kakaoBattleGround');
 
-            nickNames.steamBattleGround.forEach(nickname => {
-                battleGround += `[<:wave_steamBattleGround:${steamEmoji}> ${nickname}](https://pubg.op.gg/user/${removeSpaces(nickname)})\n`;
-            });
+            if (guildData.steamBattleGround) {
+                nickNames.steamBattleGround.forEach(nickname => {
+                    battleGround += `[<:wave_steamBattleGround:${steamEmoji}> ${nickname}](https://pubg.op.gg/user/${removeSpaces(nickname)})\n`;
+                });
+            }
 
-            nickNames.kakaoBattleGround.forEach(nickname => {
-                battleGround += `[<:wave_kakaoBattleGround:${kakaoEmoji}> ${nickname}](https://dak.gg/pubg/profile/kakao/${removeSpaces(nickname)})\n`;
-            });
+            if (guildData.kakaoBattleGround) {
+                nickNames.kakaoBattleGround.forEach(nickname => {
+                    battleGround += `[<:wave_kakaoBattleGround:${kakaoEmoji}> ${nickname}](https://dak.gg/pubg/profile/kakao/${removeSpaces(nickname)})\n`;
+                });
+            }
 
             fields.push({ name: 'Battle Ground', value: battleGround });
         };
 
 
         // 블리자드
-        if (guildData.blizzard && nickNames.blizzard.length > 0 || guildData.overWatchTwo && nickNames.overWatchTwo.length > 0) {
+        if (nickNames.blizzard.length > 0 || nickNames.overWatchTwo.length > 0) {
 
             let Blizzard = '';
 
@@ -131,14 +139,18 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
             let blizzardEmoji = emojiMaps[guildId].get('wave_blizzard');
 
             // 블리자드
-            nickNames.blizzard.forEach(nickname => {
-                Blizzard += `<:wave_blizzard:${blizzardEmoji}> ${nickname}\n`;
-            });
+            if (guildData.blizzard) {
+                nickNames.blizzard.forEach(nickname => {
+                    Blizzard += `<:wave_blizzard:${blizzardEmoji}> ${nickname}\n`;
+                });
+            }
 
             // 오버워치
-            nickNames.overWatchTwo.forEach(nickname => {
-                Blizzard += `<:wave_overWatchTwo:${overWatchEmoji}> ${nickname}\n`;
-            });
+            if (guildData.overWatchTwo) {
+                nickNames.overWatchTwo.forEach(nickname => {
+                    Blizzard += `<:wave_overWatchTwo:${overWatchEmoji}> ${nickname}\n`;
+                });
+            }
 
             fields.push({ name: 'Blizzard', value: Blizzard });
         };
@@ -162,7 +174,7 @@ function loadEmojiMap(newState) {
         // Wave 이모지만 가지고 옵니다.
         const waveEmojis = serverEmojis.filter(emoji => emoji.name.split('_')[0] === 'wave');
 
-      
+
 
 
         // 길드 id가 key 맵에 이모지 이름, 이모지 id 저장
@@ -193,8 +205,8 @@ async function checkEmoji(newState, guildData) {
 
     // 만약 옛날 이모지가 있다면 리턴합니다.
     const returnEmoji = waveEmojis.filter(emoji => emoji === 'wave_loL' || emoji === 'wave_kakaoBG' || emoji === 'wave_steamBG' || emoji === 'wave_tfT');
-    
-    console.log('returnEmoji:',returnEmoji)
+
+    console.log('returnEmoji:', returnEmoji)
 
     if (trueValueGames.length === waveEmojis.length && returnEmoji.length === 0) {
         return true;

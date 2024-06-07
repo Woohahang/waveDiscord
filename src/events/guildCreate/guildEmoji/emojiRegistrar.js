@@ -39,6 +39,6 @@ module.exports = async (guild) => {
         };
 
     } catch (error) {
-        console.error(`${emojiName} 이모지를 등록하는 데 실패했습니다:`, error);
+        console.error('emojiRegistrar.js 에러 : ', error);
     };
 };
