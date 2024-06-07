@@ -71,14 +71,14 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
         };
 
         // 라이엇 게임즈
-        if (nickNames.leagueOfLegends.length > 0 || nickNames.teamfightTactics.length > 0 || nickNames.valorant.length > 0) {
+        if (guildData.leagueOfLegends || guildData.teamfightTactics || guildData.valorant) {
 
             let riotGames = '';
             let loLEmoji = emojiMaps[guildId].get('wave_leagueOfLegends');
             let tfTEmoji = emojiMaps[guildId].get('wave_teamfightTactics');
             let valorantEmoji = emojiMaps[guildId].get('wave_valorant');
 
-            if (guildData.leagueOfLegends) {
+            if (nickNames.leagueOfLegends.length > 0) {
                 nickNames.leagueOfLegends.forEach(nickname => {
 
                     nickname = formatRiotTag(nickname);
@@ -87,7 +87,7 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
                 });
             };
 
-            if (guildData.teamfightTactics) {
+            if (nickNames.teamfightTactics.length > 0) {
                 nickNames.teamfightTactics.forEach(nickname => {
 
                     nickname = formatRiotTag(nickname);
@@ -96,7 +96,7 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
                 });
             };
 
-            if (guildData.valorant) {
+            if (nickNames.valorant.length > 0) {
                 nickNames.valorant.forEach(nickname => {
 
                     nickname = formatRiotTag(nickname);
@@ -109,29 +109,29 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
         };
 
         // 배틀 그라운드
-        if (nickNames.steamBattleGround.length > 0 || nickNames.kakaoBattleGround.length > 0) {
+        if (guildData.steamBattleGround || guildData.kakaoBattleGround) {
             let battleGround = '';
             let steamEmoji = emojiMaps[guildId].get('wave_steamBattleGround');
             let kakaoEmoji = emojiMaps[guildId].get('wave_kakaoBattleGround');
 
-            if (guildData.steamBattleGround) {
+            if (nickNames.steamBattleGround.length > 0) {
                 nickNames.steamBattleGround.forEach(nickname => {
                     battleGround += `[<:wave_steamBattleGround:${steamEmoji}> ${nickname}](https://pubg.op.gg/user/${removeSpaces(nickname)})\n`;
                 });
-            }
+            };
 
-            if (guildData.kakaoBattleGround) {
+            if (nickNames.kakaoBattleGround.length > 0) {
                 nickNames.kakaoBattleGround.forEach(nickname => {
                     battleGround += `[<:wave_kakaoBattleGround:${kakaoEmoji}> ${nickname}](https://dak.gg/pubg/profile/kakao/${removeSpaces(nickname)})\n`;
                 });
-            }
+            };
 
             fields.push({ name: 'Battle Ground', value: battleGround });
         };
 
 
         // 블리자드
-        if (nickNames.blizzard.length > 0 || nickNames.overWatchTwo.length > 0) {
+        if (guildData.overWatchTwo || guildData.blizzard) {
 
             let Blizzard = '';
 
@@ -139,18 +139,18 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
             let blizzardEmoji = emojiMaps[guildId].get('wave_blizzard');
 
             // 블리자드
-            if (guildData.blizzard) {
+            if (nickNames.blizzard.length > 0) {
                 nickNames.blizzard.forEach(nickname => {
                     Blizzard += `<:wave_blizzard:${blizzardEmoji}> ${nickname}\n`;
                 });
-            }
+            };
 
             // 오버워치
-            if (guildData.overWatchTwo) {
+            if (nickNames.overWatchTwo.length > 0) {
                 nickNames.overWatchTwo.forEach(nickname => {
                     Blizzard += `<:wave_overWatchTwo:${overWatchEmoji}> ${nickname}\n`;
                 });
-            }
+            };
 
             fields.push({ name: 'Blizzard', value: Blizzard });
         };
@@ -173,9 +173,6 @@ function loadEmojiMap(newState) {
 
         // Wave 이모지만 가지고 옵니다.
         const waveEmojis = serverEmojis.filter(emoji => emoji.name.split('_')[0] === 'wave');
-
-
-
 
         // 길드 id가 key 맵에 이모지 이름, 이모지 id 저장
         waveEmojis.forEach(emoji => {
@@ -200,13 +197,8 @@ async function checkEmoji(newState, guildData) {
     // 서버에 등록 된 Wave 이모지 이름들을 가지고 옵니다.
     const waveEmojis = serverEmojis.filter(emoji => emoji.name.split('_')[0] === 'wave').map(emoji => emoji.name);
 
-    console.log(trueValueGames.length)
-    console.log(waveEmojis.length)
-
     // 만약 옛날 이모지가 있다면 리턴합니다.
     const returnEmoji = waveEmojis.filter(emoji => emoji === 'wave_loL' || emoji === 'wave_kakaoBG' || emoji === 'wave_steamBG' || emoji === 'wave_tfT');
-
-    console.log('returnEmoji:', returnEmoji)
 
     if (trueValueGames.length === waveEmojis.length && returnEmoji.length === 0) {
         return true;

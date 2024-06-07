@@ -17,6 +17,15 @@ const updateCompleted =
     '\n' + '> * 현재 **Wave** 는 보완과 개발 단계에 있습니다. ' +
     '\n' + '> * 개발은 지금도 진행 중이며 가끔 업데이트 버튼을 눌러주세요.';
 
+const updateFailed =
+    '\n' + '## 업데이트 실패' +
+    '\n' + '> * 일부 업데이트가 실패했습니다. 다시 시도해 주세요.';
+
+const noPermission =
+    '\n' + '## 권한 없음' +
+    '\n' + '> * 관리자 메뉴에 접근할 권한이 없습니다.';
+
+
 /* 목적, Wave 채널 업데이트 */
 module.exports = async (interaction) => {
     try {

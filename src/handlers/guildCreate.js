@@ -22,6 +22,9 @@ async function handleGuildCreate(guild) {
         // Wave 가 관리자 권한 받았는지 체크
         if (checkGuildAdmin(guild)) {
 
+            // Wave 이모지 서버에 등록
+            emojiUpdate(guild);
+
             // 메인 채널 생성 and 메세지 전송
             await mainChannelCreate(guild);
             mainChannelMessage(guild);
@@ -29,9 +32,6 @@ async function handleGuildCreate(guild) {
             // 관리자 채널 생성 and 메세지 전송
             await adminChannelCreate(guild);
             adminChannelMessage(guild);
-
-            // Wave 이모지 서버에 등록
-            emojiUpdate(guild);
 
         } else {
             guildInviteMessage(guild); // 관리자 권한을 못 받았다면 1:1 DM 전송
