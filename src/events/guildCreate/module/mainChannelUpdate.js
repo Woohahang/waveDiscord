@@ -12,7 +12,6 @@ async function mainChannelUpdate(interaction, guildSettings) {
     const guild = interaction.guild;
     const channelType = 'mainChannel';
 
-
     const guildData = await guildSettings.loadOrCreate();
     // 길드 메인 채널 id
     const mainChannelId = await guildSettings.loadChannelId(channelType);

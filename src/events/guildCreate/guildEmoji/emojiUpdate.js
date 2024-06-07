@@ -5,8 +5,6 @@ const path = require('path');
 const GuildSettings = require('../../../services/GuildSettings');
 const filterOptions = require('../../../module/data/filterOptions');
 const { clientId } = require('../../../../../config.json');
-const { emojiNames } = require('../../../module/server/emojiNames');
-
 
 // 이모지 등록, 길드에서 나타난 메뉴의 이모지를 등록합니다.
 async function emojiRegister(guild, guildEmojis, trueValueKeys) {
@@ -15,7 +13,6 @@ async function emojiRegister(guild, guildEmojis, trueValueKeys) {
         const filterEmoji = guildEmojis
             .filter(guildEmoji => trueValueKeys.includes(guildEmoji.name.split('_')[1]))
             .map(emoji => emoji.name.split('_')[1]);
-
         if (!filterEmoji) return;
 
         // 이모지 등록

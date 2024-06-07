@@ -33,8 +33,7 @@ module.exports = async (interaction) => {
         await Promise.all([
             adminChannelUpDate(interaction, guildSettings),
             mainChannelUpdate(interaction, guildSettings),
-
-            emojiUpdate(interaction.guild) // test
+            emojiUpdate(interaction.guild)
         ]);
 
         await interaction.reply({ content: updateCompleted, ephemeral: true });

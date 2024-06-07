@@ -8,6 +8,8 @@ const emojiRegistrar = require('../../guildCreate/guildEmoji/emojiRegistrar');
 // 서버별로 이모지 맵을 저장할 변수
 const emojiMaps = {};
 
+
+
 // 라이엇 주소 : 띄어쓰기 -> %20 변경, # -> - 변경
 function loLCustom(nickname) {
     nickname = nickname.replace(/ /g, '%20');
@@ -50,99 +52,102 @@ function removeSpaces(inputString) {
 };
 
 function createFields(guildId, nickNames, guildData, emojiMaps) {
-    const fields = [];
+    try {
 
-    // 스팀
-    if (guildData.steam && nickNames.steam.length > 0) {
-        // 스팀 닉네임
-        let steamNickName = nickNames.steam[0];
+        const fields = [];
 
-        let steamEmoji = emojiMaps[guildId].get('wave_steam');
+        // 스팀
+        if (guildData.steam && nickNames.steam.length > 0) {
+            // 스팀 닉네임
+            let steamNickName = nickNames.steam[0];
 
-        // 스팀 닉네임이 주소인지 체크
-        let steamLinkIncluded = steamNickName.includes("https://steamcommunity.com/");
+            let steamEmoji = emojiMaps[guildId].get('wave_steam');
 
-        // 주소라면 클릭할 수 있는 링크, 친구 코드만 적었다면 클릭 없는 문자열
-        fields.push({ name: 'Steam', value: steamLinkIncluded ? `<:wave_steam:${steamEmoji}> [스팀 친구 추가](${removeSpaces(steamNickName)})` : `<:wave_steam:${steamEmoji}> ${steamNickName}` });
-    };
+            // 스팀 닉네임이 주소인지 체크
+            let steamLinkIncluded = steamNickName.includes("https://steamcommunity.com/");
 
-    // 라이엇 게임즈
-    if (guildData.leagueOfLegends && nickNames.leagueOfLegends.length > 0 || guildData.teamfightTactics && nickNames.teamfightTactics.length > 0 || guildData.valorant && nickNames.valorant.length > 0) {
+            // 주소라면 클릭할 수 있는 링크, 친구 코드만 적었다면 클릭 없는 문자열
+            fields.push({ name: 'Steam', value: steamLinkIncluded ? `<:wave_steam:${steamEmoji}> [스팀 친구 추가](${removeSpaces(steamNickName)})` : `<:wave_steam:${steamEmoji}> ${steamNickName}` });
+        };
 
-        let riotGames = '';
-        let loLEmoji = emojiMaps[guildId].get('wave_leagueOfLegends');
-        let tfTEmoji = emojiMaps[guildId].get('wave_teamfightTactics');
-        let valorantEmoji = emojiMaps[guildId].get('wave_valorant');
+        // 라이엇 게임즈
+        if (guildData.leagueOfLegends && nickNames.leagueOfLegends.length > 0 || guildData.teamfightTactics && nickNames.teamfightTactics.length > 0 || guildData.valorant && nickNames.valorant.length > 0) {
 
-        nickNames.leagueOfLegends.forEach(nickname => {
+            let riotGames = '';
+            let loLEmoji = emojiMaps[guildId].get('wave_leagueOfLegends');
+            let tfTEmoji = emojiMaps[guildId].get('wave_teamfightTactics');
+            let valorantEmoji = emojiMaps[guildId].get('wave_valorant');
 
-            nickname = formatRiotTag(nickname);
+            nickNames.leagueOfLegends.forEach(nickname => {
 
-            riotGames += `[<:wave_leagueOfLegends:${loLEmoji}> ${nickname}](https://www.op.gg/summoners/kr/${loLCustom(nickname)})\n`;
-        });
+                nickname = formatRiotTag(nickname);
 
-
-        nickNames.teamfightTactics.forEach(nickname => {
-
-            nickname = formatRiotTag(nickname);
-
-            riotGames += `[<:wave_teamfightTactics:${tfTEmoji}> ${nickname}](https://lolchess.gg/profile/kr/${loLCustom(nickname)})\n`;
-        });
+                riotGames += `[<:wave_leagueOfLegends:${loLEmoji}> ${nickname}](https://www.op.gg/summoners/kr/${loLCustom(nickname)})\n`;
+            });
 
 
-        nickNames.valorant.forEach(nickname => {
+            nickNames.teamfightTactics.forEach(nickname => {
 
-            nickname = formatRiotTag(nickname);
+                nickname = formatRiotTag(nickname);
 
-            riotGames += `[<:wave_valorant:${valorantEmoji}> ${nickname}](https://valorant.op.gg/profile/${loLCustom(nickname)})\n`;
-        });
-
-        fields.push({ name: 'Riot Games', value: riotGames });
-    };
-
-    // 배틀 그라운드
-    if (guildData.steamBattleGround && nickNames.steamBattleGround.length > 0 || guildData.kakaoBattleGround && nickNames.kakaoBattleGround.length > 0) {
-        let battleGround = '';
-        let steamEmoji = emojiMaps[guildId].get('wave_steamBattleGround');
-        let kakaoEmoji = emojiMaps[guildId].get('wave_kakaoBattleGround');
-
-        nickNames.steamBattleGround.forEach(nickname => {
-            battleGround += `[<:wave_steamBattleGround:${steamEmoji}> ${nickname}](https://pubg.op.gg/user/${removeSpaces(nickname)})\n`;
-        });
-
-        nickNames.kakaoBattleGround.forEach(nickname => {
-            battleGround += `[<:wave_kakaoBattleGround:${kakaoEmoji}> ${nickname}](https://dak.gg/pubg/profile/kakao/${removeSpaces(nickname)})\n`;
-        });
-
-        fields.push({ name: 'Battle Ground', value: battleGround });
-    };
+                riotGames += `[<:wave_teamfightTactics:${tfTEmoji}> ${nickname}](https://lolchess.gg/profile/kr/${loLCustom(nickname)})\n`;
+            });
 
 
-    // 블리자드
-    if (guildData.blizzard && nickNames.blizzard.length > 0 || guildData.overWatchTwo && nickNames.overWatchTwo.length > 0) {
+            nickNames.valorant.forEach(nickname => {
 
-        let Blizzard = '';
+                nickname = formatRiotTag(nickname);
 
-        let overWatchEmoji = emojiMaps[guildId].get('wave_overWatchTwo');
-        let blizzardEmoji = emojiMaps[guildId].get('wave_blizzard');
+                riotGames += `[<:wave_valorant:${valorantEmoji}> ${nickname}](https://valorant.op.gg/profile/${loLCustom(nickname)})\n`;
+            });
+
+            fields.push({ name: 'Riot Games', value: riotGames });
+        };
+
+        // 배틀 그라운드
+        if (guildData.steamBattleGround && nickNames.steamBattleGround.length > 0 || guildData.kakaoBattleGround && nickNames.kakaoBattleGround.length > 0) {
+            let battleGround = '';
+            let steamEmoji = emojiMaps[guildId].get('wave_steamBattleGround');
+            let kakaoEmoji = emojiMaps[guildId].get('wave_kakaoBattleGround');
+
+            nickNames.steamBattleGround.forEach(nickname => {
+                battleGround += `[<:wave_steamBattleGround:${steamEmoji}> ${nickname}](https://pubg.op.gg/user/${removeSpaces(nickname)})\n`;
+            });
+
+            nickNames.kakaoBattleGround.forEach(nickname => {
+                battleGround += `[<:wave_kakaoBattleGround:${kakaoEmoji}> ${nickname}](https://dak.gg/pubg/profile/kakao/${removeSpaces(nickname)})\n`;
+            });
+
+            fields.push({ name: 'Battle Ground', value: battleGround });
+        };
+
 
         // 블리자드
-        nickNames.blizzard.forEach(nickname => {
-            Blizzard += `<:wave_blizzard:${blizzardEmoji}> ${nickname}\n`;
-        });
+        if (guildData.blizzard && nickNames.blizzard.length > 0 || guildData.overWatchTwo && nickNames.overWatchTwo.length > 0) {
 
-        // 오버워치
-        nickNames.overWatchTwo.forEach(nickname => {
-            Blizzard += `<:wave_overWatchTwo:${overWatchEmoji}> ${nickname}\n`;
-        });
+            let Blizzard = '';
 
-        fields.push({ name: 'Blizzard', value: Blizzard });
+            let overWatchEmoji = emojiMaps[guildId].get('wave_overWatchTwo');
+            let blizzardEmoji = emojiMaps[guildId].get('wave_blizzard');
+
+            // 블리자드
+            nickNames.blizzard.forEach(nickname => {
+                Blizzard += `<:wave_blizzard:${blizzardEmoji}> ${nickname}\n`;
+            });
+
+            // 오버워치
+            nickNames.overWatchTwo.forEach(nickname => {
+                Blizzard += `<:wave_overWatchTwo:${overWatchEmoji}> ${nickname}\n`;
+            });
+
+            fields.push({ name: 'Blizzard', value: Blizzard });
+        };
+
+        return fields;
+    } catch (error) {
+        console.error('customEmbed.js 에서 createFields 에러 : ', error);
     };
-
-
-    return fields;
 };
-
 
 function loadEmojiMap(newState) {
     try {
@@ -164,33 +169,70 @@ function loadEmojiMap(newState) {
 
         return emojiMaps[guildId]
     } catch (error) {
-        console.error('customEmbed.js 의 loadEmojiMap 에러 : ', error);
+        throw console.error('customEmbed.js 의 loadEmojiMap 에러 : ', error);
     };
 };
 
+const filterOptions = require('../../../module/data/filterOptions');
+
+async function checkEmoji(newState, guildData) {
+    const trueValueGames = filterOptions(guildData, true);
+    const guild = newState.guild;
+
+    // 서버에 등록된 모든 이모지를 가져옵니다.
+    const serverEmojis = await guild.emojis.fetch();
+
+    // 서버에 등록 된 Wave 이모지 이름들을 가지고 옵니다.
+    const waveEmojis = serverEmojis.filter(emoji => emoji.name.split('_')[0] === 'wave').map(emoji => emoji.name);
+
+    console.log(trueValueGames.length)
+    console.log(waveEmojis.length)
+
+
+    if (trueValueGames.length === waveEmojis.length) {
+        return true;
+    } else {
+        console.log('이모지 업데이트 해주세요.');
+        return false;
+    };
+
+};
+
 module.exports = async (newState, nickNames, guildData) => {
+    try {
+        const member = newState.member;
+        const guildId = newState.guild.id;
 
-    const member = newState.member;
-    const guildId = newState.guild.id;
+        // 서버 별명 또는 유저 이름
+        let displayName = member.nickname ? member.nickname : member.user.globalName;
 
-    emojiMaps[guildId] = loadEmojiMap(newState);
+        let fields;
 
-    // .addFields
-    const fields = createFields(guildId, nickNames, guildData, emojiMaps);
+        const emojiUpdate = await checkEmoji(newState, guildData);
+        if (emojiUpdate) {
 
-    // 서버 별명 또는 유저 이름
-    const displayName = member.nickname ? member.nickname : member.user.globalName;
+            emojiMaps[guildId] = loadEmojiMap(newState);
 
-    // 임베드 정의
-    const embed = new EmbedBuilder()
-        .setColor('#0099ff')
-        .setColor(0x0099FF)
-        .setAuthor({ name: displayName, iconURL: member.user.displayAvatarURL(), url: member.user.avatarURL() })
-        .addFields(fields)
-        .setTimestamp(new Date(nickNames.updatedAt))
-        .setFooter({ text: '―――――――― update', iconURL: 'https://drive.google.com/uc?export=view&id=19W-rsIvrkFJSJcZ7-PHXOfZcPRO1HYTi' });
+            // .addFields
+            fields = createFields(guildId, nickNames, guildData, emojiMaps);
 
-    return embed;
+        } else {
+            fields = ({ name: '⭐ 업데이트 필요', value: '관리자님, 업데이트 버튼 한 번 눌러주세요.\n 자세한 내용은 Wave Discord에서 안내해 드리겠습니다.' });
+        };
+
+        // 임베드 정의
+        const embed = new EmbedBuilder()
+            .setColor('#0099ff')
+            .setColor(0x0099FF)
+            .setAuthor({ name: displayName, iconURL: member.user.displayAvatarURL(), url: member.user.avatarURL() })
+            .addFields(fields)
+            .setTimestamp(new Date(nickNames.updatedAt))
+            .setFooter({ text: '―――――――― update', iconURL: 'https://drive.google.com/uc?export=view&id=19W-rsIvrkFJSJcZ7-PHXOfZcPRO1HYTi' });
+
+        return embed;
+    } catch (error) {
+        console.error('customEmbed.js 에러 : ', error);
+    };
 };
 
 // setInterval을 사용하여 24시간 마다 emojiMaps 초기화
