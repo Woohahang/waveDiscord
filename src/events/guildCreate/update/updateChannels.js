@@ -14,10 +14,18 @@ const emojiUpdate = require('../guildEmoji/emojiUpdate');
 
 const messageAutoDelete = require('../../../module/common/messageAutoDelete');
 
-const updateCompleted =
-    '\n' + '## 업데이트 완료' +
-    '\n' + '> * 현재 **Wave** 는 보완과 개발 단계에 있습니다. ' +
-    '\n' + '> * 개발은 지금도 진행 중이며 가끔 업데이트 버튼을 눌러주세요.';
+// const updateCompleted =
+//     '\n' + '## 업데이트 완료' +
+//     '\n' + '> * 현재 **Wave** 는 보완과 개발 단계에 있습니다. ' +
+//     '\n' + '> * 개발은 지금도 진행 중이며 가끔 업데이트 버튼을 눌러주세요.';
+
+const updateCompleted = (interaction) => {
+
+
+    console.log(interaction.guild.name);
+    return 'test';
+};
+
 
 /* 목적, Wave 채널 업데이트 */
 module.exports = async (interaction) => {
@@ -39,7 +47,7 @@ module.exports = async (interaction) => {
         ]);
 
         // 업데이트 완료 메세지 전송
-        const message = await interaction.reply({ content: updateCompleted, ephemeral: true });
+        const message = await interaction.reply({ content: updateCompleted(interaction), ephemeral: true });
 
         // 10초 뒤 메세지 삭제
         await messageAutoDelete(message);
