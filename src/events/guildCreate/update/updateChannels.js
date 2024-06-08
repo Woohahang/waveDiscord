@@ -12,49 +12,45 @@ const mainChannelUpdate = require('../module/mainChannelUpdate');
 /* 이모지 업데이트 */
 const emojiUpdate = require('../guildEmoji/emojiUpdate');
 
-const messageAutoDelete = require('../../../module/common/messageAutoDelete');
-
 const updateCompleted =
     '\n' + '## 업데이트 완료' +
     '\n' + '> * 현재 **Wave** 는 보완과 개발 단계에 있습니다. ' +
     '\n' + '> * 개발은 지금도 진행 중이며 가끔 업데이트 버튼을 눌러주세요.';
 
-// const updateCompleted = (interaction) => {
-
-
-//     console.log(interaction.guild.name);
-//     return 'test';
-// };
-
+const updateFailed =
+    '\n' + '## 업데이트 실패' +
+    '\n' + '> * 잠시 후 다시 시도해주세요.' +
+    '\n' + '> * 동일한 문제가 반복될 경우, Wave 디스코드 채널로 문의해 주세요.';
 
 /* 목적, Wave 채널 업데이트 */
 module.exports = async (interaction) => {
     try {
         // 사용자 권한 체크
-        // if (!checkAdminRole(interaction)) {
-        //     await interaction.reply({ content: '관리자 메뉴에 접근할 권한이 없습니다.', ephemeral: true });
-        //     return;
-        // };
+        if (!checkAdminRole(interaction)) {
+            await interaction.reply({ content: '관리자 메뉴에 접근할 권한이 없습니다.', ephemeral: true });
+            return;
+        };
 
         // 길드 인스턴스 생성
         const guildSettings = new GuildSettings(interaction.guild.id);
+
+        // '업데이트 중' 메시지 전송
+        await interaction.deferReply({ ephemeral: true });
 
         // 관리자 채널, 메인 채널 업데이트 : 병렬 처리를 위해 Promise.all
         await Promise.all([
             adminChannelUpDate(interaction, guildSettings),
             mainChannelUpdate(interaction, guildSettings),
             emojiUpdate(interaction.guild)
-        ]);
-
-        // 업데이트 완료 메세지 전송
-        const message = await interaction.reply({ content: updateCompleted, ephemeral: true });
-
-        // 10초 뒤 메세지 삭제
-        await messageAutoDelete(message);
+        ]).then(() => {
+            interaction.editReply({ content: updateCompleted, components: [], ephemeral: true });
+        }).catch((error) => {
+            console.error('toggleMenuHandler.js 업데이트 실패 : ', error);
+            interaction.editReply({ content: updateFailed, components: [], ephemeral: true });
+        });
 
     } catch (error) {
-        console.error('updateChannels.js 에러 : ', error)
-        await interaction.reply({ content: '에러가 발생했습니다. 나중에 다시 시도해주세요.', ephemeral: true })
+        console.error('updateChannels.js 에러 : ', error);
     };
 };
 

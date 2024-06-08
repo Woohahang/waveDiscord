@@ -7,8 +7,13 @@ const emojiUpdate = require('../guildEmoji/emojiUpdate');
 
 const updateCompleted =
     '\n' + '## 업데이트 완료' +
-    '\n' + '> * 닉네임 등록 채널 메뉴' +
-    '\n' + '> * 음성 채널 입장 메뉴';
+    '\n' + '> * 현재 **Wave** 는 보완과 개발 단계에 있습니다. ' +
+    '\n' + '> * 개발은 지금도 진행 중이며 가끔 업데이트 버튼을 눌러주세요.';
+
+const updateFailed =
+    '\n' + '## 업데이트 실패' +
+    '\n' + '> * 잠시 후 다시 시도해주세요.' +
+    '\n' + '> * 동일한 문제가 반복될 경우, Wave 디스코드 채널로 문의해 주세요.';
 
 module.exports = async (interaction) => {
 
@@ -31,15 +36,20 @@ module.exports = async (interaction) => {
         // 변경된 데이터를 DB에 저장합니다.
         await guildData.save();
 
+        // 사용자에게 초기 응답을 즉시 보냅니다.
+        await interaction.update({ content: '업데이트를 시작했습니다. 잠시만 기다려주세요...', components: [], ephemeral: true });
+
         // 서버 채널을 업데이트합니다.
         await Promise.all([
             adminChannelUpDate(interaction, guildSettings),
             mainChannelUpdate(interaction, guildSettings),
             emojiUpdate(interaction.guild)
-        ]);
-
-        // 업데이트 완료 알림 전송
-        await interaction.update({ content: updateCompleted, components: [], ephemeral: true });
+        ]).then(() => {
+            interaction.editReply({ content: updateCompleted, components: [], ephemeral: true });
+        }).catch((error) => {
+            console.error('toggleMenuHandler.js 업데이트 실패 : ', error);
+            interaction.editReply({ content: updateFailed, components: [], ephemeral: true });
+        });
 
     } catch (error) {
         console.error('toggleMenuHandler.js 에러 : ', error);
@@ -47,10 +57,11 @@ module.exports = async (interaction) => {
 
 };
 
+
+
 /*
 메세지 20초 뒤 삭제 하는 방법은
 
 reply 만 된다고 한다. 이전 상호작용에서 대답을 안 하게 하고
 여기서 reply를 써서 셋타임 아웃을 하면 될 것 같은데 아직 안 해봤다.
-
 */

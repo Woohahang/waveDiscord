@@ -15,16 +15,16 @@ async function emojiRegister(guild, guildEmojis, trueValueKeys) {
         const emojiPromises = trueValueKeys.map(async trueGame => {
             const imagePath = path.join(__dirname, '../../../../../register/emoji/wave_' + trueGame + '.png');
             if (fs.existsSync(imagePath) && !filterEmoji.includes(trueGame)) {
-                try {
-                    await guild.emojis.create({
-                        attachment: imagePath,
-                        name: 'wave_' + trueGame
+
+                await guild.emojis.create({ attachment: imagePath, name: 'wave_' + trueGame })
+                    .then(() => {
+                        console.log(`이모지가 서버에 추가되었습니다: wave_${trueGame}`);
+                    })
+                    .catch(error => {
+                        console.error(`이모지 등록 실패 wave_${trueGame} : ${error}`);
                     });
-                    console.log('이모지가 서버에 추가되었습니다: wave_' + trueGame);
-                } catch (error) {
-                    console.error(`이모지 등록 실패: wave_${trueGame}`, error);
-                }
-            }
+
+            };
         });
 
         // 모든 이모지 등록 작업 실행
@@ -36,3 +36,8 @@ async function emojiRegister(guild, guildEmojis, trueValueKeys) {
 };
 
 module.exports = emojiRegister;
+
+/*
+.map() 안에서 async, await 을 사용한 이유
+ - 함수를 사용하여 각 이모지 생성 작업을 비동기적으로 처리하기 위해.
+*/

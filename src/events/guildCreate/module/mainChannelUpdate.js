@@ -1,7 +1,7 @@
 // mainChannelUpdate.js
 
 const mainChannelCreate = require('../mainChannel/mainChannelCreate');
-const { messagesDelete } = require('../../../module/common/messagesDelete');
+const deleteMessagesExcept = require('../../../module/common/deleteMessagesExcept');
 const mainMessage = require('./mainMessage');
 
 
@@ -30,7 +30,7 @@ async function mainChannelUpdate(interaction, guildSettings) {
             });
 
             // 메세지 두개를 잘 전송 했다면, 나머지 메세지를 삭제해라.
-            await messagesDelete(mainChannel, messageIds);
+            await deleteMessagesExcept(mainChannel, messageIds);
 
         } else {
             // 메인 채널 생성
@@ -42,7 +42,7 @@ async function mainChannelUpdate(interaction, guildSettings) {
         };
 
     } catch (error) {
-        console.error('mainChannelUpdate.js 에러 : ', error);
+        throw console.error('mainChannelUpdate.js 에러 : ', error);
     }
 
 };

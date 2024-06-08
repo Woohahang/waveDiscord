@@ -44,5 +44,6 @@ module.exports = async (guild) => {
 
     } catch (error) {
         console.error('emojiUpdate.js 에러 : ', error);
+        throw error;
     };
 };

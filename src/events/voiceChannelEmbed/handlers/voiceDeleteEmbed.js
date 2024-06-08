@@ -20,7 +20,11 @@ module.exports = async (oldState) => {
 
         // 중복된 유저 정보를 담고 있는 메시지들
         const duplicateUserInfo = waveEmbeds.filter(message =>
-            message.embeds.some(embed => embed.author && member.user.displayAvatarURL() === embed.author.iconURL && embed.author.name === displayName)
+            message.embeds.some(embed =>
+                embed.author &&
+                embed.author.name === displayName &&
+                embed.author.iconURL === member.user.displayAvatarURL()
+            )
         );
 
         // 메세지 삭제

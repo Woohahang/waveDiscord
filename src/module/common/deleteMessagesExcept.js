@@ -1,6 +1,7 @@
-// messagesDelete.js
+// deleteMessagesExcept.js
 
-async function messagesDelete(channel, excludeIds = []) {
+// 지정 된 id를 제외한 모든 메세지 삭제
+async function deleteMessagesExcept(channel, excludeIds = []) {
     try {
         // 채널의 메시지 수집
         const messages = await channel.messages.fetch({ limit: 10 });
@@ -19,4 +20,7 @@ async function messagesDelete(channel, excludeIds = []) {
     };
 };
 
-module.exports = { messagesDelete };
+module.exports = deleteMessagesExcept;
+
+
+// deleteMessagesExcept 
