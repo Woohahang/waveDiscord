@@ -4,15 +4,14 @@ const { clientId } = require('../../../../../config.json');
 
 /* 중복 된 유저 정보 메세지 삭제 */
 module.exports = async (oldState) => {
-
-    const member = oldState.member;
-    const channel = oldState.channel;
-    if (!channel) return;
-
-    // 서버 별명 또는 유저 닉네임
-    const displayName = member.nickname || member.user.globalName;
-
     try {
+        const member = oldState.member;
+        const channel = oldState.channel;
+        if (!channel) return;
+
+        // 서버 별명 또는 유저 닉네임
+        const displayName = member.nickname || member.user.globalName;
+
         const messages = await channel.messages.fetch({ limit: 20 });
         if (!messages) return;
 

@@ -12,6 +12,7 @@ module.exports = async (oldState, newState) => {
     const memberId = newState.member.id;
     const guildId = newState.guild.id;
     const channel = newState.channel;
+    if (!channel) return;
 
     try {
         // 이전 채널 메세지 삭제
@@ -33,12 +34,10 @@ module.exports = async (oldState, newState) => {
         if (!embed) return;
 
         // 임베드 전송
-        await channel.send({
-            embeds: [embed],
-        });
+        await channel.send({ embeds: [embed] });
 
     } catch (error) {
+        if (error.rawError && error.rawError.code === 10003) return;
         console.error('voiceJoinEmbed.js 에러 : ', error);
-        // 이거 채널이 없는 경우도있다. 예외 처리 나중에 하기.
     };
 };
