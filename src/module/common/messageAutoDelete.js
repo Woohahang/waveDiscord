@@ -1,7 +1,6 @@
 // messageAutoDelete.js
 
-// 10초
-const TEN_SECONDS = 10_000;
+const TEN_SECONDS = 10_000; // 10초
 
 // 10초 뒤 메세지 삭제
 async function messageAutoDelete(message) {
@@ -14,4 +13,3 @@ async function messageAutoDelete(message) {
 };
 
 module.exports = messageAutoDelete;
-
