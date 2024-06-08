@@ -8,7 +8,7 @@ async function messageAutoDelete(message) {
     setTimeout(async () => {
         await message.delete()
             .catch(error => {
-                console.error('messageAutoDelete.js 10초 뒤 메세지 삭제 에러 : ', error);
+                console.error('messageAutoDelete.js 10초 뒤 메세지 삭제 함수 예외 발생 : ', error);
             });
     }, TEN_SECONDS);
 };

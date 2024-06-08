@@ -9,10 +9,10 @@ async function messagesDelete(channel, excludeIds = []) {
         // 제외할 메시지 ID가 있는 경우, 해당 메시지를 제외하고 삭제
         const messagesToDelete = messages.filter(message => !excludeIds.includes(message.id));
 
-        // 메시지들 삭제
-        messagesToDelete.forEach(message => {
-            message.delete().catch(error => console.error(`deleteMessages() 메시지 삭제 중 오류 발생: ${error}`));
-        });
+        // 메세지들 삭제
+        await Promise.all(messagesToDelete.map(message =>
+            message.delete()
+        ));
 
     } catch (error) {
         console.error('messageDelete.js 에러 : ', error);

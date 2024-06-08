@@ -5,7 +5,6 @@ const { messagesDelete } = require('../../../module/common/messagesDelete');
 const mainMessage = require('./mainMessage');
 
 
-
 // 메인 채널 업데이트
 async function mainChannelUpdate(interaction, guildSettings) {
 
