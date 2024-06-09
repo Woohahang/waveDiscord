@@ -1,3 +1,5 @@
+// updateModule.js
+
 const updateCompleted =
     '\n' + '## 업데이트 완료' +
     '\n' + '> * 현재 **Wave** 는 보완과 개발 단계에 있습니다. ' +

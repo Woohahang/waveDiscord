@@ -13,7 +13,7 @@ const gameMenuToggle = require('../events/guildCreate/guildMenuControls/gameMenu
 const toggleMenuHandler = require('../events/guildCreate/guildMenuControls/toggleMenuHandler');
 
 /* 채널 업데이트 */
-const updateChannels = require('../events/guildCreate/update/updateChannels');
+const updateChannels = require('../events/guildCreate/update/updateHandler/updateChannels');
 
 /* 멀티 툴 */
 const multitools = require('../events/multitools/multitools');

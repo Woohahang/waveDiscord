@@ -1,19 +1,19 @@
 // updateChannels.js
 
-const GuildSettings = require('../../../services/GuildSettings');
+const GuildSettings = require('../../../../services/GuildSettings');
 
 /* 관리자 체크 */
-const checkAdminRole = require('../../../module/role/checkAdminRole');
+const checkAdminRole = require('../../../../module/role/checkAdminRole');
 
 /* 채널 업데이트 */
-const adminChannelUpDate = require('../module/adminChannelUpDate');
-const mainChannelUpdate = require('../module/mainChannelUpdate');
+const adminChannelUpDate = require('../../module/adminChannelUpDate');
+const mainChannelUpdate = require('../../module/mainChannelUpdate');
 
 /* 이모지 업데이트 */
-const emojiUpdate = require('../guildEmoji/emojiUpdate');
+const emojiUpdate = require('../../guildEmoji/emojiUpdate');
 
 /* 업데이트 상태 여부 메세지 */
-const { updateCompleted, updateFailed, updateEmojiFailed } = require('./updateModule/message');
+const { updateCompleted, updateFailed, updateEmojiFailed } = require('../updateModule/message');
 
 /* 목적, Wave 채널 업데이트 */
 module.exports = async (interaction) => {
