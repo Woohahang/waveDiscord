@@ -6,7 +6,7 @@ const { checkInteractionAdmin } = require('../module/checkAdminPermissionOn')
 /* 닉네임 저장 */
 const nicknameModalCreator = require('../events/userNickName/nicknameModalCreator');
 const removeNickname = require('../events/userNickName/removeNickname');
-const saveUserNickname = require('../events/userNickName/saveUserNickname');
+const saveNickName = require('../events/userNickName/saveNickName');
 
 /* 길드 메뉴 컨트롤 */
 const gameMenuToggle = require('../events/guildCreate/guildMenuControls/gameMenuToggle');
@@ -117,7 +117,7 @@ async function handleSubmitModal(interaction, customId, values) {
 
         switch (customIdParts) {
             case 'submitNickname':
-                saveUserNickname(interaction);
+                saveNickName(interaction);
                 break;
 
             case 'teamNumberModal':

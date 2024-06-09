@@ -1,4 +1,4 @@
-// saveUserNickName.js
+// saveNickName.js
 
 const { menuSelectionResetter } = require('../../module/common/menuSelectionResetter');
 const UserSettings = require('../../services/UserSettings');
@@ -60,7 +60,7 @@ module.exports = async (interaction) => {
         ]);
 
     } catch (error) {
-        console.error('saveUserNickName.js 에러 : ', error);
+        console.error('saveNickName.js 에러 : ', error);
     };
 };
 
