@@ -28,6 +28,9 @@ function generateSaveMessage(nicknameSaveStatus) {
 
 module.exports = async (interaction) => {
     try {
+        // '업데이트 중' 메시지 전송
+        await interaction.deferReply({ ephemeral: true });
+
         const userId = interaction.member.id;
 
         // customId === submitNickname_게임변수
@@ -52,10 +55,7 @@ module.exports = async (interaction) => {
         const message = generateSaveMessage(nicknameSaveStatus);
 
         // 메세지 전송
-        const ephemeralMessage = await interaction.reply({ content: message, ephemeral: true });
-
-        // 메세지 10초 뒤 삭제
-        await messageAutoDelete(ephemeralMessage);
+        await interaction.editReply({ content: message, ephemeral: true });
 
     } catch (error) {
         console.error('saveNickName.js 에러 : ', error);

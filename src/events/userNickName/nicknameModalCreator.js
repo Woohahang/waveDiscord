@@ -42,6 +42,14 @@ module.exports = async (interaction) => {
             return await interaction.deferUpdate();
         };
 
+        // 옛날 스키마 필드명
+        const waveUpdateRequiredGames = ['loL', 'tfT', 'steamBG', 'kakao'];
+
+        // 조건을 확인하여 함수 호출
+        if (waveUpdateRequiredGames.includes(gameTitle)) {
+            return await sendWaveUpdateMessage(interaction);
+        };
+
         // 모달 생성
         const modal = buildModal(gameTitle)
 
@@ -53,3 +61,13 @@ module.exports = async (interaction) => {
         logUserInfo(interaction);
     };
 };
+
+// Wave 업데이트 필요 메시지 함수
+async function sendWaveUpdateMessage(interaction) {
+    try {
+        await interaction.reply({ content: 'Wave 업데이트가 필요합니다.', ephemeral: true });
+    } catch (error) {
+        console.error('sendWaveUpdateMessage 에러 : ', error);
+        logUserInfo(interaction);
+    }
+}
