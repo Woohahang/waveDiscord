@@ -8,28 +8,6 @@ const emojiRegister = require('../emojiModule/emojiRegister');
 const emojiDelete = require('../emojiModule/emojiDelete');
 const emojiCapacityCheck = require('../emojiModule/emojiCapacityCheck');
 
-
-// 이모지 제거, 길드에서 숨겨진 메뉴의 이모지를 제거합니다.
-// async function emojiDelete(guild, guildEmojis, trueValueKeys) {
-//     try {
-//         // Wave 이모지 중에, 길드에서 설정한 true 게임이 아닌 모든 이모지들
-//         const deleteEmojis = guildEmojis.filter(emoji =>
-//             emoji.author.id === clientId &&
-//             !trueValueKeys.includes(emoji.name.split('_')[1])
-//         );
-
-//         // 이모지 삭제
-//         deleteEmojis.forEach(async emoji => {
-//             await guild.emojis.delete(emoji.id)
-//                 .then(() => console.log('이모지 삭제 : ', emoji.name))
-//                 .catch(() => console.error('이모지 삭제 실패 : ', emoji.name));
-//         });
-//     } catch (error) {
-//         console.error('emojiUpdate.js 의 emojiDelete 에러 : ', error);
-//     };
-// };
-
-
 /* 이모지 업데이트 */
 module.exports = async (guild) => {
     try {
