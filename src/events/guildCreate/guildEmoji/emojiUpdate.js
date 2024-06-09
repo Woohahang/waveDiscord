@@ -1,8 +1,11 @@
 // emojiUpdate.js
 
 const GuildSettings = require('../../../services/GuildSettings');
+const EmojiSlotError = require('../../../utils/errors/EmojiSlotError');
+
 const filterOptions = require('../../../module/data/filterOptions');
 const emojiRegister = require('./module/emojiRegister');
+const emojiCapacityCheck = require('./module/emojiCapacityCheck');
 const { clientId } = require('../../../../../config.json');
 
 
@@ -26,6 +29,7 @@ async function emojiDelete(guild, guildEmojis, trueValueKeys) {
     };
 };
 
+
 /* 이모지 업데이트 */
 module.exports = async (guild) => {
     try {
@@ -39,11 +43,27 @@ module.exports = async (guild) => {
         // 길드에 보이도록 설정 된 모든 게임
         const trueValueKeys = filterOptions(guildData, true);
 
+        // 이모지 제거
         await emojiDelete(guild, guildEmojis, trueValueKeys);
+
+        // 이모지 슬롯 여유 확인
+        const hasSlotsAvailable = emojiCapacityCheck(guild, guildEmojis);
+        if (!hasSlotsAvailable) {
+            throw new EmojiSlotError('이모지 슬롯 초과');
+        };
+
+        // 이모지 등록
         await emojiRegister(guild, guildEmojis, trueValueKeys);
 
     } catch (error) {
-        console.error('emojiUpdate.js 에러 : ', error);
-        throw error;
+
+        switch (error.code) {
+            case 'EMOJI_SLOT_ERROR': // 슬롯 초과
+                throw error;
+
+            default: // 이외의 모든 에러
+                console.error('emojiUpdate.js 에러 : ', error);
+        };
+
     };
 };

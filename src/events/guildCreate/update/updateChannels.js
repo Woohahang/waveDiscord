@@ -12,15 +12,8 @@ const mainChannelUpdate = require('../module/mainChannelUpdate');
 /* 이모지 업데이트 */
 const emojiUpdate = require('../guildEmoji/emojiUpdate');
 
-const updateCompleted =
-    '\n' + '## 업데이트 완료' +
-    '\n' + '> * 현재 **Wave** 는 보완과 개발 단계에 있습니다. ' +
-    '\n' + '> * 개발은 지금도 진행 중이며 가끔 업데이트 버튼을 눌러주세요.';
-
-const updateFailed =
-    '\n' + '## 업데이트 실패' +
-    '\n' + '> * 잠시 후 다시 시도해주세요.' +
-    '\n' + '> * 동일한 문제가 반복될 경우, Wave 디스코드 채널로 문의해 주세요.';
+/* 업데이트 상태 여부 메세지 */
+const { updateCompleted, updateFailed, updateEmojiFailed } = require('./updateModule/message');
 
 /* 목적, Wave 채널 업데이트 */
 module.exports = async (interaction) => {
@@ -45,8 +38,17 @@ module.exports = async (interaction) => {
         ]).then(() => {
             interaction.editReply({ content: updateCompleted, components: [], ephemeral: true });
         }).catch((error) => {
-            console.error('toggleMenuHandler.js 업데이트 실패 : ', error);
-            interaction.editReply({ content: updateFailed, components: [], ephemeral: true });
+
+            switch (error.code) {
+                case 'EMOJI_SLOT_ERROR': // 이모지 슬롯 초과
+                    interaction.editReply({ content: updateEmojiFailed, ephemeral: true });
+                    break;
+
+                default:  // 다른 모든 에러
+                    interaction.editReply({ content: updateFailed, ephemeral: true });
+                    console.error('updateChannels.js 업데이트 실패 : ', error);
+            };
+
         });
 
     } catch (error) {

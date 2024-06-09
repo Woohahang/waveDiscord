@@ -2,9 +2,6 @@
 
 const { EmbedBuilder } = require('discord.js');
 
-const { emojiNames } = require('../../../module/server/emojiNames')
-const emojiRegistrar = require('../../guildCreate/guildEmoji/emojiRegistrar');
-
 // 서버별로 이모지 맵을 저장할 변수
 const emojiMaps = {};
 
