@@ -58,7 +58,10 @@ module.exports = async (interaction) => {
         await interaction.editReply({ content: message, ephemeral: true });
 
     } catch (error) {
+        console.log('예외 발생');
+        console.log('customId : ', interaction.customId);
         console.error('saveNickName.js 에러 : ', error);
+
     };
 };
 
