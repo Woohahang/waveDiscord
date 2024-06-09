@@ -1,8 +1,6 @@
 // saveNickName.js
 
-const { menuSelectionResetter } = require('../../module/common/menuSelectionResetter');
 const UserSettings = require('../../services/UserSettings');
-const messageAutoDelete = require('../../module/common/messageAutoDelete');
 
 function generateSaveMessage(nicknameSaveStatus) {
     let message;

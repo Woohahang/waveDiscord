@@ -2,11 +2,11 @@
 
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
 const GuildSettings = require('../../../services/GuildSettings');
-const { menuSelectionResetter } = require('../../../module/common/menuSelectionResetter');
 const checkAdminRole = require('../../../module/role/checkAdminRole');
 const { gameLabels, description } = require('../../../module/games/gameData');
 const filterOptions = require('../../../module/data/filterOptions');
 
+const resetMenuSelection = require('../../../module/common/resetMenuSelection');
 
 // 메뉴 선택을 위한 ActionRowBuilder 구성 함수
 function buildMenuActionRow(options, value) {
@@ -34,7 +34,7 @@ function buildMenuActionRow(options, value) {
 module.exports = async (interaction) => {
     try {
         // 메뉴 초기화
-        menuSelectionResetter(interaction);
+        await resetMenuSelection(interaction);
 
         // 사용자 권한 체크
         if (!checkAdminRole(interaction)) {

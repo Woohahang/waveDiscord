@@ -6,11 +6,13 @@ async function resetMenuSelection(interaction) {
         // 상호 작용 받은 메세지를 가지고 옵니다.
         const message = await interaction.message.fetch();
 
-        // 메세지의 컴포넌츠들 중에 0번째를 가지고 옵니다. (어차피 하나만 있긴 하지만 배열로 받기 때문에 [0] 을 써야 된다.)
-        const actionRow = message.components[0];
+        // 메세지의 컴포넌트들 -> ex) 메인 채널은 채팅 하나에 [메뉴 버튼] 한 개, 관리자 채널은 [메뉴버튼], [업데이트, 문의하기] 두 개 이렇게 묶여있다. 
+        const actionRows = message.components.map(actionRow => {
+            return actionRow; // 아무런 조정을 하지 않고 새 것을 그대로 반환
+        });
 
-        // 상호 작용 받은 메세지의 components 를 0번째 메뉴로 수정합니다.
-        await message.edit({ components: [actionRow] });
+        // 상호 작용 받은 메세지의 components 를 다시 조정 -> 의도 : 선택 한 값에서 다시 초기 값으로 돌리는 역할을 한다.
+        await message.edit({ components: actionRows });
     } catch (error) {
         console.error('resetMenuSelection.js 예외 : ', error);
     };
