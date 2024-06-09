@@ -51,6 +51,8 @@ module.exports = async (interaction) => {
         // 메뉴 초기화
         await menuSelectionResetter(interaction);
 
+
+
         // 닉네임 성공 여부에 따른 메세지 ★ 순서 중요
         const message = generateSaveMessage(nicknameSaveStatus);
 
@@ -58,10 +60,7 @@ module.exports = async (interaction) => {
         await interaction.editReply({ content: message, ephemeral: true });
 
     } catch (error) {
-        console.log('예외 발생');
-        console.log('customId : ', interaction.customId);
         console.error('saveNickName.js 에러 : ', error);
-
     };
 };
 

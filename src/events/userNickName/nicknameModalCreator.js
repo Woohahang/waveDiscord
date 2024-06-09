@@ -65,6 +65,8 @@ module.exports = async (interaction) => {
 // Wave 업데이트 필요 메시지 함수
 async function sendWaveUpdateMessage(interaction) {
     try {
+        console.log('예외 발생');
+        console.log('customId : ', interaction.customId);
         await interaction.reply({ content: 'Wave 업데이트가 필요합니다.', ephemeral: true });
     } catch (error) {
         console.error('sendWaveUpdateMessage 에러 : ', error);
