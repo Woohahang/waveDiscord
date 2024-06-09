@@ -24,9 +24,6 @@ userSchema.pre('save', function (next) {
     next();
 });
 
-
-// MongoDB 서버에 userNicknameInfo 파일 생성, 그 안에 userSchema 저장
-// const UserNickname = mongoose.models.userNicknameDB || mongoose.model('userNicknameDB', userSchema);
 const UserNickname = mongoose.model('userNicknameDB', userSchema);
 
 module.exports = UserNickname;
