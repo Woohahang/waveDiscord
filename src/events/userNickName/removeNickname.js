@@ -1,4 +1,4 @@
-//  removeNickname.js , 등록된 닉네임 삭제
+//  removeNickName.js , 등록된 닉네임 삭제
 
 const UserSettings = require('../../services/UserSettings');
 
@@ -24,6 +24,6 @@ module.exports = async (interaction) => {
         });
 
     } catch (error) {
-        console.error('removeNickname.js', error);
+        console.error('removeNickName.js', error);
     };
 };

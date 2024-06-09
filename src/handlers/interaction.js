@@ -5,7 +5,7 @@ const { checkInteractionAdmin } = require('../module/checkAdminPermissionOn')
 
 /* 닉네임 저장 */
 const nicknameModalCreator = require('../events/userNickName/nicknameModalCreator');
-const removeNickname = require('../events/userNickName/removeNickname');
+const removeNickName = require('../events/userNickName/removeNickName');
 const saveNickName = require('../events/userNickName/saveNickName');
 
 /* 길드 메뉴 컨트롤 */
@@ -139,7 +139,7 @@ async function handleStringSelectMenu(interaction, customId, values) {
                 break;
 
             case 'removeNickNames': // 닉네임 삭제 제출 -> DB 저장
-                removeNickname(interaction);
+                removeNickName(interaction);
                 break;
 
             /* 서버 메뉴 보이기 or 숨기기 */
