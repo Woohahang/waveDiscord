@@ -15,7 +15,7 @@ const guildInviteMessage = require('../events/guildCreate/userChannel/guildInvit
 
 /* 이모지 등록 */
 // const emojiRegistrar = require('../events/guildCreate/guildEmoji/emojiRegistrar');
-const emojiUpdate = require('../events/guildCreate/guildEmoji/emojiUpdate');
+const emojiUpdate = require('../events/guildCreate/guildEmoji/emojiHandler/emojiUpdate');
 
 async function handleGuildCreate(guild) {
     try {

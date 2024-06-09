@@ -10,7 +10,7 @@ const adminChannelUpDate = require('../../module/adminChannelUpDate');
 const mainChannelUpdate = require('../../module/mainChannelUpdate');
 
 /* 이모지 업데이트 */
-const emojiUpdate = require('../../guildEmoji/emojiUpdate');
+const emojiUpdate = require('../../guildEmoji/emojiHandler/emojiUpdate');
 
 /* 업데이트 상태 여부 메세지 */
 const { updateCompleted, updateFailed, updateEmojiFailed } = require('../updateModule/message');

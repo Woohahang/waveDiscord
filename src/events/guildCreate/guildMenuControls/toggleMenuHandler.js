@@ -3,7 +3,7 @@
 const GuildSettings = require('../../../services/GuildSettings');
 const adminChannelUpDate = require('../module/adminChannelUpDate');
 const mainChannelUpdate = require('../module/mainChannelUpdate');
-const emojiUpdate = require('../guildEmoji/emojiUpdate');
+const emojiUpdate = require('../guildEmoji/emojiHandler/emojiUpdate');
 
 const updateCompleted =
     '\n' + '## 업데이트 완료' +

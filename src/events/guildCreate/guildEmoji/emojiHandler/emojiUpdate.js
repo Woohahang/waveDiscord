@@ -1,12 +1,12 @@
 // emojiUpdate.js
 
-const GuildSettings = require('../../../services/GuildSettings');
-const EmojiSlotError = require('../../../utils/errors/EmojiSlotError');
+const GuildSettings = require('../../../../services/GuildSettings');
+const EmojiSlotError = require('../../../../utils/errors/EmojiSlotError');
 
-const filterOptions = require('../../../module/data/filterOptions');
-const emojiRegister = require('./module/emojiRegister');
-const emojiCapacityCheck = require('./module/emojiCapacityCheck');
-const { clientId } = require('../../../../../config.json');
+const filterOptions = require('../../../../module/data/filterOptions');
+const emojiRegister = require('../emojiModule/emojiRegister');
+const emojiCapacityCheck = require('../emojiModule/emojiCapacityCheck');
+const { clientId } = require('../../../../../../config.json');
 
 
 // 이모지 제거, 길드에서 숨겨진 메뉴의 이모지를 제거합니다.
