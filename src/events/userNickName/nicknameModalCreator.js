@@ -27,6 +27,11 @@ function buildModal(gameTitle) {
     };
 };
 
+// 옛날 필드 체크
+function UpdateRequired(gameTitle) {
+    const waveUpdateRequiredGames = ['loL', 'tfT', 'steamBG', 'kakao'];
+    return waveUpdateRequiredGames.includes(gameTitle);
+};
 
 /* 모달 함수 */
 module.exports = async (interaction) => {
@@ -42,12 +47,9 @@ module.exports = async (interaction) => {
             return await interaction.deferUpdate();
         };
 
-        // 옛날 스키마 필드명
-        const waveUpdateRequiredGames = ['loL', 'tfT', 'steamBG', 'kakao'];
-
-        // 조건을 확인하여 함수 호출
-        if (waveUpdateRequiredGames.includes(gameTitle)) {
-            return await sendWaveUpdateMessage(interaction);
+        // gameTitle 이 옛날 필드명이면 업데이트 필요하다는 안내 전달
+        if (UpdateRequired(gameTitle)) {
+            return await interaction.reply({ content: 'Wave 업데이트가 필요합니다.', ephemeral: true });
         };
 
         // 모달 생성
@@ -58,18 +60,6 @@ module.exports = async (interaction) => {
 
     } catch (error) {
         console.error('nicknameModalCreator.js 에러 : ', error);
-        logUserInfo(interaction);
-    };
-};
-
-// Wave 업데이트 필요 메시지 함수
-async function sendWaveUpdateMessage(interaction) {
-    try {
-        console.log('예외 발생');
-        console.log('customId : ', interaction.customId);
-        await interaction.reply({ content: 'Wave 업데이트가 필요합니다.', ephemeral: true });
-    } catch (error) {
-        console.error('sendWaveUpdateMessage 에러 : ', error);
         logUserInfo(interaction);
     };
 };
