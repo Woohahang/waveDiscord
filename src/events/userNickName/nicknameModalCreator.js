@@ -3,6 +3,7 @@
 const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle } = require('discord.js');
 const { menuSelectionResetter } = require('../../module/common/menuSelectionResetter');
 const { description } = require('../../module/games/gameData');
+const logUserInfo = require('../../utils/log/logUserInfo');
 
 // 모달 생성
 function buildModal(gameTitle) {
@@ -49,5 +50,6 @@ module.exports = async (interaction) => {
 
     } catch (error) {
         console.error('nicknameModalCreator.js 에러 : ', error);
+        logUserInfo(interaction);
     };
 };
