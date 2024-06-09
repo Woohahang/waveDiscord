@@ -1,7 +1,7 @@
 // nicknameModalCreator.js
 
 const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle } = require('discord.js');
-const { menuSelectionResetter } = require('../../module/common/menuSelectionResetter');
+const resetMenuSelection = require('../../module/common/resetMenuSelection');
 const { description } = require('../../module/games/gameData');
 const logUserInfo = require('../../utils/log/logUserInfo');
 
@@ -31,8 +31,8 @@ function buildModal(gameTitle) {
 /* 모달 함수 */
 module.exports = async (interaction) => {
     try {
-        // 메뉴 선택을 초기화하는 함수
-        await menuSelectionResetter(interaction);
+        // 메뉴 리셋
+        await resetMenuSelection(interaction);
 
         // 사용자의 상호작용에서 게임 제목을 추출합니다.
         const gameTitle = interaction.values[0];
@@ -71,5 +71,5 @@ async function sendWaveUpdateMessage(interaction) {
     } catch (error) {
         console.error('sendWaveUpdateMessage 에러 : ', error);
         logUserInfo(interaction);
-    }
-}
+    };
+};

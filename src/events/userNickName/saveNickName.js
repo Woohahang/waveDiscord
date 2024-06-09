@@ -48,11 +48,6 @@ module.exports = async (interaction) => {
         // 닉네임 저장 이후 성공여부 반환
         const nicknameSaveStatus = await userSettings.saveNickName(customId, content);
 
-        // 메뉴 초기화
-        await menuSelectionResetter(interaction);
-
-
-
         // 닉네임 성공 여부에 따른 메세지 ★ 순서 중요
         const message = generateSaveMessage(nicknameSaveStatus);
 
@@ -63,6 +58,7 @@ module.exports = async (interaction) => {
         console.error('saveNickName.js 에러 : ', error);
     };
 };
+
 
 
 
