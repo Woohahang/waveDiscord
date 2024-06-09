@@ -45,19 +45,17 @@ module.exports = async (interaction) => {
         // 닉네임 저장 이후 성공여부 반환
         const nicknameSaveStatus = await userSettings.saveNickName(customId, content);
 
-        // 닉네임 성공 여부에 따른 메세지
+        // 메뉴 초기화
+        await menuSelectionResetter(interaction);
+
+        // 닉네임 성공 여부에 따른 메세지 ★ 순서 중요
         const message = generateSaveMessage(nicknameSaveStatus);
 
         // 메세지 전송
         const ephemeralMessage = await interaction.reply({ content: message, ephemeral: true });
 
-        await Promise.all([
-            // 메세지 10초 뒤 삭제
-            messageAutoDelete(ephemeralMessage),
-
-            // 메뉴 초기화
-            menuSelectionResetter(interaction)
-        ]);
+        // 메세지 10초 뒤 삭제
+        await messageAutoDelete(ephemeralMessage);
 
     } catch (error) {
         console.error('saveNickName.js 에러 : ', error);
