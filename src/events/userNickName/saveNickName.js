@@ -1,28 +1,10 @@
 // saveNickName.js
 
 const UserSettings = require('../../services/UserSettings');
+const formatRiotTag = require('./nickNameModule/formatRiotTag');
+const statusMessage = require('./nickNameModule/statusMessage');
 
-function generateSaveMessage(nicknameSaveStatus) {
-    let message;
-    switch (nicknameSaveStatus) {
-        case 'nicknameDuplicate':
-            message = '중복 된 닉네임이 있습니다.';
-            break;
-
-        case 'nicknameLimitExceeded':
-            message = '해당 게임은 저장할 수 있는 닉네임 개수를 초과했습니다.';
-            break;
-
-        case 'saveSuccess':
-            message = '닉네임 등록 완료 !';
-            break;
-
-        default:
-            message = '알 수 없는 오류로 인해 처리하지 못 했습니다.';
-            break;
-    };
-    return message;
-};
+const riotGames = ['leagueOfLegends', 'teamfightTactics', 'valorant'];
 
 module.exports = async (interaction) => {
     try {
@@ -31,23 +13,26 @@ module.exports = async (interaction) => {
 
         const userId = interaction.member.id;
 
-        // customId === submitNickname_게임변수
-        let customId = interaction.customId;
+        // customId, submitNickname_게임종류
+        const customId = interaction.customId;
 
-        // 모달 제출 값 가지고 오기
-        const content = interaction.fields.getTextInputValue(customId);
+        // steam, leagueOfLegends 등등 ..
+        const gameType = customId.split('_')[1];
 
-        // customId === 게임변수 ex) kakao 또는 steam 등등
-        customId = customId.split('_')[1];
+        // 닉네임 가지고 오기
+        let nickName = interaction.fields.getTextInputValue(customId);
 
-        // 인스턴스 생성
+        // 라이엇 게임즈 태그 체크
+        if (riotGames.includes(gameType)) {
+            nickName = formatRiotTag(nickName);
+        };
+
+        // 인스턴스 생성 및 닉네임 저장
         const userSettings = new UserSettings(userId);
-
-        // 닉네임 저장 이후 성공여부 반환
-        const nicknameSaveStatus = await userSettings.saveNickName(customId, content);
+        const status = await userSettings.saveNickName(gameType, nickName);
 
         // 닉네임 성공 여부에 따른 메세지 ★ 순서 중요
-        const message = generateSaveMessage(nicknameSaveStatus);
+        const message = statusMessage(status);
 
         // 메세지 전송
         await interaction.editReply({ content: message, ephemeral: true });
