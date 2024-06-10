@@ -25,16 +25,12 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
 
         // 스팀
         if (guildData.steam && nickNames.steam.length > 0) {
-            // 스팀 닉네임
-            let steamNickName = nickNames.steam[0];
 
-            let steamEmoji = emojiMaps[guildId].get('wave_steam');
+            const steamEmoji = emojiMaps[guildId].get('wave_steam');
+            const nickName = nickNames.steam[0].playerName;
+            const profileLink = nickNames.steam[0].profileLink;
 
-            // 스팀 닉네임이 주소인지 체크
-            let steamLinkIncluded = steamNickName.includes("https://steamcommunity.com/");
-
-            // 주소라면 클릭할 수 있는 링크, 친구 코드만 적었다면 클릭 없는 문자열
-            fields.push({ name: 'Steam', value: steamLinkIncluded ? `<:wave_steam:${steamEmoji}> [스팀 친구 추가](${removeSpaces(steamNickName)})` : `<:wave_steam:${steamEmoji}> ${steamNickName}` });
+            fields.push({ name: 'Steam', value: `<:wave_steam:${steamEmoji}> [${nickName}](${profileLink})` });
         };
 
         // 라이엇 게임즈

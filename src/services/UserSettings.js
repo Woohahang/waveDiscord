@@ -52,6 +52,7 @@ class UserSettings {
 
             return this.userData;
         } catch (error) {
+            console.log(this.userData);
             console.error('UserStettings.js 의 load 에러 : ', error);
         };
     };
@@ -84,7 +85,6 @@ class UserSettings {
             console.error('UserStettings.js 의 loadOrCreateById 에러 : ', error);
         }
     };
-
 
     // 닉네임 저장 메서드
     async saveNickName(customId, content) {
@@ -143,7 +143,12 @@ class UserSettings {
                 // _ 를 기준으로 선언
                 const [gameType, nickName] = value.split('_');
 
-                if (userData[gameType]) {
+                if (gameType === 'steam') {
+                    userData[gameType] = [];
+                }
+
+
+                else if (userData[gameType]) {
                     // 게임 종류에서 닉네임이 몇 번째 위치에 있는지 파악
                     const index = userData[gameType].indexOf(nickName);
                     if (index > -1) {

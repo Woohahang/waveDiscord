@@ -6,7 +6,11 @@ let userSchema = new mongoose.Schema({
 
     userId: String,
 
-    steam: [String],
+    // steam: [String],
+    steam: [{
+        playerName: String,
+        profileLink: String
+    }],
     leagueOfLegends: [String],
     teamfightTactics: [String],
     valorant: [String],
@@ -24,6 +28,6 @@ userSchema.pre('save', function (next) {
     next();
 });
 
-const UserNickname = mongoose.model('userNicknameDB', userSchema);
+const UserNickname = mongoose.model('userNicknameDBTest', userSchema);
 
 module.exports = UserNickname;

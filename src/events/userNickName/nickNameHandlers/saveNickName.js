@@ -3,8 +3,8 @@
 const UserSettings = require('../../../services/UserSettings');
 const formatRiotTag = require('../nickNameModules/formatRiotTag');
 const statusMessage = require('../nickNameModules/statusMessage');
-const steamApi = require('../nickNameModules/steamApi');
-
+const fetchSteamProfile = require('../nickNameModules/fetchSteamProfile');
+const logUserInfo = require('../../../utils/log/logUserInfo');
 const riotGames = ['leagueOfLegends', 'teamfightTactics', 'valorant'];
 
 module.exports = async (interaction) => {
@@ -29,9 +29,9 @@ module.exports = async (interaction) => {
         };
 
         if (gameType === 'steam') {
-            await steamApi(nickName);
+            // 스팀이면 오브젝트로 반환 { playerName, profileLink }
+            nickName = await fetchSteamProfile(nickName);
         };
-
 
         // 인스턴스 생성 및 닉네임 저장
         const userSettings = new UserSettings(userId);
@@ -44,6 +44,21 @@ module.exports = async (interaction) => {
         await interaction.editReply({ content: message, ephemeral: true });
 
     } catch (error) {
-        console.error('saveNickName.js 에러 : ', error);
+
+        switch (error.code) {
+            case 'INVALID_PROFILE_LINK':
+                await interaction.editReply({ content: '스팀 프로필 링크가 아닙니다.', ephemeral: true });
+                break;
+
+            case 'USER_PROFILE_NOT_FOUND':
+                await interaction.editReply({ content: '유저 정보를 찾을 수 없습니다..', ephemeral: true });
+                break;
+
+            default:
+                logUserInfo(interaction);
+                console.error('saveNickName.js 에러 : ', error);
+                await interaction.editReply({ content: '알 수 없는 이유로 에러가 발생했습니다. 문제가 지속되면 Wave 디스코드 채널로 문의해 주세요.', ephemeral: true });
+        };
+
     };
 };

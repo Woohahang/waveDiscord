@@ -21,14 +21,26 @@ function generateOptions(userData) {
     platforms.forEach(platform => {
         if (userData[platform.key]) {
             userData[platform.key].forEach(nickName => {
-                options.push({
-                    value: platform.key + '_' + nickName,
-                    label: nickName,
-                    description: platform.description
-                });
+
+                if (platform.key === 'steam') {
+                    options.push({
+                        value: platform.key + '_' + nickName.playerName,
+                        label: nickName.playerName,
+                        description: platform.description
+                    });
+                } else {
+                    options.push({
+                        value: platform.key + '_' + nickName,
+                        label: nickName,
+                        description: platform.description
+                    });
+                };
+
             });
         }
     });
+
+    console.log(options);
 
     return options;
 };
@@ -54,10 +66,6 @@ module.exports = {
 
     async execute(interaction) {
         try {
-            // 유저 정보 조회
-            // let userData = await UserSettings.load(interaction.member.id);
-            // if (!userData) { return await interaction.reply({ content: '등록된 정보가 없습니다.', ephemeral: true }); }
-
             const userId = interaction.member.id;
 
             // 인스턴스 생성
