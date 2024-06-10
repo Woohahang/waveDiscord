@@ -28,6 +28,6 @@ userSchema.pre('save', function (next) {
     next();
 });
 
-const UserNickname = mongoose.model('userNicknameDBTest', userSchema);
+const UserNickname = mongoose.model('userNicknameDB', userSchema);
 
 module.exports = UserNickname;

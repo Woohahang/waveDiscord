@@ -5,6 +5,7 @@ const formatRiotTag = require('../nickNameModules/formatRiotTag');
 const statusMessage = require('../nickNameModules/statusMessage');
 const fetchSteamProfile = require('../nickNameModules/fetchSteamProfile');
 const logUserInfo = require('../../../utils/log/logUserInfo');
+
 const riotGames = ['leagueOfLegends', 'teamfightTactics', 'valorant'];
 
 module.exports = async (interaction) => {

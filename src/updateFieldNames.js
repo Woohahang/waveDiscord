@@ -10,28 +10,25 @@ async function updateFieldNames() {
         await mongoose.connect(mongoURI);
 
         // 모든 문서에서 kakao 필드를 kakaoBattleground 변경
-        await UserNickname.updateMany({}, {
-            $rename: {
-                'loL': 'leagueOfLegends',
-                'tfT': 'teamfightTactics',
-                'steamBG': 'steamBattleGround',
-                'kakao': 'kakaoBattleGround'
-            }
-        });
-        console.log('필드 이름 변경 완료');
+        // await UserNickname.updateMany({}, {
+        //     $rename: {
+        //         'loL': 'leagueOfLegends',
+        //         'tfT': 'teamfightTactics',
+        //         'steamBG': 'steamBattleGround',
+        //         'kakao': 'kakaoBattleGround'
+        //     }
+        // });
+        // console.log('필드 이름 변경 완료');
 
 
         // 필드 삭제 (스키마에서 해당하는 필드를 주석처리 하고 실행할 것)
-        // await UserNickname.updateMany({}, {
-        //     $unset: {
-        //         'loL': '',
-        //         'tfT': '',
-        //         'steamBG': '',
-        //         'kakao': ''
-        //     }
-        // });
+        await UserNickname.updateMany({}, {
+            $unset: {
+                'steam': '',
+            }
+        });
 
-        // console.log('필드 이름 삭제 완료');
+        console.log('필드 이름 삭제 완료');
 
 
 

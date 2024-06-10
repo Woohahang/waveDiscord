@@ -147,7 +147,6 @@ class UserSettings {
                     userData[gameType] = [];
                 }
 
-
                 else if (userData[gameType]) {
                     // 게임 종류에서 닉네임이 몇 번째 위치에 있는지 파악
                     const index = userData[gameType].indexOf(nickName);

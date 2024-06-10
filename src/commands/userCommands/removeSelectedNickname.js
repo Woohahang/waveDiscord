@@ -40,8 +40,6 @@ function generateOptions(userData) {
         }
     });
 
-    console.log(options);
-
     return options;
 };
 
