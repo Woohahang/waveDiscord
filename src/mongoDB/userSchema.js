@@ -6,7 +6,6 @@ let userSchema = new mongoose.Schema({
 
     userId: String,
 
-    // steam: [String],
     steam: [{
         playerName: String,
         profileLink: String
