@@ -1,6 +1,7 @@
 //  removeNickName.js , 등록된 닉네임 삭제
 
-const UserSettings = require('../../services/UserSettings');
+const UserSettings = require('../../../services/UserSettings');
+const messageAutoDelete = require('../../../module/common/messageAutoDelete');
 
 module.exports = async (interaction) => {
     try {
@@ -17,11 +18,13 @@ module.exports = async (interaction) => {
         await userSettings.removeNickName(values);
 
         // 완료 메세지 전송
-        await interaction.update({
+        const message = await interaction.update({
             content: '닉네임 삭제 완료',
             components: [],
             ephemeral: true
         });
+
+        messageAutoDelete(message);
 
     } catch (error) {
         console.error('removeNickName.js', error);

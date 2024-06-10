@@ -1,12 +1,12 @@
 // interaction.js
 
 /* 관리자 권한 체크 */
-const { checkInteractionAdmin } = require('../module/checkAdminPermissionOn')
+const { checkInteractionAdmin } = require('../module/checkAdminPermissionOn');
 
 /* 닉네임 저장 */
-const nicknameModalCreator = require('../events/userNickName/nicknameModalCreator');
-const removeNickName = require('../events/userNickName/removeNickName');
-const saveNickName = require('../events/userNickName/saveNickName');
+const nickNameModal = require('../events/userNickName/nickNameHandlers/nickNameModal');
+const removeNickName = require('../events/userNickName/nickNameHandlers/removeNickName');
+const saveNickName = require('../events/userNickName/nickNameHandlers/saveNickName');
 
 /* 길드 메뉴 컨트롤 */
 const gameMenuToggle = require('../events/guildCreate/guildMenuControls/gameMenuToggle');
@@ -135,7 +135,7 @@ async function handleStringSelectMenu(interaction, customId, values) {
     try {
         switch (customId) {
             case 'gameMenu': // 닉네임 등록 모달 메뉴 생성
-                nicknameModalCreator(interaction);
+                nickNameModal(interaction);
                 break;
 
             case 'removeNickNames': // 닉네임 삭제 제출 -> DB 저장

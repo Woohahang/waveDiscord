@@ -1,8 +1,8 @@
 // saveNickName.js
 
-const UserSettings = require('../../services/UserSettings');
-const formatRiotTag = require('./nickNameModule/formatRiotTag');
-const statusMessage = require('./nickNameModule/statusMessage');
+const UserSettings = require('../../../services/UserSettings');
+const formatRiotTag = require('../nickNameModules/formatRiotTag');
+const statusMessage = require('../nickNameModules/statusMessage');
 
 const riotGames = ['leagueOfLegends', 'teamfightTactics', 'valorant'];
 

@@ -1,9 +1,9 @@
-// nicknameModalCreator.js
+// nickNameModal.js
 
 const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle } = require('discord.js');
-const resetMenuSelection = require('../../module/common/resetMenuSelection');
-const { description } = require('../../module/games/gameData');
-const logUserInfo = require('../../utils/log/logUserInfo');
+const resetMenuSelection = require('../../../module/common/resetMenuSelection');
+const { description } = require('../../../module/games/gameData');
+const logUserInfo = require('../../../utils/log/logUserInfo');
 
 // 모달 생성
 function buildModal(gameTitle) {
@@ -23,7 +23,7 @@ function buildModal(gameTitle) {
 
         return modal;
     } catch (error) {
-        console.error('nicknameModalCreator.js 의 buildModal 에러 : ', error);
+        console.error('nickNameModal.js 의 buildModal 에러 : ', error);
     };
 };
 
@@ -59,7 +59,7 @@ module.exports = async (interaction) => {
         await interaction.showModal(modal);
 
     } catch (error) {
-        console.error('nicknameModalCreator.js 에러 : ', error);
+        console.error('nickNameModal.js 에러 : ', error);
         logUserInfo(interaction);
     };
 };
