@@ -1,15 +1,15 @@
 // messageAutoDelete.js
 
-const TEN_SECONDS = 10_000; // 10초
+const TWENTY_SECONDS = 20_000; // 20초
 
-// 10초 뒤 메세지 삭제
-async function messageAutoDelete(message) {
-    setTimeout(async () => {
-        await message.delete()
+// 20초 뒤 메세지 삭제
+function messageAutoDelete(message) {
+    setTimeout(() => {
+        message.delete()
             .catch(error => {
-                console.error('messageAutoDelete.js 10초 뒤 메세지 삭제 함수 예외 발생 : ', error);
+                console.error('messageAutoDelete.js 20초 뒤 메세지 삭제 함수 예외 발생 : ', error);
             });
-    }, TEN_SECONDS);
+    }, TWENTY_SECONDS);
 };
 
 module.exports = messageAutoDelete;

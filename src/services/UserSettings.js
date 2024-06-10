@@ -171,11 +171,15 @@ class UserSettings {
                     delete UserSettings.instances[this.userId];
                 };
 
+                return 'removeUserInfo';
+
             } else {
                 // 아니라면 변경사항 저장
                 await userData.save();
                 // 캐시 갱신
                 this.userData = userData;
+
+                return 'removeNickName';
             };
 
         } catch (error) {
