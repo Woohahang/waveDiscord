@@ -85,6 +85,7 @@ class UserSettings {
         }
     };
 
+
     // 닉네임 저장 메서드
     async saveNickName(customId, content) {
 
@@ -99,35 +100,35 @@ class UserSettings {
             // 중복 닉네임 체크
             if (userData[customId].includes(content)) {
                 return 'nicknameDuplicate';
-
-                // 닉네임 5개 초과 체크
-            } else if (userData[customId].length > 4) {
-                return 'nicknameLimitExceeded';
-
-                // 스팀이면 배열 없이 저장
-            } else if (customId === 'steam') {
-
-                userData.steam = content;
-
-                await userData.save();
-
-                this.userData = userData; // 캐시 갱신
-                return 'saveSuccess';
-
-                // 모든 조건을 피하면 게임 닉네임 저장
-            } else {
-                userData[customId].push(content);
-                await userData.save();
-
-                this.userData = userData; // 캐시 갱신
-                return 'saveSuccess';
             };
+
+            // 등록 된 닉네임 개수 체크 : 최대 5개
+            if (userData[customId].length > 4) {
+                return 'nicknameLimitExceeded';
+            };
+
+            switch (customId) {
+                case 'steam':
+                    // 스팀이면 덮어쓰기
+                    userData.steam = content;
+                    break;
+
+                default:
+                    // 배열에 저장
+                    userData[customId].push(content);
+                    break;
+            };
+
+            await userData.save();
+            this.userData = userData; // 캐시 갱신
+            return 'saveSuccess';
 
         } catch (error) {
             console.error('saveNickName 에러 : ', error);
             return 'saveError';
         };
     };
+
 
     async removeNickName(values) {
         try {
