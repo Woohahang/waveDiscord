@@ -31,7 +31,7 @@ module.exports = async (interaction) => {
         const userSettings = new UserSettings(userId);
         const status = await userSettings.saveNickName(gameType, nickName);
 
-        // 닉네임 성공 여부에 따른 메세지 ★ 순서 중요
+        // 닉네임 저장 상태 결과 메세지
         const message = statusMessage(status);
 
         // 메세지 전송
