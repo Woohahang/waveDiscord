@@ -11,8 +11,6 @@ function formatRiotTag(nickName) {
         let [namePart, riotTag] = nickName.split('#');
         let upperCaseTag = riotTag.toUpperCase();
 
-        console.log('upperCaseTag : ' + upperCaseTag);
-
         // kr1, kR1 -> KR1 변환
         if (upperCaseTag === 'KR1') {
             riotTag = upperCaseTag;
@@ -21,8 +19,9 @@ function formatRiotTag(nickName) {
         // 한글 두 글자 닉네임에 대해 가운데에 띄어쓰기 추가
         if (/^[가-힣]{2}$/.test(namePart)) {
             namePart = namePart[0] + ' ' + namePart[1];
-            nickName = namePart + '#' + riotTag;
         };
+
+        nickName = namePart + '#' + riotTag;
 
         return nickName;
     } catch (error) {
