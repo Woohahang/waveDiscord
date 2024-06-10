@@ -15,17 +15,16 @@ async function fetchSteamProfile(profileLink) {
 
         // user 의 steam 고유 id
         const steamId = steamIdMatch[1];
-
         const url = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamApiKey}&steamids=${steamId}`;
 
-        const response = await axios.get(url);
+        const { data: { response: { players } } } = await axios.get(url);
 
-        if (response.data.response.players.length === 0) {
+        if (players.length === 0) {
             throw new UserProfileNotFoundError('유저 정보를 찾을 수 없습니다.');
         };
 
         // 스팀 닉네임
-        const playerName = response.data.response.players[0].personaname;
+        const playerName = players[0].personaname;
 
         return { playerName, profileLink };
 

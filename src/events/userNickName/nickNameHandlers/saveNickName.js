@@ -7,7 +7,6 @@ const fetchSteamProfile = require('../nickNameModules/fetchSteamProfile');
 const logUserInfo = require('../../../utils/log/logUserInfo');
 const errorMessage = require('../nickNameModules/errorMessage');
 
-const riotGames = ['leagueOfLegends', 'teamfightTactics', 'valorant'];
 
 module.exports = async (interaction) => {
     try {
@@ -25,14 +24,28 @@ module.exports = async (interaction) => {
         // 닉네임 가지고 오기
         let nickName = interaction.fields.getTextInputValue(customId);
 
-        // 라이엇 게임즈 태그 체크
-        if (riotGames.includes(gameType)) {
-            nickName = formatRiotTag(nickName);
-        };
+        switch (gameType) {
+            // 스팀
+            case 'steam':
+                nickName = await fetchSteamProfile(nickName);
+                break;
 
-        if (gameType === 'steam') {
-            // 스팀이면 오브젝트로 반환 { playerName, profileLink }
-            nickName = await fetchSteamProfile(nickName);
+            // 라이엇 게임즈
+            case 'leagueOfLegends':
+            case 'teamfightTactics':
+            case 'valorant':
+                nickName = formatRiotTag(nickName);
+                break;
+
+            // 각 게임마다 API 상호작용 추가할 예정.
+            case 'steamBattleGround':
+            case 'kakaoBattleGround':
+            case 'blizzard':
+            case 'overWatchTwo':
+                break;
+
+            default:
+                throw new Error('알 수 없는 게임 종류 gameType : ', gameType);
         };
 
         // 인스턴스 생성 및 닉네임 저장
@@ -47,9 +60,6 @@ module.exports = async (interaction) => {
 
         switch (code) {
             case 'INVALID_PROFILE_LINK':
-                await interaction.editReply({ content: errorMessage(code), ephemeral: true });
-                break;
-
             case 'USER_PROFILE_NOT_FOUND':
                 await interaction.editReply({ content: errorMessage(code), ephemeral: true });
                 break;
