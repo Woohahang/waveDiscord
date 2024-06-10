@@ -15,6 +15,7 @@ const nicknameDuplicate =
     '\n' + '> * 중복 된 닉네임이 있습니다.' +
     '\n' + '> * 문제가 지속되면 **Wave** 디스코드 채널로 문의해 주세요.';
 
+
 function statusMessage(status) {
     try {
         let message;
@@ -33,7 +34,6 @@ function statusMessage(status) {
 
             default:
                 message = '알 수 없는 오류로 인해 처리하지 못 했습니다.';
-                break;
         };
         return message;
     } catch (error) {

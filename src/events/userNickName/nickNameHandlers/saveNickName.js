@@ -5,6 +5,7 @@ const formatRiotTag = require('../nickNameModules/formatRiotTag');
 const statusMessage = require('../nickNameModules/statusMessage');
 const fetchSteamProfile = require('../nickNameModules/fetchSteamProfile');
 const logUserInfo = require('../../../utils/log/logUserInfo');
+const errorMessage = require('../nickNameModules/errorMessage');
 
 const riotGames = ['leagueOfLegends', 'teamfightTactics', 'valorant'];
 
@@ -45,14 +46,15 @@ module.exports = async (interaction) => {
         await interaction.editReply({ content: message, ephemeral: true });
 
     } catch (error) {
+        const code = error.code;
 
-        switch (error.code) {
+        switch (code) {
             case 'INVALID_PROFILE_LINK':
-                await interaction.editReply({ content: '스팀 프로필 링크가 아닙니다.', ephemeral: true });
+                await interaction.editReply({ content: errorMessage(code), ephemeral: true });
                 break;
 
             case 'USER_PROFILE_NOT_FOUND':
-                await interaction.editReply({ content: '유저 정보를 찾을 수 없습니다..', ephemeral: true });
+                await interaction.editReply({ content: errorMessage(code), ephemeral: true });
                 break;
 
             default:
