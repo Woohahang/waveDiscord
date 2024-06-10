@@ -5,40 +5,10 @@ const { EmbedBuilder } = require('discord.js');
 // 서버별로 이모지 맵을 저장할 변수
 const emojiMaps = {};
 
-
-
 // 라이엇 주소 : 띄어쓰기 -> %20 변경, # -> - 변경
 function loLCustom(nickname) {
     nickname = nickname.replace(/ /g, '%20');
     nickname = nickname.replace(/#/g, '-');
-
-    return nickname;
-};
-
-
-function formatRiotTag(nickname) {
-    // # 이 없다면 기본 값 #KR1
-    if (nickname && !nickname.includes('#')) {
-        nickname += '#KR1';
-    };
-
-    // 태그 이름
-    let riotTag = nickname.split('#')[1];
-
-    // 태그를 대문자로 변환
-    let defaultTag = riotTag.toUpperCase();
-
-    // kr1 -> KR1 로 변환 (일관성을 위해)
-    if (defaultTag === 'KR1') {
-        nickname = nickname.split('#')[0] + '#' + riotTag.toUpperCase();
-    };
-
-    // 한글 두 글자 닉네임에 대해 가운데에 띄어쓰기 추가
-    let namePart = nickname.split('#')[0];
-    if (/^[가-힣]{2}$/.test(namePart)) {
-        namePart = namePart[0] + ' ' + namePart[1];
-        nickname = namePart + '#' + riotTag;
-    }
 
     return nickname;
 };
@@ -78,8 +48,6 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
             if (guildData.leagueOfLegends && nickNames.leagueOfLegends.length > 0) {
                 nickNames.leagueOfLegends.forEach(nickname => {
 
-                    nickname = formatRiotTag(nickname);
-
                     riotGames += `[<:wave_leagueOfLegends:${loLEmoji}> ${nickname}](https://www.op.gg/summoners/kr/${loLCustom(nickname)})\n`;
                 });
             };
@@ -87,16 +55,12 @@ function createFields(guildId, nickNames, guildData, emojiMaps) {
             if (guildData.teamfightTactics && nickNames.teamfightTactics.length > 0) {
                 nickNames.teamfightTactics.forEach(nickname => {
 
-                    nickname = formatRiotTag(nickname);
-
                     riotGames += `[<:wave_teamfightTactics:${tfTEmoji}> ${nickname}](https://lolchess.gg/profile/kr/${loLCustom(nickname)})\n`;
                 });
             };
 
             if (guildData.valorant && nickNames.valorant.length > 0) {
                 nickNames.valorant.forEach(nickname => {
-
-                    nickname = formatRiotTag(nickname);
 
                     riotGames += `[<:wave_valorant:${valorantEmoji}> ${nickname}](https://valorant.op.gg/profile/${loLCustom(nickname)})\n`;
                 });

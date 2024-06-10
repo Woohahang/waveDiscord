@@ -49,7 +49,7 @@ module.exports = async (interaction) => {
 
         // gameTitle 이 옛날 필드명이면 업데이트 필요하다는 안내 전달
         if (UpdateRequired(gameTitle)) {
-            return await interaction.reply({ content: 'Wave 업데이트가 필요합니다.', ephemeral: true });
+            return await interaction.reply({ content: '관리자님, Wave 업데이트가 필요합니다.', ephemeral: true });
         };
 
         // 모달 생성
