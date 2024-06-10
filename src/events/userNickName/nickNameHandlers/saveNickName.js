@@ -39,11 +39,8 @@ module.exports = async (interaction) => {
         const userSettings = new UserSettings(userId);
         const status = await userSettings.saveNickName(gameType, nickName);
 
-        // 닉네임 저장 상태 결과 메세지
-        const message = statusMessage(status);
-
         // 메세지 전송
-        await interaction.editReply({ content: message, ephemeral: true });
+        await interaction.editReply({ content: statusMessage(status), ephemeral: true });
 
     } catch (error) {
         const code = error.code;
