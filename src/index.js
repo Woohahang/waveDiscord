@@ -12,7 +12,7 @@ const client = new Client({
         GatewayIntentBits.GuildVoiceStates,
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.GuildPresences // 활동 상태 : 온라인, 오프라인 정도
+        // GatewayIntentBits.GuildMemberUpdate,
     ]
 });
 
@@ -59,6 +59,12 @@ client.on(Events.InteractionCreate, async interaction => {
 client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
     handleVoiceStateUpdate(oldState, newState);
 });
+
+// client.on(Events.GuildMemberUpdate, async (oldMember, newMember) => {
+//     if (oldMember.nickname !== newMember.nickname) {
+//         console.log('닉네임 변경 감지');
+//     };
+// });
 
 
 client.login(testtoken);

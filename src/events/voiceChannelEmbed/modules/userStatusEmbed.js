@@ -24,6 +24,11 @@ module.exports = async (newState, userData, guildData) => {
             fields = createFields(userData, guildData, waveEmojis);
         };
 
+        // 필드가 비어 있는 경우 리턴
+        if (!fields || fields.length === 0) {
+            return null;
+        };
+
         // 임베드 정의
         const embed = new EmbedBuilder()
             .setColor('#0099ff')

@@ -6,6 +6,7 @@ const getGamesLink = require('./getGamesLink');
 
 function createFields(userData, guildData, waveEmojis) {
     try {
+
         let fields = [];
         let riotGames = '';
         let BattleGroundGames = '';
