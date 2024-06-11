@@ -13,10 +13,13 @@ function createFields(userData, guildData, waveEmojis) {
 
             switch (gameType) {
                 case 'steam':
-                    const { playerName, profileLink } = userData[gameType][0];
-                    const gameTypeEmoji = waveEmojis.get('wave_' + gameType);
+                    if (userData[gameType].length > 0) {
+                        const { playerName, profileLink } = userData[gameType][0];
+                        const gameTypeEmoji = waveEmojis.get('wave_' + gameType);
 
-                    fields.push({ name: 'Steam', value: `<:wave_${gameType}:${gameTypeEmoji}> [${playerName}](${profileLink})` });
+                        fields.push({ name: 'Steam', value: `<:wave_${gameType}:${gameTypeEmoji}> [${playerName}](${profileLink})` });
+                    };
+
                     break;
 
                 case 'leagueOfLegends':

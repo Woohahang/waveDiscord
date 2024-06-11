@@ -5,6 +5,7 @@ const createFields = require('./embedModules/createFields');
 const emojiLoad = require('./embedModules/emojiLoad');
 const isValidEmojis = require('./embedModules/isValidEmojis');
 const requiresUpdateField = require('./embedModules/requiresUpdateField');
+const logUserInfo = require('../../../utils/log/logUserInfo');
 
 let emojiMaps = {};
 
@@ -35,6 +36,7 @@ module.exports = async (newState, userData, guildData) => {
         return embed;
 
     } catch (error) {
+        logUserInfo(newState);
         console.error('userStatusEmbed.js 예외 : ', error);
     };
 };
