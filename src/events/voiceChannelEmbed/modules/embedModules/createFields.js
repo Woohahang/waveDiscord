@@ -22,67 +22,54 @@ function createFields(userData, guildData, waveEmojis) {
 
                         fields.push({ name: 'Steam', value: `<:wave_${gameType}:${gameTypeEmoji}> [${playerName}](${profileLink})` });
                     };
-
                     break;
 
                 case 'leagueOfLegends':
                 case 'teamfightTactics':
                 case 'valorant':
                     if (userData[gameType].length > 0) {
-                        // let riotGames = '';
-
                         userData[gameType].forEach(nickName => {
                             const gameTypeEmoji = waveEmojis.get('wave_' + gameType);
 
                             riotGames += `<:wave_${gameType}:${gameTypeEmoji}> [${nickName}](${getGamesLink(gameType, nickName)})\n`;
                         });
-
-                        // fields.push({ name: 'Riot Games', value: riotGames });
                     };
                     break;
 
                 case 'steamBattleGround':
                 case 'kakaoBattleGround':
                     if (userData[gameType].length > 0) {
-                        // let BattleGroundGames = '';
-
                         userData[gameType].forEach(nickName => {
                             const gameTypeEmoji = waveEmojis.get('wave_' + gameType);
 
-                            // (롤이모지) 끼매누#KR1
                             BattleGroundGames += `<:wave_${gameType}:${gameTypeEmoji}> [${nickName}](${getGamesLink(gameType, nickName)})\n`;
                         });
-
-                        // fields.push({ name: 'Battle Ground', value: BattleGroundGames });
                     };
                     break;
 
                 case 'blizzard':
                 case 'overWatchTwo':
                     if (userData[gameType].length > 0) {
-                        // let blizzardGames = '';
-
                         userData[gameType].forEach(nickName => {
                             const gameTypeEmoji = waveEmojis.get('wave_' + gameType);
+
                             blizzardGames += `<:wave_${gameType}:${gameTypeEmoji}> ${nickName}\n`;
                         });
-
-                        // fields.push({ name: 'Blizzard', value: blizzardGames });
                     }
                     break;
 
             };
         });
 
-        if (riotGames) {
+        if (riotGames && guildData.leagueOfLegends || riotGames && guildData.teamfightTactics || riotGames && guildData.valorant) {
             fields.push({ name: 'Riot Games', value: riotGames });
         };
 
-        if (BattleGroundGames) {
+        if (BattleGroundGames && guildData.steamBattleGround || BattleGroundGames && guildData.kakaoBattleGround) {
             fields.push({ name: 'Battle Ground', value: BattleGroundGames });
         };
 
-        if (blizzardGames) {
+        if (blizzardGames && guildData.blizzard || blizzardGames && guildData.overWatchTwo) {
             fields.push({ name: 'Blizzard', value: blizzardGames });
         };
 
