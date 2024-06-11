@@ -7,6 +7,9 @@ const getGamesLink = require('./getGamesLink');
 function createFields(userData, guildData, waveEmojis) {
     try {
         let fields = [];
+        let riotGames = '';
+        let BattleGroundGames = '';
+        let blizzardGames = '';
 
         const trueValueGames = filterOptions(guildData, true);
         trueValueGames.forEach(gameType => {
@@ -26,7 +29,7 @@ function createFields(userData, guildData, waveEmojis) {
                 case 'teamfightTactics':
                 case 'valorant':
                     if (userData[gameType].length > 0) {
-                        let riotGames = '';
+                        // let riotGames = '';
 
                         userData[gameType].forEach(nickName => {
                             const gameTypeEmoji = waveEmojis.get('wave_' + gameType);
@@ -34,14 +37,14 @@ function createFields(userData, guildData, waveEmojis) {
                             riotGames += `<:wave_${gameType}:${gameTypeEmoji}> [${nickName}](${getGamesLink(gameType, nickName)})\n`;
                         });
 
-                        fields.push({ name: 'Riot Games', value: riotGames });
+                        // fields.push({ name: 'Riot Games', value: riotGames });
                     };
                     break;
 
                 case 'steamBattleGround':
                 case 'kakaoBattleGround':
                     if (userData[gameType].length > 0) {
-                        let BattleGroundGames = '';
+                        // let BattleGroundGames = '';
 
                         userData[gameType].forEach(nickName => {
                             const gameTypeEmoji = waveEmojis.get('wave_' + gameType);
@@ -50,26 +53,38 @@ function createFields(userData, guildData, waveEmojis) {
                             BattleGroundGames += `<:wave_${gameType}:${gameTypeEmoji}> [${nickName}](${getGamesLink(gameType, nickName)})\n`;
                         });
 
-                        fields.push({ name: 'Battle Ground', value: BattleGroundGames });
+                        // fields.push({ name: 'Battle Ground', value: BattleGroundGames });
                     };
                     break;
 
                 case 'blizzard':
                 case 'overWatchTwo':
                     if (userData[gameType].length > 0) {
-                        let blizzardGames = '';
+                        // let blizzardGames = '';
 
                         userData[gameType].forEach(nickName => {
                             const gameTypeEmoji = waveEmojis.get('wave_' + gameType);
                             blizzardGames += `<:wave_${gameType}:${gameTypeEmoji}> ${nickName}\n`;
                         });
 
-                        fields.push({ name: 'Blizzard', value: blizzardGames });
+                        // fields.push({ name: 'Blizzard', value: blizzardGames });
                     }
                     break;
 
             };
         });
+
+        if (riotGames) {
+            fields.push({ name: 'Riot Games', value: riotGames });
+        };
+
+        if (BattleGroundGames) {
+            fields.push({ name: 'Battle Ground', value: BattleGroundGames });
+        };
+
+        if (blizzardGames) {
+            fields.push({ name: 'Blizzard', value: blizzardGames });
+        };
 
         return fields;
 
