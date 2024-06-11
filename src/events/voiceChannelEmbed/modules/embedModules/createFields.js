@@ -61,15 +61,15 @@ function createFields(userData, guildData, waveEmojis) {
             };
         });
 
-        if (riotGames && guildData.leagueOfLegends || riotGames && guildData.teamfightTactics || riotGames && guildData.valorant) {
+        if (riotGames) {
             fields.push({ name: 'Riot Games', value: riotGames });
         };
 
-        if (BattleGroundGames && guildData.steamBattleGround || BattleGroundGames && guildData.kakaoBattleGround) {
+        if (BattleGroundGames) {
             fields.push({ name: 'Battle Ground', value: BattleGroundGames });
         };
 
-        if (blizzardGames && guildData.blizzard || blizzardGames && guildData.overWatchTwo) {
+        if (blizzardGames) {
             fields.push({ name: 'Blizzard', value: blizzardGames });
         };
 
