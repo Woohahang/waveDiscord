@@ -42,9 +42,8 @@ async function mainChannelUpdate(interaction, guildSettings) {
         };
 
     } catch (error) {
-        throw console.error('mainChannelUpdate.js 에러 : ', error);
-    }
-
+        throw error;
+    };
 };
 
 module.exports = mainChannelUpdate;

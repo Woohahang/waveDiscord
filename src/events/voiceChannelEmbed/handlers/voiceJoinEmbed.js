@@ -6,6 +6,8 @@ const UserSettings = require('../../../services/UserSettings');
 const voiceDeleteEmbed = require('./voiceDeleteEmbed');
 const customEmbed = require('../modules/customEmbed');
 
+const test = require('../modules/test');
+
 /* 채널 입장 임베드 전송, 이전 중복 메시지 삭제 */
 module.exports = async (oldState, newState) => {
 
@@ -28,6 +30,9 @@ module.exports = async (oldState, newState) => {
         // 길드 인스턴스 생성 -> 길드 데이터 불러오기
         const guildSettings = new GuildSettings(guildId);
         const guildData = await guildSettings.loadOrCreate();
+
+        // 임베드 리팩터링
+        // test(newState, nickNames, guildData);
 
         // 임베드 커스텀
         const embed = await customEmbed(newState, nickNames, guildData);
