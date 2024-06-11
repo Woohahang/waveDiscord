@@ -31,8 +31,8 @@ module.exports = async (oldState, newState) => {
         const guildSettings = new GuildSettings(guildId);
         const guildData = await guildSettings.loadOrCreate();
 
-        // 임베드 리팩터링
-        // test(newState, nickNames, guildData);
+        // 임베드 리팩터링 중
+        // const embed = await test(newState, nickNames, guildData);
 
         // 임베드 커스텀
         const embed = await customEmbed(newState, nickNames, guildData);

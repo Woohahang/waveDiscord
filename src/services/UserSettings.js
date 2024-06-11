@@ -141,7 +141,7 @@ class UserSettings {
             // values 의 예시 { loL_끼매누, kakaoBG_카카오닉네임 }
             values.forEach(value => {
                 // _ 를 기준으로 선언
-                const [gameType, nickName] = value.split('_');
+                const [gameType, nickName] = value.split(':');
 
                 if (gameType === 'steam') {
                     userData[gameType] = [];

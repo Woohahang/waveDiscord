@@ -24,13 +24,13 @@ function generateOptions(userData) {
 
                 if (platform.key === 'steam') {
                     options.push({
-                        value: platform.key + '_' + nickName.playerName,
+                        value: platform.key + ':' + nickName.playerName,
                         label: nickName.playerName,
                         description: platform.description
                     });
                 } else {
                     options.push({
-                        value: platform.key + '_' + nickName,
+                        value: platform.key + ':' + nickName,
                         label: nickName,
                         description: platform.description
                     });
