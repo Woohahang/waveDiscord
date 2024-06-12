@@ -7,7 +7,29 @@ const isValidEmojis = require('./embedModules/isValidEmojis');
 const requiresUpdateField = require('./embedModules/requiresUpdateField');
 const logUserInfo = require('../../../utils/log/logUserInfo');
 
+
 let emojiMaps = {};
+let emojiTimestamps = {};
+const SIX_HOURS_IN_MS = 6 * 60 * 60 * 1000; // 6시간
+
+// 1시간(3600000밀리초) 후에 해당 guildId 데이터를 삭제하는 함수
+const scheduleEmojiCleanup = (guildId) => {
+    // 6시간 후에 이모지 데이터를 삭제하는 타이머 설정
+    setTimeout(() => {
+        try {
+            // 현재 시간과 이모지 타임스탬프를 비교하여 6시간이 지난 경우 이모지 데이터 삭제
+            if (Date.now() - emojiTimestamps[guildId] >= SIX_HOURS_IN_MS) {
+                delete emojiMaps[guildId];
+                delete emojiTimestamps[guildId];
+                console.log(`삭제된 이모지 맵 : ${guildId}`);
+            };
+        } catch (error) {
+            console.error('scheduleEmojiCleanup.js 이모지 맵 청소 도중 예외 발생 : ', error);
+        };
+    }, SIX_HOURS_IN_MS);
+};
+
+
 
 module.exports = async (newState, userData, guildData) => {
     try {
@@ -15,6 +37,10 @@ module.exports = async (newState, userData, guildData) => {
         const guildId = newState.guild.id;
         const displayName = member.nickname ? member.nickname : member.user.globalName;
         const waveEmojis = emojiMaps[guildId] || await emojiLoad(newState, emojiMaps);
+
+        // 이모지 타임스탬프 갱신 및 클린업 스케줄링
+        emojiTimestamps[guildId] = Date.now();
+        scheduleEmojiCleanup(guildId);
 
         // 기본 필드를 requiresUpdateField로 설정
         let fields = requiresUpdateField();

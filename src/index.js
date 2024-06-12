@@ -5,6 +5,7 @@ const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const { testtoken } = require('../../config.json');
 const connectToDatabase = require('./mongoDB/database.js');
+
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -12,7 +13,6 @@ const client = new Client({
         GatewayIntentBits.GuildVoiceStates,
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
-        // GatewayIntentBits.GuildMemberUpdate,
     ]
 });
 
@@ -45,7 +45,7 @@ client.once(Events.ClientReady, readyClient => {
 const { handleGuildCreate } = require('./handlers/guildCreate');
 const { handleinteraction } = require('./handlers/interaction');
 const { handleVoiceStateUpdate } = require('./handlers/voiceStateUpdate');
-
+const handleGuildMemberUpdate = require('./handlers/guildMemberUpdate');
 
 client.on(Events.GuildCreate, async guild => {
     handleGuildCreate(guild);
@@ -60,11 +60,9 @@ client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
     handleVoiceStateUpdate(oldState, newState);
 });
 
-// client.on(Events.GuildMemberUpdate, async (oldMember, newMember) => {
-//     if (oldMember.nickname !== newMember.nickname) {
-//         console.log('닉네임 변경 감지');
-//     };
-// });
+client.on(Events.GuildMemberUpdate, async (oldMember, newMember) => {
+    handleGuildMemberUpdate(oldMember, newMember);
+});
 
 
 client.login(testtoken);

@@ -1,5 +1,12 @@
 // emojiLoad.js
 
+/**
+ * 특정 길드의 'wave' 이모지를 로드하고 캐싱하는 함수
+ * @param {Object} newState - 새로운 상태 객체
+ * @param {Object} emojiMaps - 이모지 맵 객체
+ * @returns {Map} - 해당 길드의 Wave 이모지 맵
+ */
+
 async function emojiLoad(newState, emojiMaps) {
     try {
         const guild = newState.guild;
