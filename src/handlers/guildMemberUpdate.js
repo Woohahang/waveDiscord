@@ -1,7 +1,7 @@
 // guildMemberUpdate.js
 
 const { checkGuildAdmin } = require('../module/checkAdminPermissionOn');
-const assignRoleByNick = require('../events/roleManagement/roleHandlers/assignRoleByNick');
+// const assignRoleByNick = require('../events/roleManagement/roleHandlers/assignRoleByNick');
 
 // 닉네임 변화를 확인하여 알맞는 파일명 반환
 function checkNicknameChange(oldMember, newMember) {
@@ -23,7 +23,7 @@ module.exports = async (oldMember, newMember) => {
 
         switch (selectFile) {
             case 'assignRoleByNick':
-                assignRoleByNick(newMember);
+                // assignRoleByNick(newMember);
                 break;
 
             default:

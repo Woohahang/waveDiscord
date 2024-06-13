@@ -26,7 +26,13 @@ const teamShufflerHandler = require('../events/multitools/teamShuffler/teamShuff
 const showTeamNumberModal = require('../events/multitools/teamShuffler/showTeamNumberModal');
 const teamReshuffle = require('../events/multitools/teamShuffler/teamReshuffle');
 
+
+const assignRoleByNick = require('../events/guildAliasTemplates/aliasHandlers/assignRoleByNick');
+const setAliasSeparator = require('../events/guildAliasTemplates/aliasHandlers/setAliasSeparator');
+const saveAliasTemplate = require('../events/guildAliasTemplates/aliasHandlers/saveAliasTemplate');
+
 const teamShufflerMap = new Map();
+
 
 async function handleinteraction(interaction) {
     try {
@@ -45,7 +51,7 @@ async function handleinteraction(interaction) {
             handleSubmitModal(interaction, customId, values);
 
         } else if (interaction.isStringSelectMenu()) {
-            await handleStringSelectMenu(interaction, customId, values);
+            await handleStringSelectMenu(interaction);
 
         } else if (interaction.isChatInputCommand()) {
             await handleChatInputCommand(interaction);
@@ -131,8 +137,11 @@ async function handleSubmitModal(interaction, customId, values) {
 };
 
 
-async function handleStringSelectMenu(interaction, customId, values) {
+async function handleStringSelectMenu(interaction) {
     try {
+        const values = interaction.values;
+        const customId = interaction.customId;
+
         switch (customId) {
             case 'gameMenu': // 닉네임 등록 모달 메뉴 생성
                 nickNameModal(interaction);
@@ -145,13 +154,25 @@ async function handleStringSelectMenu(interaction, customId, values) {
             /* 서버 메뉴 보이기 or 숨기기 */
             case 'adminMenuId':
                 // 게임 메뉴 띄우기
-                gameMenuToggle(interaction);
+                if (values.includes('showMenu') || values.includes('hideMenu'))
+                    gameMenuToggle(interaction);
+
+                if (values.includes('aliasTemplates')) // 서버 별명 양식 선택
+                    assignRoleByNick(interaction);
                 break;
 
             // 게임 메뉴 DB에 저장하고 서버 채널 업데이트
             case 'showMenu':
             case 'hideMenu':
                 toggleMenuHandler(interaction);
+                break;
+
+            case 'aliasTemplateSelect': // 서버 별명 문단 나누기 선택
+                setAliasSeparator(interaction);
+                break;
+
+            case 'aliasSeparatorMenu': // 서버 별명 문단 나누기 선택
+                saveAliasTemplate(interaction);
                 break;
 
 
@@ -181,10 +202,15 @@ async function handleStringSelectMenu(interaction, customId, values) {
             default:
                 console.log('isMessageComponent 에서 알 수 없는 customId : ' + customId);
         };
+
+
+
+
     } catch (error) {
         console.error('interaction.js 의 handleStringSelectMenu 에러 : ', error);
     };
 };
+
 
 
 module.exports = { handleinteraction };
