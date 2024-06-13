@@ -41,3 +41,4 @@ module.exports = async (oldState, newState) => {
         console.error('voiceJoinEmbed.js 에러 : ', error);
     };
 };
+

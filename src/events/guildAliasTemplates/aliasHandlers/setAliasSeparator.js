@@ -1,10 +1,5 @@
-// setAliasSeparator.js
-
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
-const { getState, setState } = require('../aliasModules/state');
-const separator = require('../constants/separator');
-
-const { Space, Slash, Hyphen, Underscore } = separator;
+const { setState } = require('../aliasModules/state');
 
 function createSelectMenu() {
     try {
@@ -14,19 +9,19 @@ function createSelectMenu() {
                 new StringSelectMenuOptionBuilder()
                     .setLabel('Space')
                     .setDescription('띄어쓰기')
-                    .setValue(Space),
+                    .setValue('space'),
                 new StringSelectMenuOptionBuilder()
                     .setLabel('Slash')
                     .setDescription('슬래시 /')
-                    .setValue(Slash),
+                    .setValue('slash'),
                 new StringSelectMenuOptionBuilder()
                     .setLabel('Hyphen')
                     .setDescription('하이픈 -')
-                    .setValue(Hyphen),
+                    .setValue('hyphen'),
                 new StringSelectMenuOptionBuilder()
                     .setLabel('Underscore')
                     .setDescription('언더바 _')
-                    .setValue(Underscore),
+                    .setValue('underscore'),
             );
 
         return new ActionRowBuilder()
@@ -36,28 +31,44 @@ function createSelectMenu() {
     };
 };
 
+// 선택된 값과 한글 메시지를 매칭하는 객체
+const valueToKoreanMap = {
+    nickName: '닉네임',
+    age: '나이',
+    gender: '성별',
+    tier: '티어'
+};
+
+// 선택된 값에 따라 한글 변환
+const generateKoreanMessage = (selectedValues) => {
+    return selectedValues.map(value => valueToKoreanMap[value] || value).join(', ');
+};
+
 const message = (guildAlias) =>
     `## 📝 ${guildAlias}\n` +
     '> * 순서가 맞다면 진행해주세요 !\n' +
-    '> * 양식 사이 사이 문단을 나누는 키워드를 선택해주세요 !\n';
+    '> * 문단을 나누는 키워드를 선택해주세요 !\n';
 
+/**
+ * 길드 닉네임 양식 순서 안내 및 문단을 나누는 키워드 안내 함수
+ * 
+ * @param {Object} interaction - Discord 상호작용 객체
+ * @param {Array} interaction.values - 길드 닉네임 양식 키워드들
+*/
 
-// 길드 별명 양식 설정에서 문단을 나누는 키워드 설정하기
 module.exports = async (interaction) => {
     try {
         const selectedValues = interaction.values;
+
+        // 키워드들 상태저장
         setState({ aliasTemplate: selectedValues });
 
-
-        const guildAlias = selectedValues.join(', ');
-
-
-
-        const row = createSelectMenu();
+        // 선택된 값에 따라 한글 변환
+        const koreanMessage = generateKoreanMessage(selectedValues);
 
         await interaction.update({
-            content: message(guildAlias),
-            components: [row],
+            content: message(koreanMessage),
+            components: [createSelectMenu()],
             ephemeral: true
         });
 

@@ -7,16 +7,15 @@ const emojiUpdate = require('../guildEmoji/emojiHandler/emojiUpdate');
 const { updateCompleted, updateFailed, updateEmojiFailed } = require('../update/updateModule/message');
 
 module.exports = async (interaction) => {
-
-    // interaction 객체에서 customId와 선택된 값을 가져옵니다.
-    const customid = interaction.customId;
-    const selections = interaction.values;
-
-    // 길드 인스턴스 생성를 생성하고 불러옵니다.
-    const guildSettings = new GuildSettings(interaction.guild.id);
-    let guildData = await guildSettings.loadOrCreate();
-
     try {
+        // interaction 객체에서 customId와 선택된 값을 가져옵니다.
+        const customid = interaction.customId;
+        const selections = interaction.values;
+
+        // 길드 인스턴스 생성를 생성하고 불러옵니다.
+        const guildSettings = new GuildSettings(interaction.guild.id);
+        let guildData = await guildSettings.loadOrCreate();
+
         // 게임들을 숨기거나 보이게합니다.
         selections.forEach(selection => {
             const action = customid === 'showMenu' ? true : false;

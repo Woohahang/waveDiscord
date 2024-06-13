@@ -69,13 +69,16 @@ class GuildSettings {
         };
     };
 
+    // 유효성 검사 함수
+    async validateGuildData() {
+        if (this.guildData) return;
+        await this.loadOrCreate();
+    };
 
     async saveChannelId(channelType, channelId) {
         try {
             // 유효성 검사
-            if (!this.guildData) {
-                await this.loadOrCreate();
-            };
+            await this.validateGuildData();
 
             // 채널 타입에 따른 필드 지정
             switch (channelType) {
@@ -100,9 +103,7 @@ class GuildSettings {
     async loadChannelId(channelType) {
         try {
             // 유효성 검사
-            if (!this.guildData) {
-                await this.loadOrCreate();
-            };
+            await this.validateGuildData();
 
             // 채널 타입에 따라 해당되는 채널 ID 반환
             switch (channelType) {
@@ -119,6 +120,21 @@ class GuildSettings {
         };
     };
 
+    async saveGuildAlias(aliasPatterns, aliasSeparator) {
+        try {
+            // 유효성 검사
+            await this.validateGuildData();
+
+            // aliasPatterns와 aliasSeparator를 길드 데이터에 저장
+            this.guildData.aliasPatterns = aliasPatterns;
+            this.guildData.aliasSeparator = aliasSeparator;
+
+            // 변경 사항 저장
+            await this.guildData.save();
+        } catch (error) {
+            throw error;
+        };
+    };
 
 };
 

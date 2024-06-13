@@ -29,7 +29,7 @@ const teamReshuffle = require('../events/multitools/teamShuffler/teamReshuffle')
 
 const assignRoleByNick = require('../events/guildAliasTemplates/aliasHandlers/assignRoleByNick');
 const setAliasSeparator = require('../events/guildAliasTemplates/aliasHandlers/setAliasSeparator');
-const saveAliasTemplate = require('../events/guildAliasTemplates/aliasHandlers/saveAliasTemplate');
+const nicknameRoleAssigner = require('../events/guildAliasTemplates/aliasHandlers/nicknameRoleAssigner');
 
 const teamShufflerMap = new Map();
 
@@ -132,10 +132,8 @@ async function handleSubmitModal(interaction, customId, values) {
         };
     } catch (error) {
         console.error('interaction.js 의 handleSubmitModal 에러 : ', error);
-    }
-
+    };
 };
-
 
 async function handleStringSelectMenu(interaction) {
     try {
@@ -172,7 +170,7 @@ async function handleStringSelectMenu(interaction) {
                 break;
 
             case 'aliasSeparatorMenu': // 서버 별명 문단 나누기 선택
-                saveAliasTemplate(interaction);
+                nicknameRoleAssigner(interaction);
                 break;
 
 
