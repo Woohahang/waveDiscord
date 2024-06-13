@@ -14,7 +14,8 @@ async function resetMenuSelection(interaction) {
         // 상호 작용 받은 메세지의 components 를 다시 조정 -> 의도 : 선택 한 값에서 다시 초기 값으로 돌리는 역할을 한다.
         await message.edit({ components: actionRows });
     } catch (error) {
-        console.error('resetMenuSelection.js 예외 : ', error);
+        throw error;
+        // console.error('resetMenuSelection.js 예외 : ', error);
     };
 };
 
