@@ -14,5 +14,14 @@ const setState = (newState) => {
     state = { ...state, ...newState };
 };
 
+// 상태를 초기화하는 함수
+const resetState = () => {
+    state = {
+        aliasPatterns: [],
+        aliasSeparator: '',
+        aliasRoleId: ''
+    };
+};
+
 // getState와 setState 함수를 모듈로 내보냄
-module.exports = { getState, setState };
+module.exports = { getState, setState, resetState };

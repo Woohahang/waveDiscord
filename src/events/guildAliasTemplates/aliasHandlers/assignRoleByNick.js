@@ -1,5 +1,6 @@
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
 const resetMenuSelection = require('../../../module/common/resetMenuSelection');
+const { resetState } = require('../aliasModules/state');
 
 function createSelectMenu() {
     try {
@@ -41,6 +42,9 @@ const message = (guildName) =>
 // 닉네임 포함할 양식 체크핸들러 모듈을 내보내기
 module.exports = async (interaction) => {
     try {
+        // 상태 초기화
+        resetState();
+
         // 선택 메뉴 초기화
         await resetMenuSelection(interaction);
 
