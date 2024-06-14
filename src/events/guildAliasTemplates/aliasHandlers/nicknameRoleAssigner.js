@@ -16,16 +16,16 @@ async function createSelectMenu(guild) {
             isNotBotRole(role)
         );
 
-
         const options = filteredRoles.map(role =>
             new StringSelectMenuOptionBuilder()
-                .setLabel(role.name)
-                .setDescription('역할 부여하기 !')
+                .setLabel(`서버 닉네임 양식과 일치하는 유저가 감지되면,`)
+                .setDescription(`${role.name} 역할을 부여하기 !`)
                 .setValue(role.id)
         );
 
+        // 역할 할당 roleAssignment
         const select = new StringSelectMenuBuilder()
-            .setCustomId('role')
+            .setCustomId('roleAssignment')
             .addOptions(options);
 
         return new ActionRowBuilder().addComponents(select);
@@ -64,21 +64,19 @@ const generateKoreanMessage = (aliasPatterns, separator) => {
 const message = (guildAliasPattern) =>
     `## 📝 ${guildAliasPattern}\n` +
     '> * 서버 닉네임 양식과 일치하나요 ?\n' +
-    '> * 일치한다면 진행해주세요 ! !\n';
+    '> * 일치한다면 진행해주세요 !\n';
 
 module.exports = async (interaction) => {
     try {
         const guild = interaction.guild;
 
-        // 길드 양식 및 문단 기호
-        const aliasPatterns = getState().aliasTemplate;
         const aliasSeparator = interaction.values[0];
+        setState({ aliasSeparator });
 
+        const aliasPatterns = getState().aliasPatterns;
         // 구분자 및 한글 변환 예시 생성
         const separator = getSeparatorByAlias(aliasSeparator);
         const guildAliasPattern = generateKoreanMessage(aliasPatterns, separator)
-
-        console.log('guildAliasPattern : ', guildAliasPattern);
 
         // 길드에 있는 역할들
         const rol = await createSelectMenu(guild);

@@ -120,21 +120,29 @@ class GuildSettings {
         };
     };
 
-    async saveGuildAlias(aliasPatterns, aliasSeparator) {
+    async saveGuildAlias(getState) {
         try {
             // 유효성 검사
             await this.validateGuildData();
 
+            const { aliasPatterns, aliasSeparator, aliasRoleId } = getState();
+
+            // 비어있는 값이 있는지 확인
+            if (!aliasPatterns || !aliasSeparator || !aliasRoleId) {
+                throw new Error('별칭 패턴, 구분 기호, 역할 ID는 비워둘 수 없습니다.');
+            };
+
             // aliasPatterns와 aliasSeparator를 길드 데이터에 저장
             this.guildData.aliasPatterns = aliasPatterns;
             this.guildData.aliasSeparator = aliasSeparator;
+            this.guildData.aliasRoleId = aliasRoleId;
 
             // 변경 사항 저장
             await this.guildData.save();
         } catch (error) {
             throw error;
-        };
-    };
+        }
+    }
 
 };
 

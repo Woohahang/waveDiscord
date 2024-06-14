@@ -18,10 +18,10 @@ function adminMenuLoader() {
                 .setDescription('서버에서 메뉴 숨기기')
                 .setValue('hideMenu'),
 
-            // new StringSelectMenuOptionBuilder()
-            //     .setLabel('AliasTemplates')
-            //     .setDescription('서버 별명 양식 설정하기')
-            //     .setValue('aliasTemplates'),
+            new StringSelectMenuOptionBuilder()
+                .setLabel('AliasTemplates')
+                .setDescription('서버 별명 양식 설정하기')
+                .setValue('aliasTemplates'),
 
         );
 

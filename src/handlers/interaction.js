@@ -30,6 +30,8 @@ const teamReshuffle = require('../events/multitools/teamShuffler/teamReshuffle')
 const assignRoleByNick = require('../events/guildAliasTemplates/aliasHandlers/assignRoleByNick');
 const setAliasSeparator = require('../events/guildAliasTemplates/aliasHandlers/setAliasSeparator');
 const nicknameRoleAssigner = require('../events/guildAliasTemplates/aliasHandlers/nicknameRoleAssigner');
+const nicknameTemplateSaver = require('../events/guildAliasTemplates/aliasHandlers/nicknameTemplateSaver');
+
 
 const teamShufflerMap = new Map();
 
@@ -171,6 +173,10 @@ async function handleStringSelectMenu(interaction) {
 
             case 'aliasSeparatorMenu': // 서버 별명 문단 나누기 선택
                 nicknameRoleAssigner(interaction);
+                break;
+
+            case 'roleAssignment': // 서버 별명에 대한 역할 설정 및 DB 저장
+                nicknameTemplateSaver(interaction);
                 break;
 
 

@@ -1,5 +1,5 @@
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
-const { setState } = require('../aliasModules/state');
+const { getState, setState } = require('../aliasModules/state');
 
 function createSelectMenu() {
     try {
@@ -58,13 +58,12 @@ const message = (guildAlias) =>
 
 module.exports = async (interaction) => {
     try {
-        const selectedValues = interaction.values;
-
-        // 키워드들 상태저장
-        setState({ aliasTemplate: selectedValues });
+        // 선택 된 길드 닉네임 키워드들 상태 저장
+        const aliasPatterns = interaction.values;
+        setState({ aliasPatterns });
 
         // 선택된 값에 따라 한글 변환
-        const koreanMessage = generateKoreanMessage(selectedValues);
+        const koreanMessage = generateKoreanMessage(aliasPatterns);
 
         await interaction.update({
             content: message(koreanMessage),

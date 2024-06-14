@@ -11,9 +11,9 @@ let guildSettingsSchema = new mongoose.Schema({
 
 
     // 별명 양식들 및 별명을 나누는 분리기호
-    // aliasPatterns: [String],
-    // aliasSeparator: String,
-    // aliasRoleId: String,
+    aliasPatterns: [String],
+    aliasSeparator: String,
+    aliasRoleId: String,
 
 
     // 길드에서 다루는 게임
