@@ -7,21 +7,21 @@ function createSelectMenu() {
             .setCustomId('aliasSeparatorMenu')
             .addOptions(
                 new StringSelectMenuOptionBuilder()
-                    .setLabel('Space')
+                    .setLabel('Space (　 )')
                     .setDescription('띄어쓰기')
                     .setValue('space'),
                 new StringSelectMenuOptionBuilder()
-                    .setLabel('Slash')
-                    .setDescription('슬래시 /')
-                    .setValue('slash'),
+                    .setLabel('Slash ( / )')
+                    .setDescription('슬래시')
+                    .setValue('/'),
                 new StringSelectMenuOptionBuilder()
-                    .setLabel('Hyphen')
-                    .setDescription('하이픈 -')
-                    .setValue('hyphen'),
+                    .setLabel('Hyphen ( - )')
+                    .setDescription('하이픈')
+                    .setValue('-'),
                 new StringSelectMenuOptionBuilder()
-                    .setLabel('Underscore')
-                    .setDescription('언더바 _')
-                    .setValue('underscore'),
+                    .setLabel('Underscore ( _ )')
+                    .setDescription('언더바')
+                    .setValue('_'),
             );
 
         return new ActionRowBuilder()

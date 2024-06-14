@@ -1,5 +1,6 @@
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder, PermissionsBitField } = require('discord.js');
-const { getState, setState } = require('../aliasModules/state');
+const { setState } = require('../aliasModules/state');
+const translatedPatterns = require('../aliasModules/translatedPatterns');
 
 async function createSelectMenu(guild) {
     try {
@@ -34,35 +35,8 @@ async function createSelectMenu(guild) {
     };
 };
 
-function getSeparatorByAlias(aliasSeparator) {
-    switch (aliasSeparator) {
-        case 'space':
-            return ' ';
-        case 'slash':
-            return '/';
-        case 'hyphen':
-            return '-';
-        case 'underscore':
-            return '_';
-        default:
-            return ' ';
-    };
-};
-
-const valueToKoreanMap = {
-    nickName: '닉네임',
-    age: '나이',
-    gender: '성별',
-    tier: '티어'
-};
-
-// 선택된 값에 따라 한글 변환
-const generateKoreanMessage = (aliasPatterns, separator) => {
-    return aliasPatterns.map(value => valueToKoreanMap[value] || value).join(separator);
-};
-
-const message = (guildAliasPattern) =>
-    `## 📝 ${guildAliasPattern}\n` +
+const message = (patterns) =>
+    `## 📝 ${patterns}\n` +
     '> * 서버 닉네임 양식과 일치하나요 ?\n' +
     '> * 일치한다면 진행해주세요 !\n';
 
@@ -70,18 +44,20 @@ module.exports = async (interaction) => {
     try {
         const guild = interaction.guild;
 
+        // 구분 기호 및 상태 저장
         const aliasSeparator = interaction.values[0];
         setState({ aliasSeparator });
 
-        const aliasPatterns = getState().aliasPatterns;
-        // 구분자 및 한글 변환 예시 생성
-        const separator = getSeparatorByAlias(aliasSeparator);
-        const guildAliasPattern = generateKoreanMessage(aliasPatterns, separator)
+        const patterns = translatedPatterns();
 
-        // 길드에 있는 역할들
+        // 패턴 적용할 역할 메뉴 생성
         const rol = await createSelectMenu(guild);
 
-        await interaction.update({ content: message(guildAliasPattern), components: [rol], ephemeral: true });
+        await interaction.update({
+            content: message(patterns),
+            components: [rol],
+            ephemeral: true
+        });
 
     } catch (error) {
         console.error('nicknameRoleAssigner.js 예외 : ', error);

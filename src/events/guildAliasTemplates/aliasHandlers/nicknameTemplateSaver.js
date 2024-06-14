@@ -1,37 +1,38 @@
 const { getState, setState } = require('../aliasModules/state');
-const patternKoreanMap = require('../aliasModules/patternKoreanMap');
-const getSeparatorByAlias = require('../aliasModules/getSeparatorByAlias');
+const translatedPatterns = require('../aliasModules/translatedPatterns');
 const guildSettings = require('../../../services/GuildSettings');
 
-// 디스코드 채팅에서 언더바로 인한 기울어짐 방지
-const escapeMarkdown = (text) => text.replace(/[*_`]/g, '\\$&');
 
-const createMessage = (translatedPatterns) =>
-    '## 설정 완료\n' +
-    ` > * ${translatedPatterns}\n` +
-    '> * 패턴으로 등록을 완료 했습니다.';
-
+const createMessage = (patterns, roleName) =>
+    `## 🎉 ${patterns}\n` +
+    '> * 패턴을 성공적으로 등록했습니다 !\n' +
+    '> * 이제 **Wave** 가 닉네임 변동을 감지하여\n' +
+    `> * **${roleName}** 역할을 자동으로 지급할게요 !`;
 
 module.exports = async (interaction) => {
     try {
-        const guildId = interaction.guild.id;
+        // 선택 된 역할 id, 상태 저장
         const roleId = interaction.values[0];
         setState({ aliasRoleId: roleId });
 
+        // 길드 인스턴스 생성 및 길드 닉네임 패턴 저장
+        const guildId = interaction.guild.id;
         const guildData = new guildSettings(guildId);
         await guildData.saveGuildAlias(getState);
 
-        // 메세지 관리
-        const { aliasPatterns, aliasSeparator, aliasRoleId } = getState();
+        // 패턴 한글 번역
+        const patterns = translatedPatterns();
 
-        // 번역 된 패턴들
-        const separator = getSeparatorByAlias(aliasSeparator); // 분리 기호
-        const translatedPatterns = aliasPatterns.map(alias => patternKoreanMap[alias]).join(separator);
+        // 역할 id로
+        const role = await interaction.guild.roles.fetch(roleId);
+        const roleName = role.name;
 
-        // 만약 분리기호가 언더바라면 인코딩 처리
-        const escapedPatterns = escapeMarkdown(translatedPatterns);
-
-        await interaction.update({ content: createMessage(escapedPatterns), components: [], ephemeral: true });
+        // 작업 성공 메세지 전송
+        await interaction.update({
+            content: createMessage(patterns, roleName),
+            components: [],
+            ephemeral: true
+        });
 
     } catch (error) {
         console.error('nicknameTemplateSaver.js 예외 : ', error);
