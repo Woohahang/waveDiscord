@@ -1,5 +1,6 @@
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
-const { getState, setState } = require('../aliasModules/state');
+const { setState } = require('../aliasModules/state');
+const translatedPatterns = require('../aliasModules/translatedPatterns');
 
 function createSelectMenu() {
     try {
@@ -7,7 +8,7 @@ function createSelectMenu() {
             .setCustomId('aliasSeparatorMenu')
             .addOptions(
                 new StringSelectMenuOptionBuilder()
-                    .setLabel('Space (　 )')
+                    .setLabel('Space (　)')
                     .setDescription('띄어쓰기')
                     .setValue('space'),
                 new StringSelectMenuOptionBuilder()
@@ -31,19 +32,6 @@ function createSelectMenu() {
     };
 };
 
-// 선택된 값과 한글 메시지를 매칭하는 객체
-const valueToKoreanMap = {
-    nickName: '닉네임',
-    age: '나이',
-    gender: '성별',
-    tier: '티어'
-};
-
-// 선택된 값에 따라 한글 변환
-const generateKoreanMessage = (selectedValues) => {
-    return selectedValues.map(value => valueToKoreanMap[value] || value).join(', ');
-};
-
 const message = (guildAlias) =>
     `## 📝 ${guildAlias}\n` +
     '> * 순서가 맞다면 진행해주세요 !\n' +
@@ -62,11 +50,11 @@ module.exports = async (interaction) => {
         const aliasPatterns = interaction.values;
         setState({ aliasPatterns });
 
-        // 선택된 값에 따라 한글 변환
-        const koreanMessage = generateKoreanMessage(aliasPatterns);
+        // 현재 상태의 번역된 패턴을 가지고 옵니다.
+        const patterns = translatedPatterns();
 
         await interaction.update({
-            content: message(koreanMessage),
+            content: message(patterns),
             components: [createSelectMenu()],
             ephemeral: true
         });

@@ -9,8 +9,8 @@ function translatedPatterns() {
             tier: '티어'
         };
 
-        // 현재 상태
-        const { aliasPatterns, aliasSeparator, aliasRoleId } = getState();
+        // 상태
+        const { aliasPatterns, aliasSeparator } = getState();
 
         if (aliasSeparator) {
             switch (aliasSeparator) {
