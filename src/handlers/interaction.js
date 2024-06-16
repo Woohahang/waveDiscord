@@ -32,7 +32,6 @@ const setAliasSeparator = require('../events/guildAliasTemplates/aliasHandlers/s
 const nicknameRoleAssigner = require('../events/guildAliasTemplates/aliasHandlers/nicknameRoleAssigner');
 const nicknameTemplateSaver = require('../events/guildAliasTemplates/aliasHandlers/nicknameTemplateSaver');
 
-
 const teamShufflerMap = new Map();
 
 

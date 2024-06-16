@@ -120,7 +120,7 @@ class GuildSettings {
         };
     };
 
-    async saveGuildAlias(getState) {
+    async saveAliasPatterns(getState) {
         try {
             // 유효성 검사
             await this.validateGuildData();
@@ -141,8 +141,19 @@ class GuildSettings {
             await this.guildData.save();
         } catch (error) {
             throw error;
-        }
-    }
+        };
+    };
+
+    async getGuildData() {
+        try {
+            // 유효성 검사
+            await this.validateGuildData();
+
+            return this.guildData;
+        } catch (error) {
+            throw error;
+        };
+    };
 
 };
 

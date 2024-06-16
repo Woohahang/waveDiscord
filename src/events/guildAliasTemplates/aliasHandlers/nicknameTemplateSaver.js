@@ -18,7 +18,7 @@ module.exports = async (interaction) => {
         // 길드 인스턴스 생성 및 길드 닉네임 패턴 저장
         const guildId = interaction.guild.id;
         const guildData = new guildSettings(guildId);
-        await guildData.saveGuildAlias(getState);
+        await guildData.saveAliasPatterns(getState);
 
         // 패턴 한글 번역
         const patterns = translatedPatterns();
