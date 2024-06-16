@@ -48,8 +48,6 @@ client.once(Events.ClientReady, readyClient => {
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
-
-
 client.on(Events.GuildCreate, async guild => {
     handleGuildCreate(guild);
 });
@@ -58,17 +56,13 @@ client.on(Events.InteractionCreate, async interaction => {
     handleinteraction(interaction);
 });
 
-
 client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
     handleVoiceStateUpdate(oldState, newState);
 });
 
-// client.on(Events.GuildMemberUpdate, async (oldMember, newMember) => {
-
-//     console.log('test');
-
-//     handleGuildMemberUpdate(oldMember, newMember);
-// });
+client.on(Events.GuildMemberUpdate, async (oldMember, newMember) => {
+    handleGuildMemberUpdate(oldMember, newMember);
+});
 
 
 
