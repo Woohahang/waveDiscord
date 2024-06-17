@@ -1,8 +1,8 @@
 // removeSelectedNickname.js
 
 const { SlashCommandBuilder, StringSelectMenuBuilder, ActionRowBuilder } = require('discord.js');
-
 const UserSettings = require('../../services/UserSettings');
+const logUserInfo = require('../../utils/log/logUserInfo');
 
 function generateOptions(userData) {
     const options = [];
@@ -101,6 +101,7 @@ module.exports = {
             });
 
         } catch (error) {
+            logUserInfo(interaction);
             console.error('removeSelectedNickname.js 에러 : ', error);
             await interaction.reply({ content: '닉네임 삭제 중 오류가 발생했습니다.', ephemeral: true });
         };
