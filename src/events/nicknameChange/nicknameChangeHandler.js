@@ -10,7 +10,11 @@ module.exports = async (oldMember, newMember) => {
 
         const guildId = newMember.guild.id;
         const guildData = new guildSettings(guildId);
-        const { aliasPatterns, aliasSeparator, aliasRoleId } = await guildData.getGuildData();
+        let { aliasPatterns, aliasSeparator, aliasRoleId } = await guildData.getGuildData();
+
+        if (aliasSeparator === 'space') {
+            aliasSeparator = ' ';
+        };
 
         // 구분 기호를 기준으로 닉네임 분할
         const nameParts = newName.split(aliasSeparator);
