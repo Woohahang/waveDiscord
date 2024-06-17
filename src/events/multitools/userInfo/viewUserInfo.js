@@ -1,4 +1,4 @@
-const UserSettings = require('../../../../services/UserSettings');
+const UserSettings = require('../../../services/UserSettings');
 const { EmbedBuilder } = require('discord.js');
 const generateGameFields = require('./module/generateGameFields');
 

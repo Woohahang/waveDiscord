@@ -57,6 +57,11 @@ class UserSettings {
         };
     };
 
+    // 유효성 검사 함수
+    async validateUserData() {
+        if (this.userData) return;
+        await this.getUserData();
+    };
 
     // 사용자의 데이터를 가지고 오는 함수
     async getUserData() {
@@ -204,6 +209,34 @@ class UserSettings {
             console.error('removeNickName 에러 : ', error)
         }
     };
+
+
+    /* 유저 정보 삭제 메서드 */
+    async deleteUserInfo() {
+        try {
+            // 유효성 검사
+            await this.validateUserData();
+
+            // 정보가 없다면 리턴
+            if (!this.userData) {
+                return 'alreadyDeleted';
+            };
+
+            // 데이터베이스에서 유저 정보 삭제
+            await userSchema.deleteOne({ userId: this.userId });
+
+            // 메모리에서도 인스턴스 삭제
+            if (UserSettings.instances[this.userId]) {
+                delete UserSettings.instances[this.userId];
+            };
+
+            return 'deleteSuccess';
+        } catch (error) {
+            console.error('deleteUserInfo 에러 : ', error);
+            return 'deleteError';
+        };
+    };
+
 
 };
 

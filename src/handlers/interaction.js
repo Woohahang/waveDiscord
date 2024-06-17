@@ -136,7 +136,8 @@ async function handleSubmitModal(interaction, customId, values) {
     };
 };
 
-const viewUserInfo = require('../events/multitools/userInfo/viewUserInfo/viewUserInfo');
+const viewUserInfo = require('../events/multitools/userInfo/viewUserInfo');
+const deleteUserInfo = require('../events/multitools/userInfo/deleteUserInfo');
 
 async function handleStringSelectMenu(interaction) {
     try {
@@ -188,7 +189,11 @@ async function handleStringSelectMenu(interaction) {
 
                 if (values.includes('viewUserInfo'))
                     viewUserInfo(interaction);
+
+                if (values.includes('deleteUserInfo'))
+                    deleteUserInfo(interaction);
                 break;
+
 
             /* 팀 섞기 */
             case 'teamShufflerMenu':

@@ -8,12 +8,12 @@ const multitoolsMenu = new StringSelectMenuBuilder()
     .addOptions(
         new StringSelectMenuOptionBuilder()
             .setLabel('내 정보 조회')
-            .setDescription('Wave 에 등록 되어 있는 모든 정보를 확인합니다.')
+            .setDescription('등록 되어 있는 모든 정보를 확인합니다.')
             .setValue('viewUserInfo'),
-        // new StringSelectMenuOptionBuilder()
-        //     .setLabel('내 정보 삭제')
-        //     .setDescription('Wave 에 등록 되어 있는 모든 정보를 삭제합니다.')
-        //     .setValue('deleteUserInfo'),
+        new StringSelectMenuOptionBuilder()
+            .setLabel('내 정보 삭제')
+            .setDescription('등록 되어 있는 모든 정보를 삭제합니다.')
+            .setValue('deleteUserInfo'),
         // new StringSelectMenuOptionBuilder()
         //     .setLabel('팀 섞기')
         //     .setDescription('현재 음성 채팅방의 인원에서 랜덤으로 팀을 구성합니다.')
