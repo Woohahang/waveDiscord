@@ -1,31 +1,30 @@
 // multitools.js
 
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
-const { getMemberVoiceChannel } = require('../../module/common/getMemberVoiceChannel');
 
 const multitoolsMenu = new StringSelectMenuBuilder()
     .setCustomId('multitoolsMenu')
     .setPlaceholder('선택 하세요 !')
     .addOptions(
         new StringSelectMenuOptionBuilder()
-            .setLabel('팀 섞기')
-            .setDescription('현재 음성 채팅방의 인원에서 랜덤으로 팀을 구성합니다.')
-            .setValue('teamShuffler'),
+            .setLabel('내 정보 조회')
+            .setDescription('Wave 에 등록 되어 있는 모든 정보를 확인합니다.')
+            .setValue('viewUserInfo'),
         // new StringSelectMenuOptionBuilder()
-        //     .setLabel('유저 검색')
-        //     .setDescription('현재 음성 채팅방의 인원 닉네임을 정리해서 알려줍니다.')
-        //     .setValue('usersSearch'),
+        //     .setLabel('내 정보 삭제')
+        //     .setDescription('Wave 에 등록 되어 있는 모든 정보를 삭제합니다.')
+        //     .setValue('deleteUserInfo'),
+        // new StringSelectMenuOptionBuilder()
+        //     .setLabel('팀 섞기')
+        //     .setDescription('현재 음성 채팅방의 인원에서 랜덤으로 팀을 구성합니다.')
+        //     .setValue('teamShuffler'),
     );
 
 let row = new ActionRowBuilder()
     .addComponents(multitoolsMenu);
 
-
 module.exports = async (interaction) => {
     try {
-        // 음성 채널 입장 여부 체크
-        const voiceChannel = await getMemberVoiceChannel(interaction);
-        if (!voiceChannel) return;
 
         // row 전송
         await interaction.reply({
@@ -34,6 +33,6 @@ module.exports = async (interaction) => {
         });
 
     } catch (error) {
-        console.error('multitools.js 에러 : ' + error);
+        console.error('multitools.js 에러 : ', error);
     };
 };

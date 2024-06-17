@@ -3,7 +3,6 @@
 const filterOptions = require('../../../../module/data/filterOptions');
 const getGamesLink = require('./getGamesLink');
 
-
 function createFields(userData, guildData, waveEmojis) {
     try {
 

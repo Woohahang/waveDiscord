@@ -57,6 +57,24 @@ class UserSettings {
         };
     };
 
+
+    // 사용자의 데이터를 가지고 오는 함수
+    async getUserData() {
+        try {
+            // 이미 userData가 존재하면, 해당 데이터를 반환
+            if (this.userData) return this.userData;
+
+            // userId를 이용하여 데이터베이스에서 사용자 데이터를 조회
+            this.userData = await userSchema.findOne({ userId: this.userId });
+
+            // 조회된 데이터를 반환
+            return this.userData;
+        } catch (error) {
+            console.error('getUserData 에러:', error);
+            throw error;
+        };
+    };
+
     // 유저 데이터 불러오기 또는 생성
     async loadOrCreateById() {
         try {

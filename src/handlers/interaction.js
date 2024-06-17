@@ -136,6 +136,8 @@ async function handleSubmitModal(interaction, customId, values) {
     };
 };
 
+const viewUserInfo = require('../events/multitools/userInfo/viewUserInfo/viewUserInfo');
+
 async function handleStringSelectMenu(interaction) {
     try {
         const values = interaction.values;
@@ -181,9 +183,11 @@ async function handleStringSelectMenu(interaction) {
 
             /* 멀티 툴 */
             case 'multitoolsMenu': // 몇팀으로 나눌까요?
-                if (values[0] === 'teamShuffler') {
-                    return teamShuffler(interaction);
-                }
+                if (values.includes('teamShuffler'))
+                    teamShuffler(interaction);
+
+                if (values.includes('viewUserInfo'))
+                    viewUserInfo(interaction);
                 break;
 
             /* 팀 섞기 */

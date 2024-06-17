@@ -2,11 +2,11 @@
 
 function formatLoLNickName(nickName) {
     return nickName.replace('#', '-');
-}
+};
 
-function getGamesLink(gameType, nickName) {
+function getGamesLink(game, nickName) {
     try {
-        switch (gameType) {
+        switch (game) {
             case 'leagueOfLegends':
                 return `https://www.op.gg/summoners/kr/${encodeURIComponent(formatLoLNickName(nickName))}`;
 
