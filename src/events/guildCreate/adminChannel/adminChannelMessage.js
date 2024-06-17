@@ -6,7 +6,7 @@ module.exports = async (guild) => {
     try {
         // 길드 인스턴스 생성 및 관리자 채널 Id 반환
         const guildSettings = new GuildSettings(guild.id);
-        const { adminChannelId } = await guildSettings.getGuildData();
+        const { adminChannelId } = await guildSettings.loadOrCreate();
 
         // 관리자 채널 객체를 얻음
         const channel = await guild.channels.fetch(adminChannelId);

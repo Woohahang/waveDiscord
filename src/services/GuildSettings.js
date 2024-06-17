@@ -47,7 +47,7 @@ class GuildSettings {
             // 메모리에 길드 데이터가 있다면 반환
             if (this.guildData) {
                 return this.guildData;
-            }
+            };
 
             // DB 에서 길드 데이터 조회
             const guildData = await guildSettingsSchema.findOne({ guildId: this.guildId });
@@ -56,7 +56,7 @@ class GuildSettings {
             if (guildData) {
                 this.guildData = guildData;
                 return this.guildData;
-            }
+            };
 
             // 길드 데이터가 없다면 생성 이후 반환
             console.log('새로운 서버에 추가 되었습니다.');
