@@ -1,13 +1,14 @@
 const { getState } = require('../aliasModules/state');
+const patternKoreanMap = require('./patternKoreanMap');
 
 function translatedPatterns() {
     try {
-        const patternKoreanMap = {
-            nickName: '닉네임',
-            age: '나이',
-            gender: '성별',
-            tier: '티어'
-        };
+        // const patternKoreanMap = {
+        //     nickName: '닉네임',
+        //     age: '나이',
+        //     gender: '성별',
+        //     tier: '티어'
+        // };
 
         // 상태
         const { aliasPatterns, aliasSeparator } = getState();

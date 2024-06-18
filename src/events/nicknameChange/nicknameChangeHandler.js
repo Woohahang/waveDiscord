@@ -12,6 +12,7 @@ module.exports = async (oldMember, newMember) => {
         const guildData = new guildSettings(guildId);
         let { aliasPatterns, aliasSeparator, aliasRoleId } = await guildData.getGuildData();
 
+
         if (aliasSeparator === 'space') {
             aliasSeparator = ' ';
         };
@@ -51,7 +52,6 @@ module.exports = async (oldMember, newMember) => {
 
             await newMember.roles.add(role);
         };
-
 
     } catch (error) {
         console.error('nicknameChangeHandler.js 예외 : ', error);

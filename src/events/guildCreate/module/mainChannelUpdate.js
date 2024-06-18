@@ -9,6 +9,7 @@ async function mainChannelUpdate(guild, guildData) {
     try {
         // 메인 채널 객체 얻기
         mainChannel = await guild.channels.fetch(guildData.mainChannelId);
+
     } catch (error) {
         if (error.code === 10003) { // 채널을 찾지 못한 경우
             mainChannel = await mainChannelCreate(guild);

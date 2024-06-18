@@ -15,16 +15,20 @@ function createSelectMenu() {
                     .setValue('nickName'),
                 new StringSelectMenuOptionBuilder()
                     .setLabel('Age')
-                    .setDescription('나이')
+                    .setDescription('나이 ex) 26, 28, 96, 98 ...')
                     .setValue('age'),
                 new StringSelectMenuOptionBuilder()
                     .setLabel('Gender')
-                    .setDescription('성별')
+                    .setDescription('성별 ex) 남, 여')
                     .setValue('gender'),
                 new StringSelectMenuOptionBuilder()
                     .setLabel('Tier')
-                    .setDescription('티어')
+                    .setDescription('티어 ex) D, A, P, G ...')
                     .setValue('tier'),
+                new StringSelectMenuOptionBuilder()
+                    .setLabel('Other')
+                    .setDescription('기타 항목')
+                    .setValue('other')
             );
 
         return new ActionRowBuilder()
@@ -37,7 +41,7 @@ function createSelectMenu() {
 const message = (guildName) =>
     `## ${guildName} 서버, 닉네임 양식 설정\n` +
     '> * 원하는 순서로 필요한 키워드만 클릭해주세요 !\n' +
-    '> * 내부적으로 클릭 순서를 기록합니다. 순서가 변경이 안 되어도 안심하세요 !';
+    '> * 순서가 변경이 안 되어도 안심하세요 ! 내부적으로 클릭 순서를 기록합니다. ';
 
 // 닉네임 포함할 양식 체크핸들러 모듈을 내보내기
 module.exports = async (interaction) => {
