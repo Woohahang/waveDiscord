@@ -34,15 +34,12 @@ module.exports = async (guild) => {
         await emojiRegister(guild, guildEmojis, trueValueKeys);
 
     } catch (error) {
-
         switch (error.code) {
             case 'EMOJI_SLOT_ERROR': // 슬롯 초과
                 throw error;
 
             default: // 이외의 모든 에러
                 console.error('emojiUpdate.js 에러 : ', error);
-                throw error;
         };
-
     };
 };

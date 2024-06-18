@@ -1,21 +1,11 @@
-// updateChannels.js
-
 const GuildSettings = require('../../../../services/GuildSettings');
+const checkAdminRole = require('../../../../module/role/checkAdminRole'); // 관리자 체크
+const adminChannelUpDate = require('../../module/adminChannelUpDate'); // 관리자 채널 업데이트
+const mainChannelUpdate = require('../../module/mainChannelUpdate'); // 메인 채널 업데이트
+const emojiUpdate = require('../../guildEmoji/emojiHandler/emojiUpdate'); // 이모지 업데이트
+const { updateCompleted, updateFailed, updateEmojiFailed } = require('../updateModule/message'); // 업데이트 상태 메세지
 
-/* 관리자 체크 */
-const checkAdminRole = require('../../../../module/role/checkAdminRole');
 
-/* 채널 업데이트 */
-const adminChannelUpDate = require('../../module/adminChannelUpDate');
-const mainChannelUpdate = require('../../module/mainChannelUpdate');
-
-/* 이모지 업데이트 */
-const emojiUpdate = require('../../guildEmoji/emojiHandler/emojiUpdate');
-
-/* 업데이트 상태 여부 메세지 */
-const { updateCompleted, updateFailed, updateEmojiFailed } = require('../updateModule/message');
-
-/* 목적, Wave 채널 업데이트 */
 module.exports = async (interaction) => {
     try {
         // 사용자 권한 체크
@@ -24,36 +14,33 @@ module.exports = async (interaction) => {
             return;
         };
 
-        // 길드 인스턴스 생성
-        const guildSettings = new GuildSettings(interaction.guild.id);
-        const guildData = await guildSettings.loadOrCreate();
+        const guild = interaction.guild;
+        const guildSettings = new GuildSettings(guild.id); // 길드 인스턴스 생성
+        const guildData = await guildSettings.loadOrCreate(); // 길드 데이터 불러오기
 
         // '업데이트 중' 메시지 전송
         await interaction.deferReply({ ephemeral: true });
 
-        // 관리자 채널, 메인 채널 업데이트 : 병렬 처리를 위해 Promise.all
+        // 모든 업데이트 작업을 병렬로 실행
         await Promise.all([
-            adminChannelUpDate(interaction, guildData),
-            mainChannelUpdate(interaction, guildData),
-            emojiUpdate(interaction.guild)
-        ]).then(() => {
-            interaction.editReply({ content: updateCompleted, components: [], ephemeral: true });
-        }).catch((error) => {
+            adminChannelUpDate(guild, guildData),
+            mainChannelUpdate(guild, guildData),
+            emojiUpdate(guild)
+        ]);
 
-            switch (error.code) {
-                case 'EMOJI_SLOT_ERROR': // 이모지 슬롯 초과
-                    interaction.editReply({ content: updateEmojiFailed, ephemeral: true });
-                    break;
-
-                default:  // 다른 모든 에러
-                    interaction.editReply({ content: updateFailed, ephemeral: true });
-                    console.error('updateChannels.js 업데이트 실패 : ', error);
-            };
-
-        });
+        // 업데이트 완료 메세지 전송
+        await interaction.editReply({ content: updateCompleted, components: [], ephemeral: true });
 
     } catch (error) {
-        console.error('updateChannels.js 에러 : ', error);
+        switch (error.code) {
+            case 'EMOJI_SLOT_ERROR': // 이모지 슬롯 초과
+                interaction.editReply({ content: updateEmojiFailed, ephemeral: true });
+                break;
+
+            default:  // 다른 모든 에러
+                interaction.editReply({ content: updateFailed, ephemeral: true });
+                console.error('updateChannels.js 업데이트 실패 : ', error);
+        };
     };
 };
 
