@@ -99,27 +99,6 @@ class GuildSettings {
         };
     };
 
-
-    async loadChannelId(channelType) {
-        try {
-            // 유효성 검사
-            await this.validateGuildData();
-
-            // 채널 타입에 따라 해당되는 채널 ID 반환
-            switch (channelType) {
-                case 'adminChannel':
-                    return this.guildData.adminChannelId;
-                case 'mainChannel':
-                    return this.guildData.mainChannelId;
-                default:
-                    throw new Error('유효하지 않은 채널 타입입니다.');
-            };
-
-        } catch (error) {
-            console.error(`loadChannelId 에러: `, error);
-        };
-    };
-
     async saveAliasPatterns(getState) {
         try {
             // 유효성 검사

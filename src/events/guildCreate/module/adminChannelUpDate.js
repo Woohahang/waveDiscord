@@ -4,15 +4,10 @@ const { adminMessage } = require('../module/adminMessage');
 const deleteMessagesExcept = require('../../../module/common/deleteMessagesExcept');
 
 // 관리자 채널 업데이트
-async function adminChannelUpDate(interaction, guildSettings) {
-
-    const guild = interaction.guild;
-    const channelType = 'adminChannel';
-
-    // 길드 관리자 채널 ID 얻기
-    const adminChannelId = await guildSettings.loadChannelId(channelType);
-
+async function adminChannelUpDate(interaction, { adminChannelId }) {
     try {
+        const guild = interaction.guild;
+
         // 관리자 채널 객체 얻기
         const channel = await guild.channels.fetch(adminChannelId);
 

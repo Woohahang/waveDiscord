@@ -26,14 +26,15 @@ module.exports = async (interaction) => {
 
         // 길드 인스턴스 생성
         const guildSettings = new GuildSettings(interaction.guild.id);
+        const guildData = await guildSettings.loadOrCreate();
 
         // '업데이트 중' 메시지 전송
         await interaction.deferReply({ ephemeral: true });
 
         // 관리자 채널, 메인 채널 업데이트 : 병렬 처리를 위해 Promise.all
         await Promise.all([
-            adminChannelUpDate(interaction, guildSettings),
-            mainChannelUpdate(interaction, guildSettings),
+            adminChannelUpDate(interaction, guildData),
+            mainChannelUpdate(interaction, guildData),
             emojiUpdate(interaction.guild)
         ]).then(() => {
             interaction.editReply({ content: updateCompleted, components: [], ephemeral: true });
