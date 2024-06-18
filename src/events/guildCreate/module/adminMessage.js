@@ -3,10 +3,6 @@
 const { adminMenuLoader } = require('./adminMenuLoader');
 const { adminButton } = require('./adminButton');
 
-const serverStatusMessage =
-    '## :gear: Wave 서버 상태\n' +
-    '> * :label: 서버 별명 양식 : 미등록';
-
 async function adminMessage(channel) {
     try {
         const message1 = await channel.send({
@@ -14,7 +10,7 @@ async function adminMessage(channel) {
             components: [adminMenuLoader(), adminButton()]
         });
 
-        const message2 = await channel.send({ content: serverStatusMessage });
+        const message2 = await channel.send({ content: '> * 채널 보기 권한 OFF 적용 상태 \n> * 채널 보기 OFF 를 유지해 주세요.' });
 
         return [message1.id, message2.id];
 

@@ -23,7 +23,7 @@ module.exports = async (interaction) => {
 
         // 모든 업데이트 작업을 병렬로 실행
         await Promise.all([
-            adminChannelUpDate(interaction),
+            adminChannelUpDate(interaction, guildData),
             mainChannelUpdate(guild, guildData),
             emojiUpdate(guild)
         ]);
