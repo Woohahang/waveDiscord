@@ -23,14 +23,11 @@ module.exports = async (guild) => {
         // 메인 채널 생성
         const channel = await createMainChannel(guild);
 
-        const channelType = 'mainChannel';
-
-        // 길드 인스턴스 생성
+        // 길드 인스턴스 생성 및 채널 Id 저장
         const guildSettings = new GuildSettings(guild.id);
+        await guildSettings.saveChannelId('mainChannel', channel.id);
 
-        // 메인 채널 id 저장
-        await guildSettings.saveChannelId(channelType, channel.id);
-
+        return channel;
     } catch (error) {
         console.error('mainChannelCreate.js 에러 : ', error);
     };
