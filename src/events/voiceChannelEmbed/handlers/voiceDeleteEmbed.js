@@ -4,35 +4,35 @@ const { clientId } = require('../../../../../config.json');
 
 /* 중복 된 유저 정보 메세지 삭제 */
 module.exports = async (oldState) => {
-    try {
-        const member = oldState.member;
-        const channel = oldState.channel;
-        if (!channel) return;
+  try {
+    const member = oldState.member;
+    const channel = oldState.channel;
+    if (!channel) return;
 
-        // 서버 별명 또는 유저 닉네임
-        const displayName = member.nickname || member.user.globalName;
+    // 서버 별명 또는 유저 닉네임
+    const displayName = member.nickname || member.user.globalName;
 
-        const messages = await channel.messages.fetch({ limit: 20 });
-        if (!messages) return;
+    const messages = await channel.messages.fetch({ limit: 20 });
+    if (!messages) return;
 
-        // Wave 가 보낸 메세지들
-        const waveEmbeds = messages.filter(message => message.author.id === clientId && message.embeds.length > 0);
+    // Wave 가 보낸 메세지들
+    const waveEmbeds = messages.filter(message => message.author.id === clientId && message.embeds.length > 0);
 
-        // 중복된 유저 정보를 담고 있는 메시지들
-        const duplicateUserInfo = waveEmbeds.filter(message =>
-            message.embeds.some(embed =>
-                embed.author &&
-                embed.author.name === displayName &&
-                embed.author.iconURL === member.user.displayAvatarURL()
-            )
-        );
+    // 중복된 유저 정보를 담고 있는 메시지들
+    const duplicateUserInfo = waveEmbeds.filter(message =>
+      message.embeds.some(embed =>
+        embed.author &&
+        embed.author.name === displayName &&
+        embed.author.iconURL === member.user.displayAvatarURL()
+      )
+    );
 
-        await Promise.all(duplicateUserInfo.map(message => message.delete()));
+    await Promise.all(duplicateUserInfo.map(message => message.delete()));
 
-    } catch (error) {
-        if (error.code === 10008) return;
-        console.error('voiceDeleteEmbed.js 예외 : ', error);
-    };
+  } catch (error) {
+    if (error.code === 10008 || error.code === 10003) return;
+    console.error('voiceDeleteEmbed.js 예외 : ', error);
+  };
 };
 
 /* Promise.all

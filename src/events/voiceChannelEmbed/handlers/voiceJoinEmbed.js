@@ -2,12 +2,10 @@
 
 const GuildSettings = require('../../../services/GuildSettings');
 const UserSettings = require('../../../services/UserSettings');
-
-const voiceDeleteEmbed = require('./voiceDeleteEmbed');
 const userStatusEmbed = require('../modules/userStatusEmbed');
 
 /* 채널 입장 임베드 전송, 이전 중복 메시지 삭제 */
-module.exports = async (oldState, newState) => {
+module.exports = async (newState) => {
 
     const memberId = newState.member.id;
     const guildId = newState.guild.id;
@@ -15,11 +13,6 @@ module.exports = async (oldState, newState) => {
     if (!channel) return;
 
     try {
-        // 이전 채널 메세지 삭제
-        if (oldState) {
-            await voiceDeleteEmbed(oldState);
-        };
-
         // 유저 인스턴스 생성 -> 유저 데이터 불러오기
         const userStettings = new UserSettings(memberId);
         const nickNames = await userStettings.load();
@@ -29,7 +22,7 @@ module.exports = async (oldState, newState) => {
         const guildSettings = new GuildSettings(guildId);
         const guildData = await guildSettings.loadOrCreate();
 
-        // 임베드 리팩터링 중
+        // 임베드
         const embed = await userStatusEmbed(newState, nickNames, guildData);
         if (!embed) return;
 
@@ -37,7 +30,7 @@ module.exports = async (oldState, newState) => {
         await channel.send({ embeds: [embed] });
 
     } catch (error) {
-        if (error.rawError && error.rawError.code === 10003) return;
+        if (error.code === 10008 || error.code === 10003) return; //10008 === Unknown Message, 10003 === Unknown Channel 
         console.error('voiceJoinEmbed.js 에러 : ', error);
     };
 };

@@ -8,7 +8,7 @@ const connectToDatabase = require('./mongoDB/database.js');
 
 const { handleGuildCreate } = require('./handlers/guildCreate');
 const { handleinteraction } = require('./handlers/interaction');
-const { handleVoiceStateUpdate } = require('./handlers/voiceStateUpdate');
+const handleVoiceStateUpdate = require('./handlers/voiceStateUpdate');
 const handleGuildMemberUpdate = require('./handlers/guildMemberUpdate');
 
 
