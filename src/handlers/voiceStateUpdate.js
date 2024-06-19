@@ -4,6 +4,7 @@ const { checkVoiceAdmin } = require('../module/checkAdminPermissionOn');
 
 const voiceJoinEmbed = require('../events/voiceChannelEmbed/handlers/voiceJoinEmbed');
 const voiceDeleteEmbed = require('../events/voiceChannelEmbed/handlers/voiceDeleteEmbed');
+const deleteInactiveVoiceEmbeds = require('../events/voiceChannelEmbed/handlers/deleteInactiveVoiceEmbeds');
 
 async function handleVoiceStateUpdate(oldState, newState) {
     try {
@@ -13,11 +14,13 @@ async function handleVoiceStateUpdate(oldState, newState) {
         if (!oldState.channel && newState.channel) {
             // 임베드 전송
             await voiceJoinEmbed(oldState, newState);
+            await deleteInactiveVoiceEmbeds(newState);
 
             // 유저가 채널 이동하면 작동
         } else if (oldState.channel && newState.channel && oldState.channel.id !== newState.channel.id) {
             // 임베드 삭제 and 전송
             await voiceJoinEmbed(oldState, newState);
+            await deleteInactiveVoiceEmbeds(newState);
 
             // 유저가 퇴장하면 작동
         } else if (oldState.channel && !newState.channel) {

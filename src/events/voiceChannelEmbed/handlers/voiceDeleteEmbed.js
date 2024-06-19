@@ -27,28 +27,12 @@ module.exports = async (oldState) => {
             )
         );
 
-        // 메세지 삭제
-        await Promise.all(duplicateUserInfo.map(message =>
-            message.delete()
-                .catch(error => {
-                    handleDeleteError(error);
-                })
-        ));
+        await Promise.all(duplicateUserInfo.map(message => message.delete()));
 
     } catch (error) {
-        handleFetchError(error);
+        if (error.code === 10008) return;
+        console.error('voiceDeleteEmbed.js 예외 : ', error);
     };
-};
-
-const handleFetchError = (error) => {
-    if (error.rawError && error.rawError.code === 10003) return;
-    console.error('voiceDeleteEmbed.js fetch 에러 : ', error);
-};
-
-const handleDeleteError = (error) => {
-    if (error.rawError && error.rawError.code === 10003) return;
-    if (error.code === 'ChannelNotCached') return;
-    console.error('voiceDeleteEmbed.js, 메세지 삭제 중에 예외 발생: ', error);
 };
 
 /* Promise.all
