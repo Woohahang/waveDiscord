@@ -32,24 +32,22 @@ const setAliasSeparator = require('../events/guildAliasTemplates/aliasHandlers/s
 const nicknameRoleAssigner = require('../events/guildAliasTemplates/aliasHandlers/nicknameRoleAssigner');
 const nicknameTemplateSaver = require('../events/guildAliasTemplates/aliasHandlers/nicknameTemplateSaver');
 
+const viewUserInfo = require('../events/multitools/userInfo/viewUserInfo');
+const deleteUserInfo = require('../events/multitools/userInfo/deleteUserInfo');
+
 const teamShufflerMap = new Map();
 
 
 async function handleinteraction(interaction) {
     try {
         if (!checkInteractionAdmin(interaction)) return; // 봇이 관리자 권한을 받았는지 체크
-        const customId = interaction.customId;
 
-        let values;
-        if (interaction.values) {
-            values = interaction.values;
-        };
 
         if (interaction.isButton()) {
-            handleButtonInteraction(interaction, customId);
+            handleButtonInteraction(interaction);
 
         } else if (interaction.isModalSubmit()) {
-            handleSubmitModal(interaction, customId, values);
+            handleSubmitModal(interaction);
 
         } else if (interaction.isStringSelectMenu()) {
             await handleStringSelectMenu(interaction);
@@ -81,8 +79,10 @@ async function handleChatInputCommand(interaction) {
 };
 
 
-async function handleButtonInteraction(interaction, customId) {
+async function handleButtonInteraction(interaction) {
     try {
+        const customId = interaction.customId;
+
         switch (customId) {
             case 'upDate':
             case 'upDateButton':
@@ -110,7 +110,7 @@ async function handleButtonInteraction(interaction, customId) {
                 break;
 
             default:
-                console.log('isButton 에서 알 수 없는 customId : ' + customId);
+                console.log('isButton 에서 알 수 없는 customId : ', customId);
         };
     } catch (error) {
         console.error('interaction.js 의 handleButtonInteraction 에러 : ', error);
@@ -118,8 +118,9 @@ async function handleButtonInteraction(interaction, customId) {
 };
 
 
-async function handleSubmitModal(interaction, customId, values) {
+async function handleSubmitModal(interaction) {
     try {
+        const customId = interaction.customId;
         const customIdParts = customId.split('_')[0];
 
         switch (customIdParts) {
@@ -128,7 +129,7 @@ async function handleSubmitModal(interaction, customId, values) {
                 break;
 
             case 'teamNumberModal':
-                excludeMembers(interaction, values);
+                excludeMembers(interaction);
                 break;
         };
     } catch (error) {
@@ -136,8 +137,6 @@ async function handleSubmitModal(interaction, customId, values) {
     };
 };
 
-const viewUserInfo = require('../events/multitools/userInfo/viewUserInfo');
-const deleteUserInfo = require('../events/multitools/userInfo/deleteUserInfo');
 
 async function handleStringSelectMenu(interaction) {
     try {
@@ -200,23 +199,18 @@ async function handleStringSelectMenu(interaction) {
                 if (values[0] === '0_') { // 몇 팀으로 나누나요?
                     showTeamNumberModal(interaction);
                 } else {
-                    excludeMembers(interaction, values); // 두 개의 팀, 세 개의 팀 으로 나눈다.
+                    excludeMembers(interaction); // 두 개의 팀, 세 개의 팀 으로 나눈다.
                 }
                 break;
 
             case 'excludeMembers': // 몇 팀인지 + 제외 인원 받고 최종적으로 처리하기
-                teamShufflerHandler(interaction, values);
-
+                teamShufflerHandler(interaction);
                 teamShufflerMap.set('teamShufflerData', values);
-
                 break;
 
             default:
-                console.log('isMessageComponent 에서 알 수 없는 customId : ' + customId);
+                console.log('isMessageComponent 에서 알 수 없는 customId : ', customId);
         };
-
-
-
 
     } catch (error) {
         console.error('interaction.js 의 handleStringSelectMenu 에러 : ', error);

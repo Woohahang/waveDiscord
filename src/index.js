@@ -18,7 +18,8 @@ const client = new Client({
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildVoiceStates,
         GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.GuildMessages,
+        // GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildEmojisAndStickers, // 이모지 삭제 감지
     ]
 });
 
@@ -63,6 +64,11 @@ client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
 client.on(Events.GuildMemberUpdate, async (oldMember, newMember) => {
     handleGuildMemberUpdate(oldMember, newMember);
 });
+
+// client.on(Events.GuildEmojiDelete, async (emoji) => {
+//     console.log('이모지 삭제 감지');
+//     console.log(emoji);
+// });
 
 
 

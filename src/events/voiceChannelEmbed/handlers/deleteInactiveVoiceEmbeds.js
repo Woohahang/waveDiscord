@@ -23,7 +23,7 @@ function filterMessagesToDelete(messages, channelMembers) {
     );
 };
 
-// 주 함수
+/* 채널에 없는 멤버 정보 삭제 (여러 이유로 삭제 되었어야할 누락 된 메세지를 삭제하는 용도) */
 module.exports = async (newState) => {
     try {
         // 입장한 채널 객체를 가지고 옵니다.
@@ -43,7 +43,7 @@ module.exports = async (newState) => {
         // 채널에 없는 멤버의 임베드만 가지고 옵니다.
         const messagesToDelete = filterMessagesToDelete(waveMessages, channelMembers);
 
-        // allMessagesToDelete의 모든 메세지 병렬 삭제
+        // 채널에 없는 멤버의 임베드 병렬 삭제
         await Promise.all(messagesToDelete.map(message => message.delete()));
 
     } catch (error) {
@@ -51,14 +51,3 @@ module.exports = async (newState) => {
         console.error('deleteInactiveVoiceEmbeds.js 예외:', error);
     };
 };
-
-// 음성 채널 입장하면
-
-/* 음성 채널 입장
- 음성 채널에 없는 사람의 임베드 모두 삭제
- 본인 중복 메세지 모두 제거
-*/
-
-/* 음성 채널 퇴장
- 본인 메세지 제거
-*/

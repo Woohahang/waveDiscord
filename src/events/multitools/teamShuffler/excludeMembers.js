@@ -65,11 +65,13 @@ function excludeMembersMenu(users, values) {
 };
 
 // 잠수 유저를 선택해주세요 인원에서 제외할게요
-async function excludeMembers(interaction, values) {
+async function excludeMembers(interaction) {
     try {
         // 음성 채널 체크
         const voiceChannel = await checkVoiceChannel(interaction);
         if (!voiceChannel) return;
+
+        const values = interaction.values;
 
         // 만약 모달 제출이면 값을 values 에 저장
         if (interaction.isModalSubmit()) {

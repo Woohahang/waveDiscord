@@ -30,7 +30,6 @@ const scheduleEmojiCleanup = (guildId) => {
 };
 
 
-
 module.exports = async (newState, userData, guildData) => {
     try {
         const member = newState.member;
@@ -62,7 +61,7 @@ module.exports = async (newState, userData, guildData) => {
             .setAuthor({ name: displayName, iconURL: member.user.displayAvatarURL(), url: member.user.avatarURL() })
             .addFields(fields)
             .setTimestamp(new Date(userData.updatedAt))
-            .setFooter({ text: '―――――――― update', iconURL: 'https://drive.google.com/uc?export=view&id=19W-rsIvrkFJSJcZ7-PHXOfZcPRO1HYTi' });
+            .setFooter({ text: '―――――― update', iconURL: 'https://drive.google.com/uc?export=view&id=19W-rsIvrkFJSJcZ7-PHXOfZcPRO1HYTi' });
 
         return embed;
 

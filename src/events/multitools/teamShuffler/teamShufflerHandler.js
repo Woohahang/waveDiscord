@@ -6,10 +6,12 @@ const { checkVoiceChannel } = require('./module/checkVoiceChannel');
 const { enableButtonsLater } = require('./module/enableButtonsLater');
 
 // 팀 섞기 임베드 전송
-module.exports = async (interaction, values) => {
+module.exports = async (interaction) => {
     try {
         const voiceChannel = await checkVoiceChannel(interaction);
         if (!voiceChannel) return;
+
+        const values = interaction.values;
 
         const embed = await generateTeamEmbed(interaction, voiceChannel, values);
         if (!embed) return;

@@ -1,5 +1,3 @@
-// emojiLoad.js
-
 /**
  * 특정 길드의 'wave' 이모지를 로드하고 캐싱하는 함수
  * @param {Object} newState - 새로운 상태 객체
