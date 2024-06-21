@@ -15,15 +15,15 @@ module.exports = async (newState) => {
     try {
         // 유저 인스턴스 생성 -> 유저 데이터 불러오기
         const userStettings = new UserSettings(memberId);
-        const nickNames = await userStettings.load();
-        if (!nickNames) return;
+        const userData = await userStettings.load();
+        if (!userData) return;
 
         // 길드 인스턴스 생성 -> 길드 데이터 불러오기
         const guildSettings = new GuildSettings(guildId);
         const guildData = await guildSettings.loadOrCreate();
 
         // 임베드
-        const embed = await userStatusEmbed(newState, nickNames, guildData);
+        const embed = await userStatusEmbed(newState, userData, guildData);
         if (!embed) return;
 
         // 임베드 전송
