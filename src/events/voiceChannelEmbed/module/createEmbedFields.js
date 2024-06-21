@@ -48,7 +48,7 @@ function createEmbedFields(userData, guildData, waveEmojiArray) {
         }
     });
 
-    return fields;
+    return fields.length > 0 ? fields : null;
 };
 
 module.exports = createEmbedFields;

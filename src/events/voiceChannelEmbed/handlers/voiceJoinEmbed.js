@@ -40,6 +40,7 @@ module.exports = async (newState) => {
 
         // 임베드 필드 생성를 만듭니다.
         let fields = createEmbedFields(userData, guildData, emojiData);
+        if (!fields) return;
 
         // 이모지 누락을 확인합니다.
         const missingEmojis = checkMissingEmojis(guildData, emojiData);
