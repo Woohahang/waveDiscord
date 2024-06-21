@@ -26,19 +26,19 @@ module.exports = async (newState) => {
         const guild = newState.guild;
         const channel = newState.channel;
 
-        // 유저 인스턴스 생성 -> 유저 데이터 불러오기
+        // 유저 인스턴스 생성 및 유저 데이터 불러오기
         const userStettings = new UserSettings(member.id);
         const userData = await userStettings.load();
         if (!userData) return;
 
-        // 길드 인스턴스 생성 -> 길드 데이터 불러오기
+        // 길드 인스턴스 생성 및 길드 데이터 불러오기
         const guildSettings = new GuildSettings(guild.id);
         const guildData = await guildSettings.loadOrCreate();
 
+        // 이모지 인스턴스 생성 및 이모지 데이터 불러오기
         const emojiSettings = new EmojiSettings(guild.id);
         const emojiData = await emojiSettings.loadOrCreate(guild);
 
-        console.log(emojiData);
 
         const fields = createEmbedFields(userData, guildData, emojiData);
 
