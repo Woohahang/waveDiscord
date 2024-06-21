@@ -5,7 +5,6 @@ const UserSettings = require('../../../services/UserSettings');
 const EmojiSettings = require('../../../services/EmojiSettings');
 const { EmbedBuilder } = require('discord.js');
 const createEmbedFields = require('../moduleTest/createEmbedFields');
-const emojiLoad = require('../moduleTest/emojiLoad');
 
 function createEmbed(member, fields, { updatedAt }) {
     const displayName = member.nickname ? member.nickname : member.user.globalName;
@@ -39,9 +38,10 @@ module.exports = async (newState) => {
         const emojiSettings = new EmojiSettings(guild.id);
         const emojiData = await emojiSettings.loadOrCreate(guild);
 
-
+        // 임베드 필드 생성
         const fields = createEmbedFields(userData, guildData, emojiData);
 
+        // 임베드 생성
         const embed = createEmbed(member, fields, userData);
 
         // 임베드 전송
