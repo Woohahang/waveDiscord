@@ -1,8 +1,7 @@
 const platformNames = require('../../../constants/platformNames');
 const platforms = require('../../../constants/platforms');
 const filterOptions = require('../../../module/data/filterOptions');
-const getGamesLink = require('../../voiceChannelEmbed/modules/embedModules/getGamesLink');
-
+const getGamesLink = require('../../voiceChannelEmbed/module/getGamesLink');
 
 
 // 유저 데이터와 길드 데이터를 바탕으로 임베드 필드를 생성합니다.

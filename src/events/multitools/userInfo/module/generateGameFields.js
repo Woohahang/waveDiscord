@@ -1,6 +1,6 @@
 const platformNames = require('../../../../constants/platformNames');
 const platforms = require('../../../../constants/platforms');
-const getGamesLink = require('../../../voiceChannelEmbed/modules/embedModules/getGamesLink');
+const getGamesLink = require('../../../voiceChannelEmbed/module/getGamesLink');
 
 
 function generateGameFields(userData) {
