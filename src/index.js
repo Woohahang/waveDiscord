@@ -1,5 +1,3 @@
-// index.js
-
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
@@ -10,7 +8,7 @@ const { handleGuildCreate } = require('./handlers/guildCreate');
 const { handleinteraction } = require('./handlers/interaction');
 const handleVoiceStateUpdate = require('./handlers/voiceStateUpdate');
 const handleGuildMemberUpdate = require('./handlers/guildMemberUpdate');
-
+const handleGuildEmojiDelete = require('./handlers/guildEmojiDelete');
 
 const client = new Client({
     intents: [
@@ -18,8 +16,7 @@ const client = new Client({
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildVoiceStates,
         GatewayIntentBits.GuildMembers,
-        // GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.GuildEmojisAndStickers, // 이모지 삭제 감지
+        GatewayIntentBits.GuildEmojisAndStickers, // 이모지 스티커와 관련 인텐트입니다.
     ]
 });
 
@@ -65,11 +62,14 @@ client.on(Events.GuildMemberUpdate, async (oldMember, newMember) => {
     handleGuildMemberUpdate(oldMember, newMember);
 });
 
-// client.on(Events.GuildEmojiDelete, async (emoji) => {
-//     console.log('이모지 삭제 감지');
-//     console.log(emoji);
-// });
 
+// 이모지 삭제와 추가에 대한 함수 이름 재정의 필요
+client.on(Events.GuildEmojiDelete, async (emoji) => {
+    handleGuildEmojiDelete(emoji);
+});
+client.on(Events.GuildEmojiCreate, async (emoji) => {
+    handleGuildEmojiDelete(emoji);
+});
 
 
 client.login(testtoken);

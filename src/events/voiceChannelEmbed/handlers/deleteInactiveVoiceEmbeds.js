@@ -47,7 +47,7 @@ module.exports = async (newState) => {
         await Promise.all(messagesToDelete.map(message => message.delete()));
 
     } catch (error) {
-        if (error.code === 10008) return; // Unknown Message
+        if (error.code === 10008 || error.code === 10003) return; //10008 === Unknown Message, 10003 === Unknown Channel
         console.error('deleteInactiveVoiceEmbeds.js 예외:', error);
     };
 };
