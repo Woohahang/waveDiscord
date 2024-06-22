@@ -1,5 +1,5 @@
 const GuildSettings = require('../../../services/GuildSettings');
-const UserSettings = require('../../../services/UserSettings');
+const UserSettings = require('../../../services/UserSettingsTest');
 const EmojiSettings = require('../../../services/EmojiSettings');
 const { EmbedBuilder } = require('discord.js');
 const createEmbedFields = require('../module/createEmbedFields');
@@ -27,7 +27,7 @@ module.exports = async (newState) => {
 
         // 유저 인스턴스 생성 및 유저 데이터를 불러옵니다.
         const userStettings = new UserSettings(member.id);
-        const userData = await userStettings.load();
+        const userData = await userStettings.loadUserData();
         if (!userData) return;
 
         // 길드 인스턴스 생성 및 길드 데이터를 불러옵니다.
