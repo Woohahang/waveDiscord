@@ -32,23 +32,23 @@ function createEmbedFields(userData, guildData, waveEmojiArray) {
                 const nicknames = userData[game];
 
                 nicknames.forEach(nickname => {
-                    const emojiId = waveEmoji[`wave_${game}`];
+                    const emojiCreate = `:wave_${game}:` + waveEmoji[`wave_${game}`];
 
                     if (game === 'steam')
-                        value += `<:wave_${game}:${emojiId}> [${nickname.playerName}](${nickname.profileLink})\n`;
+                        value += `<${emojiCreate}> [${nickname.playerName}](${nickname.profileLink})\n`;
 
                     else if (game === 'overWatchTwo' || game === 'blizzard')
-                        value += `<:wave_${game}:${emojiId}> ${nickname}\n`;
+                        value += `<${emojiCreate}> ${nickname}\n`;
 
                     else
-                        value += `<:wave_${game}:${emojiId}> [${nickname}](${getGamesLink(game, nickname)})\n`;
+                        value += `<${emojiCreate}> [${nickname}](${getGamesLink(game, nickname)})\n`;
 
                 });
             });
 
         // value가 비어있지 않으면 fields 배열에 추가합니다.
         if (value) {
-            fields.push({ name: `** ${platformNames[platform]} ** `, value: value.trim() });
+            fields.push({ name: `** ${platformNames[platform]} ** `, value });
         }
     });
 
