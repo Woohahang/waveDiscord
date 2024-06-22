@@ -1,141 +1,131 @@
-// GuildSettings.js
-
-const guildSettingsSchema = require('../mongoDB/guildSettingsSchema');
-
-const ONE_HOUR = 3_600_000; // 1시간을 밀리세컨드로
-const THREE_HOURS = 3 * ONE_HOUR; // 3시간
+const guildSchema = require('../mongoDB/guildSettingsSchema');
 
 class GuildSettings {
+    // 모든 길드 데이터를 저장하는 정적 객체입니다.
+    static GUILD_MAPS = {};
+    static MAX_CACHE_SIZE = 100; // 캐시 최대입니다.
+
     constructor(guildId) {
-        if (typeof guildId !== 'string' || guildId.trim() === '') {
-            throw new Error('유효하지 않은 guildId입니다.');
-        };
-
-        // 싱글톤 패턴
-        if (!GuildSettings.instances[guildId]) {
-            this.guildId = guildId;
-            this.guildData = null;
-            GuildSettings.instances[guildId] = this;
-            // 타이머 설정
-            this.#resetTimer(guildId);
-        } else {
-            // 이미 인스턴스가 존재한다면 타이머만 리셋
-            GuildSettings.instances[guildId].#resetTimer(guildId);
-        };
-        return GuildSettings.instances[guildId];
+        this.guildId = guildId;
     };
 
-    #resetTimer(guildId) {
-        // 기존 타이머가 있다면 취소
-        if (this.timeout) {
-            clearTimeout(this.timeout);
+    // 캐시된 길드 데이터를 가져오는 비공개 메서드입니다.
+    #getCachedGuildData() {
+        const cachedData = GuildSettings.GUILD_MAPS[this.guildId];
+        if (cachedData) {
+            cachedData.timestamp = Date.now(); // 접근 시 타임스탬프를 갱신합니다.
+            return cachedData.data;
         };
-
-        // 새 타이머 설정
-        this.timeout = setTimeout(() => {
-            // 타이머가 완료되면 인스턴스 삭제
-            if (GuildSettings.instances[guildId]) {
-                delete GuildSettings.instances[guildId];
-            } else {
-                console.error('인스턴스 삭제 실패: 인스턴스가 이미 존재하지 않습니다.');
-            }
-        }, THREE_HOURS);
+        return null;
     };
 
+    // 길드 데이터를 캐시에 저장하는 비공개 메서드입니다.
+    #cacheGuildData(guildData) {
+        GuildSettings.GUILD_MAPS[this.guildId] = {
+            data: guildData,
+            timestamp: Date.now()
+        };
+
+        this.#checkCacheSize();
+    };
+
+    // 캐시의 크기를 확인하고, 초과 시 오래된 항목을 제거합니다.
+    #checkCacheSize() {
+        const keys = Object.keys(GuildSettings.GUILD_MAPS);
+        if (keys.length > GuildSettings.MAX_CACHE_SIZE) {
+            // 타임스탬프를 기준으로 정렬하여 오래된 항목을 찾습니다.
+            keys.sort((a, b) => GuildSettings.GUILD_MAPS[a].timestamp - GuildSettings.GUILD_MAPS[b].timestamp);
+            const oldestKey = keys[0];
+            delete GuildSettings.GUILD_MAPS[oldestKey];
+        };
+    };
+
+
+    // 길드에 초대 되면 길드 데이터를 생성합니다.
     async loadOrCreate() {
         try {
-            // 메모리에 길드 데이터가 있다면 반환
-            if (this.guildData) {
-                return this.guildData;
+            // 캐시에서 길드 데이터를 가져옵니다.
+            let guildData = this.#getCachedGuildData();
+
+            if (!guildData) {
+                // 데이터베이스에서 길드 데이터를 확인합니다.
+                guildData = await guildSchema.findOne({ guildId: this.guildId });
+
+                if (!guildData) {
+                    // 길드 데이터가 존재하지 않으면 새로 생성합니다.
+                    const newGuild = new guildSchema({ guildId: this.guildId });
+                    await newGuild.save();
+                    guildData = newGuild;
+                };
+
+                // 길드 데이터를 캐시에 저장합니다.
+                this.#cacheGuildData(guildData);
             };
 
-            // DB 에서 길드 데이터 조회
-            const guildData = await guildSettingsSchema.findOne({ guildId: this.guildId });
-
-            // 길드 데이터가 있다면 메모리 저장 후 반환
-            if (guildData) {
-                this.guildData = guildData;
-                return this.guildData;
-            };
-
-            // 길드 데이터가 없다면 생성 이후 반환
-            console.log('새로운 서버에 추가 되었습니다.');
-            this.guildData = new guildSettingsSchema({ guildId: this.guildId });
-            await this.guildData.save();
-            return this.guildData;
+            // 길드 데이터를 반환합니다.
+            return guildData;
 
         } catch (error) {
-            console.error('GuildSettings.js 의 loadOrCreate 에러 : ', error);
+            console.error('GuildSettings.#loadOrCreate() 예외 : ', error);
+            return null;
         };
     };
 
-    // 유효성 검사 함수
-    async validateGuildData() {
-        if (this.guildData) return;
-        await this.loadOrCreate();
-    };
 
     async saveChannelId(channelType, channelId) {
         try {
-            // 유효성 검사
-            await this.validateGuildData();
+            // 캐시에서 길드 데이터를 로드 하거나 데이터 베이스에서 로드합니다.
+            let guildData = await this.loadOrCreate();
 
-            // 채널 타입에 따른 필드 지정
+            // 채널 타입에 따라 채널 id를 저장합니다.
             switch (channelType) {
                 case 'adminChannel':
-                    this.guildData.adminChannelId = channelId;
+                    guildData.adminChannelId = channelId;
                     break;
                 case 'mainChannel':
-                    this.guildData.mainChannelId = channelId;
+                    guildData.mainChannelId = channelId;
                     break;
                 default:
                     throw new Error('유효하지 않은 채널 타입입니다.');
-            }
+            };
 
-            // 변경 사항 저장
-            await this.guildData.save();
+            await guildData.save();
+            // 길드 데이터를 캐시에 저장합니다.
+            this.#cacheGuildData(guildData);
+
         } catch (error) {
-            console.error(`saveChannelId 에러: `, error);
+            console.error('GuildSettings.saveChannelId() 예외 : ', error);
         };
     };
 
+
     async saveAliasPatterns(getState) {
         try {
-            // 유효성 검사
-            await this.validateGuildData();
+            // 캐시에서 길드 데이터를 로드 하거나 데이터 베이스에서 로드합니다.
+            let guildData = await this.loadOrCreate();
 
-            const { aliasPatterns, aliasSeparator, aliasRoleId } = getState();
+            const { aliasPatterns, aliasSeparator, aliasRoleId } = getState;
 
-            // 비어있는 값이 있는지 확인
+            // 값이 비어 있다면 에러를 반환합니다.
             if (!aliasPatterns || !aliasSeparator || !aliasRoleId) {
                 throw new Error('별칭 패턴, 구분 기호, 역할 ID는 비워둘 수 없습니다.');
             };
 
-            // aliasPatterns와 aliasSeparator를 길드 데이터에 저장
-            this.guildData.aliasPatterns = aliasPatterns;
-            this.guildData.aliasSeparator = aliasSeparator;
-            this.guildData.aliasRoleId = aliasRoleId;
+            // 길드 별명 패턴과 부여 받을 역할 id를 길드 데이터에 저장합니다.
+            guildData.aliasPatterns = aliasPatterns;
+            guildData.aliasSeparator = aliasSeparator;
+            guildData.aliasRoleId = aliasRoleId;
 
-            // 변경 사항 저장
+            // 변경된 길드 데이터를 데이터베이스 및 캐시에 저장합니다.
             await this.guildData.save();
-        } catch (error) {
-            throw error;
-        };
-    };
+            this.#cacheGuildData(guildData);
 
-    async getGuildData() {
-        try {
-            // 유효성 검사
-            await this.validateGuildData();
-
-            return this.guildData;
         } catch (error) {
+            console.error('GuildSettings.saveAliasPatterns() 예외 : ', error);
             throw error;
         };
     };
 
 };
-
-GuildSettings.instances = {};
 
 module.exports = GuildSettings;

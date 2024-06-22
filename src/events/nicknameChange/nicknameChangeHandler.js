@@ -10,7 +10,7 @@ module.exports = async (oldMember, newMember) => {
 
         const guildId = newMember.guild.id;
         const guildData = new guildSettings(guildId);
-        let { aliasPatterns, aliasSeparator, aliasRoleId } = await guildData.getGuildData();
+        let { aliasPatterns, aliasSeparator, aliasRoleId } = await guildData.loadOrCreate();
 
 
         if (aliasSeparator === 'space') {

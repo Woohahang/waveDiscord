@@ -3,7 +3,7 @@ const userSchema = require('../mongoDB/userSchema');
 class UserSettings {
     // 모든 유저 데이터를 저장하는 정적 객체입니다.
     static userMaps = {};
-    static MAX_CACHE_SIZE = 1000; // 캐시의 최대 크기
+    static MAX_CACHE_SIZE = 1000; // 캐시 최대 크기입니다.
 
     constructor(userId) {
         this.userId = userId; // 인스턴스의 유저 ID
@@ -75,6 +75,7 @@ class UserSettings {
             };
 
             return userData;
+
         } catch (error) {
             console.error('UserSettings.createUserData() 예외 : ', error);
         };

@@ -1,7 +1,7 @@
+const { EmbedBuilder } = require('discord.js');
 const GuildSettings = require('../../../services/GuildSettings');
 const UserSettings = require('../../../services/UserSettings');
 const EmojiSettings = require('../../../services/EmojiSettings');
-const { EmbedBuilder } = require('discord.js');
 const createEmbedFields = require('../module/createEmbedFields');
 const checkMissingEmojis = require('../module/checkMissingEmojis');
 const requiresUpdateField = require('../module/requiresUpdateField');

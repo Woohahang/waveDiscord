@@ -1,0 +1,141 @@
+// GuildSettings.js
+
+const guildSettingsSchema = require('../mongoDB/guildSettingsSchema');
+
+const ONE_HOUR = 3_600_000; // 1시간을 밀리세컨드로
+const THREE_HOURS = 3 * ONE_HOUR; // 3시간
+
+class GuildSettings {
+    constructor(guildId) {
+        if (typeof guildId !== 'string' || guildId.trim() === '') {
+            throw new Error('유효하지 않은 guildId입니다.');
+        };
+
+        // 싱글톤 패턴
+        if (!GuildSettings.instances[guildId]) {
+            this.guildId = guildId;
+            this.guildData = null;
+            GuildSettings.instances[guildId] = this;
+            // 타이머 설정
+            this.#resetTimer(guildId);
+        } else {
+            // 이미 인스턴스가 존재한다면 타이머만 리셋
+            GuildSettings.instances[guildId].#resetTimer(guildId);
+        };
+        return GuildSettings.instances[guildId];
+    };
+
+    #resetTimer(guildId) {
+        // 기존 타이머가 있다면 취소
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+        };
+
+        // 새 타이머 설정
+        this.timeout = setTimeout(() => {
+            // 타이머가 완료되면 인스턴스 삭제
+            if (GuildSettings.instances[guildId]) {
+                delete GuildSettings.instances[guildId];
+            } else {
+                console.error('인스턴스 삭제 실패: 인스턴스가 이미 존재하지 않습니다.');
+            }
+        }, THREE_HOURS);
+    };
+
+    async loadOrCreate() {
+        try {
+            // 메모리에 길드 데이터가 있다면 반환
+            if (this.guildData) {
+                return this.guildData;
+            };
+
+            // DB 에서 길드 데이터 조회
+            const guildData = await guildSettingsSchema.findOne({ guildId: this.guildId });
+
+            // 길드 데이터가 있다면 메모리 저장 후 반환
+            if (guildData) {
+                this.guildData = guildData;
+                return this.guildData;
+            };
+
+            // 길드 데이터가 없다면 생성 이후 반환
+            console.log('새로운 서버에 추가 되었습니다.');
+            this.guildData = new guildSettingsSchema({ guildId: this.guildId });
+            await this.guildData.save();
+            return this.guildData;
+
+        } catch (error) {
+            console.error('GuildSettings.js 의 loadOrCreate 에러 : ', error);
+        };
+    };
+
+    // 유효성 검사 함수
+    async validateGuildData() {
+        if (this.guildData) return;
+        await this.loadOrCreate();
+    };
+
+    async saveChannelId(channelType, channelId) {
+        try {
+            // 유효성 검사
+            await this.validateGuildData();
+
+            // 채널 타입에 따른 필드 지정
+            switch (channelType) {
+                case 'adminChannel':
+                    this.guildData.adminChannelId = channelId;
+                    break;
+                case 'mainChannel':
+                    this.guildData.mainChannelId = channelId;
+                    break;
+                default:
+                    throw new Error('유효하지 않은 채널 타입입니다.');
+            }
+
+            // 변경 사항 저장
+            await this.guildData.save();
+        } catch (error) {
+            console.error(`saveChannelId 에러: `, error);
+        };
+    };
+
+    async saveAliasPatterns(getState) {
+        try {
+            // 유효성 검사
+            await this.validateGuildData();
+
+            const { aliasPatterns, aliasSeparator, aliasRoleId } = getState();
+
+            // 비어있는 값이 있는지 확인
+            if (!aliasPatterns || !aliasSeparator || !aliasRoleId) {
+                throw new Error('별칭 패턴, 구분 기호, 역할 ID는 비워둘 수 없습니다.');
+            };
+
+            // aliasPatterns와 aliasSeparator를 길드 데이터에 저장
+            this.guildData.aliasPatterns = aliasPatterns;
+            this.guildData.aliasSeparator = aliasSeparator;
+            this.guildData.aliasRoleId = aliasRoleId;
+
+            // 변경 사항 저장
+            await this.guildData.save();
+        } catch (error) {
+            throw error;
+        };
+    };
+
+    async getGuildData() {
+        try {
+            // 유효성 검사
+            await this.validateGuildData();
+
+            return this.guildData;
+        } catch (error) {
+            throw error;
+        };
+    };
+
+};
+
+GuildSettings.instances = {};
+
+module.exports = GuildSettings;
