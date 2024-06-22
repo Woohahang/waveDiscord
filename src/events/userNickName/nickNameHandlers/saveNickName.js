@@ -19,22 +19,22 @@ module.exports = async (interaction) => {
         const customId = interaction.customId;
 
         // steam, leagueOfLegends 등등 ..
-        const gameType = customId.split('_')[1];
+        const game = customId.split('_')[1];
 
         // 닉네임 가지고 오기
-        let nickName = interaction.fields.getTextInputValue(customId);
+        let nickname = interaction.fields.getTextInputValue(customId);
 
-        switch (gameType) {
+        switch (game) {
             // 스팀
             case 'steam':
-                nickName = await fetchSteamProfile(nickName);
+                nickname = await fetchSteamProfile(nickname);
                 break;
 
             // 라이엇 게임즈
             case 'leagueOfLegends':
             case 'teamfightTactics':
             case 'valorant':
-                nickName = formatRiotTag(nickName);
+                nickname = formatRiotTag(nickname);
                 break;
 
             // 각 게임마다 API 상호작용 추가할 예정.
@@ -45,12 +45,12 @@ module.exports = async (interaction) => {
                 break;
 
             default:
-                throw new Error('알 수 없는 게임 종류 gameType : ', gameType);
+                throw new Error('알 수 없는 게임 종류 game : ', game);
         };
 
         // 인스턴스 생성 및 닉네임 저장
         const userSettings = new UserSettings(userId);
-        const status = await userSettings.saveNickName(gameType, nickName);
+        const status = await userSettings.saveNickname(game, nickname);
 
         // 메세지 전송
         await interaction.editReply({ content: statusMessage(status), ephemeral: true });
@@ -66,7 +66,7 @@ module.exports = async (interaction) => {
 
             default:
                 logUserInfo(interaction);
-                console.error('saveNickName.js 에러 : ', error);
+                console.error('saveNickname.js 에러 : ', error);
                 await interaction.editReply({ content: '알 수 없는 이유로 에러가 발생했습니다. 문제가 지속되면 Wave 디스코드 채널로 문의해 주세요.', ephemeral: true });
         };
 

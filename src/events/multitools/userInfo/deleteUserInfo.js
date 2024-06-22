@@ -27,7 +27,7 @@ module.exports = async (interaction) => {
 
         // 유저 인스턴스 생성 이후 유저 정보 삭제
         const userSettings = new UserSettings(userId);
-        const deleteResult = await userSettings.deleteUserInfo();
+        const deleteResult = await userSettings.deleteUserData();
 
         // 결과에 맞는 메세지 전송
         await interaction.update({ content: resultMessage(deleteResult), components: [], ephemeral: true });

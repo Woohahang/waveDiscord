@@ -1,245 +1,205 @@
-// UserStettings.js
-
 const userSchema = require('../mongoDB/userSchema');
 
-const ONE_HOUR = 3_600_000; // 1시간을 밀리세컨드로
-const THREE_HOURS = 3 * ONE_HOUR; // 3시간
-
 class UserSettings {
+    // 모든 유저 데이터를 저장하는 정적 객체입니다.
+    static userMaps = {};
+    static MAX_CACHE_SIZE = 1000; // 캐시의 최대 크기
+
     constructor(userId) {
-
-        if (typeof userId !== 'string' || userId.trim() === '') {
-            throw new Error('유효하지 않은 userId입니다.');
-        };
-
-        // 싱글톤 패턴
-        if (!UserSettings.instances[userId]) {
-            this.userId = userId;
-            this.userData = null;
-            UserSettings.instances[userId] = this;
-            // 타이머 설정
-            this.#resetTimer(userId);
-        } else {
-            // 이미 인스턴스가 존재한다면 타이머만 리셋
-            UserSettings.instances[userId].#resetTimer(userId);
-        };
-        return UserSettings.instances[userId];
+        this.userId = userId; // 인스턴스의 유저 ID
     };
 
-    #resetTimer(userId) {
-        // 기존 타이머가 있다면 취소
-        if (this.timeout) {
-            clearTimeout(this.timeout);
-        }
-
-        // 새 타이머 설정
-        this.timeout = setTimeout(() => {
-            // 타이머가 완료되면 인스턴스 삭제
-            if (UserSettings.instances[userId]) {
-                delete UserSettings.instances[userId];
-            } else {
-                console.error('인스턴스 삭제 실패: 인스턴스가 이미 존재하지 않습니다.');
-            }
-        }, THREE_HOURS);
+    // 캐시된 유저 데이터를 가져오는 비공개 메서드입니다.
+    #getCachedUserData() {
+        const cachedData = UserSettings.userMaps[this.userId];
+        if (cachedData) {
+            cachedData.timestamp = Date.now(); // 접근 시 타임스탬프를 갱신합니다.
+            return cachedData.data;
+        };
+        return null;
     };
 
-    // 유저 데이터 불러오기
-    async load() {
+    // 유저 데이터를 캐시에 저장하는 비공개 메서드입니다.
+    #cacheUserData(userData) {
+        UserSettings.userMaps[this.userId] = {
+            data: userData,
+            timestamp: Date.now()
+        };
+
+        this.#checkCacheSize();
+    };
+
+    // 캐시의 크기를 확인하고, 초과 시 오래된 항목을 제거합니다.
+    #checkCacheSize() {
+        const keys = Object.keys(UserSettings.userMaps);
+        if (keys.length > UserSettings.MAX_CACHE_SIZE) {
+            // 타임스탬프를 기준으로 정렬하여 오래된 항목을 찾습니다.
+            keys.sort((a, b) => UserSettings.userMaps[a].timestamp - UserSettings.userMaps[b].timestamp);
+            const oldestKey = keys[0];
+            delete UserSettings.userMaps[oldestKey];
+        };
+    };
+
+    // 데이터베이스에서 유저 데이터를 로드하는 비동기 메서드입니다.
+    async #loadUserDataFromDB() {
         try {
-            if (!this.userData) {
-                this.userData = await userSchema.findOne({ userId: this.userId });
+            const userData = await userSchema.findOne({ userId: this.userId });
+            if (userData) {
+                this.#cacheUserData(userData);
+            };
+            return userData;
+        } catch (error) {
+            console.error('UserSettings.loadUserData 예외 ', error);
+        };
+    };
+
+    // 유저 데이터가 없는지 확인하고 유저 데이터를 만듭니다.
+    async #loadOrCreateUserData() {
+        try {
+            // 캐시에서 유저 데이터를 가져옵니다.
+            let userData = this.#getCachedUserData();
+
+            if (!userData) {
+                // 데이터베이스에서 유저 데이터를 확인합니다.
+                userData = await userSchema.findOne({ userId: this.userId });
+
+                if (!userData) {
+                    // 유저 데이터가 존재하지 않으면 새로 생성합니다.
+                    const newUser = new userSchema({ userId: this.userId });
+                    await newUser.save();
+                    userData = newUser;
+                };
+
+                // 유저 데이터를 캐시에 저장합니다.
+                this.#cacheUserData(userData);
             };
 
-            return this.userData;
+            return userData;
         } catch (error) {
-            console.log(this.userData);
-            console.error('UserStettings.js 의 load 에러 : ', error);
+            console.error('UserSettings.createUserData() 예외 : ', error);
         };
     };
 
-    // 유효성 검사 함수
-    async validateUserData() {
-        if (this.userData) return;
-        await this.getUserData();
-    };
 
-    // 사용자의 데이터를 가지고 오는 함수
-    async getUserData() {
+    // 캐시에서 유저 데이터를 로드하거나, 데이터베이스에서 로드하는 비동기 메서드입니다.
+    async loadUserData() {
         try {
-            // 이미 userData가 존재하면, 해당 데이터를 반환
-            if (this.userData) return this.userData;
+            // 캐시에서 유저 데이터를 가져옵니다.
+            let userData = this.#getCachedUserData();
 
-            // userId를 이용하여 데이터베이스에서 사용자 데이터를 조회
-            this.userData = await userSchema.findOne({ userId: this.userId });
-
-            // 조회된 데이터를 반환
-            return this.userData;
-        } catch (error) {
-            console.error('getUserData 에러:', error);
-            throw error;
-        };
-    };
-
-    // 유저 데이터 불러오기 또는 생성
-    async loadOrCreateById() {
-        try {
-            // 유저 데이터가 메모리에 없다면 데이터베이스에서 불러오기
-            if (!this.userData) {
-                this.userData = await userSchema.findOne({ userId: this.userId });
-            }
-
-            // 데이터가 데이터베이스에도 없다면 새로 생성
-            if (!this.userData) {
-                // 새로운 유저 데이터 객체 생성
-                const newUser = new userSchema({
-                    userId: this.userId,
-                    // 추가적인 필드 초기화
-                });
-
-                // 데이터베이스에 저장
-                await newUser.save();
-
-                // 메모리에 캐시
-                this.userData = newUser;
+            if (!userData) {
+                // 캐시에 없으면 데이터베이스에서 가지고 옵니다.
+                userData = await this.#loadUserDataFromDB();
             };
 
-            return this.userData;
+            return userData;
         } catch (error) {
-            console.error('UserStettings.js 의 loadOrCreateById 에러 : ', error);
-        }
+            console.error('UserSettings.loadUserData 예외 : ', error);
+            return null;
+        };
     };
 
-    // 닉네임 저장 메서드
-    async saveNickName(customId, content) {
 
-        // 없다면 불러오기 또는 생성
-        if (!this.userData) {
-            this.userData = await this.loadOrCreateById();
-        };
-
-        let userData = this.userData;
-
+    async saveNickname(game, nickname) {
         try {
-            // 중복 닉네임 체크
-            if (userData[customId].includes(content)) {
+            // 캐시에서 유저 데이터를 가져옵니다.
+            let userData = this.#getCachedUserData();
+
+            // 캐시에 데이터가 없으면 데이터베이스에서 로드하거나 생성합니다.
+            if (!userData) {
+                userData = await this.#loadOrCreateUserData();
+            };
+
+            // 닉네임이 중복될 경우 'nicknameDuplicate' 반환합니다.
+            if (userData[game].includes(nickname)) {
                 return 'nicknameDuplicate';
             };
 
-            // 등록 된 닉네임 개수 체크 : 최대 5개
-            if (userData[customId].length > 4) {
+            // 닉네임 개수가 초과되면 'nicknameLimitExceeded' 반환합니다. : 최대 5개
+            if (userData[game].length >= 5) {
                 return 'nicknameLimitExceeded';
             };
 
-            switch (customId) {
+            // game 에 따라 닉네임 저장 방식 결정
+            switch (game) {
                 case 'steam':
-                    // 스팀이면 덮어쓰기
-                    userData.steam = content;
+                    // 스팀이면 덮어씁니다.
+                    userData.steam = nickname;
                     break;
 
                 default:
-                    // 배열에 저장
-                    userData[customId].push(content);
+                    // 그 외는 배열에 저장합니다.
+                    userData[game].push(nickname);
                     break;
             };
 
+            // 변경된 유저 데이터를 데이터베이스에 저장합니다.
             await userData.save();
-            this.userData = userData; // 캐시 갱신
+            this.#cacheUserData(userData); // 캐시에 저장
+
             return 'saveSuccess';
 
         } catch (error) {
-            console.error('saveNickName 에러 : ', error);
-            return 'saveError';
+            console.error('UserSettings.saveNickname 예외 : ', error);
         };
     };
 
 
-    async removeNickName(values) {
+    async removeNickname(gameAndNicknames) {
         try {
-            if (!this.userData) {
-                this.userData = await userSchema.findOne({ userId: this.userId });
-            };
+            // 유저 데이터를 캐시 또는 데이터베이스에서 로드합니다.
+            let userData = await this.loadUserData();
 
-            let userData = this.userData;
+            // gameAndNicknames 배열의 각 항목에 대해 처리합니다.
+            gameAndNicknames.forEach(gameAndNickname => {
+                const [game, nickname] = gameAndNickname.split(':');
 
-            // values 의 예시 { loL_끼매누, kakaoBG_카카오닉네임 }
-            values.forEach(value => {
-                // _ 를 기준으로 선언
-                const [gameType, nickName] = value.split(':');
+                switch (game) {
+                    // 스팀의 경우 모든 닉네임을 빈 배열로 설정합니다.
+                    case 'steam':
+                        userData[game] = [];
+                        break
 
-                if (gameType === 'steam') {
-                    userData[gameType] = [];
-                }
-
-                else if (userData[gameType]) {
-                    // 게임 종류에서 닉네임이 몇 번째 위치에 있는지 파악
-                    const index = userData[gameType].indexOf(nickName);
-                    if (index > -1) {
-                        // 그 위치 삭제
-                        userData[gameType].splice(index, 1);
-                    };
+                    default:
+                        // 기타 게임의 경우 해당 닉네임을 배열에서 제거합니다.
+                        const index = userData[game].indexOf(nickname);
+                        if (index > -1) {
+                            // 그 위치 삭제
+                            userData[game].splice(index, 1);
+                        };
                 };
-
             });
 
-            // userData 의 모든 배열 요소만 확인하고, 모든 배열 길이가 0이라면 true
-            const allNicknamesRemoved = !Object.keys(userData.toObject()).some(key =>
-                Array.isArray(userData[key]) && userData[key].length > 0
-            );
+            // 변경된 유저 데이터를 데이터베이스와 캐시에 저장합니다.
+            await userData.save();
+            this.#cacheUserData(userData);
 
-            if (allNicknamesRemoved) {
-                // 모든 닉네임이 삭제되었으면 유저 정보 삭제
-                await userSchema.deleteOne({ userId: this.userId });
-                // 메모리에서도 인스턴스 삭제
-                if (UserSettings.instances[this.userId]) {
-                    delete UserSettings.instances[this.userId];
-                };
-
-                return 'removeUserInfo';
-
-            } else {
-                // 아니라면 변경사항 저장
-                await userData.save();
-                // 캐시 갱신
-                this.userData = userData;
-
-                return 'removeNickName';
-            };
+            return 'removalSuccessful';
 
         } catch (error) {
-            console.error('removeNickName 에러 : ', error)
-        }
+            console.error('UserSettings.removeNickname() 예외 : ', error);
+        };
     };
 
-
-    /* 유저 정보 삭제 메서드 */
-    async deleteUserInfo() {
+    async deleteUserData() {
         try {
-            // 유효성 검사
-            await this.validateUserData();
+            // 유저 데이터를 캐시 또는 데이터베이스에서 로드합니다.
+            let userData = await this.loadUserData();
 
-            // 정보가 없다면 리턴
-            if (!this.userData) {
+            if (!userData) {
                 return 'alreadyDeleted';
             };
 
-            // 데이터베이스에서 유저 정보 삭제
+            // 데이터베이스와 캐시에서 유저 정보를 삭제합니다.
             await userSchema.deleteOne({ userId: this.userId });
-
-            // 메모리에서도 인스턴스 삭제
-            if (UserSettings.instances[this.userId]) {
-                delete UserSettings.instances[this.userId];
-            };
+            delete UserSettings.userMaps[this.userId];
 
             return 'deleteSuccess';
         } catch (error) {
-            console.error('deleteUserInfo 에러 : ', error);
+            console.error('UserSettings.deleteUserData() 예외 : ', error);
             return 'deleteError';
         };
     };
-
-
 };
-
-UserSettings.instances = {};
 
 module.exports = UserSettings;

@@ -72,7 +72,7 @@ module.exports = {
 
             // 유저 인스턴스 생성 및 유저 데이터를 불러옵니다.
             const userSettings = new UserSettings(userId);
-            const userData = await userSettings.load();
+            const userData = await userSettings.loadUserData();
 
             // 유저 데이터가 없으면 메시지를 보냅니다.
             if (!userData) {

@@ -16,7 +16,7 @@ module.exports = async (interaction) => {
         const userSettings = new UserSettings(userId);
 
         // 닉네임 삭제 및 상태 반환
-        const status = await userSettings.removeNickName(values);
+        const status = await userSettings.removeNickname(values);
 
         // 작업 완료 메세지 전송
         const message = await interaction.update({

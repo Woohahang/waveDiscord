@@ -15,7 +15,7 @@ const nicknameDuplicate =
     '\n' + '> * 중복 된 닉네임이 있습니다.' +
     '\n' + '> * 문제가 지속되면 **Wave** 디스코드 채널로 문의해 주세요.';
 
-const removeNickName =
+const removalSuccessful =
     '\n' + `## 닉네임 삭제 완료` +
     '\n' + '> * 닉네임이 성공적으로 삭제되었습니다.' +
     '\n' + '> * 문제가 발생하면 **Wave** 디스코드 채널로 문의해 주세요.';
@@ -41,8 +41,8 @@ function statusMessage(status) {
                 message = saveSuccess;
                 break;
 
-            case 'removeNickName':
-                message = removeNickName;
+            case 'removalSuccessful':
+                message = removalSuccessful;
                 break;
 
             case 'removeUserInfo':

@@ -29,7 +29,7 @@ module.exports = async (interaction) => {
 
         // 유저 인스턴스 생성 및 유저 데이터 불러오기
         const userSettings = new UserSettings(member.id);
-        const userData = await userSettings.getUserData();
+        const userData = await userSettings.loadUserData();
 
         // 유저 데이터가 없는 경우 처리
         if (!userData) {
