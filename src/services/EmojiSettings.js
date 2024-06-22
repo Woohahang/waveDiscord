@@ -41,6 +41,7 @@ class EmojiSettings {
 
     clearEmojiMap() {
         delete EmojiSettings.emojiMaps[this.guildId];
+        delete EmojiSettings.emojiTimers[this.guildId];
     };
 
     async loadEmojiMap(guild) {

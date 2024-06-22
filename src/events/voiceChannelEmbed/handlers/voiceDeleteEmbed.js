@@ -1,5 +1,3 @@
-// voiceDeleteEmbed.js
-
 const { clientId } = require('../../../../../config.json');
 
 /* 중복 된 유저 정보 메세지 삭제 */

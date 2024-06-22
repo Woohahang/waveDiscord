@@ -35,10 +35,14 @@ function createEmbedFields(userData, guildData, waveEmojiArray) {
                     const emojiId = waveEmoji[`wave_${game}`];
 
                     if (game === 'steam')
-                        value += `<:wave_${game}:${emojiId}> [${nickname.playerName}](${nickname.profileLink}) \n`;
+                        value += `<:wave_${game}:${emojiId}> [${nickname.playerName}](${nickname.profileLink})\n`;
 
-                    if (game !== 'steam')
-                        value += `<:wave_${game}:${emojiId}> [${nickname}](${getGamesLink(game, nickname)}) \n`;
+                    else if (game === 'overWatchTwo' || game === 'blizzard')
+                        value += `<:wave_${game}:${emojiId}> ${nickname}\n`;
+
+                    else
+                        value += `<:wave_${game}:${emojiId}> [${nickname}](${getGamesLink(game, nickname)})\n`;
+
                 });
             });
 
