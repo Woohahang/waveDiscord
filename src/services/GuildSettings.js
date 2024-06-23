@@ -117,7 +117,7 @@ class GuildSettings {
             guildData.aliasRoleId = aliasRoleId;
 
             // 변경된 길드 데이터를 데이터베이스 및 캐시에 저장합니다.
-            await this.guildData.save();
+            await guildData.save();
             this.#cacheGuildData(guildData);
 
         } catch (error) {
