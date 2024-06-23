@@ -1,5 +1,3 @@
-// saveNickName.js
-
 const UserSettings = require('../../../services/UserSettings');
 const formatRiotTag = require('../nickNameModules/formatRiotTag');
 const statusMessage = require('../nickNameModules/statusMessage');

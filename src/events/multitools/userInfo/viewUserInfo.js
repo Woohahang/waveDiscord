@@ -2,6 +2,7 @@ const UserSettings = require('../../../services/UserSettings');
 const { EmbedBuilder } = require('discord.js');
 const generateGameFields = require('./module/generateGameFields');
 const { alreadyDeleted } = require('./module/resultMessage');
+const test = require('./module/test');
 
 // 사용자 데이터를 바탕으로 Discord 임베드를 생성하는 함수
 function userInfoEmbed(userData, member) {
@@ -25,6 +26,9 @@ function userInfoEmbed(userData, member) {
 
 module.exports = async (interaction) => {
     try {
+
+        test(interaction);
+
         const member = interaction.member;
 
         // 유저 인스턴스 생성 및 유저 데이터 불러오기

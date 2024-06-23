@@ -11,7 +11,6 @@ module.exports = async (oldMember, newMember) => {
             nicknameChangeHandler(oldMember, newMember);
         };
 
-
     } catch (error) {
         console.error('guildMemberUpdate.js 예외 : ', error);
     };
