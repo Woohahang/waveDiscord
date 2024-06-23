@@ -1,5 +1,3 @@
-// guildCreate.js
-
 const { checkGuildAdmin } = require('../module/checkAdminPermissionOn');
 
 /* 메인 채널 메시지 */
@@ -14,31 +12,32 @@ const adminChannelMessage = require('../events/guildCreate/adminChannel/adminCha
 const guildInviteMessage = require('../events/guildCreate/userChannel/guildInviteMessage');
 
 /* 이모지 등록 */
-// const emojiRegistrar = require('../events/guildCreate/guildEmoji/emojiRegistrar');
 const emojiUpdate = require('../events/guildCreate/guildEmoji/emojiHandler/emojiUpdate');
 
-async function handleGuildCreate(guild) {
+
+module.exports = async (guild) => {
     try {
-        // Wave 가 관리자 권한 받았는지 체크
+        // Wave 가 관리자 권한을 받았는지 체크합니다.
         if (checkGuildAdmin(guild)) {
 
-            // Wave 이모지 서버에 등록
-            emojiUpdate(guild);
+            // 채널 생성 및 이모지를 등록합니다.
+            await Promise.all([
+                mainChannelCreate(guild),
+                adminChannelCreate(guild),
+                emojiUpdate(guild),
+            ]);
 
-            // 메인 채널 생성 and 메세지 전송
-            await mainChannelCreate(guild);
-            mainChannelMessage(guild);
-
-            // 관리자 채널 생성 and 메세지 전송
-            await adminChannelCreate(guild);
-            adminChannelMessage(guild);
+            // 생성 된 채널에 메세지를 전송합니다.
+            await Promise.all([
+                mainChannelMessage(guild),
+                adminChannelMessage(guild),
+            ]);
 
         } else {
-            guildInviteMessage(guild); // 관리자 권한을 못 받았다면 1:1 DM 전송
+            // 관리자 권한을 받지 못 했다면 1:1 알림 DM을 전송합니다.
+            await guildInviteMessage(guild);
         };
     } catch (error) {
-        console.error(error);
+        console.error('guildCreate.js 예외 : ', error);
     };
 };
-
-module.exports = { handleGuildCreate };

@@ -4,7 +4,7 @@ const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const { testtoken } = require('../../config.json');
 const connectToDatabase = require('./mongoDB/database.js');
 
-const { handleGuildCreate } = require('./handlers/guildCreate');
+const handleGuildCreate = require('./handlers/guildCreate');
 const { handleinteraction } = require('./handlers/interaction');
 const handleVoiceStateUpdate = require('./handlers/voiceStateUpdate');
 const handleGuildMemberUpdate = require('./handlers/guildMemberUpdate');
