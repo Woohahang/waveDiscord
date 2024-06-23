@@ -38,7 +38,7 @@ const deleteUserInfo = require('../events/multitools/userInfo/deleteUserInfo');
 const teamShufflerMap = new Map();
 
 
-async function handleinteraction(interaction) {
+module.exports = async (interaction) => {
     try {
         if (!checkInteractionAdmin(interaction)) return; // 봇이 관리자 권한을 받았는지 체크
 
@@ -216,7 +216,3 @@ async function handleStringSelectMenu(interaction) {
         console.error('interaction.js 의 handleStringSelectMenu 에러 : ', error);
     };
 };
-
-
-
-module.exports = { handleinteraction };

@@ -1,9 +1,7 @@
-// messageAutoDelete.js
-
-const TWENTY_SECONDS = 20_000; // 20초
-
-// 20초 뒤 메세지 삭제
+// 20초 뒤 메세지를 삭제하는 함수입니다.
 function messageAutoDelete(message) {
+    const TWENTY_SECONDS = 20_000; // 20초
+
     setTimeout(() => {
         message.delete()
             .catch(error => {
