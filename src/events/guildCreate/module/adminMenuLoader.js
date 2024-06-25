@@ -18,10 +18,10 @@ function adminMenuLoader() {
                 .setDescription('게임 메뉴 삭제하기')
                 .setValue('hideMenu'),
 
-            // new StringSelectMenuOptionBuilder()
-            //     .setLabel('AliasTemplates')
-            //     .setDescription('서버 별명 양식 설정하기')
-            //     .setValue('aliasTemplates'),
+            new StringSelectMenuOptionBuilder()
+                .setLabel('AliasTemplates')
+                .setDescription('서버 별명 양식 설정하기')
+                .setValue('aliasTemplates'),
 
         );
 

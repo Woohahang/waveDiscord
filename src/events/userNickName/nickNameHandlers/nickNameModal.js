@@ -1,6 +1,6 @@
 // nickNameModal.js
 
-const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle } = require('discord.js');
+const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, InteractionType } = require('discord.js');
 const resetMenuSelection = require('../../../module/common/resetMenuSelection');
 const { description } = require('../../../module/games/gameData');
 const logUserInfo = require('../../../utils/log/logUserInfo');
@@ -36,8 +36,10 @@ function UpdateRequired(gameTitle) {
 /* 모달 함수 */
 module.exports = async (interaction) => {
     try {
-        // 메뉴 리셋
-        await resetMenuSelection(interaction);
+        // 슬래시 커맨드로 실행된 경우 메뉴 리셋을 건너뜁니다.
+        if (!InteractionType.ApplicationCommand) {
+            await resetMenuSelection(interaction);
+        };
 
         // 사용자의 상호작용에서 게임 제목을 추출합니다.
         const gameTitle = interaction.values[0];

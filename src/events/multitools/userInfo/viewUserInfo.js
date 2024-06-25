@@ -27,7 +27,7 @@ function userInfoEmbed(userData, member) {
 module.exports = async (interaction) => {
     try {
 
-        test(interaction);
+        // test(interaction);
 
         const member = interaction.member;
 
