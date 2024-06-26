@@ -1,10 +1,9 @@
 const UserSettings = require('../../../../services/UserSettings');
 const createMenu = require('../modules/createMenu');
 const createMenuOptions = require('../modules/createMenuOptions');
-
+const stateMessage = require('../modules/stateMessage');
 
 module.exports = async (interaction) => {
-
     try {
         const userId = interaction.member.id;
 
@@ -15,10 +14,9 @@ module.exports = async (interaction) => {
         // 유저 데이터가 없으면 메시지를 보냅니다.
         if (!userData) {
             await interaction.reply({
-                content: '등록된 정보가 없습니다.',
+                content: stateMessage('NO_USER_DATA'),
                 ephemeral: true
             });
-
             return;
         };
 
@@ -27,7 +25,10 @@ module.exports = async (interaction) => {
 
         // 닉네임이 없으면 메시지를 보냅니다.
         if (options.length === 0) {
-            await interaction.reply({ content: '등록된 닉네임이 없습니다.', ephemeral: true });
+            await interaction.reply({
+                content: stateMessage('NO_NICKNAMES'),
+                ephemeral: true
+            });
             return;
         };
 
@@ -35,7 +36,7 @@ module.exports = async (interaction) => {
         const selectMenu = createMenu(options);
 
         await interaction.reply({
-            content: '등록된 닉네임을 삭제합니다! 메뉴를 선택해주세요!',
+            content: '### 삭제하려는 닉네임을 아래 목록에서 선택해주세요. 🗑️',
             components: [selectMenu],
             ephemeral: true
         });
