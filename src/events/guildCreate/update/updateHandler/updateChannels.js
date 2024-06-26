@@ -1,10 +1,9 @@
 const GuildSettings = require('../../../../services/GuildSettings');
 const checkAdminRole = require('../../../../module/role/checkAdminRole'); // 관리자 체크
-const adminChannelUpDate = require('../../module/adminChannelUpDate'); // 관리자 채널 업데이트
-const mainChannelUpdate = require('../../module/mainChannelUpdate'); // 메인 채널 업데이트
+const adminChannelUpDate = require('../updateModule/adminChannelUpDate'); // 관리자 채널 업데이트
+const mainChannelUpdate = require('../updateModule/mainChannelUpdate'); // 메인 채널 업데이트
 const emojiUpdate = require('../../guildEmoji/emojiHandler/emojiUpdate'); // 이모지 업데이트
 const { updateCompleted, updateFailed, updateEmojiFailed } = require('../updateModule/message'); // 업데이트 상태 메세지
-
 
 module.exports = async (interaction) => {
     try {

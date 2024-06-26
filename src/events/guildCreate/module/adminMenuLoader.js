@@ -3,7 +3,6 @@
 const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
 
 function adminMenuLoader() {
-
     let adminMenuSelect = new StringSelectMenuBuilder()
         .setCustomId('adminMenuId')
         .setPlaceholder('메뉴를 선택하세요')

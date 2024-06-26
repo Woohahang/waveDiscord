@@ -38,7 +38,8 @@ const nicknameTemplateSaver = require('../events/guildAliasTemplates/aliasHandle
 const viewUserInfo = require('../events/multitools/userInfo/viewUserInfo');
 const deleteUserInfo = require('../events/multitools/userInfo/deleteUserInfo');
 
-const teamShufflerMap = new Map();
+
+// const teamShufflerMap = new Map();
 
 
 module.exports = async (interaction) => {
@@ -101,16 +102,16 @@ async function handleButtonInteraction(interaction) {
                 multitools(interaction);
                 break;
 
-            case 'teamEmbedDeleteButton':
-                teamEmbedDelete(interaction);
-                break;
+            // case 'teamEmbedDeleteButton':
+            //     teamEmbedDelete(interaction);
+            //     break;
 
             // 다시 섞기
-            case 'teamReshuffleButton':
-                const teamShufflerData = teamShufflerMap.get('teamShufflerData');
-                teamReshuffle(interaction, teamShufflerData);
-                teamShufflerMap.delete();
-                break;
+            // case 'teamReshuffleButton':
+            //     const teamShufflerData = teamShufflerMap.get('teamShufflerData');
+            //     teamReshuffle(interaction, teamShufflerData);
+            //     teamShufflerMap.delete();
+            //     break;
 
             default:
                 console.log('isButton 에서 알 수 없는 customId : ', customId);
@@ -199,18 +200,18 @@ async function handleStringSelectMenu(interaction) {
 
 
             /* 팀 섞기 */
-            case 'teamShufflerMenu':
-                if (values[0] === '0_') { // 몇 팀으로 나누나요?
-                    showTeamNumberModal(interaction);
-                } else {
-                    excludeMembers(interaction); // 두 개의 팀, 세 개의 팀 으로 나눈다.
-                }
-                break;
+            // case 'teamShufflerMenu':
+            //     if (values[0] === '0_') { // 몇 팀으로 나누나요?
+            //         showTeamNumberModal(interaction);
+            //     } else {
+            //         excludeMembers(interaction); // 두 개의 팀, 세 개의 팀 으로 나눈다.
+            //     }
+            //     break;
 
-            case 'excludeMembers': // 몇 팀인지 + 제외 인원 받고 최종적으로 처리하기
-                teamShufflerHandler(interaction);
-                teamShufflerMap.set('teamShufflerData', values);
-                break;
+            // case 'excludeMembers': // 몇 팀인지 + 제외 인원 받고 최종적으로 처리하기
+            //     teamShufflerHandler(interaction);
+            //     teamShufflerMap.set('teamShufflerData', values);
+            //     break;
 
             default:
                 console.log('isMessageComponent 에서 알 수 없는 customId : ', customId);

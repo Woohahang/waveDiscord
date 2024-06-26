@@ -1,6 +1,6 @@
-const mainChannelCreate = require('../mainChannel/mainChannelCreate');
-const deleteMessagesExcept = require('../../../module/common/deleteMessagesExcept');
-const mainMessage = require('./mainMessage');
+const mainChannelCreate = require('../../mainChannel/mainChannelCreate');
+const deleteMessagesExcept = require('../../../../module/common/deleteMessagesExcept');
+const mainMessage = require('../../module/mainMessage');
 
 // 메인 채널 업데이트
 async function mainChannelUpdate(guild, guildData) {

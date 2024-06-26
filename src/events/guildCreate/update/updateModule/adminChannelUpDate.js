@@ -1,7 +1,5 @@
-// adminChannelUpDate.js
-
-const { adminMessage } = require('../module/adminMessage');
-const deleteMessagesExcept = require('../../../module/common/deleteMessagesExcept');
+const { adminMessage } = require('../../module/adminMessage');
+const deleteMessagesExcept = require('../../../../module/common/deleteMessagesExcept');
 
 // 관리자 채널 업데이트
 async function adminChannelUpDate(interaction) {

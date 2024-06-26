@@ -1,8 +1,8 @@
 // toggleMenuHandler.js
 
 const GuildSettings = require('../../../services/GuildSettings');
-const adminChannelUpDate = require('../module/adminChannelUpDate');
-const mainChannelUpdate = require('../module/mainChannelUpdate');
+const adminChannelUpDate = require('../update/updateModule/adminChannelUpDate');
+const mainChannelUpdate = require('../update/updateModule/mainChannelUpdate');
 const emojiUpdate = require('../guildEmoji/emojiHandler/emojiUpdate');
 const { updateCompleted, updateFailed, updateEmojiFailed } = require('../update/updateModule/message');
 
