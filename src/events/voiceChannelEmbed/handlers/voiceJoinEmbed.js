@@ -57,6 +57,6 @@ module.exports = async (newState) => {
     } catch (error) {
         // 10008 : Unknown Message,  10003 : Unknown Channel
         if (error.code === 10008 || error.code === 10003) return;
-        console.error('voiceJoinEmbed.js 에러 : ', error);
+        console.error('voiceJoinEmbed.js 예외 : ', error);
     };
 };
