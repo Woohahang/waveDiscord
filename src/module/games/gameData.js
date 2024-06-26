@@ -1,5 +1,16 @@
 // gameData.js
 
+const games = [
+    'steam',
+    'leagueOfLegends',
+    'teamfightTactics',
+    'valorant',
+    'steamBattleGround',
+    'kakaoBattleGround',
+    'blizzard',
+    'overWatchTwo'
+];
+
 const gameLabels = {
     steam: 'Steam',
     leagueOfLegends: 'League of Legends',
@@ -22,4 +33,5 @@ const description = {
     overWatchTwo: '오버워치 2'
 };
 
-module.exports = { gameLabels, description };
+
+module.exports = { games, gameLabels, description };

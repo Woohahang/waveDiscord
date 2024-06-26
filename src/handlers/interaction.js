@@ -8,6 +8,9 @@ const nickNameModal = require('../events/userNickName/nickNameHandlers/nickNameM
 const removeNickName = require('../events/userNickName/nickNameHandlers/removeNickName');
 const saveNickName = require('../events/userNickName/nickNameHandlers/saveNickName');
 
+const deleteNicknames = require('../events/userNickName/deleteNickname/handlers/deleteNicknames');
+
+
 /* 길드 메뉴 컨트롤 */
 const gameMenuToggle = require('../events/guildCreate/guildMenuControls/gameMenuToggle');
 const toggleMenuHandler = require('../events/guildCreate/guildMenuControls/toggleMenuHandler');
@@ -79,6 +82,7 @@ async function handleChatInputCommand(interaction) {
 };
 
 
+
 async function handleButtonInteraction(interaction) {
     try {
         const customId = interaction.customId;
@@ -90,8 +94,7 @@ async function handleButtonInteraction(interaction) {
                 break;
 
             case 'removeButton':
-                const command = await interaction.client.commands.get('닉네임삭제')
-                await command.execute(interaction);
+                deleteNicknames(interaction);
                 break;
 
             case 'multitoolsButton':
@@ -136,6 +139,7 @@ async function handleSubmitModal(interaction) {
         console.error('interaction.js 의 handleSubmitModal 에러 : ', error);
     };
 };
+
 
 
 async function handleStringSelectMenu(interaction) {
