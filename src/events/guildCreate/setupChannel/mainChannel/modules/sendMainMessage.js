@@ -1,5 +1,5 @@
 const gameMenu = require('../../../../../module/games/gameMenu');
-const { waveButton } = require('../../../module/waveButton');
+const waveButton = require('../modules/waveButton');
 
 // Wave 메인 채널 메세지 전송 및 메세지 id 반환
 async function sendMainMessage(channel, guildData) {

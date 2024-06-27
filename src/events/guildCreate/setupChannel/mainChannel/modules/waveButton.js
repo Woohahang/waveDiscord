@@ -25,4 +25,4 @@ function waveButton() {
 
 };
 
-module.exports = { waveButton };
+module.exports = waveButton;

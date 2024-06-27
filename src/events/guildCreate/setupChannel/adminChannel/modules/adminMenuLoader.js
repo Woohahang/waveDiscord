@@ -30,4 +30,4 @@ function adminMenuLoader() {
     return row;
 };
 
-module.exports = { adminMenuLoader };
+module.exports = adminMenuLoader;

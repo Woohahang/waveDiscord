@@ -1,5 +1,5 @@
-const { adminMenuLoader } = require('../../../module/adminMenuLoader');
-const { adminButton } = require('../../../module/adminButton');
+const adminMenuLoader = require('../modules/adminMenuLoader');
+const adminButton = require('../modules/adminButton');
 
 
 function serverSettingsMessage(guildData) {
