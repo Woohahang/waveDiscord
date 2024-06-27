@@ -1,5 +1,3 @@
-// gameNicknameSelection.js
-
 const { SlashCommandBuilder } = require('discord.js');
 const GuildSettings = require('../../services/GuildSettings');
 const gameMenu = require('../../module/games/gameMenu');

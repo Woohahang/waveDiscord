@@ -36,8 +36,8 @@ function UpdateRequired(gameTitle) {
 /* 모달 함수 */
 module.exports = async (interaction) => {
     try {
-        // 슬래시 커맨드로 실행된 경우 메뉴 리셋을 건너뜁니다.
-        if (interaction.type !== InteractionType.ApplicationCommand) {
+        // 메시지 타입이 0(일반 텍스트 메시지)인 경우에만 메뉴 선택을 초기화합니다. 슬래시 커맨드는 작동하지 않습니다.
+        if (interaction.message.type === 0) {
             await resetMenuSelection(interaction);
         };
 
@@ -54,7 +54,7 @@ module.exports = async (interaction) => {
             return await interaction.reply({ content: '관리자님, Wave 업데이트가 필요합니다.', ephemeral: true });
         };
 
-        // 모달 생성
+        // 모달을 생성합니다.
         const modal = buildModal(gameTitle)
 
         // 생성한 모달을 사용자에게 보여줍니다.
