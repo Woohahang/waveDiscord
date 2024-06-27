@@ -1,5 +1,3 @@
-// adminMenuLoader.js
-
 const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
 
 function adminMenuLoader() {
@@ -8,12 +6,12 @@ function adminMenuLoader() {
         .setPlaceholder('메뉴를 선택하세요')
         .addOptions(
             new StringSelectMenuOptionBuilder()
-                .setLabel('ShowMenu')
+                .setLabel('Add Game Menu')
                 .setDescription('게임 메뉴 추가하기')
                 .setValue('showMenu'),
 
             new StringSelectMenuOptionBuilder()
-                .setLabel('HideMenu')
+                .setLabel('Remove Game Menu')
                 .setDescription('게임 메뉴 삭제하기')
                 .setValue('hideMenu'),
 

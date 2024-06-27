@@ -37,7 +37,7 @@ function UpdateRequired(gameTitle) {
 module.exports = async (interaction) => {
     try {
         // 슬래시 커맨드로 실행된 경우 메뉴 리셋을 건너뜁니다.
-        if (!InteractionType.ApplicationCommand) {
+        if (interaction.type !== InteractionType.ApplicationCommand) {
             await resetMenuSelection(interaction);
         };
 
