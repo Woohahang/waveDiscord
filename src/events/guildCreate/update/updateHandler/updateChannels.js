@@ -14,8 +14,10 @@ module.exports = async (interaction) => {
         };
 
         const guild = interaction.guild;
-        const guildSettings = new GuildSettings(guild.id); // 길드 인스턴스 생성
-        const guildData = await guildSettings.loadOrCreate(); // 길드 데이터 불러오기
+
+        // 길드 인스턴스 생성 및 길드 데이터를 불러옵니다.
+        const guildSettings = new GuildSettings(guild.id);
+        const guildData = await guildSettings.loadOrCreate();
 
         // '업데이트 중' 메시지 전송
         await interaction.deferReply({ ephemeral: true });
@@ -23,7 +25,7 @@ module.exports = async (interaction) => {
         // 모든 업데이트 작업을 병렬로 실행
         await Promise.all([
             adminChannelUpDate(interaction, guildData),
-            mainChannelUpdate(guild, guildData),
+            mainChannelUpdate(interaction, guildData),
             emojiUpdate(guild)
         ]);
 

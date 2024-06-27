@@ -16,8 +16,8 @@ function formatRiotTag(nickName) {
             riotTag = upperCaseTag;
         };
 
-        // 한글 두 글자 닉네임에 대해 가운데에 띄어쓰기 추가
-        if (/^[가-힣]{2}$/.test(namePart)) {
+        // 두 글자 닉네임에 대해 가운데에 띄어쓰기 추가
+        if (namePart.length === 2) {
             namePart = namePart[0] + ' ' + namePart[1];
         };
 

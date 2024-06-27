@@ -1,5 +1,3 @@
-// adminChannelCreate.js
-
 const { PermissionsBitField } = require('discord.js');
 const GuildSettings = require('../../../services/GuildSettings');
 
@@ -21,19 +19,19 @@ async function createAdminChannel(guild) {
 module.exports = async (guild) => {
     try {
         // 길드 정보
-        await information(guild);
+        // await information(guild);
 
-        // 관리자 채널 생성
-        const channel = await createAdminChannel(guild);
+        // // 관리자 채널 생성
+        // const channel = await createAdminChannel(guild);
 
-        // 채널 타입 admin
-        const channelType = 'adminChannel';
+        // // 채널 타입 admin
+        // const channelType = 'adminChannel';
 
-        // 길드 인스턴스 생성
-        const guildSettings = new GuildSettings(guild.id);
+        // // 길드 인스턴스 생성
+        // const guildSettings = new GuildSettings(guild.id);
 
-        // 관리자 채널 id 길드 데이터에 저장
-        await guildSettings.saveChannelId(channelType, channel.id);
+        // // 관리자 채널 id 길드 데이터에 저장
+        // await guildSettings.saveChannelId(channelType, channel.id);
 
     } catch (error) {
         console.error('adminChannelCreate.js 에러 : ', error);

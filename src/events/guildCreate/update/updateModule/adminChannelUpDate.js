@@ -1,17 +1,16 @@
-const { adminMessage } = require('../../module/adminMessage');
-const deleteMessagesExcept = require('../../../../module/common/deleteMessagesExcept');
+const sendAdminMessage = require('../../setupChannel/adminChannel/modules/sendAdminMessage');
+const deleteOldMessages = require('../updateModule/deleteOldMessages');
 
-// 관리자 채널 업데이트
-async function adminChannelUpDate(interaction) {
+async function adminChannelUpDate(interaction, guildData) {
     try {
-        // 상호작용 받은 채널 === Wave 관리자 채널
+        // 상호작용 받은 관리자 채널 객체를 가지고 옵니다.
         const channel = interaction.channel;
 
-        // 메세지 전송 및 전송된 메세지 ID 목록 가져오기
-        const messageIds = await adminMessage(channel);
+        // 관리자 채널에 메세지를 보냅니다.
+        await sendAdminMessage(channel, guildData);
 
-        // 전송 된 메세지 제외 나머지 삭제
-        await deleteMessagesExcept(channel, messageIds);
+        // 이 전에 보냈던 Wave 메세지를 삭제합니다.
+        await deleteOldMessages(channel);
 
     } catch (error) {
         console.error('adminChannelUpDate.js 에러 : ', error);
