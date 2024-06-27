@@ -1,10 +1,18 @@
 const { adminMenuLoader } = require('../../../module/adminMenuLoader');
 const { adminButton } = require('../../../module/adminButton');
 
-// 서버 설정 메시지를 구성하는 함수입니다.
-const serverSettingsMessage = (guildData) =>
-    '## :gear: 서버 설정\n' +
-    '> ### :label: ' + '\n';
+
+function serverSettingsMessage(guildData) {
+
+    // let message =
+    // '## :gear: 서버 설정' + '\n' +
+    // '> ### :label: ' + '\n';
+
+    let message =
+        '> * 채널 보기 권한 OFF 적용 상태' + '\n' +
+        '> * 채널 보기 OFF 를 유지해 주세요.';
+    return message;
+};
 
 
 async function sendAdminMessage(channel, guildData) {
