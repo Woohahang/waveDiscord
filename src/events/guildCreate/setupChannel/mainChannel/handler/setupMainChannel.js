@@ -16,6 +16,6 @@ module.exports = async (guild) => {
         await sendMainMessage(channel, guildData);
 
     } catch (error) {
-        console.error('mainChannel.js 예외 : ', error);
+        console.error('setupMainChannel.js 예외 : ', error);
     };
 };
