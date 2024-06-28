@@ -34,7 +34,7 @@ module.exports = async (interaction) => {
         // 서버 채널을 업데이트합니다.
         await Promise.all([
             adminChannelUpDate(interaction),
-            mainChannelUpdate(guild, guildData),
+            mainChannelUpdate(interaction, guildData),
             emojiUpdate(guild)
         ]);
 

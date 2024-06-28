@@ -10,7 +10,7 @@ function createOptions(trueValueKeys) {
     if (trueValueKeys.length === 0) {
         return new StringSelectMenuOptionBuilder()
             .setLabel('등록 가능한 메뉴 없음')
-            .setDescription('관리자에 의해 모든 메뉴 숨김 상태.')
+            .setDescription('관리자님, 게임을 추가해주세요 !')
             .setValue('noOptions')
 
     } else {

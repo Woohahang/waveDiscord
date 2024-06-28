@@ -12,14 +12,14 @@ const resetMenuSelection = require('../../../module/common/resetMenuSelection');
 function buildMenuActionRow(options, value) {
     const select = new StringSelectMenuBuilder()
         .setCustomId(value)
-        .setPlaceholder('메뉴' + (value === 'showMenu' ? ' 보이기 !' : ' 숨기기 !'))
+        .setPlaceholder(value === 'showMenu' ? ' 추가하기 !' : ' 삭제하기 !')
         .setMinValues(1)
         .setMaxValues(options.length)
         .addOptions(
             options.map(field => (
                 new StringSelectMenuOptionBuilder()
                     .setLabel(gameLabels[field])
-                    .setDescription(description[field] + (value === 'showMenu' ? ' 보이기 !' : ' 숨기기 !'))
+                    .setDescription(description[field] + (value === 'showMenu' ? ' 추가하기 !' : ' 삭제하기 !'))
                     .setValue(field)
             ))
         );
