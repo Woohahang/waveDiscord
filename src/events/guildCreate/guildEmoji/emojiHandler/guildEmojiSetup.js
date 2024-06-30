@@ -2,7 +2,7 @@
 
 const GuildSettings = require('../../../../services/GuildSettings');
 const filterOptions = require('../../../../module/data/filterOptions');
-const emojiRegister = require('../module/emojiRegister');
+const emojiRegister = require('../emojiModule/emojiRegister');
 
 /* 길드에 이모지 등록 */
 module.exports = async (guild) => {

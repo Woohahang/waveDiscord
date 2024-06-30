@@ -11,6 +11,7 @@ function serverSettingsMessage(guildData) {
     let message =
         '> * 채널 보기 권한 OFF 적용 상태' + '\n' +
         '> * 채널 보기 OFF 를 유지해 주세요.';
+
     return message;
 };
 
