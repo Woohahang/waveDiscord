@@ -5,6 +5,7 @@ const EmojiSettings = require('../../../services/EmojiSettings');
 const createEmbedFields = require('../module/createEmbedFields');
 const checkMissingEmojis = require('../module/checkMissingEmojis');
 const requiresUpdateField = require('../module/requiresUpdateField');
+const logUserInfo = require('../../../utils/log/logUserInfo');
 
 function createEmbed(member, fields, { updatedAt }) {
     const displayName = member.nickname ? member.nickname : member.user.globalName;
@@ -58,5 +59,6 @@ module.exports = async (newState) => {
         // 10008 : Unknown Message,  10003 : Unknown Channel
         if (error.code === 10008 || error.code === 10003) return;
         console.error('voiceJoinEmbed.js 예외 : ', error);
+        logUserInfo(newState)
     };
 };
