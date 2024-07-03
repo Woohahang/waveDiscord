@@ -1,4 +1,5 @@
 const { clientId } = require('../../../../../config.json');
+const logUserInfo = require('../../../utils/log/logUserInfo');
 
 /* 중복 된 유저 정보 메세지 삭제 */
 module.exports = async (oldState) => {
@@ -30,6 +31,7 @@ module.exports = async (oldState) => {
   } catch (error) {
     if (error.code === 10008 || error.code === 10003) return;
     console.error('voiceDeleteEmbed.js 예외 : ', error);
+    logUserInfo(oldState);
   };
 };
 

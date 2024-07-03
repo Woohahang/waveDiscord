@@ -1,5 +1,3 @@
-// logUserInfo.js
-
 // 유저 정보 로깅 함수
 function logUserInfo(interaction) {
     try {
