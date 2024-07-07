@@ -8,13 +8,13 @@ module.exports = async (interaction) => {
         const userId = interaction.user.id;
 
         // 봇 정보를 가져옵니다.
-        const botInfoUrl = `https://koreanbots.dev/api/v2/bots/${waveId}/`;
-        const botInfoResponse = await axios.get(botInfoUrl, {
-            headers: {
-                'Authorization': KoreanbotsClient
-            }
-        });
-        console.log(botInfoResponse.data.code === 200 ? '봇 정보 요청 성공' : '봇 정보 요청 실패');
+        // const botInfoUrl = `https://koreanbots.dev/api/v2/bots/${waveId}/`;
+        // const botInfoResponse = await axios.get(botInfoUrl, {
+        //     headers: {
+        //         'Authorization': KoreanbotsClient
+        //     }
+        // });
+        // console.log(botInfoResponse.data.code === 200 ? '봇 정보 요청 성공' : '봇 정보 요청 실패');
 
         // 유저 봇 투표 여부 확인을 요청합니다.
         const voteCheckUrl = `https://koreanbots.dev/api/v2/bots/${waveId}/vote?userID=${userId}`;

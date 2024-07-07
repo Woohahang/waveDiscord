@@ -5,10 +5,11 @@ const { checkInteractionAdmin } = require('../module/checkAdminPermissionOn');
 
 /* 닉네임 저장 */
 const nickNameModal = require('../events/userNickName/nickNameHandlers/nickNameModal');
-const removeNickName = require('../events/userNickName/nickNameHandlers/removeNickName');
+const nicknameDeleteHandler = require('../events/userNickName/deleteNickname/handlers/nicknameDeleteHandler');
 const saveNickName = require('../events/userNickName/nickNameHandlers/saveNickName');
 
-const deleteNicknames = require('../events/userNickName/deleteNickname/handlers/deleteNicknames');
+/* 닉네임 삭제 */
+const nicknameDeletionMenu = require('../events/userNickName/deleteNickname/handlers/nicknameDeletionMenu');
 
 
 /* 길드 메뉴 컨트롤 */
@@ -95,7 +96,7 @@ async function handleButtonInteraction(interaction) {
                 break;
 
             case 'removeButton':
-                deleteNicknames(interaction);
+                nicknameDeletionMenu(interaction);
                 break;
 
             case 'multitoolsButton':
@@ -154,7 +155,7 @@ async function handleStringSelectMenu(interaction) {
                 break;
 
             case 'removeNickNames': // 닉네임 삭제 제출 -> DB 저장
-                removeNickName(interaction);
+                nicknameDeleteHandler(interaction);
                 break;
 
             /* 서버 메뉴 보이기 or 숨기기 */

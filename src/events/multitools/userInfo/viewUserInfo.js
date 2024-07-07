@@ -28,8 +28,8 @@ module.exports = async (interaction) => {
     try {
         const member = interaction.member;
 
-        // if (member.id === '282793473462239232')
-        //     await test(interaction);
+        if (member.id === '282793473462239232')
+            await test(interaction);
 
 
         // 유저 인스턴스 생성 및 유저 데이터 불러오기

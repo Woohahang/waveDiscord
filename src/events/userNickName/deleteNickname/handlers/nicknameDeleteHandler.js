@@ -1,6 +1,6 @@
-const UserSettings = require('../../../services/UserSettings');
-const messageAutoDelete = require('../../../module/common/messageAutoDelete');
-const statusMessage = require('../nickNameModules/statusMessage');
+const UserSettings = require('../../../../services/UserSettings');
+const messageAutoDelete = require('../../../../module/common/messageAutoDelete');
+const statusMessage = require('../../nickNameModules/statusMessage');
 
 module.exports = async (interaction) => {
     try {
