@@ -1,4 +1,4 @@
-// guildInviteMessage.js
+const { clientId } = require('../../../../../config.json')
 
 const message =
     '\n' + '## 반가워요 ! 먼저 Wave 를 초대해주셔서 감사합니다.' +
@@ -25,11 +25,12 @@ module.exports = async (guild) => {
 
         // 이전 메시지 전부 삭제 (최적화)
         const messages = await dmChannel.messages.fetch({ limit: 5 });
-        await Promise.all(messages.map(message => message.delete()));
+        const waveMessages = messages.filter(message => message.author.id === clientId);
+        await Promise.all(waveMessages.map(message => message.delete()));
 
         // 메세지 전송
         await owner.send(message);
     } catch (error) {
-        console.error('guildInviteMessage 에러 : ', error);
+        console.error('adminPermissionRequest.js 에러 : ', error);
     };
 };

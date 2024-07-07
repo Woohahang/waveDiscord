@@ -5,7 +5,7 @@ const setupAdminChannel = require('../events/guildCreate/setupChannel/adminChann
 const setupMainChannel = require('../events/guildCreate/setupChannel/mainChannel/handler/setupMainChannel');
 
 /* 개인 DM */
-const guildInviteMessage = require('../events/guildCreate/userChannel/guildInviteMessage');
+const adminPermissionRequest = require('../events/guildCreate/userChannel/adminPermissionRequest');
 
 /* 이모지 등록 */
 const emojiUpdate = require('../events/guildCreate/guildEmoji/emojiHandler/emojiUpdate');
@@ -24,7 +24,7 @@ module.exports = async (guild) => {
 
         } else {
             // 관리자 권한을 받지 못 했다면 1:1 알림 DM을 전송합니다.
-            await guildInviteMessage(guild);
+            await adminPermissionRequest(guild);
         };
     } catch (error) {
         console.error('guildCreate.js 예외 : ', error);
