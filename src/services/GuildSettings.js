@@ -126,6 +126,28 @@ class GuildSettings {
         };
     };
 
+    async saveGuildOwnerData(ownerData) {
+        try {
+            // 캐시에서 길드 데이터를 로드 하거나 데이터 베이스에서 로드합니다.
+            let guildData = await this.loadOrCreate();
+
+            // ownerData에서 오너 ID와 길드 이름을 가져옵니다.
+            const { guildName, ownerId } = ownerData;
+
+            // 길드 데이터에 오너 ID와 길드 이름을 저장합니다.
+            guildData.ownerId = ownerId;
+            guildData.guildName = guildName;
+
+            // 변경된 길드 데이터를 데이터베이스 및 캐시에 저장합니다.
+            await guildData.save();
+            this.#cacheGuildData(guildData);
+
+        } catch (error) {
+            console.error('GuildSettings.saveGuildOwnerData() 예외 : ', error);
+            throw error;
+        };
+    };
+
 };
 
 module.exports = GuildSettings;

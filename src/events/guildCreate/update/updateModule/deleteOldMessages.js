@@ -17,8 +17,6 @@ async function deleteOldMessages(channel) {
         // 모든 메시지 삭제 작업이 완료될 때까지 기다립니다.
         await Promise.all(deletePromises);
 
-        console.log('모든 메세지 완료');
-
     } catch (error) {
         console.error('관리자 채널 업데이트 도중 예외 발생');
         console.error('adminChannelUpDate.deleteOldMessages 함수 예외 : ', error);

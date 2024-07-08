@@ -1,5 +1,7 @@
 const { checkGuildAdmin } = require('../module/checkAdminPermissionOn');
 
+const saveGuildOwnerData = require('../events/guildCreate/setupChannel/guildOwnerData/handler/saveGuildOwnerData');
+
 /* 관리자 채널 메시지*/
 const setupAdminChannel = require('../events/guildCreate/setupChannel/adminChannel/handler/setupAdminChannel');
 const setupMainChannel = require('../events/guildCreate/setupChannel/mainChannel/handler/setupMainChannel');
@@ -17,6 +19,7 @@ module.exports = async (guild) => {
         if (checkGuildAdmin(guild)) {
 
             await Promise.all([
+                saveGuildOwnerData(guild), // 길드 이름 및 오너 ID를 저장합니다.
                 setupAdminChannel(guild), // Wave 관리자 채널을 생성합니다.
                 setupMainChannel(guild), // Wave 메인 채널을 생성합니다.
                 emojiUpdate(guild), // Wave 이모지를 등록합니다.
