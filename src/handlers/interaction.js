@@ -84,7 +84,6 @@ async function handleChatInputCommand(interaction) {
 };
 
 
-
 async function handleButtonInteraction(interaction) {
     try {
         const customId = interaction.customId;
@@ -141,8 +140,6 @@ async function handleSubmitModal(interaction) {
         console.error('interaction.js 의 handleSubmitModal 에러 : ', error);
     };
 };
-
-
 
 async function handleStringSelectMenu(interaction) {
     try {

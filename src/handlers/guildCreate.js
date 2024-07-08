@@ -5,7 +5,7 @@ const setupAdminChannel = require('../events/guildCreate/setupChannel/adminChann
 const setupMainChannel = require('../events/guildCreate/setupChannel/mainChannel/handler/setupMainChannel');
 
 /* 개인 DM */
-const adminPermissionRequest = require('../events/guildCreate/userChannel/adminPermissionRequest/handler/adminPermissionRequest');
+const adminPermissionRequest = require('../events/guildCreate/userChannel/sendOwnerMessage/handler/adminPermissionRequest');
 
 /* 이모지 등록 */
 const emojiUpdate = require('../events/guildCreate/guildEmoji/emojiHandler/emojiUpdate');
