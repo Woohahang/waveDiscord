@@ -8,7 +8,8 @@ const games = [
     'steamBattleGround',
     'kakaoBattleGround',
     'blizzard',
-    'overWatchTwo'
+    'overWatchTwo',
+    'lostArk',
 ];
 
 const gameLabels = {
@@ -20,6 +21,7 @@ const gameLabels = {
     kakaoBattleGround: 'KaKao Battle Grounds',
     blizzard: 'Blizzard',
     overWatchTwo: 'OVERWATCH 2',
+    lostArk: 'Lost Ark',
 };
 
 const description = {
@@ -30,7 +32,8 @@ const description = {
     steamBattleGround: '스팀 배틀 그라운드',
     kakaoBattleGround: '카카오 배틀 그라운드',
     blizzard: '블리자드',
-    overWatchTwo: '오버워치 2'
+    overWatchTwo: '오버워치 2',
+    lostArk: '로스트아크',
 };
 
 

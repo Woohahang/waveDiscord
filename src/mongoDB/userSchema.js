@@ -21,6 +21,7 @@ let userSchema = new mongoose.Schema({
     kakaoBattleGround: [String],
     blizzard: [String],
     overWatchTwo: [String],
+    lostArk: [String],
 
     // 마지막 업데이트 시간을 다루는 필드입니다.
     updatedAt: { type: Date, default: Date.now }

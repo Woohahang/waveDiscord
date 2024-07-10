@@ -1,6 +1,7 @@
 const { clientId } = require('../../../../../../../config.json')
 const adminRequestMessage = require('../modules/adminRequestMessage');
 const createInviteButtons = require('../modules/createInviteButtons');
+const deleteWaveMessages = require('../../modules/deleteWaveMessages');
 
 /**
  * 서버 소유자에게 관리자 권한 요청 메시지를 보냅니다.
@@ -18,14 +19,8 @@ module.exports = async (guild) => {
         // 서버 소유자와의 DM 채널을 생성합니다.
         const channel = await owner.createDM();
 
-        // 최근 30개의 메시지를 가져옵니다.
-        const channelMessages = await channel.messages.fetch({ limit: 30 });
-
-        // Wave 봇이 보낸 메시지를 필터링합니다.
-        const waveMessages = channelMessages.filter(message => message.author.id === clientId);
-
-        // Wave 봇이 보낸 메시지를 삭제합니다.
-        await Promise.all(waveMessages.map(message => message.delete()));
+        // Wave 메세지를 삭제합니다.
+        await deleteWaveMessages(channel);
 
         // 서버 소유자에게 관리자 권한 요청 메시지를 보냅니다.
         await owner.send({

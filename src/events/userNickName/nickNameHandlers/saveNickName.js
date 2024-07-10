@@ -40,6 +40,7 @@ module.exports = async (interaction) => {
             case 'kakaoBattleGround':
             case 'blizzard':
             case 'overWatchTwo':
+            case 'lostArk':
                 break;
 
             default:

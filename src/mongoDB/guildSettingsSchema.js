@@ -26,6 +26,7 @@ let guildSettingsSchema = new mongoose.Schema({
     kakaoBattleGround: { type: Boolean, default: false },
     blizzard: { type: Boolean, default: false },
     overWatchTwo: { type: Boolean, default: false },
+    lostArk: { type: Boolean, default: false },
 
 });
 

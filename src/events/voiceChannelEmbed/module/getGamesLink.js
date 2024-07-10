@@ -22,6 +22,9 @@ function getGamesLink(game, nickName) {
             case 'kakaoBattleGround':
                 return `https://dak.gg/pubg/profile/kakao/${encodeURIComponent(nickName)}`;
 
+            case 'lostArk':
+                return `https://iloa.gg/character/${encodeURIComponent(nickName)}`;
+
             default:
                 return '#';
         };
