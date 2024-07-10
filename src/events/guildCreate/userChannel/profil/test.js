@@ -1,7 +1,8 @@
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
 const { ButtonBuilder, ButtonStyle } = require('discord.js');
+
 const deleteWaveMessages = require('../modules/deleteWaveMessages');
-// const UserSettings = require('../../../../services/UserSettings');
+const UserSettings = require('../../../../services/UserSettings');
 
 function seletMenu() {
     const select = new StringSelectMenuBuilder()
@@ -39,8 +40,24 @@ function wavebutton() {
 };
 
 const message =
-    '## 테두리 색상 변경' + '\n' +
+    '## 프로필' + '\n' +
+    '> * ' + '\n' +
     '> * ';
+
+
+
+function createEmbedFields(userData) {
+    try {
+        const fields = [];
+
+
+
+
+
+    } catch (error) {
+        console.error('test.createEmbedFields() 예외 : ', error);
+    };
+};
 
 
 /**
@@ -50,16 +67,21 @@ const message =
 module.exports = async (interaction) => {
     try {
         const user = interaction.user;
+        const userSettings = new UserSettings(user.id);
+        const userData = await userSettings.loadUserData();
+
         const userChannel = await user.createDM();
+
+
+        createEmbedFields(userData);
+
+
 
         // Wave 채널의 봇 메세지를 모두 제거합니다. 최신화
         await deleteWaveMessages(userChannel);
 
-        await userChannel.send({ components: [seletMenu()] });
-        await userChannel.send({
-            content: message,
-            components: [wavebutton()]
-        });
+
+        await userChannel.send({ embeds: [embed] });
 
 
     } catch (error) {
