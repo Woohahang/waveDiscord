@@ -22,15 +22,6 @@ const updateChannels = require('../events/guildCreate/update/updateHandler/updat
 /* 멀티 툴 */
 const multitools = require('../events/multitools/multitools');
 
-/* 팀 섞기 */
-const teamShuffler = require('../events/multitools/teamShuffler/teamShuffler');
-const { excludeMembers } = require('../events/multitools/teamShuffler/excludeMembers');
-const { teamEmbedDelete } = require('../events/multitools/teamShuffler/teamEmbedDeleteHandler');
-const teamShufflerHandler = require('../events/multitools/teamShuffler/teamShufflerHandler');
-const showTeamNumberModal = require('../events/multitools/teamShuffler/showTeamNumberModal');
-const teamReshuffle = require('../events/multitools/teamShuffler/teamReshuffle');
-
-
 const assignRoleByNick = require('../events/guildAliasTemplates/aliasHandlers/assignRoleByNick');
 const setAliasSeparator = require('../events/guildAliasTemplates/aliasHandlers/setAliasSeparator');
 const nicknameRoleAssigner = require('../events/guildAliasTemplates/aliasHandlers/nicknameRoleAssigner');
@@ -38,9 +29,6 @@ const nicknameTemplateSaver = require('../events/guildAliasTemplates/aliasHandle
 
 const viewUserInfo = require('../events/multitools/userInfo/viewUserInfo');
 const deleteUserInfo = require('../events/multitools/userInfo/deleteUserInfo');
-
-
-// const teamShufflerMap = new Map();
 
 
 module.exports = async (interaction) => {
@@ -106,17 +94,6 @@ async function handleButtonInteraction(interaction) {
                 await profileManager(interaction); // 테스트 기능입니다.
                 break;
 
-            // case 'teamEmbedDeleteButton':
-            //     teamEmbedDelete(interaction);
-            //     break;
-
-            // 다시 섞기
-            // case 'teamReshuffleButton':
-            //     const teamShufflerData = teamShufflerMap.get('teamShufflerData');
-            //     teamReshuffle(interaction, teamShufflerData);
-            //     teamShufflerMap.delete();
-            //     break;
-
             default:
                 console.log('isButton 에서 알 수 없는 customId : ', customId);
         };
@@ -136,9 +113,6 @@ async function handleSubmitModal(interaction) {
                 saveNickName(interaction);
                 break;
 
-            case 'teamNumberModal':
-                excludeMembers(interaction);
-                break;
         };
     } catch (error) {
         console.error('interaction.js 의 handleSubmitModal 에러 : ', error);
@@ -186,34 +160,6 @@ async function handleStringSelectMenu(interaction) {
             case 'roleAssignment': // 서버 별명에 대한 역할 설정 및 DB 저장
                 nicknameTemplateSaver(interaction);
                 break;
-
-
-            /* 멀티 툴 */
-            case 'multitoolsMenu': // 몇팀으로 나눌까요?
-                if (values.includes('teamShuffler'))
-                    teamShuffler(interaction);
-
-                if (values.includes('viewUserInfo'))
-                    viewUserInfo(interaction);
-
-                if (values.includes('deleteUserInfo'))
-                    deleteUserInfo(interaction);
-                break;
-
-
-            /* 팀 섞기 */
-            // case 'teamShufflerMenu':
-            //     if (values[0] === '0_') { // 몇 팀으로 나누나요?
-            //         showTeamNumberModal(interaction);
-            //     } else {
-            //         excludeMembers(interaction); // 두 개의 팀, 세 개의 팀 으로 나눈다.
-            //     }
-            //     break;
-
-            // case 'excludeMembers': // 몇 팀인지 + 제외 인원 받고 최종적으로 처리하기
-            //     teamShufflerHandler(interaction);
-            //     teamShufflerMap.set('teamShufflerData', values);
-            //     break;
 
             default:
                 console.log('isMessageComponent 에서 알 수 없는 customId : ', customId);

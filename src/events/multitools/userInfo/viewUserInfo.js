@@ -31,7 +31,6 @@ module.exports = async (interaction) => {
         // if (member.id === '282793473462239232')
         // await test(interaction);
 
-
         // 유저 인스턴스 생성 및 유저 데이터 불러오기
         const userSettings = new UserSettings(member.id);
         const userData = await userSettings.loadUserData();

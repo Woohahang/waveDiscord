@@ -4,7 +4,7 @@ const UserSettings = require('../../../../../services/UserSettings');
 const deleteWaveMessages = require('../../modules/deleteWaveMessages');
 const generatePlatformEmbedFields = require('../modules/generatePlatformEmbedFields');
 
-function waveButton() {
+function createButton() {
     const decorateProfileButton = new ButtonBuilder()
         .setCustomId('decorateProfile')
         .setLabel('프로필 꾸미기')
@@ -46,7 +46,7 @@ module.exports = async (interaction) => {
 
         // 임베드 및 버튼을 생성합니다.
         const embed = createEmbed(user, fields, userData);
-        const buttons = waveButton();
+        const buttons = createButton();
 
         await channel.send({
             content: '# 프로필',
