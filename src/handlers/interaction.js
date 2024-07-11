@@ -30,7 +30,7 @@ const deleteUserInfo = require('../events/multitools/userInfo/deleteUserInfo');
 
 
 /* 테스트 기능입니다. */
-const profileManager = require('../events/guildCreate/userChannel/profile/handler/profileManager');
+const profileManager = require('../events/userChannel/profile/handler/profileManager');
 
 module.exports = async (interaction) => {
     try {

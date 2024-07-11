@@ -1,6 +1,6 @@
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
-const UserSettings = require('../../../../../services/UserSettings');
+const UserSettings = require('../../../../services/UserSettings');
 const deleteWaveMessages = require('../../modules/deleteWaveMessages');
 const generatePlatformEmbedFields = require('../modules/generatePlatformEmbedFields');
 

@@ -1,4 +1,4 @@
-const { clientId } = require('../../../../../../config.json');
+const { clientId } = require('../../../../../config.json');
 
 /**
  * Wave 메세지를 모두 제거합니다.

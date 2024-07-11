@@ -1,7 +1,7 @@
-const platformNames = require('../../../../../constants/platformNames');
-const platforms = require('../../../../../constants/platforms');
-const getGamesLink = require('../../../../voiceChannelEmbed/module/getGamesLink');
-const { games } = require('../../../../../module/games/gameData');
+const platformNames = require('../../../../constants/platformNames');
+const platforms = require('../../../../constants/platforms');
+const getGamesLink = require('../../../voiceChannelEmbed/module/getGamesLink');
+const { games } = require('../../../../module/games/gameData');
 
 function generatePlatformEmbedFields(userData) {
     const fields = [];

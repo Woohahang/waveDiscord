@@ -1,4 +1,3 @@
-const { clientId } = require('../../../../../../../config.json')
 const adminRequestMessage = require('../modules/adminRequestMessage');
 const createInviteButtons = require('../modules/createInviteButtons');
 const deleteWaveMessages = require('../../modules/deleteWaveMessages');
