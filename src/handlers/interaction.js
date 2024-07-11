@@ -1,5 +1,3 @@
-// interaction.js
-
 /* 관리자 권한 체크 */
 const { checkInteractionAdmin } = require('../module/checkAdminPermissionOn');
 
@@ -31,6 +29,9 @@ const viewUserInfo = require('../events/multitools/userInfo/viewUserInfo');
 const deleteUserInfo = require('../events/multitools/userInfo/deleteUserInfo');
 
 
+/* 테스트 기능입니다. */
+const profileManager = require('../events/guildCreate/userChannel/profile/handler/profileManager');
+
 module.exports = async (interaction) => {
     try {
         if (!checkInteractionAdmin(interaction)) return; // 봇이 관리자 권한을 받았는지 체크
@@ -50,10 +51,9 @@ module.exports = async (interaction) => {
         };
 
     } catch (error) {
-        console.error('interaction.js 에서 handleinteraction 에러 :', error);
+        console.error('interaction.js 예외 : ', error);
     };
 };
-
 
 async function handleChatInputCommand(interaction) {
     const command = interaction.client.commands.get(interaction.commandName);
@@ -71,8 +71,6 @@ async function handleChatInputCommand(interaction) {
     };
 };
 
-/* 테스트 기능입니다. */
-const profileManager = require('../events/guildCreate/userChannel/profile/handler/profileManager');
 
 async function handleButtonInteraction(interaction) {
     try {
@@ -98,7 +96,7 @@ async function handleButtonInteraction(interaction) {
                 console.log('isButton 에서 알 수 없는 customId : ', customId);
         };
     } catch (error) {
-        console.error('interaction.js 의 handleButtonInteraction 에러 : ', error);
+        console.error('interaction.handleButtonInteraction() 예외 : ', error);
     };
 };
 
@@ -115,7 +113,7 @@ async function handleSubmitModal(interaction) {
 
         };
     } catch (error) {
-        console.error('interaction.js 의 handleSubmitModal 에러 : ', error);
+        console.error('interaction.handleSubmitModal() 예외 : ', error);
     };
 };
 
@@ -166,6 +164,6 @@ async function handleStringSelectMenu(interaction) {
         };
 
     } catch (error) {
-        console.error('interaction.js 의 handleStringSelectMenu 에러 : ', error);
+        console.error('interaction.handleStringSelectMenu() 예외 : ', error);
     };
 };
