@@ -84,7 +84,7 @@ async function handleChatInputCommand(interaction) {
 };
 
 /* 테스트 기능입니다. */
-const test = require('../events/guildCreate/userChannel/profil/test');
+const profileManager = require('../events/guildCreate/userChannel/profile/handler/profileManager');
 
 async function handleButtonInteraction(interaction) {
     try {
@@ -103,7 +103,7 @@ async function handleButtonInteraction(interaction) {
             case 'multitoolsButton':
                 multitools(interaction);
 
-                // await test(interaction); // 테스트 기능입니다.
+                await profileManager(interaction); // 테스트 기능입니다.
                 break;
 
             // case 'teamEmbedDeleteButton':

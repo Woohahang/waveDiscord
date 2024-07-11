@@ -11,7 +11,6 @@ function createEmbed(member, fields, { updatedAt }) {
     const displayName = member.nickname ? member.nickname : member.user.globalName;
 
     return embed = new EmbedBuilder()
-        .setColor('#0099ff')
         .setColor(0x0099FF)
         .setAuthor({ name: displayName, iconURL: member.user.displayAvatarURL(), url: member.user.avatarURL() })
         .addFields(fields)

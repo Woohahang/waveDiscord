@@ -145,7 +145,6 @@ class UserSettings {
         };
     };
 
-
     async removeNickname(gameAndNicknames) {
         try {
             // 유저 데이터를 캐시 또는 데이터베이스에서 로드합니다.
