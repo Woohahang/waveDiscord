@@ -1,5 +1,3 @@
-// gameData.js
-
 const games = [
     'steam',
     'leagueOfLegends',
