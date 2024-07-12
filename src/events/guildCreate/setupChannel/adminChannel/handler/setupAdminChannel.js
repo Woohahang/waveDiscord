@@ -4,15 +4,24 @@ const sendAdminMessage = require('../modules/sendAdminMessage');
 
 module.exports = async (guild) => {
     try {
-        // Wave 관리자 채널을 생성합니다.
-        const channel = await createAdminChannel(guild);
-
-        // 길드 인스턴스를 생성하고 Wave 관리자 채널 ID를 저장합니다.
+        // 길드 인스턴스 생성 및 길드 데이터를 불러옵니다.
         const guildSettings = new GuildSettings(guild.id);
         const guildData = await guildSettings.loadOrCreate()
+
+        // 관리자 채널을 가져오려고 시도합니다.
+        let channel = await guild.channels.fetch(guildData.adminChannelId)
+            .then(channel => channel)
+            .catch(error => null);
+
+        // 채널이 존재하지 않으면 새로 생성합니다.
+        if (!channel) {
+            channel = await createAdminChannel(guild);
+        };
+
+        // 새 채널 ID를 길드 설정에 저장합니다.
         await guildSettings.saveChannelId('adminChannel', channel.id);
 
-        // Wave 관리자 채널에 메세지를 보냅니다.
+        // 관리자 메시지를 새 채널에 전송합니다.
         await sendAdminMessage(channel, guildData);
 
     } catch (error) {
