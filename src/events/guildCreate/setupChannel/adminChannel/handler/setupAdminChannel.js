@@ -2,6 +2,12 @@ const GuildSettings = require('../../../../../services/GuildSettings');
 const createAdminChannel = require('../modules/createAdminChannel');
 const sendAdminMessage = require('../modules/sendAdminMessage');
 
+/**
+ * 길드 설정을 로드하거나 생성하고, 관리자 채널을 설정합니다.
+ * 관리자 채널이 존재하지 않으면 새로 생성하고, 관리자 메시지를 전송합니다.
+ * 
+ * @param {Guild} guild - 설정을 적용할 Discord 길드 객체
+ */
 module.exports = async (guild) => {
     try {
         // 길드 인스턴스 생성 및 길드 데이터를 불러옵니다.
