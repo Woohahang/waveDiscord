@@ -1,5 +1,6 @@
 const games = [
     'steam',
+    'rainbowSix',
     'leagueOfLegends',
     'teamfightTactics',
     'valorant',
@@ -12,6 +13,7 @@ const games = [
 
 const gameLabels = {
     steam: 'Steam',
+    rainbowSix: 'Rainbow Six',
     leagueOfLegends: 'League of Legends',
     teamfightTactics: 'Teamfight Tactics',
     valorant: 'Valorant',
@@ -24,6 +26,7 @@ const gameLabels = {
 
 const description = {
     steam: '스팀',
+    rainbowSix: '레인보우 식스',
     leagueOfLegends: '리그 오브 레전드',
     teamfightTactics: '롤토체스',
     valorant: '발로란트',

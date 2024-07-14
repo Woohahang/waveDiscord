@@ -41,6 +41,7 @@ module.exports = async (interaction) => {
             case 'blizzard':
             case 'overWatchTwo':
             case 'lostArk':
+            case 'rainbowSix':
                 break;
 
             default:

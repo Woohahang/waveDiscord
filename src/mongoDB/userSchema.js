@@ -19,6 +19,7 @@ let userSchema = new mongoose.Schema({
     valorant: [String],
     steamBattleGround: [String],
     kakaoBattleGround: [String],
+    rainbowSix: [String],
     blizzard: [String],
     overWatchTwo: [String],
     lostArk: [String],

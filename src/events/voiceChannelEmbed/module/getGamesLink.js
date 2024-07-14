@@ -25,6 +25,9 @@ function getGamesLink(game, nickName) {
             case 'lostArk':
                 return `https://iloa.gg/character/${encodeURIComponent(nickName)}`;
 
+            case 'rainbowSix':
+                return `https://r6.tracker.network/r6siege/profile/xbl/${encodeURIComponent(nickName)}/overview`;
+
             default:
                 return '#';
         };

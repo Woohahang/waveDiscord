@@ -1,5 +1,5 @@
 const platforms = {
-    steam: ['steam'],
+    steam: ['steam', 'rainbowSix'],
     riotGames: ['leagueOfLegends', 'teamfightTactics', 'valorant'],
     battleGround: ['steamBattleGround', 'kakaoBattleGround'],
     blizzard: ['blizzard', 'overWatchTwo'],

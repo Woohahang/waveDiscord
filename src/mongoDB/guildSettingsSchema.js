@@ -24,6 +24,7 @@ let guildSettingsSchema = new mongoose.Schema({
     valorant: { type: Boolean, default: false },
     steamBattleGround: { type: Boolean, default: false },
     kakaoBattleGround: { type: Boolean, default: false },
+    rainbowSix: { type: Boolean, default: false },
     blizzard: { type: Boolean, default: false },
     overWatchTwo: { type: Boolean, default: false },
     lostArk: { type: Boolean, default: false },
