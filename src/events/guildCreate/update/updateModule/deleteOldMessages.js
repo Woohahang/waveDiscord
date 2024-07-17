@@ -18,8 +18,7 @@ async function deleteOldMessages(channel) {
         await Promise.all(deletePromises);
 
     } catch (error) {
-        console.error('관리자 채널 업데이트 도중 예외 발생');
-        console.error('adminChannelUpDate.deleteOldMessages 함수 예외 : ', error);
+        console.error('deleteOldMessages.js 예외 : ', error);
     };
 };
 

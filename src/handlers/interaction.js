@@ -77,7 +77,6 @@ async function handleButtonInteraction(interaction) {
         const customId = interaction.customId;
 
         switch (customId) {
-            case 'upDate':
             case 'upDateButton':
                 await updateChannels(interaction);
                 break;
@@ -89,7 +88,7 @@ async function handleButtonInteraction(interaction) {
             case 'multitoolsButton':
                 multitools(interaction);
 
-                await profileManager(interaction); // 테스트 기능입니다.
+                // await profileManager(interaction); // 테스트 기능입니다.
                 break;
 
             default:
