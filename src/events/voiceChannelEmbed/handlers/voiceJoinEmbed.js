@@ -52,7 +52,9 @@ module.exports = async (newState) => {
         const embed = createEmbed(member, fields, userData);
 
         // 임베드를 전송합니다.
-        await channel.send({ embeds: [embed] });
+        const message = await channel.send({ embeds: [embed] });
+
+        // await message.react('🌊');
 
     } catch (error) {
         // 10008 : Unknown Message,  10003 : Unknown Channel

@@ -10,6 +10,8 @@ const handleVoiceStateUpdate = require('./handlers/voiceStateUpdate');
 const handleGuildMemberUpdate = require('./handlers/guildMemberUpdate');
 const handleGuildEmojiDelete = require('./handlers/guildEmojiDelete');
 
+const handleMessageReactionAdd = require('./handlers/messageReactionAdd');
+
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -17,6 +19,7 @@ const client = new Client({
         GatewayIntentBits.GuildVoiceStates,
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildEmojisAndStickers, // 이모지 스티커와 관련 인텐트입니다.
+        GatewayIntentBits.GuildMessageReactions, // 반응을 감지하는 인텐트입니다.
     ]
 });
 
@@ -60,6 +63,10 @@ client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
 
 client.on(Events.GuildMemberUpdate, async (oldMember, newMember) => {
     handleGuildMemberUpdate(oldMember, newMember);
+});
+
+client.on(Events.MessageReactionAdd, async (reaction, user) => {
+    // handleMessageReactionAdd(reaction, user);
 });
 
 
