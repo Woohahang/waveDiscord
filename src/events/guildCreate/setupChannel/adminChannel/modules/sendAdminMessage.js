@@ -31,6 +31,7 @@ async function sendAdminMessage(channel, guildData) {
 
     } catch (error) {
         console.error('sendAdminMessage.js 예외 : ', error);
+        throw error;
     };
 };
 

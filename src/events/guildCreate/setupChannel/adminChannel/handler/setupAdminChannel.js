@@ -11,14 +11,16 @@ const deleteOldMessages = require('../../../update/updateModule/deleteOldMessage
  */
 module.exports = async (guild) => {
     try {
+        let channel = null;
+
         // 길드 인스턴스 생성 및 길드 데이터를 불러옵니다.
         const guildSettings = new GuildSettings(guild.id);
         const guildData = await guildSettings.loadOrCreate();
 
-        // 관리자 채널을 가져오려고 시도합니다.
-        let channel = await guild.channels.fetch(guildData.adminChannelId)
-            .then(channel => channel)
-            .catch(error => null);
+        // 길드 데이터에서 관리자 채널 ID가 있다면 해당 채널을 가져오려고 시도합니다.
+        if (guildData.adminChannelId) {
+            channel = await guild.channels.fetch(guildData.adminChannelId);
+        };
 
         // 채널이 존재하지 않으면 새로 생성합니다.
         if (!channel) {
