@@ -158,6 +158,14 @@ async function handleStringSelectMenu(interaction) {
                 nicknameTemplateSaver(interaction);
                 break;
 
+            case 'multitoolsMenu':
+                if (values.includes('viewUserInfo'))
+                    viewUserInfo(interaction);
+
+                if (values.includes('deleteUserInfo'))
+                    deleteUserInfo(interaction);
+                break;
+
             default:
                 console.log('isMessageComponent 에서 알 수 없는 customId : ', customId);
         };
