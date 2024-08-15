@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
-const { testtoken } = require('../../config.json');
+const { token } = require('../../config.json');
 const connectToDatabase = require('./mongoDB/database.js');
 
 const handleGuildCreate = require('./handlers/guildCreate');
@@ -79,4 +79,4 @@ client.on(Events.GuildEmojiCreate, async (emoji) => {
 });
 
 
-client.login(testtoken);
+client.login(token);

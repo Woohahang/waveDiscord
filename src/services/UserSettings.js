@@ -200,6 +200,12 @@ class UserSettings {
             return 'deleteError';
         };
     };
+
+    // 유저 맵스에 로드된 유저 데이터의 개수를 반환하는 공개 메서드입니다.
+    getUserCount() {
+        return Object.keys(UserSettings.userMaps).length;
+    };
+
 };
 
 module.exports = UserSettings;
