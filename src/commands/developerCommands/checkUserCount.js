@@ -1,23 +1,31 @@
 const { SlashCommandBuilder } = require('discord.js');
 const UserSettings = require('../../services/UserSettings');
+const { developerId } = require('../../../../config.json');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('테스트')
-        .setDescription('테스트 기능입니다.'),
+        .setName('유저확인')
+        .setDescription('현재 로드된 유저의 수를 확인합니다.'),
 
     async execute(interaction) {
-        // const userId = interaction.user.id;
-        // if (userId !== '282793473462239232') return;
+        try {
+            // 명령어를 실행한 사용자가 개발자인지 확인합니다.
+            const userId = interaction.user.id;
+            if (userId !== developerId) return;
 
-        // const userSettings = new UserSettings();
+            // 인스턴스 생성 및 로드된 유저 수를 가져옵니다.
+            const userSettings = new UserSettings();
+            const userCount = userSettings.getUserCount();
 
-        // // 로드된 유저 수 확인
-        // const userCount = userSettings.getUserCount();
+            // 디스코드 채팅에 비공개 메시지로 응답합니다.
+            await interaction.reply({
+                content: `현재 로드된 유저 수는 ${userCount}명입니다.`,
+                ephemeral: true
+            });
 
-        // // 결과를 로그로 출력하거나 인터랙션에 응답
-        // console.log(`로드된 유저 수: ${userCount}`);
-        console.log('슬래시 커맨드 테스트.');
+        } catch (error) {
+            console.error('checkUserCount.js 예외 : ', error);
+        };
 
     }
 };
