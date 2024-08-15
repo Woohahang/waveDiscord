@@ -2,6 +2,10 @@ const { SlashCommandBuilder } = require('discord.js');
 const UserSettings = require('../../services/UserSettings');
 const { developerId } = require('../../../../config.json');
 
+/**
+ * 슬래시 커맨드 정의
+ * 이 커맨드는 현재 로드된 유저의 수를 확인하는 기능을 제공합니다.
+*/
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('유저확인')
