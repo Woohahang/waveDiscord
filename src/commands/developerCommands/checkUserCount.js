@@ -18,7 +18,6 @@ const message = (userCount, guildCount, startTime) =>
     `> **Bot Start Time** : ${formatDate(startTime)}\n` +
     `> **Elapsed Time** : ${getElapsedTime(startTime)}`;
 
-
 /* 이 커맨드는 현재 로드된 유저의 수를 확인하는 기능을 제공합니다. */
 module.exports = {
     data: new SlashCommandBuilder()
@@ -43,7 +42,6 @@ module.exports = {
 
             // 디스코드 채팅에 비공개 메시지로 응답합니다.
             await interaction.reply({
-                // content: `현재 로드된 유저 수는 ${userCount}명입니다.`,
                 content: message(userCount, guildCount, startTime),
                 ephemeral: true
             });
