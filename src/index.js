@@ -12,6 +12,7 @@ const handleGuildEmojiDelete = require('./handlers/guildEmojiDelete');
 
 const handleMessageReactionAdd = require('./handlers/messageReactionAdd');
 
+
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -46,6 +47,10 @@ for (const folder of commandFolders) {
 };
 
 client.once(Events.ClientReady, readyClient => {
+    // 봇이 시작된 시각을 저장합니다.
+    client.startTime = new Date();
+
+
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
