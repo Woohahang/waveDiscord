@@ -2,10 +2,10 @@ const platformNames = require('../../../constants/platformNames');
 const platforms = require('../../../constants/platforms');
 const filterOptions = require('../../../module/data/filterOptions');
 const getGamesLink = require('../../voiceChannelEmbed/module/getGamesLink');
-
+const emojiId = require('../module/emojiId');
 
 // 유저 데이터와 길드 데이터를 바탕으로 임베드 필드를 생성합니다.
-function createEmbedFields(userData, guildData, waveEmojiArray) {
+function createEmbedFields(userData, guildData) {
 
     const fields = [];
 
@@ -14,12 +14,6 @@ function createEmbedFields(userData, guildData, waveEmojiArray) {
 
     // 유저 데이터에 닉네임이 있는 게임들만 필터링합니다.
     const gamesWithData = displayedGames.filter(game => userData[game].length > 0);
-
-    // waveEmoji 배열을 객체로 변환합니다.
-    const waveEmoji = waveEmojiArray.reduce((acc, emoji) => {
-        acc[emoji.name] = emoji.id;
-        return acc;
-    }, {});
 
     // platforms 객체의 키를 순회하기 위해 Object.keys()를 사용해 배열로 변환합니다.
     Object.keys(platforms).forEach(platform => {
@@ -32,16 +26,16 @@ function createEmbedFields(userData, guildData, waveEmojiArray) {
                 const nicknames = userData[game];
 
                 nicknames.forEach(nickname => {
-                    const emojiCreate = `:wave_${game}:` + waveEmoji[`wave_${game}`];
+                    const emoji = `<:wave_${game}:${emojiId(game)}>`;
 
                     if (game === 'steam')
-                        value += `<${emojiCreate}> [${nickname.playerName}](${nickname.profileLink})\n`;
+                        value += `${emoji} [${nickname.playerName}](${nickname.profileLink})\n`;
 
                     else if (game === 'overWatchTwo' || game === 'blizzard')
-                        value += `<${emojiCreate}> ${nickname}\n`;
+                        value += `${emoji} ${nickname}\n`;
 
                     else
-                        value += `<${emojiCreate}> [${nickname}](${getGamesLink(game, nickname)})\n`;
+                        value += `${emoji} [${nickname}](${getGamesLink(game, nickname)})\n`;
 
                 });
             });

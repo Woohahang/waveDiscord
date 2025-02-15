@@ -1,10 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const GuildSettings = require('../../../services/GuildSettings');
 const UserSettings = require('../../../services/UserSettings');
-const EmojiSettings = require('../../../services/EmojiSettings');
 const createEmbedFields = require('../module/createEmbedFields');
-const checkMissingEmojis = require('../module/checkMissingEmojis');
-const requiresUpdateField = require('../module/requiresUpdateField');
 const logUserInfo = require('../../../utils/log/logUserInfo');
 
 function createEmbed(member, fields, { updatedAt }) {
@@ -34,27 +31,15 @@ module.exports = async (newState) => {
         const guildSettings = new GuildSettings(guild.id);
         const guildData = await guildSettings.loadOrCreate();
 
-        // 이모지 인스턴스 생성 및 이모지 데이터를 불러옵니다.
-        const emojiSettings = new EmojiSettings(guild.id);
-        const emojiData = await emojiSettings.loadOrCreate(guild);
-
         // 임베드 필드 생성를 만듭니다.
-        let fields = createEmbedFields(userData, guildData, emojiData);
+        let fields = createEmbedFields(userData, guildData);
         if (!fields) return;
-
-        // 이모지 누락을 확인합니다.
-        const missingEmojis = checkMissingEmojis(guildData, emojiData);
-        if (missingEmojis.length > 0) {
-            fields = requiresUpdateField();
-        };
 
         // 임베드를 생성합니다.
         const embed = createEmbed(member, fields, userData);
 
         // 임베드를 전송합니다.
-        const message = await channel.send({ embeds: [embed] });
-
-        // await message.react('🌊');
+        await channel.send({ embeds: [embed] });
 
     } catch (error) {
         // 10008 : Unknown Message,  10003 : Unknown Channel
