@@ -9,9 +9,6 @@ const setupMainChannel = require('../events/guildCreate/setupChannel/mainChannel
 /* 개인 DM */
 const adminPermissionRequest = require('../events/userChannel/ownerMessage/handler/adminPermissionRequest');
 
-/* 이모지 등록 */
-const emojiUpdate = require('../events/guildCreate/guildEmoji/emojiHandler/emojiUpdate');
-
 /**
  * 길드에 초대되었을 때 실행되는 함수입니다.
  * 
