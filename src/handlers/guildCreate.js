@@ -12,7 +12,11 @@ const adminPermissionRequest = require('../events/userChannel/ownerMessage/handl
 /* 이모지 등록 */
 const emojiUpdate = require('../events/guildCreate/guildEmoji/emojiHandler/emojiUpdate');
 
-
+/**
+ * 길드에 초대되었을 때 실행되는 함수입니다.
+ * 
+ * @param {Object} guild - 초대된 길드의 정보
+*/
 module.exports = async (guild) => {
     try {
         // Wave 가 관리자 권한을 받았는지 체크합니다.
@@ -22,7 +26,6 @@ module.exports = async (guild) => {
                 saveGuildOwnerData(guild), // 길드 이름 및 오너 ID를 저장합니다.
                 setupAdminChannel(guild), // Wave 관리자 채널을 생성합니다.
                 setupMainChannel(guild), // Wave 메인 채널을 생성합니다.
-                emojiUpdate(guild), // Wave 이모지를 등록합니다.
             ]);
 
         } else {
