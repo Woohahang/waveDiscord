@@ -15,7 +15,11 @@ function createEmbed(member, fields, { updatedAt }) {
         .setFooter({ text: '―――――― update', iconURL: 'https://drive.google.com/uc?export=view&id=19W-rsIvrkFJSJcZ7-PHXOfZcPRO1HYTi' });
 };
 
-/* 채널 입장 임베드 전송, 이전 중복 메시지 삭제 */
+/**
+ * 사용자가 음성 채널에 참여할 때 호출되는 주요 함수입니다.
+ * 
+ * 이 함수는 사용자의 닉네임을 임베드 형식으로 텍스트 채널에 전송합니다.
+ */
 module.exports = async (newState) => {
     try {
         const member = newState.member;
@@ -44,7 +48,7 @@ module.exports = async (newState) => {
     } catch (error) {
         // 10008 : Unknown Message,  10003 : Unknown Channel
         if (error.code === 10008 || error.code === 10003) return;
-        console.error('voiceJoinEmbed.js 예외 : ', error);
+        console.error('음성 채널 참여 중 오류 발생 : ', error);
         logUserInfo(newState)
     };
 };

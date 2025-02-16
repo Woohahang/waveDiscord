@@ -2,7 +2,7 @@
 
 const { checkVoiceAdmin } = require('../module/checkAdminPermissionOn');
 
-const voiceJoinEmbed = require('../events/voiceChannelEmbed/handlers/voiceJoinEmbed');
+const voiceJoin = require('../events/voiceChannelEmbed/handlers/voiceJoin');
 const voiceDeleteEmbed = require('../events/voiceChannelEmbed/handlers/voiceDeleteEmbed');
 const deleteInactiveVoiceEmbeds = require('../events/voiceChannelEmbed/handlers/deleteInactiveVoiceEmbeds');
 
@@ -25,12 +25,12 @@ module.exports = async (oldState, newState) => {
 
         switch (voiceStateChange) {
             case 'voiceJoin': // 음성 채널 입장
-                await voiceJoinEmbed(newState);
+                await voiceJoin(newState);
                 await deleteInactiveVoiceEmbeds(newState);
                 break;
 
             case 'voiceMove': // 음성 채널 이동
-                await voiceJoinEmbed(newState);
+                await voiceJoin(newState);
                 await deleteInactiveVoiceEmbeds(newState);
                 await voiceDeleteEmbed(oldState);
                 break;
