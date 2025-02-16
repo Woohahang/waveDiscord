@@ -3,13 +3,10 @@
 const GuildSettings = require('../../../services/GuildSettings');
 const adminChannelUpDate = require('../update/updateModule/adminChannelUpDate');
 const mainChannelUpdate = require('../update/updateModule/mainChannelUpdate');
-const emojiUpdate = require('../guildEmoji/emojiHandler/emojiUpdate');
-const { updateCompleted, updateFailed, updateEmojiFailed } = require('../update/updateModule/message');
+const { updateCompleted, updateFailed } = require('../update/updateModule/message');
 
 module.exports = async (interaction) => {
     try {
-        const guild = interaction.guild;
-
         // interaction 객체에서 customId와 선택된 값을 가져옵니다.
         const customid = interaction.customId;
         const selections = interaction.values;
@@ -35,23 +32,13 @@ module.exports = async (interaction) => {
         await Promise.all([
             adminChannelUpDate(interaction),
             mainChannelUpdate(interaction, guildData),
-            emojiUpdate(guild)
         ]);
 
         await interaction.editReply({ content: updateCompleted, components: [], ephemeral: true });
 
     } catch (error) {
-
-        switch (error.code) {
-            case 'EMOJI_SLOT_ERROR': // 이모지 슬롯 초과
-                interaction.editReply({ content: updateEmojiFailed, ephemeral: true });
-                break;
-
-            default:  // 다른 모든 에러
-                interaction.editReply({ content: updateFailed, ephemeral: true });
-                console.error('toggleMenuHandler.js 업데이트 실패 : ', error);
-        };
-
+        interaction.editReply({ content: updateFailed, ephemeral: true });
+        console.error('toggleMenuHandler.js 업데이트 실패 : ', error);
     };
 };
 
