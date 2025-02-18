@@ -30,7 +30,7 @@ async function sendAdminMessage(channel, guildData) {
         });
 
     } catch (error) {
-        console.error('sendAdminMessage.js 예외 : ', error);
+        console.error('Wave 관리자 채널, 셋업 메시지 전송 중 오류가 발생했습니다.');
         throw error;
     };
 };
