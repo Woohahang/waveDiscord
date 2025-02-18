@@ -13,7 +13,7 @@ function formatDate(date) {
         const hours = String(date.getHours()).padStart(2, '0'); // 시
         const minutes = String(date.getMinutes()).padStart(2, '0'); // 분
 
-        return `${year} year, ${month} month ${day} day, ${hours} hour ${minutes} minute`; // 포맷된 문자열 반환
+        return `${year}, ${month}, ${day}  ${hours}:${minutes}`; // 포맷된 문자열 반환
     } catch (error) {
         throw error;
     };
