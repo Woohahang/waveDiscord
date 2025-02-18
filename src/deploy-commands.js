@@ -1,5 +1,5 @@
 const { REST, Routes } = require('discord.js');
-const { clientId, guildId, wavetoken } = require('../../config.json');
+const { clientId, guildId, token } = require('../../config.json');
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -28,7 +28,7 @@ for (const folder of commandFolders) {
     }
 }
 
-const rest = new REST().setToken(wavetoken);
+const rest = new REST().setToken(token);
 
 (async () => {
     try {
