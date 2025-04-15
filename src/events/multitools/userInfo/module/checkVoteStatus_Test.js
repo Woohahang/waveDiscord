@@ -2,6 +2,17 @@ const axios = require('axios');
 const { KoreanbotsClient } = require('../../../../../../config.json');
 const waveId = '1227561479801409566';
 
+/**
+ * @description
+ * 이 모듈은 디스코드 인터랙션(interaction)을 받아,
+ * Koreanbots API를 통해 해당 유저가 Wave 봇에 투표했는지를 확인합니다.
+ * 
+ * ⚠️ API 요청에는 config.json에 저장된 KoreanbotsClient 토큰을 사용합니다.
+ * 
+ * @todo
+ * - 유저의 누적 투표 횟수를 저장하고, 투표 등급 시스템 구현 예정
+ * - 등급별 혜택 제공
+*/
 module.exports = async (interaction) => {
     try {
         // 상호작용한 유저의 ID를 가져옵니다.
@@ -38,5 +49,3 @@ module.exports = async (interaction) => {
         console.error('test.js 예외 : ', error.response ? error.response.data : error.message);
     }
 };
-
-

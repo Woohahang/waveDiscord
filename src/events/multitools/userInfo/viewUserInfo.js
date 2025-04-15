@@ -2,7 +2,7 @@ const UserSettings = require('../../../services/UserSettings');
 const { EmbedBuilder } = require('discord.js');
 const generateGameFields = require('./module/generateGameFields');
 const { alreadyDeleted } = require('./module/resultMessage');
-const test = require('./module/test');
+const checkVoteStatus_Test = require('./module/checkVoteStatus_Test');
 
 // 사용자 데이터를 바탕으로 Discord 임베드를 생성하는 함수
 function userInfoEmbed(userData, member) {
@@ -29,7 +29,7 @@ module.exports = async (interaction) => {
         const member = interaction.member;
 
         // if (member.id === '282793473462239232')
-        // await test(interaction);
+        // await checkVoteStatus_Test(interaction);
 
         // 유저 인스턴스 생성 및 유저 데이터 불러오기
         const userSettings = new UserSettings(member.id);
