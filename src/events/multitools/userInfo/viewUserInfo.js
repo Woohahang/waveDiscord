@@ -1,8 +1,8 @@
 const UserSettings = require('../../../services/UserSettings');
 const { EmbedBuilder } = require('discord.js');
-const generateGameFields = require('./module/generateGameFields');
 const { alreadyDeleted } = require('./module/resultMessage');
 const checkVoteStatus_Test = require('./module/checkVoteStatus_Test');
+const buildEmbedFields = require('./module/buildEmbedFields');
 
 // 사용자 데이터를 바탕으로 Discord 임베드를 생성하는 함수
 function userInfoEmbed(userData, member) {
@@ -13,7 +13,7 @@ function userInfoEmbed(userData, member) {
         const embed = new EmbedBuilder()
             .setColor(0x0099FF)
             .setAuthor({ name: displayName, iconURL: member.user.displayAvatarURL(), url: member.user.avatarURL() })
-            .addFields(generateGameFields(userData)) // 유저 데이터를 바탕으로 필드 생성
+            .addFields(buildEmbedFields(userData))
             .setTimestamp(new Date(userData.updatedAt)) // 마지막 업데이트 시간 설정
             .setFooter({ text: '―――――――― update', iconURL: 'https://drive.google.com/uc?export=view&id=19W-rsIvrkFJSJcZ7-PHXOfZcPRO1HYTi' });
 
