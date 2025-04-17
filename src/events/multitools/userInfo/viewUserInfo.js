@@ -1,19 +1,19 @@
 const UserSettings = require('../../../services/UserSettings');
 const { EmbedBuilder } = require('discord.js');
 const { alreadyDeleted } = require('./module/resultMessage');
-const checkVoteStatus_Test = require('./module/checkVoteStatus_Test');
-const buildEmbedFields = require('./module/buildEmbedFields');
+const buildUserDataFields = require('../../../shared/embed/buildUserDataFields');
+// const checkVoteStatus_Test = require('./module/checkVoteStatus_Test'); // 개발
 
 // 사용자 데이터를 바탕으로 Discord 임베드를 생성하는 함수
 function userInfoEmbed(userData, member) {
     try {
-        // 서버 별명 없으면 글로벌 이름 사용
+        // 유저의 서버 별명이 없다면 글로벌 이름을 사용합니다
         const displayName = member.nickname ? member.nickname : member.user.globalName;
 
         const embed = new EmbedBuilder()
             .setColor(0x0099FF)
             .setAuthor({ name: displayName, iconURL: member.user.displayAvatarURL(), url: member.user.avatarURL() })
-            .addFields(buildEmbedFields(userData))
+            .addFields(buildUserDataFields(userData))
             .setTimestamp(new Date(userData.updatedAt)) // 마지막 업데이트 시간 설정
             .setFooter({ text: '―――――――― update', iconURL: 'https://drive.google.com/uc?export=view&id=19W-rsIvrkFJSJcZ7-PHXOfZcPRO1HYTi' });
 
@@ -27,9 +27,6 @@ function userInfoEmbed(userData, member) {
 module.exports = async (interaction) => {
     try {
         const member = interaction.member;
-
-        // if (member.id === '282793473462239232')
-        // await checkVoteStatus_Test(interaction);
 
         // 유저 인스턴스 생성 및 유저 데이터 불러오기
         const userSettings = new UserSettings(member.id);
