@@ -1,4 +1,4 @@
-const emojiId = require('../../events/voiceChannelEmbed/module/emojiId');
+const emojiId = require('../../shared/discord/emojiId');
 const getGamesLink = require('../../events/voiceChannelEmbed/module/getGamesLink');
 
 /**
