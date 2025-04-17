@@ -1,5 +1,5 @@
 // const GuildSettings = require('../../../../services/GuildSettings');
-// const filterOptions = require('../../../../module/data/filterOptions');
+// const filterKeysByValue = require('../../../../module/data/filterKeysByValue');
 // const emojiRegister = require('../emojiModule/emojiRegister');
 
 /*
@@ -17,7 +17,7 @@
 //         const guildEmojis = await guild.emojis.fetch();
 
 //         // 길드에 나타나도록 설정 된 게임 이름들
-//         const trueValueKeys = filterOptions(guildData, true);
+//         const trueValueKeys = filterKeysByValue(guildData, true);
 
 //         // 이모지 등록
 //         emojiRegister(guild, guildEmojis, trueValueKeys);

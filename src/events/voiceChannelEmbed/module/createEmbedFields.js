@@ -1,6 +1,6 @@
 const platformNames = require('../../../constants/platformNames');
 const platforms = require('../../../constants/platforms');
-const filterOptions = require('../../../module/data/filterOptions');
+const filterKeysByValue = require('../../../shared/utils/filterKeysByValue');
 const getGamesLink = require('../../voiceChannelEmbed/module/getGamesLink');
 const emojiId = require('../../../shared/discord/emojiId');
 
@@ -10,7 +10,7 @@ function createEmbedFields(userData, guildData) {
     const fields = [];
 
     // 길드에 보이도록 설정된 게임들을 필터링합니다.
-    const displayedGames = filterOptions(guildData, true);
+    const displayedGames = filterKeysByValue(guildData, true);
 
     // 유저 데이터에 닉네임이 있는 게임들만 필터링합니다.
     const gamesWithData = displayedGames.filter(game => userData[game].length > 0);

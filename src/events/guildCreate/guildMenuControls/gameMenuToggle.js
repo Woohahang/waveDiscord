@@ -4,7 +4,7 @@ const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder
 const GuildSettings = require('../../../services/GuildSettings');
 const checkAdminRole = require('../../../module/role/checkAdminRole');
 const { gameLabels, description } = require('../../../module/games/gameData');
-const filterOptions = require('../../../module/data/filterOptions');
+const filterKeysByValue = require('../../../shared/utils/filterKeysByValue');
 
 const resetMenuSelection = require('../../../module/common/resetMenuSelection');
 
@@ -51,11 +51,11 @@ module.exports = async (interaction) => {
 
         switch (value) {
             case 'showMenu':
-                options = filterOptions(guildData, false);
+                options = filterKeysByValue(guildData, false);
                 break;
 
             case 'hideMenu':
-                options = filterOptions(guildData, true);
+                options = filterKeysByValue(guildData, true);
                 break;
 
             default:

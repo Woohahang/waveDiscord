@@ -1,5 +1,5 @@
 const buildFieldsByPlatform = require('./buildFieldsByPlatform');
-const filterOptions = require('../../module/data/filterOptions');
+const filterKeysByValue = require('../../shared/utils/filterKeysByValue');
 
 /**
  * 유저 데이터와 길드 설정을 기반으로 디스코드 임베드 필드를 생성합니다.
@@ -15,7 +15,7 @@ const filterOptions = require('../../module/data/filterOptions');
 function buildUserAndGuildFields(userData, guildData) {
     try {
         // 길드 설정에 따라 표시할 게임 목록을 필터링합니다.
-        const displayedGames = filterOptions(guildData, true);
+        const displayedGames = filterKeysByValue(guildData, true);
 
         // 유저가 닉네임을 등록한 게임들만 필터링합니다.
         const gamesWithData = displayedGames.filter(key => userData[key]?.length > 0);

@@ -1,6 +1,6 @@
 // const GuildSettings = require('../../../../services/GuildSettings');
 // const EmojiSlotError = require('../../../../utils/errors/EmojiSlotError');
-// const filterOptions = require('../../../../module/data/filterOptions');
+// const filterKeysByValue = require('../../../../module/data/filterKeysByValue');
 // const emojiRegister = require('../emojiModule/emojiRegister');
 // const emojiDelete = require('../emojiModule/emojiDelete');
 // const emojiCapacityCheck = require('../emojiModule/emojiCapacityCheck');
@@ -20,7 +20,7 @@
 //         const guildEmojis = await guild.emojis.fetch();
 
 //         // 길드에 보이도록 설정 된 모든 게임
-//         const trueValueKeys = filterOptions(guildData, true);
+//         const trueValueKeys = filterKeysByValue(guildData, true);
 
 //         // 이모지 제거
 //         await emojiDelete(guild, guildEmojis, trueValueKeys);
