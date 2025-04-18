@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const GuildSettings = require('../../../services/GuildSettings');
 const UserSettings = require('../../../services/UserSettings');
-const createEmbedFields = require('../module/createEmbedFields');
+const buildUserAndGuildFields = require('../../../shared/embed/buildUserAndGuildFields');
 const logUserInfo = require('../../../utils/log/logUserInfo');
 
 function createEmbed(member, fields, { updatedAt }) {
@@ -36,7 +36,7 @@ module.exports = async (newState) => {
         const guildData = await guildSettings.loadOrCreate();
 
         // 임베드 필드 생성를 만듭니다.
-        let fields = createEmbedFields(userData, guildData);
+        let fields = buildUserAndGuildFields(userData, guildData);
         if (!fields) return;
 
         // 임베드를 생성합니다.
