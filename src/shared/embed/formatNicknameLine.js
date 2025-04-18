@@ -1,5 +1,5 @@
 const emojiId = require('../../shared/discord/emojiId');
-const getGamesLink = require('../../events/voiceChannelEmbed/module/getGamesLink');
+const getGamesLink = require('../../shared/game/getGamesLink');
 
 /**
  * 게임 종류에 따라 닉네임을 이모지와 함께 포맷팅합니다.
