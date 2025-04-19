@@ -1,8 +1,6 @@
-// gameMenuToggle.js
-
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
 const GuildSettings = require('../../../services/GuildSettings');
-const checkAdminRole = require('../../../module/role/checkAdminRole');
+const isAdmin = require('../../../shared/utils/isAdmin');
 const { gameLabels, description } = require('../../../module/games/gameData');
 const filterKeysByValue = require('../../../shared/utils/filterKeysByValue');
 
@@ -37,7 +35,7 @@ module.exports = async (interaction) => {
         await resetMenuSelection(interaction);
 
         // 사용자 권한 체크
-        if (!checkAdminRole(interaction)) {
+        if (!isAdmin(interaction.member)) {
             await interaction.reply({ content: '관리자 메뉴에 접근할 권한이 없습니다.', ephemeral: true });
             return;
         };

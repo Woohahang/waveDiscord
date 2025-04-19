@@ -1,5 +1,5 @@
 const GuildSettings = require('../../../../services/GuildSettings');
-const checkAdminRole = require('../../../../module/role/checkAdminRole'); // 관리자 체크
+const isAdmin = require('../../../../shared/utils/isAdmin');
 const adminChannelUpDate = require('../updateModule/adminChannelUpDate'); // 관리자 채널 업데이트
 const mainChannelUpdate = require('../updateModule/mainChannelUpdate'); // 메인 채널 업데이트
 const saveGuildOwnerData = require('../../setupChannel/guildOwnerData/handler/saveGuildOwnerData'); // 길드 오너 ID 및 길드 이름 업데이트
@@ -8,7 +8,7 @@ const { updateCompleted, updateFailed } = require('../updateModule/message'); //
 module.exports = async (interaction) => {
     try {
         // 사용자 권한 체크
-        if (!checkAdminRole(interaction)) {
+        if (!isAdmin(interaction.member)) {
             await interaction.reply({ content: '관리자 메뉴에 접근할 권한이 없습니다.', ephemeral: true });
             return;
         };
