@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const getDisplayName = require('../utils/getDisplayName');
+const WAVE_ICON_URL = require('../../constants/waveIcon');
 
 /**
  * 유저 데이터를 바탕으로 Discord Embed를 생성합니다.
@@ -19,7 +20,7 @@ function buildUserInfoEmbed(member, fields, updatedAt) {
             .setAuthor({ name: displayName, iconURL: member.user.displayAvatarURL(), url: member.user.avatarURL() })
             .addFields(fields)
             .setTimestamp(updatedAt)
-            .setFooter({ text: '―――――――― update', iconURL: 'https://drive.google.com/uc?export=view&id=19W-rsIvrkFJSJcZ7-PHXOfZcPRO1HYTi' });
+            .setFooter({ text: '―――――――― update', iconURL: WAVE_ICON_URL });
 
     } catch (error) {
         console.error('[userInfoEmbed] 유저 Embed 생성 중 예외 발생:', {

@@ -1,19 +1,8 @@
-const { EmbedBuilder } = require('discord.js');
 const GuildSettings = require('../../../services/GuildSettings');
 const UserSettings = require('../../../services/UserSettings');
+const buildUserInfoEmbed = require('../../../shared/embed/buildUserInfoEmbed')
 const buildUserAndGuildFields = require('../../../shared/embed/buildUserAndGuildFields');
 const logUserInfo = require('../../../utils/log/logUserInfo');
-
-function createEmbed(member, fields, { updatedAt }) {
-    const displayName = member.nickname ? member.nickname : member.user.globalName;
-
-    return new EmbedBuilder()
-        .setColor(0x0099FF)
-        .setAuthor({ name: displayName, iconURL: member.user.displayAvatarURL(), url: member.user.avatarURL() })
-        .addFields(fields)
-        .setTimestamp(new Date(updatedAt))
-        .setFooter({ text: '―――――― update', iconURL: 'https://drive.google.com/uc?export=view&id=19W-rsIvrkFJSJcZ7-PHXOfZcPRO1HYTi' });
-};
 
 /**
  * 사용자가 음성 채널에 참여할 때 호출되는 주요 함수입니다.
@@ -39,8 +28,11 @@ module.exports = async (newState) => {
         let fields = buildUserAndGuildFields(userData, guildData);
         if (!fields) return;
 
+        // 마지막 업데이트 시간을 Date 객체로 변환합니다.
+        const updatedAt = new Date(userData.updatedAt);
+
         // 임베드를 생성합니다.
-        const embed = createEmbed(member, fields, userData);
+        const embed = buildUserInfoEmbed(member, fields, updatedAt);
 
         // 임베드를 전송합니다.
         await channel.send({ embeds: [embed] });
