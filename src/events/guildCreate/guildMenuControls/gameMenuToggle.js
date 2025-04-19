@@ -3,7 +3,6 @@ const GuildSettings = require('../../../services/GuildSettings');
 const isAdmin = require('../../../shared/utils/isAdmin');
 const { gameLabels, description } = require('../../../module/games/gameData');
 const filterKeysByValue = require('../../../shared/utils/filterKeysByValue');
-
 const resetMenuSelection = require('../../../shared/utils/resetMenuSelection');
 
 // 메뉴 선택을 위한 ActionRowBuilder 구성 함수
