@@ -1,7 +1,7 @@
 // nickNameModal.js
 
 const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, InteractionType } = require('discord.js');
-const resetMenuSelection = require('../../../module/common/resetMenuSelection');
+const resetMenuSelection = require('../../../shared/utils/resetMenuSelection');
 const { description } = require('../../../module/games/gameData');
 const logUserInfo = require('../../../utils/log/logUserInfo');
 

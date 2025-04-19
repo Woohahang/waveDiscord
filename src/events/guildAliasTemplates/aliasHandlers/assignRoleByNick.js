@@ -1,5 +1,5 @@
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
-const resetMenuSelection = require('../../../module/common/resetMenuSelection');
+const resetMenuSelection = require('../../../shared/utils/resetMenuSelection');
 const { resetState } = require('../aliasModules/state');
 
 function createSelectMenu() {

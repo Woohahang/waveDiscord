@@ -4,7 +4,7 @@ const isAdmin = require('../../../shared/utils/isAdmin');
 const { gameLabels, description } = require('../../../module/games/gameData');
 const filterKeysByValue = require('../../../shared/utils/filterKeysByValue');
 
-const resetMenuSelection = require('../../../module/common/resetMenuSelection');
+const resetMenuSelection = require('../../../shared/utils/resetMenuSelection');
 
 // 메뉴 선택을 위한 ActionRowBuilder 구성 함수
 function buildMenuActionRow(options, value) {
