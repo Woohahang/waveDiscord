@@ -8,8 +8,6 @@ const handleGuildCreate = require('./handlers/guildCreate');
 const handleinteraction = require('./handlers/interaction');
 const handleVoiceStateUpdate = require('./handlers/voiceStateUpdate');
 const handleGuildMemberUpdate = require('./handlers/guildMemberUpdate');
-const handleGuildEmojiDelete = require('./handlers/guildEmojiDelete');
-
 const handleMessageReactionAdd = require('./handlers/messageReactionAdd');
 
 
@@ -72,15 +70,6 @@ client.on(Events.GuildMemberUpdate, async (oldMember, newMember) => {
 
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
     // handleMessageReactionAdd(reaction, user);
-});
-
-
-// 이모지 삭제와 추가에 대한 함수 이름 재정의 필요
-client.on(Events.GuildEmojiDelete, async (emoji) => {
-    handleGuildEmojiDelete(emoji);
-});
-client.on(Events.GuildEmojiCreate, async (emoji) => {
-    handleGuildEmojiDelete(emoji);
 });
 
 
