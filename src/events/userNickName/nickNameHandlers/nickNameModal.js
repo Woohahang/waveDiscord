@@ -38,7 +38,7 @@ module.exports = async (interaction) => {
     try {
         // 메시지 타입이 0(일반 텍스트 메시지)인 경우에만 메뉴 선택을 초기화합니다. 슬래시 커맨드는 작동하지 않습니다.
         if (interaction.message.type === 0) {
-            await resetMenuSelection(interaction);
+            await resetMenuSelection(interaction.message);
         };
 
         // 사용자의 상호작용에서 게임 제목을 추출합니다.

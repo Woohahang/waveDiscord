@@ -50,7 +50,7 @@ module.exports = async (interaction) => {
         resetState();
 
         // 선택 메뉴 초기화
-        await resetMenuSelection(interaction);
+        await resetMenuSelection(interaction.message);
 
         const guildName = interaction.guild.name;
         const row = createSelectMenu();

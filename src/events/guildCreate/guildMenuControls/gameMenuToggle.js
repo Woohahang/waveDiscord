@@ -31,7 +31,7 @@ function buildMenuActionRow(options, value) {
 module.exports = async (interaction) => {
     try {
         // 메뉴 초기화
-        await resetMenuSelection(interaction);
+        await resetMenuSelection(interaction.message);
 
         // 사용자 권한 체크
         if (!isAdmin(interaction.member)) {
