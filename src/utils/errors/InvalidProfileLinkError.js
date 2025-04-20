@@ -1,5 +1,3 @@
-// InvalidProfileLinkError.js
-
 class InvalidProfileLinkError extends Error {
     constructor(message) {
         super(message);

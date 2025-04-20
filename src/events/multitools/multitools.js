@@ -1,5 +1,3 @@
-// multitools.js
-
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
 
 const multitoolsMenu = new StringSelectMenuBuilder()
@@ -14,10 +12,6 @@ const multitoolsMenu = new StringSelectMenuBuilder()
             .setLabel('내 정보 삭제')
             .setDescription('등록 되어 있는 모든 정보를 삭제합니다.')
             .setValue('deleteUserInfo'),
-        // new StringSelectMenuOptionBuilder()
-        //     .setLabel('팀 섞기')
-        //     .setDescription('현재 음성 채팅방의 인원에서 랜덤으로 팀을 구성합니다.')
-        //     .setValue('teamShuffler'),
     );
 
 let row = new ActionRowBuilder()
@@ -25,8 +19,6 @@ let row = new ActionRowBuilder()
 
 module.exports = async (interaction) => {
     try {
-
-        // row 전송
         await interaction.reply({
             components: [row],
             ephemeral: true

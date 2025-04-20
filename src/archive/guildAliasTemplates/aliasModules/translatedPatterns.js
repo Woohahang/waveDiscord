@@ -1,4 +1,4 @@
-const { getState } = require('../aliasModules/state');
+const { getState } = require('./state');
 const patternKoreanMap = require('./patternKoreanMap');
 
 function translatedPatterns() {

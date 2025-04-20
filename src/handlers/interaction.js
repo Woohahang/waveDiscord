@@ -20,17 +20,8 @@ const updateChannels = require('../events/guildCreate/update/updateHandler/updat
 /* 멀티 툴 */
 const multitools = require('../events/multitools/multitools');
 
-const assignRoleByNick = require('../events/guildAliasTemplates/aliasHandlers/assignRoleByNick');
-const setAliasSeparator = require('../events/guildAliasTemplates/aliasHandlers/setAliasSeparator');
-const nicknameRoleAssigner = require('../events/guildAliasTemplates/aliasHandlers/nicknameRoleAssigner');
-const nicknameTemplateSaver = require('../events/guildAliasTemplates/aliasHandlers/nicknameTemplateSaver');
-
 const viewUserInfo = require('../events/multitools/userInfo/viewUserInfo');
 const deleteUserInfo = require('../events/multitools/userInfo/deleteUserInfo');
-
-
-/* 테스트 기능입니다. */
-const profileManager = require('../events/userChannel/profile/handler/profileManager');
 
 module.exports = async (interaction) => {
     try {
@@ -87,8 +78,6 @@ async function handleButtonInteraction(interaction) {
 
             case 'multitoolsButton':
                 multitools(interaction);
-
-                // await profileManager(interaction); // 테스트 기능입니다.
                 break;
 
             default:
@@ -135,27 +124,12 @@ async function handleStringSelectMenu(interaction) {
                 // 게임 메뉴 띄우기
                 if (values.includes('showMenu') || values.includes('hideMenu'))
                     gameMenuToggle(interaction);
-
-                if (values.includes('aliasTemplates')) // 서버 별명 양식 선택
-                    assignRoleByNick(interaction);
                 break;
 
             // 게임 메뉴 DB에 저장하고 서버 채널 업데이트
             case 'showMenu':
             case 'hideMenu':
                 toggleMenuHandler(interaction);
-                break;
-
-            case 'aliasTemplateSelect': // 서버 별명 문단 나누기 선택
-                setAliasSeparator(interaction);
-                break;
-
-            case 'aliasSeparatorMenu': // 서버 별명 문단 나누기 선택
-                nicknameRoleAssigner(interaction);
-                break;
-
-            case 'roleAssignment': // 서버 별명에 대한 역할 설정 및 DB 저장
-                nicknameTemplateSaver(interaction);
                 break;
 
             case 'multitoolsMenu':
