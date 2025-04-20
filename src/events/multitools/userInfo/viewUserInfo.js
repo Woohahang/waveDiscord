@@ -1,7 +1,7 @@
 const UserSettings = require('../../../services/UserSettings');
 const { alreadyDeleted } = require('./module/resultMessage');
-const buildUserDataFields = require('../../../shared/embed/buildUserDataFields');
-const buildUserInfoEmbed = require('../../../shared/embed/buildUserInfoEmbed');
+const buildUserDataFields = require('../../../module/embed/buildUserDataFields');
+const buildUserInfoEmbed = require('../../../module/embed/buildUserInfoEmbed');
 
 /**
  * 사용자 정보를 기반으로 Discord 임베드를 생성하고 응답하는 함수
