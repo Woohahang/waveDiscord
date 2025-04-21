@@ -1,6 +1,7 @@
 const LeagueOfLegendsTier = require('./leagueOfLegendsTier');
 
 class LeagueOfLegendsTierService {
+
     /**
      * 유저의 리그오브레전드 티어 정보를 저장하거나 업데이트합니다.
      * 

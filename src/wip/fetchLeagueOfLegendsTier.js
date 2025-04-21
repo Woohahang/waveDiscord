@@ -36,15 +36,16 @@ async function fetchLeagueTier(nickname) {
         if (!soloRank) return null;
 
         return {
-            tier: soloRank.tier,               // 예: 'GOLD'
-            rank: soloRank.rank,               // 예: 'I'
-            leaguePoints: soloRank.leaguePoints,
-            wins: soloRank.wins,
-            losses: soloRank.losses
+            tier: soloRank.tier,                 // 'Diamond', 'Platinum', 'Gold' ..
+            rank: soloRank.rank,                 // 'I', 'II', 'III', 'IV'
+            leaguePoints: soloRank.leaguePoints, // 20LP ..
         };
 
     } catch (error) {
-        console.error('[fetchLeagueTier] 티어 조회 실패:', error);
+        console.error('[fetchLeagueTier] 티어 조회 실패:', {
+            nickname,
+            error
+        });
         return null;
     }
 }

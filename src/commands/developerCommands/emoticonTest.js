@@ -14,7 +14,7 @@ module.exports = {
             const userId = interaction.user.id;
             if (userId !== developerId) return;
 
-            const nickname = '겸댕밍#KR1';
+            const nickname = '누 너#0828';
             const tierData = await fetchLeagueOfLegendsTier(nickname);
 
             if (!tierData) {
@@ -22,7 +22,7 @@ module.exports = {
                 return;
             }
 
-            await saveLeagueOfLegendsTier(userId, nickname, tierData);
+            await saveLeagueOfLegendsTier.saveTier(userId, nickname, tierData);
 
             await interaction.reply({
                 content: `겸댕밍님의 티어가 저장되었습니다: ${tierData.tier} ${tierData.rank} (${tierData.leaguePoints}LP)`,
@@ -30,7 +30,7 @@ module.exports = {
             });
 
         } catch (error) {
-            console.log('테스트 명령어 실행 중 오류가 발생했습니다.');
+            console.log('테스트 명령어 실행 중 오류가 발생했습니다.', error);
         };
 
     }
