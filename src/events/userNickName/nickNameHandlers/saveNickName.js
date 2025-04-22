@@ -1,58 +1,30 @@
 const UserSettings = require('../../../services/UserSettings');
-const formatRiotTag = require('../nickNameModules/formatRiotTag');
 const statusMessage = require('../nickNameModules/statusMessage');
-const fetchSteamProfile = require('../nickNameModules/fetchSteamProfile');
 const logUserInfo = require('../../../utils/log/logUserInfo');
 const errorMessage = require('../nickNameModules/errorMessage');
+const processNickname = require('../nickNameModules/processNickname');
 
-
+/**
+ * 사용자의 닉네임 입력을 처리하고, 게임 종류에 따라 전처리 후 DB에 저장합니다.
+ */
 module.exports = async (interaction) => {
     try {
-        // '업데이트 중' 메시지 전송
+        // 응답을 지연시켜 '처리 중...' 표시
         await interaction.deferReply({ ephemeral: true });
 
+        // 유저 ID 및 게임 종류, 입력된 닉네임 추출
         const userId = interaction.member.id;
+        const gameType = interaction.customId.split('_')[1];
+        const rawNickname = interaction.fields.getTextInputValue('nicknameInput');
 
-        // customId, submitNickname_게임종류
-        const customId = interaction.customId;
+        // 닉네임 전처리
+        const nickname = await processNickname(gameType, rawNickname);
 
-        // steam, leagueOfLegends 등등 ..
-        const game = customId.split('_')[1];
-
-        // 닉네임 가지고 오기
-        let nickname = interaction.fields.getTextInputValue(customId);
-
-        switch (game) {
-            // 스팀
-            case 'steam':
-                nickname = await fetchSteamProfile(nickname);
-                break;
-
-            // 라이엇 게임즈
-            case 'leagueOfLegends':
-            case 'teamfightTactics':
-            case 'valorant':
-                nickname = formatRiotTag(nickname);
-                break;
-
-            // 각 게임마다 API 상호작용 추가할 예정.
-            case 'steamBattleGround':
-            case 'kakaoBattleGround':
-            case 'blizzard':
-            case 'overWatchTwo':
-            case 'lostArk':
-            case 'rainbowSix':
-                break;
-
-            default:
-                throw new Error('알 수 없는 게임 종류 game : ', game);
-        };
-
-        // 인스턴스 생성 및 닉네임 저장
+        // 유저 설정 객체 생성 및 닉네임 저장
         const userSettings = new UserSettings(userId);
-        const status = await userSettings.saveNickname(game, nickname);
+        const status = await userSettings.saveNickname(gameType, nickname);
 
-        // 메세지 전송
+        // 결과 메시지 전송
         await interaction.editReply({ content: statusMessage(status), ephemeral: true });
 
     } catch (error) {
@@ -67,7 +39,6 @@ module.exports = async (interaction) => {
             default:
                 logUserInfo(interaction);
                 console.error('saveNickname.js 에러 : ', error);
-                await interaction.editReply({ content: '알 수 없는 이유로 에러가 발생했습니다. 문제가 지속되면 Wave 디스코드 채널로 문의해 주세요.', ephemeral: true });
         };
 
     };

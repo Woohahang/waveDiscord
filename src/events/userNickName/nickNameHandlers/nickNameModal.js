@@ -13,7 +13,7 @@ function buildModal(gameTitle) {
             .setCustomId('submitNickname_' + gameTitle);
 
         const input = new TextInputBuilder()
-            .setCustomId('submitNickname_' + gameTitle)
+            .setCustomId('nicknameInput')
             .setLabel(gameTitle === 'steam' ? '✔️ 스팀 프로필 주소를 작성해주세요.' : '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.')
             .setStyle(TextInputStyle.Short);
 
