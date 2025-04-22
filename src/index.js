@@ -1,8 +1,11 @@
+require('module-alias/register');
+
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const { token } = require('../../config.json');
 const connectToDatabase = require('./mongoDB/database.js');
+
 
 const handleGuildCreate = require('./handlers/guildCreate');
 const handleinteraction = require('./handlers/interaction');

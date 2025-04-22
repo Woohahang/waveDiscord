@@ -1,5 +1,5 @@
-const GAME_TYPES = require('../../../constants/gameTypes');
-const RIOT_GAMES = require('../../../constants/riotGames');
+const GAME_TYPES = require('@constants/gameTypes');
+const RIOT_GAMES = require('@constants/riotGames');
 const formatRiotTag = require('./formatRiotTag');
 const fetchSteamProfile = require('./fetchSteamProfile');
 
