@@ -33,18 +33,16 @@ async function fetchLeagueTier(nickname) {
 
         const soloRank = leagueRes.data.find(entry => entry.queueType === 'RANKED_SOLO_5x5');
 
-        if (!soloRank) return null;
-
         return {
-            tier: soloRank.tier,                 // 'Diamond', 'Platinum', 'Gold' ..
-            rank: soloRank.rank,                 // 'I', 'II', 'III', 'IV'
-            leaguePoints: soloRank.leaguePoints, // 20LP ..
+            summonerName: nickname,
+            tier: soloRank?.tier ?? null,                 // 'DIAMOND', 'PLATINUM', 'GOLD' ..
+            rank: soloRank?.rank ?? null,                 // 'I', 'II', 'III', 'IV'
+            leaguePoints: soloRank?.leaguePoints ?? null, // 20LP ..
         };
 
     } catch (error) {
         console.error('[fetchLeagueTier] 티어 조회 실패:', {
             nickname,
-            error
         });
         return null;
     }

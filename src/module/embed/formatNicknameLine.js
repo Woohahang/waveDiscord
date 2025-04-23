@@ -16,8 +16,13 @@ function formatNicknameLine(game, nickname) {
 
     if (game === 'steam')
         return `${emoji} [${nickname.playerName}](${nickname.profileLink})`;
+
+    else if (game === 'leagueOfLegends')
+        return `${emoji} [${nickname.summonerName}](${getGamesLink(game, nickname.summonerName)})`;
+
     else if (['overWatchTwo', 'blizzard'].includes(game))
         return `${emoji} ${nickname}`;
+
     else
         return `${emoji} [${nickname}](${getGamesLink(game, nickname)})`;
 }

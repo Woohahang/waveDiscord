@@ -1,5 +1,7 @@
 const userSchema = require('../mongoDB/userSchema');
 const UserCacheManager = require('./UserCacheManager');
+const fetchLeagueOfLegendsTier = require('../wip/fetchLeagueOfLegendsTier');
+const GAME_TYPES = require('../constants/gameTypes');
 
 class UserSettings {
     constructor(userId) {
@@ -42,14 +44,35 @@ class UserSettings {
                 return 'nicknameDuplicate';
             }
 
+            if (
+                game === GAME_TYPES.LEAGUE_OF_LEGENDS &&
+                userData[game].some(entry => entry.summonerName === nickname)
+            ) {
+                return 'nicknameDuplicate';
+            }
+
             if (game !== 'steam' && userData[game].length >= 5) {
                 return 'nicknameLimitExceeded';
             }
 
             switch (game) {
-                case 'steam':
+                case GAME_TYPES.STEAM:
                     userData.steam = nickname;
                     break;
+
+                case GAME_TYPES.LEAGUE_OF_LEGENDS:
+                    const tierInfo = await fetchLeagueOfLegendsTier(nickname);
+
+                    const newEntry = {
+                        summonerName: nickname,
+                        tier: tierInfo?.tier || null,
+                        rank: tierInfo?.rank || null,
+                        leaguePoints: tierInfo?.leaguePoints ?? null,
+                    };
+
+                    userData[game].push(newEntry);
+                    break;
+
                 default:
                     userData[game].push(nickname);
                     break;
@@ -59,7 +82,12 @@ class UserSettings {
             UserCacheManager.set(this.userId, userData);
             return 'saveSuccess';
         } catch (error) {
-            console.error('UserSettings.saveNickname 예외:', error);
+            console.error('[saveNickname] 유저 닉네임 저장 중 예외 발생:', {
+                game,
+                nickname,
+                error
+            });
+            throw error;
         }
     }
 
@@ -72,7 +100,17 @@ class UserSettings {
                 const [game, nickname] = item.split(':');
                 if (game === 'steam') {
                     userData[game] = [];
-                } else {
+                }
+
+                else if (game === GAME_TYPES.LEAGUE_OF_LEGENDS) {
+
+                    const index = userData[game].findIndex(entry => entry.summonerName === nickname);
+                    if (index > -1) {
+                        userData[game].splice(index, 1);
+                    }
+                }
+
+                else {
                     const index = userData[game].indexOf(nickname);
                     if (index > -1) {
                         userData[game].splice(index, 1);
@@ -85,6 +123,8 @@ class UserSettings {
             return 'removalSuccessful';
         } catch (error) {
             console.error('UserSettings.removeNickname 예외:', error);
+
+            throw error;
         }
     }
 

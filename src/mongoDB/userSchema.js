@@ -2,19 +2,31 @@ const mongoose = require('mongoose');
 
 let userSchema = new mongoose.Schema({
     // 유저 Id 입니다.
-    userId: String,
-
-    // 유저 프로필 정보를 다루는 필드입니다.
-    // 프로필 테두리 색상 저장
-    // 한국 디스코드 리스트에 내 봇을 눌러준 하트 횟수 저장
-
+    userId: { type: String, required: true },
 
     // 유저의 게임 닉네임들을 다루는 필드입니다.
     steam: [{
         playerName: String,
         profileLink: String
     }],
-    leagueOfLegends: [String],
+    leagueOfLegends: [{
+        summonerName: {
+            type: String,
+            required: true
+        },
+        tier: {
+            type: String,
+            enum: ["IRON", "BRONZE", "SILVER", "GOLD", "PLATINUM", "DIAMOND", "MASTER", "GRANDMASTER", "CHALLENGER"]
+        },
+        rank: {
+            type: String,
+            enum: ["I", "II", "III", "IV"]
+        },
+        leaguePoints: {
+            type: Number,
+            default: 0,
+        }
+    }],
     teamfightTactics: [String],
     valorant: [String],
     steamBattleGround: [String],
@@ -34,6 +46,6 @@ userSchema.pre('save', function (next) {
     next();
 });
 
-const UserNickname = mongoose.model('userNicknameDB', userSchema);
+const User = mongoose.model('User', userSchema);
 
-module.exports = UserNickname;
+module.exports = User;
