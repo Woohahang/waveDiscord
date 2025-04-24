@@ -1,9 +1,4 @@
 const { SlashCommandBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
-const { developerId } = require('../../../../config.json');
-const fetchLeagueOfLegendsTier = require('../../wip/fetchLeagueOfLegendsTier');
-const saveLeagueOfLegendsTier = require('../../wip/saveLeagueOfLegendsTier');
-const UserSettings = require('../../services/UserSettings');
-const migrateData = require('../../wip/migrateData');
 
 module.exports = {
     data: new SlashCommandBuilder()
