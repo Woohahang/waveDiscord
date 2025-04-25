@@ -1,5 +1,5 @@
 require('module-alias/register');
-
+const cron = require('node-cron');
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
@@ -61,6 +61,14 @@ client.on(Events.InteractionCreate, async interaction => {
 
 client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
     handleVoiceStateUpdate(oldState, newState);
+});
+
+const updateLoLTiersJob = require('./events/ranking/updateLoLTiers.js');
+
+// 10분마다 실행되는 크론 잡 설정 (매 10분 0초에 실행)
+cron.schedule('*/10 * * * *', async () => {
+    console.log('[⏰] 롤 티어 자동 업데이트 실행');
+    await updateLoLTiersJob();
 });
 
 client.login(token);

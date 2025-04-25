@@ -33,6 +33,24 @@ class UserSettings {
         });
     }
 
+    static async getUsersForLoLTierUpdate() {
+        try {
+            // 롤 닉네임이 하나 이상 있는 유저 중, 업데이트가 오래된 3명
+            return await userSchema.find({
+                leagueOfLegends: {
+                    $elemMatch: {
+                        summonerName: { $exists: true, $ne: null }
+                    }
+                }
+            })
+                .sort({ updatedAt: 1 })
+                .limit(3);
+
+        } catch (err) {
+            console.error('Error fetching users for LoL tier update:', err);
+        }
+    }
+
     async loadUserData() {
         let userData = UserCacheManager.get(this.userId);
         if (!userData) {
