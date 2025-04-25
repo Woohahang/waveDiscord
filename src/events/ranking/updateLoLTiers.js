@@ -10,17 +10,11 @@ module.exports = async function updateLoLTiersJob() {
     for (const user of users) {
         let updated = false;
 
-        console.log('user :', user);
-
         // 유저의 롤 닉네임 중 랭크 정보가 있는 것만 업데이트
         for (let entry of user.leagueOfLegends) {
-            console.log('entry :', entry);
 
             const latestTier = await fetchLeagueTier(entry.summonerName);
             if (!latestTier) continue;
-
-            console.log('latestTier :', latestTier);
-
 
             // 기존 정보와 비교해 변경되었을 때만 업데이트
             if (
