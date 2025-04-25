@@ -1,6 +1,6 @@
 const userSchema = require('../mongoDB/userSchema');
 const UserCacheManager = require('./UserCacheManager');
-const fetchLeagueOfLegendsTier = require('../wip/fetchLeagueOfLegendsTier');
+const fetchLeagueOfLegendsTier = require('../shared/api/fetchLeagueOfLegendsTier');
 const GAME_TYPES = require('../constants/gameTypes');
 
 class UserSettings {
@@ -20,6 +20,17 @@ class UserSettings {
             UserCacheManager.set(this.userId, userData);
         }
         return userData;
+    }
+
+    static async findUsersWithLoLTierByIds(memberIds) {
+        return await userSchema.find({
+            userId: { $in: memberIds },
+            leagueOfLegends: {
+                $elemMatch: {
+                    tier: { $ne: null }
+                }
+            }
+        });
     }
 
     async loadUserData() {

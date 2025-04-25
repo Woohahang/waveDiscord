@@ -16,7 +16,7 @@ let userSchema = new mongoose.Schema({
         },
         tier: {
             type: String,
-            enum: ["IRON", "BRONZE", "SILVER", "GOLD", "PLATINUM", "DIAMOND", "MASTER", "GRANDMASTER", "CHALLENGER"]
+            enum: ["IRON", "BRONZE", "SILVER", "GOLD", "PLATINUM", "EMERALD", "DIAMOND", "MASTER", "GRANDMASTER", "CHALLENGER"]
         },
         rank: {
             type: String,

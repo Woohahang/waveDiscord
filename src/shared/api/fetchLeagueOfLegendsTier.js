@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { RIOT_API_KEY } = require('../../../config.json');
+const { RIOT_API_KEY } = require('../../../../config.json');
 
 /**
  * 라이엇 닉네임으로 리그오브레전드 티어 정보를 가져옵니다.
