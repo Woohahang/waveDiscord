@@ -37,7 +37,7 @@ let userSchema = new mongoose.Schema({
     lostArk: [String],
 
     // 마지막 업데이트 시간을 다루는 필드입니다.
-    updatedAt: { type: Date, default: Date.now }
+    // updatedAt: { type: Date, default: Date.now }
 
 }, {
     timestamps: true // ⬅️ createdAt과 updatedAt을 자동으로 관리

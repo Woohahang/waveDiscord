@@ -15,6 +15,7 @@ module.exports = {
             // const users = await UserSettings.getUsersForLoLTierUpdate();
 
             // for (const user of users) {
+            //     console.log(user);
             //     await updateUserLoLTier(user);
             // }
 
