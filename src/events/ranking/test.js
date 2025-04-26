@@ -26,14 +26,8 @@ module.exports = async (interaction) => {
         // 객체가 없다면 null.
         if (validEntries.length === 0) return null;
 
-        // console.log('validEntries :', validEntries);
-
         // 가장 높은 티어를 선택합니다.
         const bestEntry = validEntries.reduce((prev, curr) => {
-
-            // console.log('prev :', prev);
-            // console.log('curr :', curr);
-
             return getTierScore(curr) > getTierScore(prev) ? curr : prev;
         });
 
