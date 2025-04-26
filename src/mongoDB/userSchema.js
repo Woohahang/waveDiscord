@@ -39,12 +39,14 @@ let userSchema = new mongoose.Schema({
     // 마지막 업데이트 시간을 다루는 필드입니다.
     updatedAt: { type: Date, default: Date.now }
 
+}, {
+    timestamps: true // ⬅️ createdAt과 updatedAt을 자동으로 관리
 });
 
-userSchema.pre('save', function (next) {
-    this.updatedAt = new Date();
-    next();
-});
+// userSchema.pre('save', function (next) {
+//     this.updatedAt = new Date();
+//     next();
+// });
 
 const User = mongoose.model('User', userSchema);
 
