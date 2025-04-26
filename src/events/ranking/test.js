@@ -1,7 +1,7 @@
 const UserSettings = require('../../services/UserSettings');
-const getTierScore = require('./getTierScore');
+const getTierScore = require('./modules/getTierScore');
 const getDisplayName = require('../../shared/utils/getDisplayName');
-const { TIER_ORDER } = require('./loltier');
+const { TIER_ORDER } = require('../../constants/lolTier');
 const { getLoLTierEmoji } = require('../../constants/lolTierEmoji');
 const { toPrettyRoman } = require('../../constants/roman');
 

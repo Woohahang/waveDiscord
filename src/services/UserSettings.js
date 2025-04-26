@@ -60,11 +60,24 @@ class UserSettings {
                 }
             })
                 .sort({ updatedAt: 1 })
-                .limit(1);
-
+                .limit(3);
         } catch (error) {
             console.error('[UserSettings.getUsersForLoLTierUpdate] 유저 조회 중 오류 발생:', error);
         }
+    }
+
+    static async getUserCount() {
+        try {
+            return await userSchema.countDocuments();
+        } catch (error) {
+            console.error('[UserSettings.getUserCount] 유저 수 조회 중 오류 발생:', error);
+        }
+    }
+
+    static async getUserlolCount() {
+        return await userSchema.countDocuments({
+            leagueOfLegends: { $exists: true, $not: { $size: 0 } }
+        });
     }
 
     async loadUserData() {
@@ -186,6 +199,7 @@ class UserSettings {
             return 'deleteError';
         }
     }
+
 
     getUserCount() {
         return UserCacheManager.count();

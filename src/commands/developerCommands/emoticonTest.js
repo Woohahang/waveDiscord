@@ -1,6 +1,4 @@
 const { SlashCommandBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
-const updateLoLTiers = require('../../events/ranking/updateLoLTiers');
-const updateUserLoLTier = require('../../events/ranking/modules/updateUserLoLTier');
 const UserSettings = require('../../services/UserSettings');
 
 module.exports = {
@@ -10,6 +8,9 @@ module.exports = {
 
     async execute(interaction) {
         try {
+            const userCount = await UserSettings.getUserlolCount();
+            console.log(userCount);
+
             // const userData = await userSettings.loadUserData();
 
             // const users = await UserSettings.getUsersForLoLTierUpdate();

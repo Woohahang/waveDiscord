@@ -48,7 +48,6 @@ async function fetchLeagueTier(nickname) {
             nickname,
             error
         });
-        throw error;
     }
 }
 
