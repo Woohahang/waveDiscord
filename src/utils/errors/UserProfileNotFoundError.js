@@ -1,5 +1,3 @@
-// UserProfileNotFoundError.js
-
 class UserProfileNotFoundError extends Error {
     constructor(message) {
         super(message);
