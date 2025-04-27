@@ -36,17 +36,10 @@ let userSchema = new mongoose.Schema({
     overWatchTwo: [String],
     lostArk: [String],
 
-    // 마지막 업데이트 시간을 다루는 필드입니다.
-    // updatedAt: { type: Date, default: Date.now }
-
 }, {
-    timestamps: true // ⬅️ createdAt과 updatedAt을 자동으로 관리
+    // .save() 함수를 사용하면 마지막 업데이트 시간을 자동 기록합니다.
+    timestamps: true
 });
-
-// userSchema.pre('save', function (next) {
-//     this.updatedAt = new Date();
-//     next();
-// });
 
 const User = mongoose.model('User', userSchema);
 
