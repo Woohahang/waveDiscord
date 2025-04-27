@@ -2,6 +2,7 @@ const GAME_TYPES = require('@constants/gameTypes');
 const RIOT_GAMES = require('@constants/riotGames');
 const formatRiotTag = require('./formatRiotTag');
 const fetchSteamProfile = require('./fetchSteamProfile');
+const validateRiotTagFormat = require('../../../shared/utils/validateRiotTagFormat');
 
 /**
  * 게임 타입에 따라 닉네임을 처리합니다.
@@ -14,8 +15,10 @@ const fetchSteamProfile = require('./fetchSteamProfile');
  * @returns {Promise<string>} - 전처리된 닉네임
  */
 async function processNickname(gameType, nickname) {
-    if (RIOT_GAMES.includes(gameType))
+    if (RIOT_GAMES.includes(gameType)) {
+        validateRiotTagFormat(nickname);
         return formatRiotTag(nickname); // Riot 게임 포맷 변환
+    }
 
     if (gameType === GAME_TYPES.STEAM)
         return await fetchSteamProfile(nickname); // Steam ID 추출

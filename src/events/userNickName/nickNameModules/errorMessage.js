@@ -22,6 +22,10 @@ function errorMessage(code) {
                 message = userProfileNotFound;
                 break;
 
+            case 'INVALID_RIOT_TAG_FORMAT':
+                message = '라이엇 형식 다름';
+                break;
+
             default:
                 message = '알 수 없는 오류로 인해 처리하지 못 했습니다.';
         };

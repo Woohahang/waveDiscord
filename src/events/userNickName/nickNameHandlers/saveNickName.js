@@ -29,16 +29,18 @@ module.exports = async (interaction) => {
 
     } catch (error) {
         const code = error.code;
+        console.log(code);
 
         switch (code) {
             case 'INVALID_PROFILE_LINK':
             case 'USER_PROFILE_NOT_FOUND':
+            case 'INVALID_RIOT_TAG_FORMAT':
                 await interaction.editReply({ content: errorMessage(code), ephemeral: true });
                 break;
 
             default:
                 logUserInfo(interaction);
-                console.error('saveNickname.js 에러 : ', error);
+                console.error('[saveNickname] 닉네임 저장 중 오류 발생:', error);
         };
 
     };
