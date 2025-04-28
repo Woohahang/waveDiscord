@@ -1,4 +1,4 @@
-const getDisplayName = require('../../../shared/utils/getDisplayName');
+const getDisplayName = require('@shared/utils/getDisplayName');
 
 /**
  * 서버 멤버의 displayName을 가져옵니다.

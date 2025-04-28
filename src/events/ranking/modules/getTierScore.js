@@ -1,4 +1,4 @@
-const { TIER_ORDER, RANK_ORDER } = require('../../../constants/lolTier');
+const { TIER_ORDER, RANK_ORDER } = require('@constants/lolTier');
 
 /**
  * 주어진 롤 티어 정보를 점수화하여 반환합니다.

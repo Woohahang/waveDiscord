@@ -1,6 +1,6 @@
-const { getLoLTierEmoji } = require('../../../constants/lolTierEmoji');
-const { TIER_ORDER } = require('../../../constants/lolTier')
-const RANK_ROMAN = require('../../../constants/rankRoman');
+const { getLoLTierEmoji } = require('@constants/lolTierEmoji');
+const { TIER_ORDER } = require('@constants/lolTier');
+const RANK_ROMAN = require('@constants/rankRoman');
 
 /**
  * 티어 그룹을 바탕으로 description 문자열을 만듭니다.
