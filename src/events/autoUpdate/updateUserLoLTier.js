@@ -30,9 +30,6 @@ async function updateUserLoLTier(user) {
             const latestTier = await fetchLeagueTier(entry.summonerName); // 소환사명을 기반으로 최신 티어 정보 조회
             if (!latestTier) continue; // 최신 정보를 가져오지 못하면 스킵
 
-            console.log('entry :', entry);
-            console.log('latestTier :', latestTier);
-
             // 기존 저장된 정보와 최신 정보를 비교해 변경사항이 있을 경우
             if (isTierDifferent(entry, latestTier)) {
                 // 티어, 랭크, 리그포인트를 최신 정보로 덮어쓰기
