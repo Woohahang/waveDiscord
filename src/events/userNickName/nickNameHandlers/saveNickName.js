@@ -39,6 +39,6 @@ module.exports = async (interaction) => {
                 gameType,
                 rawNickname,
                 error
-            })
+            });
     };
 };
