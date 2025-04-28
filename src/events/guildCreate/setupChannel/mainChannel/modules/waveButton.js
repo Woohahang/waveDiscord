@@ -5,7 +5,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 function waveButton() {
     const utilityTools = new ButtonBuilder()
         .setCustomId('multitoolsButton')
-        .setLabel('편의 기능')
+        .setLabel('내 정보')
         .setStyle(ButtonStyle.Primary);
 
     const remove = new ButtonBuilder()

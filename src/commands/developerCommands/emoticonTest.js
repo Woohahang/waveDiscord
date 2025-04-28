@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
-const UserSettings = require('../../services/UserSettings');
+const guildTierRanking = require('../../events/ranking/guildTierRanking');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -8,17 +8,8 @@ module.exports = {
 
     async execute(interaction) {
         try {
-            const userCount = await UserSettings.getUserlolCount();
-            console.log(userCount);
+            await guildTierRanking(interaction);
 
-            // const userData = await userSettings.loadUserData();
-
-            // const users = await UserSettings.getUsersForLoLTierUpdate();
-
-            // for (const user of users) {
-            //     console.log(user);
-            //     await updateUserLoLTier(user);
-            // }
 
         } catch (error) {
             console.log('테스트 명령어 실행 중 오류가 발생했습니다.', error);
