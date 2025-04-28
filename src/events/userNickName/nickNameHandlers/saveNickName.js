@@ -8,6 +8,7 @@ const errorMessages = require('../../../utils/errors/errorMessages');
  * 사용자의 닉네임 입력을 처리하고, 게임 종류에 따라 전처리 후 DB에 저장합니다.
  */
 module.exports = async (interaction) => {
+
     // 유저 ID 및 게임 종류, 입력된 닉네임 추출
     const userId = interaction.member.id;
     const gameType = interaction.customId.split('_')[1];
