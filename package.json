@@ -18,6 +18,7 @@
   "description": "",
   "_moduleAliases": {
     "@constants": "src/constants",
+    "@events": "src/events",
     "@utils": "src/utils",
     "@services": "src/services",
     "@shared": "src/shared"

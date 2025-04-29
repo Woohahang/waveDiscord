@@ -1,4 +1,4 @@
-const UserSettings = require('../../services/UserSettings');
+const UserSettings = require('@services/UserSettings');
 const fetchMemberDisplayNames = require('./modules/fetchMemberDisplayNames');
 const getHighestTierUsers = require('./modules/getHighestTierUsers');
 const groupUsersByTier = require('./modules/groupUsersByTier');

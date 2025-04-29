@@ -5,6 +5,9 @@
             "@constants/*": [
                 "constants/*"
             ],
+            "@events/*": [
+                "events/*"
+            ],
             "@utils/*": [
                 "utils/*"
             ],
