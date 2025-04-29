@@ -1,7 +1,7 @@
 const guildTierRanking = require('../src/events/ranking/guildTierRanking'); // 경로 맞게 수정!
 const UserSettings = require('../src/services/UserSettings');
-const { fetchMemberDisplayNames } = require('../src/events/ranking/modules/fetchMemberDisplayNames');
-const { buildTierDescription } = require('../src/events/ranking/modules/buildTierDescription');
+const fetchMemberDisplayNames = require('../src/events/ranking/modules/fetchMemberDisplayNames');
+const buildTierDescription = require('../src/events/ranking/modules/buildTierDescription');
 
 jest.mock('../src/services/UserSettings');
 jest.mock('../src/events/ranking/modules/fetchMemberDisplayNames');
