@@ -19,11 +19,9 @@ module.exports = async (guild) => {
         // Wave 가 관리자 권한을 받았는지 체크합니다.
         if (checkGuildAdmin(guild)) {
 
-            await Promise.all([
-                saveGuildOwnerData(guild), // 길드 이름 및 오너 ID를 저장합니다.
-                setupAdminChannel(guild), // Wave 관리자 채널을 생성합니다.
-                setupMainChannel(guild), // Wave 메인 채널을 생성합니다.
-            ]);
+            await saveGuildOwnerData(guild); // 길드 이름 및 오너 ID를 저장합니다.
+            await setupAdminChannel(guild); // Wave 관리자 채널을 생성합니다.
+            await setupMainChannel(guild); // Wave 메인 채널을 생성합니다.
 
         } else {
             // 관리자 권한을 받지 못 했다면 1:1 알림 DM을 전송합니다.
