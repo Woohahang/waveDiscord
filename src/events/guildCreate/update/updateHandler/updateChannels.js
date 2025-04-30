@@ -22,18 +22,16 @@ module.exports = async (interaction) => {
         // '업데이트 중' 메시지 전송
         await interaction.deferReply({ ephemeral: true });
 
-        // 모든 업데이트 작업을 병렬로 실행
-        await Promise.all([
-            saveGuildOwnerData(guild),
-            adminChannelUpDate(interaction, guildData),
-            mainChannelUpdate(interaction, guildData),
-        ]);
+        // ⚠️ 절대 병렬 처리 금지!
+        await saveGuildOwnerData(guild);
+        await adminChannelUpDate(interaction, guildData);
+        await mainChannelUpdate(interaction, guildData);
 
         // 업데이트 완료 메세지 전송
         await interaction.editReply({ content: updateCompleted, components: [], ephemeral: true });
 
     } catch (error) {
-        interaction.editReply({ content: updateFailed, ephemeral: true });
+        await interaction.editReply({ content: updateFailed, ephemeral: true });
         console.error('updateChannels.js 업데이트 실패 : ', error);
     };
 };

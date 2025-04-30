@@ -40,6 +40,34 @@ class GuildSettings {
         };
     };
 
+    /**
+     * guildId가 중복으로 저장된 문서를 찾습니다.
+     */
+    static async findDuplicateGuildIds() {
+        const duplicates = await guildSchema.aggregate([
+            {
+                $group: {
+                    _id: '$guildId',
+                    count: { $sum: 1 },
+                    docs: { $push: '$_id' }
+                }
+            },
+            {
+                $match: {
+                    count: { $gt: 1 }
+                }
+            }
+        ]);
+
+        if (duplicates.length === 0) {
+            console.log('중복된 guildId는 없습니다.');
+        } else {
+            console.log('중복된 guildId 목록:');
+            duplicates.forEach(d => {
+                console.log(`- guildId: ${d._id} (총 ${d.count}개) | _id 목록: ${d.docs.join(', ')}`);
+            });
+        }
+    }
 
     // 길드에 초대 되면 길드 데이터를 생성합니다.
     async loadOrCreate() {
