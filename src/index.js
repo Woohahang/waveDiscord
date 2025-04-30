@@ -49,8 +49,7 @@ for (const folder of commandFolders) {
 };
 
 client.once(Events.ClientReady, readyClient => {
-    console.log(`✅ Bot started | Tag: ${readyClient.user.tag} | ID: ${readyClient.user.id}`);
-    logger.info(`✅ Bot started | Tag: ${readyClient.user.tag} | ID: ${readyClient.user.id}`);
+    logger.info(`[index] 봇 시작됨 | Tag: ${readyClient.user.tag} | ID: ${readyClient.user.id}`);
 
     client.startTime = new Date(); // 봇 시작 시간을 client 객체에 저장
     botInfo.set(readyClient.user); // 봇의 태그와 ID를 botInfo에 저장
@@ -72,7 +71,6 @@ const autoUpdateTiers = require('./events/autoUpdate/autoUpdateTiers.js');
 
 // 10분마다 실행되는 크론 잡 설정 (매 10분 0초에 실행)
 cron.schedule('*/10 * * * *', async () => {
-    console.log('[⏰] 롤 티어 자동 업데이트 실행');
     await autoUpdateTiers();
 });
 

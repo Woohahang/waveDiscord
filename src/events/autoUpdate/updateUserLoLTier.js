@@ -1,4 +1,5 @@
-const fetchLeagueTier = require('../../shared/api/fetchLeagueOfLegendsTier');
+const fetchLeagueTier = require('@shared/api/fetchLeagueOfLegendsTier');
+const logger = require('@utils/logger');
 
 /**
  * 기존 티어 정보와 새로운 티어 정보를 비교합니다.
@@ -22,8 +23,6 @@ const isTierDifferent = (oldEntry, newEntry) => {
  */
 async function updateUserLoLTier(user) {
     try {
-        let updated = false; // 하나라도 티어 정보가 변경되면 true로 설정
-
         // 유저의 롤 닉네임 배열을 순회하며 각 소환사 정보를 업데이트
         for (let entry of user.leagueOfLegends) {
 
@@ -36,24 +35,16 @@ async function updateUserLoLTier(user) {
                 entry.tier = latestTier.tier;
                 entry.rank = latestTier.rank;
                 entry.leaguePoints = latestTier.leaguePoints;
-
-                updated = true; // 변경된 내용이 있음을 표시
             }
         }
 
-        if (updated) {
-            // 변경사항이 있을 경우 DB에 저장
-            await user.save();
-            console.log(`✅ [${user.userId}] 롤 티어 정보 업데이트 완료`);
-        } else {
-            // 변경사항이 없더라도 updatedAt 갱신을 위해 save 사용
-            await user.save();
-            console.log(`➖ [${user.userId}] 변경된 티어 정보 없음`);
-        }
+        // 변경사항이 없더라도 updatedAt 갱신을 위해 save 사용
+        await user.save();
+
     } catch (error) {
-        console.error('[updateUserLoLTier] 유저 티어 정보 업데이트 중 오류 발생:', {
-            userId: user.userId,
-            error
+        logger.error('[updateUserLoLTier] 유저 티어 정보 업데이트 중 오류 발생', {
+            userId: user?.userId,
+            stack: error.stack
         });
     }
 }
