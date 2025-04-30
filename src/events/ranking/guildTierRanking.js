@@ -3,6 +3,7 @@ const fetchMemberDisplayNames = require('./modules/fetchMemberDisplayNames');
 const getHighestTierUsers = require('./modules/getHighestTierUsers');
 const groupUsersByTier = require('./modules/groupUsersByTier');
 const buildTierDescription = require('./modules/buildTierDescription');
+const testData = require('./modules/testData');
 
 /**
  * 길드 멤버들의 롤 티어 랭킹을 조회하고, 정리하여 메시지로 응답합니다.
@@ -25,8 +26,20 @@ module.exports = async (interaction) => {
         const highestTierUsers = getHighestTierUsers(guildUserDatas, memberMap);
         highestTierUsers.sort((a, b) => b.score - a.score);
 
+
+
+
+
+
+
         // 티어별로 유저들을 그룹화
         const grouped = groupUsersByTier(highestTierUsers);
+
+
+
+
+
+
 
         // 티어 그룹을 보기 좋게 문자열로 구성
         const description = buildTierDescription(grouped, guild.name);

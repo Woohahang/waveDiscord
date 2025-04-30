@@ -17,10 +17,13 @@ function set(botUser) {
 
     botInfo.botTag = botUser.tag;
     botInfo.botId = botUser.id;
+
+    console.log(`[botInfo.set] 봇 정보 설정됨 | tag: ${botUser.tag} | id: ${botUser.id}`);
 }
 
 /**
  * 봇 정보를 반환합니다.
+ * 
  * @returns {{ botTag: string, botId: string }}
  */
 function get() {

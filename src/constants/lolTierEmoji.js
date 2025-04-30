@@ -48,7 +48,7 @@ function getLoLTierEmoji(tier) {
 
     // 해당 티어에 맞는 이모지가 없으면 오류 발생
     if (!emojiIdMap || !emojiIdMap[tier])
-        throw new Error(`[lolTierEmoji.getLoLTierEmoji()] '${tier}' 이모지를 찾을 수 없습니다 (botTag: ${botTag})`);
+        throw new Error(`[lolTierEmoji.getLoLTierEmoji] '${tier}' 티어 이름을 찾을 수 없습니다 (botTag: ${botTag})`);
 
     // 이모지 반환
     return `<:${tier.toLowerCase()}:${emojiIdMap[tier]}>`;

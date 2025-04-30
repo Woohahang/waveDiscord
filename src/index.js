@@ -45,11 +45,12 @@ for (const folder of commandFolders) {
 };
 
 client.once(Events.ClientReady, readyClient => {
+    console.log(`✅ Bot started | Tag: ${readyClient.user.tag} | ID: ${readyClient.user.id}`);
 
     client.startTime = new Date(); // 봇 시작 시간을 client 객체에 저장
     botInfo.set(readyClient.user); // 봇의 태그와 ID를 botInfo에 저장
 
-    console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+    // console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
 client.on(Events.GuildCreate, async guild => {
