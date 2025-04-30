@@ -1,8 +1,12 @@
 require('module-alias/register');
-const cron = require('node-cron');
+
 const fs = require('node:fs');
 const path = require('node:path');
+
+const cron = require('node-cron');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+
+const logger = require('./utils/logger');
 const { token } = require('../../config.json');
 const connectToDatabase = require('./mongoDB/database.js');
 const botInfo = require('./utils/botInfo');
@@ -46,11 +50,10 @@ for (const folder of commandFolders) {
 
 client.once(Events.ClientReady, readyClient => {
     console.log(`✅ Bot started | Tag: ${readyClient.user.tag} | ID: ${readyClient.user.id}`);
+    logger.info(`✅ Bot started | Tag: ${readyClient.user.tag} | ID: ${readyClient.user.id}`);
 
     client.startTime = new Date(); // 봇 시작 시간을 client 객체에 저장
     botInfo.set(readyClient.user); // 봇의 태그와 ID를 botInfo에 저장
-
-    // console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
 client.on(Events.GuildCreate, async guild => {
