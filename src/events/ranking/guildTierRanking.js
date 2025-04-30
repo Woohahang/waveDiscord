@@ -35,6 +35,6 @@ module.exports = async (interaction) => {
         await interaction.reply({ content: description });
 
     } catch (error) {
-        console.error('[guildTierRanking] 길드 롤 티어 랭킹을 조회하고 채팅에 응답하는 과정에 오류 발생:', error);
+        console.error('[guildTierRanking] 길드 롤 티어 랭킹을 조회하고 채팅에 응답하는 과정에 오류 발생:\n', error);
     }
 };

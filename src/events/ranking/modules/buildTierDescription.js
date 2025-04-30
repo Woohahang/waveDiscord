@@ -1,4 +1,4 @@
-const { getLoLTierEmoji } = require('@constants/lolTierEmoji');
+const getLoLTierEmoji = require('@constants/lolTierEmoji');
 const { TIER_ORDER } = require('@constants/lolTier');
 const RANK_ROMAN = require('@constants/rankRoman');
 

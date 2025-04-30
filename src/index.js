@@ -5,7 +5,7 @@ const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const { token } = require('../../config.json');
 const connectToDatabase = require('./mongoDB/database.js');
-
+const botInfo = require('./utils/botInfo');
 
 const handleGuildCreate = require('./handlers/guildCreate');
 const handleinteraction = require('./handlers/interaction');
@@ -45,8 +45,9 @@ for (const folder of commandFolders) {
 };
 
 client.once(Events.ClientReady, readyClient => {
-    // 봇이 시작된 시각을 저장합니다.
-    client.startTime = new Date();
+
+    client.startTime = new Date(); // 봇 시작 시간을 client 객체에 저장
+    botInfo.set(readyClient.user); // 봇의 태그와 ID를 botInfo에 저장
 
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
