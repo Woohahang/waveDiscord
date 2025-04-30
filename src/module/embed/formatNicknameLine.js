@@ -1,4 +1,5 @@
-const emojiId = require('../../shared/discord/emojiId');
+const GAME_TYPES = require('../../constants/gameTypes');
+const getGameLogoEmoji = require('../../constants/gameLogoEmoji');
 const getGamesLink = require('../../shared/game/getGamesLink');
 
 /**
@@ -7,24 +8,27 @@ const getGamesLink = require('../../shared/game/getGamesLink');
  * - Overwatch2, Blizzard: 닉네임만 표시
  * - 그 외: 닉네임과 검색 링크 포함
  *
- * @param {string} game - 게임 키 (예: 'steam', 'blizzard')
+ * @param {string} gameType - 게임 키 (예: 'steam', 'blizzard')
  * @param {Object|string} nickname - 닉네임 정보 (Steam은 객체, 그 외는 문자열)
  * @returns {string} - 포맷팅된 닉네임 문자열
  */
-function formatNicknameLine(game, nickname) {
-    const emoji = `<:wave_${game}:${emojiId(game)}>`; // 해당 게임 이모지 구성
+function formatNicknameLine(gameType, nickname) {
+    const gameLogoEmoji = getGameLogoEmoji(gameType); // 해당 게임 이모지 구성
 
-    if (game === 'steam')
-        return `${emoji} [${nickname.playerName}](${nickname.profileLink})`;
+    switch (gameType) {
+        case GAME_TYPES.STEAM:
+            return `${gameLogoEmoji} [${nickname.playerName}](${nickname.profileLink})`;
 
-    else if (game === 'leagueOfLegends')
-        return `${emoji} [${nickname.summonerName}](${getGamesLink(game, nickname.summonerName)})`;
+        case GAME_TYPES.LEAGUE_OF_LEGENDS:
+            return `${gameLogoEmoji} [${nickname.summonerName}](${getGamesLink(gameType, nickname.summonerName)})`;
 
-    else if (['overWatchTwo', 'blizzard'].includes(game))
-        return `${emoji} ${nickname}`;
+        case GAME_TYPES.OVERWATCH_2:
+        case GAME_TYPES.BLIZZARD:
+            return `${gameLogoEmoji} ${nickname}`;
 
-    else
-        return `${emoji} [${nickname}](${getGamesLink(game, nickname)})`;
+        default:
+            return `${gameLogoEmoji} [${nickname}](${getGamesLink(gameType, nickname)})`;
+    }
 }
 
 module.exports = formatNicknameLine;

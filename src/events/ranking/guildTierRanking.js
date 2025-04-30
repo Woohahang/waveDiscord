@@ -26,20 +26,8 @@ module.exports = async (interaction) => {
         const highestTierUsers = getHighestTierUsers(guildUserDatas, memberMap);
         highestTierUsers.sort((a, b) => b.score - a.score);
 
-
-
-
-
-
-
         // 티어별로 유저들을 그룹화
         const grouped = groupUsersByTier(highestTierUsers);
-
-
-
-
-
-
 
         // 티어 그룹을 보기 좋게 문자열로 구성
         const description = buildTierDescription(grouped, guild.name);
