@@ -4,7 +4,7 @@ const { checkInteractionAdmin } = require('../module/checkAdminPermissionOn');
 /* 닉네임 저장 */
 const nickNameModal = require('../events/userNickName/nickNameHandlers/nickNameModal');
 const nicknameDeleteHandler = require('../events/userNickName/deleteNickname/handlers/nicknameDeleteHandler');
-const saveNickName = require('../events/userNickName/nickNameHandlers/saveNickName');
+const processAndSaveNickname = require('../events/userNickName/nickNameHandlers/processAndSaveNickname');
 
 /* 닉네임 삭제 */
 const nicknameDeletionMenu = require('../events/userNickName/deleteNickname/handlers/nicknameDeletionMenu');
@@ -96,7 +96,7 @@ async function handleSubmitModal(interaction) {
 
         switch (customIdParts) {
             case 'submitNickname':
-                saveNickName(interaction);
+                await processAndSaveNickname(interaction);
                 break;
 
         };

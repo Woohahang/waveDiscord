@@ -5,9 +5,11 @@ const logger = require('../utils/logger');
 const connectToDatabase = async () => {
     try {
         await mongoose.connect(mongoURI);
-        logger.info(`[database] MongoDB에 성공적으로 연결되었습니다.`);
+        logger.info('[database] MongoDB 연결 완료');
     } catch (error) {
-        logger.error(`[database] MongoDB 연결 오류: ${error.message}`);
+        logger.error('[database] MongoDB 연결 오류', {
+            message: error.message
+        });
     };
 };
 

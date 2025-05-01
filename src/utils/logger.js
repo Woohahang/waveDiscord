@@ -7,12 +7,14 @@ const logger = createLogger({
         format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
         format.errors({ stack: true }),
         format.printf(({ level, message, timestamp, stack, ...meta }) => {
-            const metaInfo = [];
 
-            if (meta.userId) metaInfo.push(`userId: ${meta.userId}`);
+            const metaInfo = Object.entries(meta)
+                .map(([key, value]) => `${key}: ${value}`)
+                .join(' | ');
 
             let log = `[${level}] ${timestamp} - ${message}`;
-            if (metaInfo.length > 0) log += ' | ' + metaInfo.join(' | ');
+
+            if (metaInfo) log += ' | ' + metaInfo;
             if (stack) log += `\n${stack}`;
 
             return log;

@@ -3,6 +3,7 @@ const statusMessage = require('../nickNameModules/statusMessage');
 const processNickname = require('../nickNameModules/processNickname');
 const sendErrorMessage = require('../../../utils/errors/sendErrorMessage');
 const errorMessages = require('../../../utils/errors/errorMessages');
+const logger = require('@utils/logger');
 
 /**
  * 사용자의 닉네임 입력을 처리하고, 게임 종류에 따라 전처리 후 DB에 저장합니다.
@@ -23,7 +24,7 @@ module.exports = async (interaction) => {
 
         // 유저 설정 객체 생성 및 닉네임 저장
         const userSettings = new UserSettings(userId);
-        const status = await userSettings.saveNickname(gameType, nickname);
+        const status = await userSettings.userNicknameSaver(gameType, nickname);
 
         // 결과 메시지 전송
         await interaction.editReply({ content: statusMessage(status), ephemeral: true });
@@ -35,11 +36,11 @@ module.exports = async (interaction) => {
             await sendErrorMessage(code, interaction);
 
         else
-            console.error('[saveNickName] 닉네임 저장 중 오류 발생:', {
+            logger.error('[processAndSaveNickname] 닉네임 저장 중 오류 발생', {
                 userId,
                 gameType,
                 rawNickname,
-                error
+                stack: error.stack
             });
     };
 };

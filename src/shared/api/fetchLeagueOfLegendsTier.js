@@ -40,14 +40,10 @@ async function fetchLeagueTier(nickname) {
         };
 
     } catch (error) {
-
         if (axios.isAxiosError(error) && error.response?.status === 404)
             return null;
 
-        console.error('[fetchLeagueTier] 티어 조회 실패:', {
-            nickname,
-            error
-        });
+        throw new Error(`[fetchLeagueTier] 티어 조회 중 오류 발생 | nickname: ${nickname} | ${error.message}`);
     }
 }
 

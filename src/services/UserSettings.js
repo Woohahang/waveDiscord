@@ -91,7 +91,7 @@ class UserSettings {
         return userData;
     }
 
-    async saveNickname(game, nickname) {
+    async userNicknameSaver(game, nickname) {
         try {
             let userData = UserCacheManager.get(this.userId);
             if (!userData) {
@@ -140,7 +140,7 @@ class UserSettings {
             UserCacheManager.set(this.userId, userData);
             return 'saveSuccess';
         } catch (error) {
-            console.error('[saveNickname] 유저 닉네임 저장 중 예외 발생:', {
+            console.error('[userNicknameSaver] 유저 닉네임 저장 중 예외 발생:', {
                 game,
                 nickname,
                 error
