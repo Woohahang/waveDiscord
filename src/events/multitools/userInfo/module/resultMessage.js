@@ -13,4 +13,9 @@ const deleteError =
     '> * 사용자 정보를 삭제하는 중 오류가 발생했습니다.\n' +
     '> * 문제가 지속될 경우, **Wave** 디스코드를 방문해 주세요.';
 
-module.exports = { deleteSuccess, alreadyDeleted, deleteError };
+const noNicknames =
+    '## 등록된 닉네임 없음' + '\n' +
+    '> * 현재 등록된 닉네임이 없습니다.' + '\n' +
+    '> * 문제가 지속되면 **Wave** 디스코드 채널로 문의해 주세요.';
+
+module.exports = { deleteSuccess, alreadyDeleted, deleteError, noNicknames };

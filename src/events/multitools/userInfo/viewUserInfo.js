@@ -1,15 +1,16 @@
 const UserSettings = require('../../../services/UserSettings');
-const { alreadyDeleted } = require('./module/resultMessage');
+const { alreadyDeleted, noNicknames } = require('./module/resultMessage');
 const buildUserDataFields = require('../../../module/embed/buildUserDataFields');
 const buildUserInfoEmbed = require('../../../module/embed/buildUserInfoEmbed');
+const logger = require('@utils/logger');
 
 /**
  * 사용자 정보를 기반으로 Discord 임베드를 생성하고 응답하는 함수
 */
 module.exports = async (interaction) => {
-    try {
-        const member = interaction.member;
+    const member = interaction.member;
 
+    try {
         // 유저 인스턴스 생성 및 유저 데이터 불러옵니다.
         const userSettings = new UserSettings(member.id);
         const userData = await userSettings.loadUserData();
@@ -22,7 +23,9 @@ module.exports = async (interaction) => {
 
         // 유저 데이터를 기반으로 embed 필드를 생성합니다.
         const fields = buildUserDataFields(userData);
-        if (!fields) return;
+        if (!fields) {
+            return await interaction.update({ content: noNicknames, components: [], ephemeral: true });
+        };
 
         // 마지막 업데이트 시간을 Date 객체로 변환합니다.
         const updatedAt = new Date(userData.updatedAt);
@@ -34,6 +37,9 @@ module.exports = async (interaction) => {
         await interaction.update({ embeds: [embed], components: [], ephemeral: true });
 
     } catch (error) {
-        console.error('viewUserInfo.js 예외 : ', error);
+        logger.error('[viewUserInfo] 내 정보 조회 기능 사용 중 오류', {
+            memberId: member.id,
+            stack: error.stack
+        })
     };
 };
