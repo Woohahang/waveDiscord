@@ -1,12 +1,10 @@
 const { clientId } = require('../../../../../config.json');
-
-function displayName(member) {
-    return member.nickname || member.user.globalName;
-}
+const getDisplayName = require('@shared/utils/getDisplayName');
+const logger = require('@utils/logger');
 
 // 채널에 있는 멤버들의 이름을 가져오는 함수
 function getChannelMembers(channel) {
-    return channel.members.map(member => displayName(member));
+    return channel.members.map(member => getDisplayName(member));
 };
 
 // Wave가 보낸 메시지 중 임베드 메시지만 필터링하는 함수
@@ -47,7 +45,12 @@ module.exports = async (newState) => {
         await Promise.all(messagesToDelete.map(message => message.delete()));
 
     } catch (error) {
-        if (error.code === 10008 || error.code === 10003) return; //10008 === Unknown Message, 10003 === Unknown Channel
-        console.error('deleteInactiveVoiceEmbeds.js 예외:', error);
+        // 일반적인 예외 처리
+        if (error.code === 10008 || error.code === 10003 || error.code === 'ChannelNotCached') return;
+
+        // 다른 예외는 로깅
+        logger.error('[deleteInactiveVoiceEmbeds] 음성채널 이동 중 오류', {
+            stack: error.stack
+        });
     };
 };

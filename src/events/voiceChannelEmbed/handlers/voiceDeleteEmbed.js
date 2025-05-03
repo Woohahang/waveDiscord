@@ -1,5 +1,6 @@
 const { clientId } = require('../../../../../config.json');
-const logUserInfo = require('../../../utils/log/logUserInfo');
+const getDisplayName = require('@shared/utils/getDisplayName');
+const logger = require('@utils/logger');
 
 /* 중복 된 유저 정보 메세지 삭제 */
 module.exports = async (oldState) => {
@@ -9,7 +10,7 @@ module.exports = async (oldState) => {
     if (!channel) return;
 
     // 서버 별명 또는 유저 닉네임
-    const displayName = member.nickname || member.user.globalName;
+    const displayName = getDisplayName(member);
 
     const messages = await channel.messages.fetch({ limit: 20 });
     if (!messages) return;
@@ -30,8 +31,11 @@ module.exports = async (oldState) => {
 
   } catch (error) {
     if (error.code === 10008 || error.code === 10003) return;
-    console.error('voiceDeleteEmbed.js 예외 : ', error);
-    logUserInfo(oldState);
+
+    logger.error('[voiceDeleteEmbed] 음성채널 퇴장 중 에러', {
+      memberId: member.id,
+      stack: error.stack
+    });
   };
 };
 

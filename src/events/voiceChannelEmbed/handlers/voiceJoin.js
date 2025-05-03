@@ -2,7 +2,7 @@ const GuildSettings = require('../../../services/GuildSettings');
 const UserSettings = require('../../../services/UserSettings');
 const buildUserInfoEmbed = require('../../../module/embed/buildUserInfoEmbed')
 const buildUserAndGuildFields = require('../../../module/embed/buildUserAndGuildFields');
-const logUserInfo = require('../../../utils/log/logUserInfo');
+const logger = require('@utils/logger');
 
 /**
  * 사용자가 음성 채널에 참여할 때 호출되는 주요 함수입니다.
@@ -40,7 +40,11 @@ module.exports = async (newState) => {
     } catch (error) {
         // 10008 : Unknown Message,  10003 : Unknown Channel
         if (error.code === 10008 || error.code === 10003) return;
-        console.error('음성 채널 참여 중 오류 발생 : ', error);
-        logUserInfo(newState)
+
+        logger.error('음성 채널 입장 중 에러', {
+            guildName: guild.name,
+            memberId: member.id,
+            stack: error.stack
+        })
     };
 };

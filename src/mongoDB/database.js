@@ -8,7 +8,7 @@ const connectToDatabase = async () => {
         logger.info('[database] MongoDB 연결 완료');
     } catch (error) {
         logger.error('[database] MongoDB 연결 오류', {
-            message: error.message
+            errorMessage: error.message
         });
     };
 };
