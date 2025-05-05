@@ -19,6 +19,9 @@
             ],
             "@errors/*": [
                 "errors/*"
+            ],
+            "@module/*": [
+                "module/*"
             ]
         }
     },

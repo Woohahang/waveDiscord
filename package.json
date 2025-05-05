@@ -22,7 +22,8 @@
     "@events": "src/events",
     "@utils": "src/utils",
     "@services": "src/services",
-    "@shared": "src/shared"
+    "@shared": "src/shared",
+    "@module": "src/module"
   },
   "devDependencies": {
     "jest": "^29.7.0"
