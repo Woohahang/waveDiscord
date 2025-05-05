@@ -4,11 +4,12 @@ const logger = require('@utils/logger');
 
 /* 중복 된 유저 정보 메세지 삭제 */
 module.exports = async (oldState) => {
-  try {
-    const member = oldState.member;
-    const channel = oldState.channel;
-    if (!channel) return;
 
+  const member = oldState.member;
+  const channel = oldState.channel;
+  if (!channel) return;
+
+  try {
     // 서버 별명 또는 유저 닉네임
     const displayName = getDisplayName(member);
 
@@ -30,7 +31,7 @@ module.exports = async (oldState) => {
     await Promise.all(duplicateUserInfo.map(message => message.delete()));
 
   } catch (error) {
-    if (error.code === 10008 || error.code === 10003) return;
+    if (error.code === 10008 || error.code === 10003 || error.code === 'ChaeenlNotCached') return;
 
     logger.error('[voiceDeleteEmbed] 음성채널 퇴장 중 에러', {
       memberId: member.id,

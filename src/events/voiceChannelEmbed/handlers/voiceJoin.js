@@ -10,11 +10,12 @@ const logger = require('@utils/logger');
  * 이 함수는 사용자의 닉네임을 임베드 형식으로 텍스트 채널에 전송합니다.
  */
 module.exports = async (newState) => {
-    try {
-        const member = newState.member;
-        const guild = newState.guild;
-        const channel = newState.channel;
 
+    const member = newState.member;
+    const guild = newState.guild;
+    const channel = newState.channel;
+
+    try {
         // 유저 인스턴스 생성 및 유저 데이터를 불러옵니다.
         const userStettings = new UserSettings(member.id);
         const userData = await userStettings.loadUserData();
