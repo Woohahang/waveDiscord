@@ -1,0 +1,6 @@
+const BOT_IDS = {
+    WAVE: '1227561479801409566',
+    WAVE_TEST: '1234318546641752144'
+}
+
+module.exports = BOT_IDS;

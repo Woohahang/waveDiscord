@@ -1,10 +1,10 @@
+const BOT_IDS = require('./botIds');
 const GAME_TYPES = require('./gameTypes');
 const botInfo = require('../utils/botInfo');
 
 // 봇 ID에 따른 롤 티어 이모지 ID 맵핑
 const gameLogoEmojiMap = {
-    // Wave (ID: 1227561479801409566)
-    '1227561479801409566': {
+    [BOT_IDS.WAVE]: {
         [GAME_TYPES.STEAM]: '1340150607302103183',
         [GAME_TYPES.STEAM_BATTLEGROUNDS]: '1340150616495755294',
         [GAME_TYPES.KAKAO_BATTLEGROUNDS]: '1340150557515579543',
@@ -17,8 +17,7 @@ const gameLogoEmojiMap = {
         [GAME_TYPES.BLIZZARD]: '1340150546958389319'
     },
 
-    // WaveTest (ID: 1234318546641752144)
-    '1234318546641752144': {
+    [BOT_IDS.WAVE_TEST]: {
         [GAME_TYPES.STEAM]: '1340152828475342871',
         [GAME_TYPES.STEAM_BATTLEGROUNDS]: '1367150183661572178',
         [GAME_TYPES.KAKAO_BATTLEGROUNDS]: '1339722846124900405',
