@@ -1,5 +1,4 @@
 const testData = [
-    // ... 생략 ...
     {
         displayName: '쌈장',
         userId: 'user1',
