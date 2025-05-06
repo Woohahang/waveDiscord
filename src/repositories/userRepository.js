@@ -2,13 +2,26 @@ const userSchema = require('../mongoDB/userSchema');
 
 class UserRepository {
 
+    async findUserById(userId) {
+        return userSchema.findOne({ userId });
+    }
+
+    async createUserById(userId) {
+        const newUser = new userSchema({ userId });
+        return await newUser.save();
+    }
+
+    async deleteUserById(userId) {
+        return userSchema.deleteOne({ userId });
+    }
+
     /**
      * 리그 오브 레전드 티어 정보가 존재하는 유저들을 조회합니다.
      * 
      * @param {string[]} memberIds - 조회할 유저 ID 배열
      * @returns {Promise<Array>} 티어 정보를 가진 유저 객체 배열
     */
-    static async findUsersWithLoLTierByIds(memberIds) {
+    async findUsersWithLoLTierByIds(memberIds) {
         try {
             return await userSchema.find({
                 userId: { $in: memberIds },
@@ -29,7 +42,7 @@ class UserRepository {
      * 
      * @returns {Promise<Array>} 업데이트가 필요한 유저 객체 배열
     */
-    static async getUsersForLoLTierUpdate() {
+    async getUsersForLoLTierUpdate() {
         try {
             return await userSchema.find({
                 leagueOfLegends: {
@@ -47,4 +60,4 @@ class UserRepository {
 
 }
 
-module.exports = UserRepository;
+module.exports = new UserRepository();

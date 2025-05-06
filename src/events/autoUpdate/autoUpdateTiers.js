@@ -16,7 +16,7 @@ module.exports = async () => {
         }
     } catch (error) {
         logger.error('[autoUpdateTiers] 자동 업데이트 중 오류 발생', {
-            stakc: error.stakc
+            stack: error.stack
         })
     }
 };

@@ -1,7 +1,8 @@
-const userSchema = require('../mongoDB/userSchema');
 const UserCacheManager = require('./UserCacheManager');
+const userRepository = require('@repositories/userRepository');
 const fetchLeagueOfLegendsTier = require('../shared/api/fetchLeagueOfLegendsTier');
 const GAME_TYPES = require('../constants/gameTypes');
+const logger = require('@utils/logger');
 
 class UserSettings {
     constructor(userId) {
@@ -11,33 +12,34 @@ class UserSettings {
     async #loadOrCreateUserData() {
         let userData = UserCacheManager.get(this.userId);
         if (!userData) {
-            userData = await userSchema.findOne({ userId: this.userId });
+            userData = await userRepository.findUserById(this.userId);
+
             if (!userData) {
-                const newUser = new userSchema({ userId: this.userId });
-                await newUser.save();
-                userData = newUser;
+                userData = await userRepository.createUserById(this.userId);
             }
             UserCacheManager.set(this.userId, userData);
         }
         return userData;
     }
 
-    static async getUserlolCount() {
-        return await userSchema.countDocuments({
-            leagueOfLegends: { $exists: true, $not: { $size: 0 } }
-        });
+    async loadUserData() {
+        try {
+            let userData = UserCacheManager.get(this.userId);
+            if (!userData) {
+                userData = await userRepository.findUserById(this.userId);
+                if (userData) {
+                    UserCacheManager.set(this.userId, userData);
+                }
+            }
+            return userData;
+        } catch (error) {
+            logger.error('[UserSettings.loadUserData] 유저 정보를 불러오는 중 오류', {
+                userId: this.userId,
+                stack: error.stack
+            })
+        }
     }
 
-    async loadUserData() {
-        let userData = UserCacheManager.get(this.userId);
-        if (!userData) {
-            userData = await userSchema.findOne({ userId: this.userId });
-            if (userData) {
-                UserCacheManager.set(this.userId, userData);
-            }
-        }
-        return userData;
-    }
 
     async userNicknameSaver(game, nickname) {
         try {
@@ -139,19 +141,17 @@ class UserSettings {
             const userData = await this.loadUserData();
             if (!userData) return 'alreadyDeleted';
 
-            await userSchema.deleteOne({ userId: this.userId });
+            await userRepository.deleteUserById(this.userId);
             UserCacheManager.delete(this.userId);
+
             return 'deleteSuccess';
+
         } catch (error) {
             console.error('UserSettings.deleteUserData 예외:', error);
             return 'deleteError';
         }
     }
 
-
-    getUserCount() {
-        return UserCacheManager.count();
-    }
 }
 
 module.exports = UserSettings;

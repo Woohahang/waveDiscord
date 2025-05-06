@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const UserSettings = require('../../services/UserSettings');
+const userCacheManager = require('@services/UserCacheManager');
 const { developerId } = require('../../../../config.json');
 const getElapsedTime = require('../../module/common/getElapsedTime');
 const formatDate = require('../../module/common/formatDate');
@@ -30,9 +30,8 @@ module.exports = {
             const userId = interaction.user.id;
             if (userId !== developerId) return;
 
-            // 인스턴스 생성 및 로드된 유저 수를 가져옵니다.
-            const userSettings = new UserSettings();
-            const userCount = userSettings.getUserCount();
+            // 로드된 유저 수를 가져옵니다.
+            const userCount = userCacheManager.count();
 
             // 현재 봇이 연결된 서버(길드)의 수를 가져옵니다.
             const guildCount = interaction.client.guilds.cache.size;
