@@ -2,6 +2,42 @@ const UserSettings = require('../../../../services/UserSettings');
 const createMenu = require('../modules/createMenu');
 const createMenuOptions = require('../modules/createMenuOptions');
 const stateMessage = require('../modules/stateMessage');
+const GAME_TYPES = require('@constants/gameTypes');
+const GAME_DISPLAY_NAMES = require('@constants/gameDisplayNames');
+
+function createOptions(userData) {
+    const options = [];
+
+    for (const gameType of Object.values(GAME_TYPES)) {
+        if (!userData[gameType] || userData[gameType].length === 0) continue;
+
+        userData[gameType].forEach(entry => {
+            let nickname = '';
+            switch (gameType) {
+                case GAME_TYPES.STEAM:
+                    nickname = entry.playerName;
+                    break;
+
+                case GAME_TYPES.LEAGUE_OF_LEGENDS:
+                    nickname = entry.summonerName;
+                    break;
+
+                default:
+                    nickname = entry;
+            }
+
+            const value = JSON.stringify({ gameType, nickname });
+
+            options.push({
+                value,
+                label: nickname,
+                description: GAME_DISPLAY_NAMES[gameType]
+            })
+        })
+    }
+
+    return options;
+}
 
 module.exports = async (interaction) => {
     try {
@@ -21,7 +57,9 @@ module.exports = async (interaction) => {
         };
 
         // 유저 닉네임 옵션을 생성합니다.
-        const options = createMenuOptions(userData);
+        // const options = createMenuOptions(userData);
+        const options = createOptions(userData);
+
 
         // 닉네임이 없으면 메시지를 보냅니다.
         if (options.length === 0) {

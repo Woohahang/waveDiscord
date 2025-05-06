@@ -99,41 +99,30 @@ class UserSettings {
         }
     }
 
-    async removeNickname(gameAndNicknames) {
-        try {
-            const userData = await this.loadUserData();
-            if (!userData) return;
+    async removeNicknames(nicknamesToRemove) {
+        const userData = await this.loadUserData();
 
-            gameAndNicknames.forEach(item => {
-                const [game, nickname] = item.split(':');
-                if (game === 'steam') {
-                    userData[game] = [];
-                }
+        for (const { gameType, nickname } of nicknamesToRemove) {
+            switch (gameType) {
+                case GAME_TYPES.STEAM:
+                    userData[gameType] = [];
+                    break;
 
-                else if (game === GAME_TYPES.LEAGUE_OF_LEGENDS) {
+                case GAME_TYPES.LEAGUE_OF_LEGENDS: {
+                    const index = userData[gameType].findIndex(entry => entry.summonerName === nickname);
+                    if (index > -1) userData[gameType].splice(index, 1);
+                } break;
 
-                    const index = userData[game].findIndex(entry => entry.summonerName === nickname);
-                    if (index > -1) {
-                        userData[game].splice(index, 1);
-                    }
-                }
-
-                else {
-                    const index = userData[game].indexOf(nickname);
-                    if (index > -1) {
-                        userData[game].splice(index, 1);
-                    }
-                }
-            });
-
-            await userData.save();
-            UserCacheManager.set(this.userId, userData);
-            return 'removalSuccessful';
-        } catch (error) {
-            console.error('UserSettings.removeNickname 예외:', error);
-
-            throw error;
+                default: {
+                    const index = userData[gameType].indexOf(nickname);
+                    if (index > -1) userData[gameType].splice(index, 1);
+                } break;
+            }
         }
+
+        await userData.save();
+        UserCacheManager.set(this.userId, userData);
+        return 'removalSuccessful';
     }
 
     async deleteUserData() {
