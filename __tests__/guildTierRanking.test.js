@@ -1,5 +1,5 @@
 const guildTierRanking = require('../src/events/ranking/guildTierRanking');
-const UserSettings = require('../src/services/UserSettings');
+const userRepository = require('../src/repositories/userRepository');
 const fetchMemberDisplayNames = require('../src/events/ranking/modules/fetchMemberDisplayNames');
 const buildTierDescription = require('../src/events/ranking/modules/buildTierDescription');
 
@@ -28,7 +28,7 @@ describe('guildTierRanking', () => {
         ]));
 
         // UserSettings의 findUsersWithLoLTierByIds 메서드가 반환할 가짜 데이터 설정
-        UserSettings.findUsersWithLoLTierByIds.mockResolvedValue([
+        userRepository.findUsersWithLoLTierByIds.mockResolvedValue([
             {
                 userId: '01231231231',
                 leagueOfLegends: [

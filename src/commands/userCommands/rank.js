@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const logger = require('@utils/logger');
 const fetchMemberDisplayNames = require('@utils/fetchMemberDisplayNames');
-const UserSettings = require('@services/UserSettings');
+const userRepository = require('@repositories/userRepository');
 const { TIER_ORDER, RANK_ORDER } = require('@constants/lolTier');
 const RANK_ROMAN = require('@constants/rankRoman');
 const getLoLTierEmoji = require('@constants/lolTierEmoji');
@@ -34,12 +34,12 @@ function getTierScore(entry) {
 /**
  * 유저 리스트에서 가장 높은 티어를 가진 항목을 추출하여 정리합니다.
  * 
- * @param {Array<Object>} userSettingsList - DB에서 가져온 유저 설정 목록
+ * @param {Array<Object>} lolTierUsers  - DB에서 가져온 유저 설정 목록
  * @param {Map<string, string>} memberMap - userId와 displayName의 매핑
  * @returns {Array<Object>} 유저별 가장 높은 티어 정보 배열
  */
-function getTopTierUsers(userSettingsList, memberMap) {
-    return userSettingsList.map(user => {
+function getTopTierUsers(lolTierUsers, memberMap) {
+    return lolTierUsers.map(user => {
 
         const validEntries = user.leagueOfLegends.filter(e => e.tier);
         if (validEntries.length === 0) return null;
@@ -136,10 +136,10 @@ module.exports = {
             const memberIds = [...memberMap.keys()];
 
             // 롤 티어 정보를 가진 유저 데이터 조회
-            const userSettingsList = await UserSettings.findUsersWithLoLTierByIds(memberIds);
+            const lolTierUsers = await userRepository.findUsersWithLoLTierByIds(memberIds);
 
             // 각 유저의 최고 티어 정보 추출 및 정렬
-            const topTierUsers = getTopTierUsers(userSettingsList, memberMap);
+            const topTierUsers = getTopTierUsers(lolTierUsers, memberMap);
             topTierUsers.sort((a, b) => b.score - a.score);
 
             // 티어별 그룹화 및 임베드 생성
