@@ -1,6 +1,6 @@
 const { StringSelectMenuBuilder, ActionRowBuilder } = require('discord.js');
 const UserSettings = require('@services/UserSettings');
-const getStateMessage = require('@shared/utils/stateMessage');
+const replyStateMessage = require('@shared/utils/replyStateMessage');
 const GAME_TYPES = require('@constants/gameTypes');
 const GAME_DISPLAY_NAMES = require('@constants/gameDisplayNames');
 const logger = require('@utils/logger');
@@ -38,13 +38,6 @@ function createOptions(userData) {
     }
 
     return options;
-}
-
-async function replyStateMessage(interaction, stateKey) {
-    await interaction.reply({
-        content: getStateMessage(stateKey),
-        ephemeral: true
-    });
 }
 
 function createNicknameDeleteMenu(options) {

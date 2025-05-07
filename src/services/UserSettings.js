@@ -2,6 +2,7 @@ const UserCacheManager = require('./UserCacheManager');
 const userRepository = require('@repositories/userRepository');
 const fetchLeagueOfLegendsTier = require('../shared/api/fetchLeagueOfLegendsTier');
 const GAME_TYPES = require('../constants/gameTypes');
+const STATE_KEYS = require('@constants/stateKeys');
 const logger = require('@utils/logger');
 
 class UserSettings {
@@ -128,16 +129,18 @@ class UserSettings {
     async deleteUserData() {
         try {
             const userData = await this.loadUserData();
-            if (!userData) return 'alreadyDeleted';
+            if (!userData) return STATE_KEYS.NO_USER_DATA;
 
             await userRepository.deleteUserById(this.userId);
             UserCacheManager.delete(this.userId);
-
-            return 'deleteSuccess';
+            return STATE_KEYS.DELETE_SUCCESS;
 
         } catch (error) {
-            console.error('UserSettings.deleteUserData 예외:', error);
-            return 'deleteError';
+            logger.error('[UserSettings.deleteUserData] 사용자 정보 삭제 중 DB 처리 실패', {
+                errorMessage: error.message,
+                userId: this.userId
+            });
+            return STATE_KEYS.DELETE_FAIL;
         }
     }
 
