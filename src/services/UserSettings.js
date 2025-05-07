@@ -50,18 +50,18 @@ class UserSettings {
             }
 
             if (game !== 'steam' && userData[game].includes(nickname)) {
-                return 'nicknameDuplicate';
+                return STATE_KEYS.NICKNAME_SAVE_DUPLICATE;
             }
 
             if (
                 game === GAME_TYPES.LEAGUE_OF_LEGENDS &&
                 userData[game].some(entry => entry.summonerName === nickname)
             ) {
-                return 'nicknameDuplicate';
+                return STATE_KEYS.NICKNAME_SAVE_DUPLICATE;
             }
 
             if (game !== 'steam' && userData[game].length >= 5) {
-                return 'nicknameLimitExceeded';
+                return STATE_KEYS.NICKNAME_SAVE_LIMIT_EXCEEDED;
             }
 
             switch (game) {
@@ -89,7 +89,7 @@ class UserSettings {
 
             await userData.save();
             UserCacheManager.set(this.userId, userData);
-            return 'saveSuccess';
+            return STATE_KEYS.NICKNAME_SAVE_SUCCESS;
         } catch (error) {
             console.error('[userNicknameSaver] 유저 닉네임 저장 중 예외 발생:', {
                 game,
@@ -123,7 +123,7 @@ class UserSettings {
 
         await userData.save();
         UserCacheManager.set(this.userId, userData);
-        return 'removalSuccessful';
+        return STATE_KEYS.NICKNAME_DELETE_SUCCESS;
     }
 
     async deleteUserData() {

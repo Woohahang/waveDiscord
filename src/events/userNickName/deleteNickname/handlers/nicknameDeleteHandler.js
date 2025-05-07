@@ -1,6 +1,6 @@
 const UserSettings = require('../../../../services/UserSettings');
 const messageAutoDelete = require('../../../../module/common/messageAutoDelete');
-const statusMessage = require('../../nickNameModules/statusMessage');
+const getStateMessage = require('@shared/utils/stateMessage');
 const logger = require('@utils/logger');
 
 /**
@@ -27,11 +27,11 @@ module.exports = async (interaction) => {
     try {
         // 유저 인스턴스를 생성 후, 닉네임을 삭제하고 결과 상태를 반환합니다.
         const userSettings = new UserSettings(userId);
-        const status = await userSettings.removeNicknames(nicknamesToRemove);
+        const resultKey = await userSettings.removeNicknames(nicknamesToRemove);
 
         // 상태 메시지를 포함한 결과 메시지를 업데이트합니다.
         const resultMessage = await interaction.update({
-            content: statusMessage(status),
+            content: getStateMessage(resultKey),
             components: [],
             ephemeral: true
         });

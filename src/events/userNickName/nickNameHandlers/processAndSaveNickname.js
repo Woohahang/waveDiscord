@@ -1,9 +1,9 @@
 const UserSettings = require('../../../services/UserSettings');
-const statusMessage = require('../nickNameModules/statusMessage');
 const processNickname = require('../nickNameModules/processNickname');
 const sendErrorMessage = require('../../../utils/errors/sendErrorMessage');
 const errorMessages = require('../../../utils/errors/errorMessages');
 const logger = require('@utils/logger');
+const getStateMessage = require('@shared/utils/stateMessage');
 
 /**
  * 사용자의 닉네임 입력을 처리하고, 게임 종류에 따라 전처리 후 DB에 저장합니다.
@@ -24,10 +24,10 @@ module.exports = async (interaction) => {
 
         // 유저 설정 객체 생성 및 닉네임 저장
         const userSettings = new UserSettings(userId);
-        const status = await userSettings.userNicknameSaver(gameType, nickname);
+        const resultKey = await userSettings.userNicknameSaver(gameType, nickname);
 
         // 결과 메시지 전송
-        await interaction.editReply({ content: statusMessage(status), ephemeral: true });
+        await interaction.editReply({ content: getStateMessage(resultKey), ephemeral: true });
 
     } catch (error) {
         const code = error?.code;
