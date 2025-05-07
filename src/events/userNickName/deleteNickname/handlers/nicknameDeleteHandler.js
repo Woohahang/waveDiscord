@@ -3,10 +3,25 @@ const messageAutoDelete = require('../../../../module/common/messageAutoDelete')
 const statusMessage = require('../../nickNameModules/statusMessage');
 const logger = require('@utils/logger');
 
+/**
+ * @typedef {Object} NicknameEntry
+ * @property {string} gameType - 게임 종류 (예: 'leagueOfLegends', 'steam' 등)
+ * @property {string} nickname - 게임 내 닉네임
+ */
+
+/**
+ * Discord 상호작용(interaction) 핸들러로, 유저가 선택한 게임 닉네임들을 삭제합니다.
+ *
+ * @returns {Promise<void>} 
+*/
 module.exports = async (interaction) => {
 
-    // 유저 Id와 삭제할 게임과 닉네임 쌍을 가져옵니다.
     const userId = interaction.member.id;
+
+    /** 
+     * @type {NicknameEntry[]} 
+     * interaction.values는 문자열 배열이며, 각 요소는 JSON.stringify된 NicknameEntry입니다.
+     */
     const nicknamesToRemove = interaction.values.map(JSON.parse);
 
     try {
