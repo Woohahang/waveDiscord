@@ -8,10 +8,11 @@ const { RIOT_API_KEY } = require('../../../../config.json');
  * @returns {Object|null} 티어 정보 객체 또는 null
  */
 async function fetchLeagueTier(nickname) {
-    try {
-        const [gameNickname, tagLine] = nickname.split('#');
-        if (!gameNickname || !tagLine) throw new Error('유효하지 않은 RiotTag 형식입니다.');
 
+    const [gameNickname, tagLine] = nickname.split('#');
+    if (!gameNickname || !tagLine) throw new Error('유효하지 않은 RiotTag 형식입니다.');
+
+    try {
         // RIOT ID → PUUID 가져오기
         const accountRes = await axios.get(`https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${encodeURIComponent(gameNickname)}/${encodeURIComponent(tagLine)}`, {
             headers: { 'X-Riot-Token': RIOT_API_KEY }
@@ -43,7 +44,7 @@ async function fetchLeagueTier(nickname) {
         if (axios.isAxiosError(error) && error.response?.status === 404)
             return null;
 
-        throw new Error(`[fetchLeagueTier] 티어 조회 중 오류 발생 | nickname: ${nickname} | ${error.message}`);
+        throw new Error(`[fetchLeagueTier] 티어 조회 중 오류 발생 | gameNickname: ${gameNickname} | tagLine: ${tagLine} | errorMessage: ${error.message}`);
     }
 }
 
