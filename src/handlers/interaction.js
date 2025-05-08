@@ -18,10 +18,10 @@ const toggleMenuHandler = require('../events/guildCreate/guildMenuControls/toggl
 const updateChannels = require('../events/guildCreate/update/updateHandler/updateChannels');
 
 /* 멀티 툴 */
-const multitools = require('../events/multitools/multitools');
+const createUserInfoSelectMenu = require('../events/userInfo/createUserInfoSelectMenu');
 
-const viewUserInfo = require('../events/multitools/userInfo/viewUserInfo');
-const deleteUserInfo = require('../events/multitools/userInfo/deleteUserInfo');
+const showUserInfo = require('../events/userInfo/showUserInfo');
+const deleteUserInfo = require('../events/userInfo/deleteUserInfo');
 
 module.exports = async (interaction) => {
     try {
@@ -77,7 +77,7 @@ async function handleButtonInteraction(interaction) {
                 break;
 
             case 'multitoolsButton':
-                multitools(interaction);
+                createUserInfoSelectMenu(interaction);
                 break;
 
             default:
@@ -133,8 +133,8 @@ async function handleStringSelectMenu(interaction) {
                 break;
 
             case 'multitoolsMenu':
-                if (values.includes('viewUserInfo'))
-                    viewUserInfo(interaction);
+                if (values.includes('showUserInfo'))
+                    showUserInfo(interaction);
 
                 if (values.includes('deleteUserInfo'))
                     deleteUserInfo(interaction);

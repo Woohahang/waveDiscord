@@ -1,6 +1,6 @@
-const UserSettings = require('../../../services/UserSettings');
-const buildUserDataFields = require('../../../module/embed/buildUserDataFields');
-const buildUserInfoEmbed = require('../../../module/embed/buildUserInfoEmbed');
+const UserSettings = require('../../services/UserSettings');
+const buildUserDataFields = require('../../module/embed/buildUserDataFields');
+const buildUserInfoEmbed = require('../../module/embed/buildUserInfoEmbed');
 const logger = require('@utils/logger');
 const replyStateMessage = require('@shared/utils/replyStateMessage');
 const STATE_KEYS = require('@constants/stateKeys');
@@ -33,7 +33,7 @@ module.exports = async (interaction) => {
         await interaction.update({ embeds: [embed], components: [], ephemeral: true });
 
     } catch (error) {
-        logger.error('[viewUserInfo] 내 정보 조회 기능 사용 중 오류', {
+        logger.error('[showUserInfo] 내 정보 조회 기능 사용 중 오류', {
             memberId: member.id,
             stack: error.stack
         })
