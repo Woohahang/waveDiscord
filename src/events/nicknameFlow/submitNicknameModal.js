@@ -1,17 +1,32 @@
 const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle } = require('discord.js');
-const resetMenuSelection = require('../../shared/utils/resetMenuSelection');
-const { description } = require('../../module/games/gameData');
+const GAME_DISPLAY_NAMES = require('@constants/gameDisplayNames');
+const resetMenuSelection = require('@shared/utils/resetMenuSelection');
 const logger = require('@utils/logger');
 
-// 모달 생성
-function buildModal(gameType) {
+
+const NICKNAME_LABELS = {
+    steam: '✔️ 스팀 프로필 주소를 작성해주세요.',
+    default: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.'
+};
+
+/**
+ * 레이블을 게임 타입에 맞게 설정하는 함수
+ */
+function getNicknameLabel(gameType) {
+    return NICKNAME_LABELS[gameType] || NICKNAME_LABELS.default;
+}
+
+/**
+ * 닉네임 입력 모달을 생성합니다.
+ */
+function buildNicknameModal(gameType) {
     const modal = new ModalBuilder()
-        .setTitle(description[gameType])
-        .setCustomId('submitNickname_' + gameType);
+        .setTitle(GAME_DISPLAY_NAMES[gameType])
+        .setCustomId(`submitNickname_${gameType}`);
 
     const input = new TextInputBuilder()
         .setCustomId('nicknameInput')
-        .setLabel(gameType === 'steam' ? '✔️ 스팀 프로필 주소를 작성해주세요.' : '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.')
+        .setLabel(getNicknameLabel(gameType))
         .setStyle(TextInputStyle.Short);
 
     const nicknameInputRow = new ActionRowBuilder().addComponents(input);
@@ -21,30 +36,29 @@ function buildModal(gameType) {
     return modal;
 };
 
-/* 모달 함수 */
+/**
+ * 닉네임 등록 메뉴 선택 시 모달을 표시하는 핸들러입니다.
+ */
 module.exports = async (interaction) => {
 
     // 사용자의 상호작용에서 게임 제목을 추출합니다.
     const gameType = interaction.values[0];
 
     try {
-        // 메시지 타입이 0(일반 텍스트 메시지)인 경우에만 메뉴 선택을 초기화합니다. 슬래시 커맨드는 작동하지 않습니다.
-        if (interaction.message.type === 0) {
+        // 일반 텍스트 메시지에서 메뉴를 사용한 경우, 기존 선택을 초기화합니다. | [/닉네임등록] 사용한 경우 작동하지 않습니다.
+        if (interaction.message.type === 0)
             await resetMenuSelection(interaction.message);
-        };
 
-        //  사용자가 'noOptions'을 선택한 경우 함수 종료
+        // 등록 가능한 게임이 없을 경우 아무 작업도 하지 않습니다.
         if (gameType === 'noOptions')
             return await interaction.deferUpdate();
 
-        // 모달을 생성합니다.
-        const modal = buildModal(gameType)
-
-        // 생성한 모달을 사용자에게 보여줍니다.
+        // 모달을 생성하고 사용자에게 표시합니다.
+        const modal = buildNicknameModal(gameType)
         await interaction.showModal(modal);
 
     } catch (error) {
-        logger.error('[submitNicknameModal] 닉네임 모달 처리중 오류 발생', {
+        logger.error('[submitNicknameModal] 닉네임 모달 처리 중 오류 발생', {
             gameType,
             stack: error.stack
         })
