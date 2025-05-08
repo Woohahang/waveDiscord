@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const nicknameDeletionMenu = require('../../events/userNickName/deleteNickname/handlers/nicknameDeletionMenu');
+const deleteNicknameMenu = require('../../events/nicknameFlow/deleteNicknameMenu');
 
 module.exports = {
     // 슬래시 명령어를 정의합니다.
@@ -10,7 +10,7 @@ module.exports = {
     async execute(interaction) {
         try {
             // 닉네임 삭제를 담당하는 함수입니다.
-            await nicknameDeletionMenu(interaction);
+            await deleteNicknameMenu(interaction);
 
         } catch (error) {
             console.error('removeSelectedNickname.js 에러 : ', error);

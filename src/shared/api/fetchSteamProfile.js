@@ -1,7 +1,6 @@
-const InvalidProfileLinkError = require('../../../utils/errors/InvalidProfileLinkError');
-const UserProfileNotFoundError = require('../../../utils/errors/UserProfileNotFoundError');
+const UserProfileNotFoundError = require('../../utils/errors/UserProfileNotFoundError');
 const axios = require('axios');
-const { steamApiKey } = require('../../../../../config.json');
+const { steamApiKey } = require('../../../../config.json');
 
 async function fetchSteamProfile(profileLink) {
     try {

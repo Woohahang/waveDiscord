@@ -1,5 +1,5 @@
-const UserSettings = require('../../../../services/UserSettings');
-const messageAutoDelete = require('../../../../module/common/messageAutoDelete');
+const UserSettings = require('../../services/UserSettings');
+const messageAutoDelete = require('../../module/common/messageAutoDelete');
 const getStateMessage = require('@shared/utils/stateMessage');
 const logger = require('@utils/logger');
 
@@ -40,7 +40,7 @@ module.exports = async (interaction) => {
         messageAutoDelete(resultMessage);
 
     } catch (error) {
-        logger.error('[nicknameDeleteHandler] 닉네임 삭제 처리 중 오류 발생', {
+        logger.error('[deleteNickname] 닉네임 삭제 처리 중 오류 발생', {
             userId,
             nicknamesToRemove,
             stack: error.stack

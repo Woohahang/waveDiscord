@@ -10,11 +10,29 @@ module.exports = {
     async execute(interaction) {
         try {
 
-            const guildIconURL = interaction.guild.iconURL({ dynamic: true });
+            const gameType = '리그오브레전드';
+            const nickname = '페이커#kr1';
 
-            await interaction.reply({ embeds: [buildEmbed(guildIconURL)] });
+            // 두 문자열을 객체로 합침
+            const gameData = {
+                gameType: gameType,
+                nickname: nickname
+            };
 
-            // await interaction.reply({ content: '임베드 테스트 시작!', ephemeral: true });
+            // object
+            console.log(typeof (gameData));
+            console.log('---');
+
+            // 객체를 문자열로 변환
+            const gameDataString = JSON.stringify(gameData);
+
+            // string
+            console.log(typeof (gameDataString));
+            console.log('----')
+
+            // 문자열을 다시 객체로 변환
+            const parsedData = JSON.parse(gameDataString);
+            console.log(parsedData.nickname);
 
         } catch (error) {
             console.log('테스트 명령어 실행 중 오류가 발생했습니다.', error);

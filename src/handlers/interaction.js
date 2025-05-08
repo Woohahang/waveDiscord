@@ -2,12 +2,12 @@
 const { checkInteractionAdmin } = require('../module/checkAdminPermissionOn');
 
 /* 닉네임 저장 */
-const nickNameModal = require('../events/userNickName/nickNameHandlers/nickNameModal');
-const nicknameDeleteHandler = require('../events/userNickName/deleteNickname/handlers/nicknameDeleteHandler');
-const processAndSaveNickname = require('../events/userNickName/nickNameHandlers/processAndSaveNickname');
+const submitNicknameModal = require('../events/nicknameFlow/submitNicknameModal');
+const deleteNickname = require('../events/nicknameFlow/deleteNickname');
+const saveNickname = require('../events/nicknameFlow/saveNickname');
 
 /* 닉네임 삭제 */
-const nicknameDeletionMenu = require('../events/userNickName/deleteNickname/handlers/nicknameDeletionMenu');
+const deleteNicknameMenu = require('../events/nicknameFlow/deleteNicknameMenu');
 
 
 /* 길드 메뉴 컨트롤 */
@@ -73,7 +73,7 @@ async function handleButtonInteraction(interaction) {
                 break;
 
             case 'removeButton':
-                nicknameDeletionMenu(interaction);
+                deleteNicknameMenu(interaction);
                 break;
 
             case 'multitoolsButton':
@@ -96,7 +96,7 @@ async function handleSubmitModal(interaction) {
 
         switch (customIdParts) {
             case 'submitNickname':
-                await processAndSaveNickname(interaction);
+                await saveNickname(interaction);
                 break;
 
         };
@@ -112,11 +112,11 @@ async function handleStringSelectMenu(interaction) {
 
         switch (customId) {
             case 'gameMenu': // 닉네임 등록 모달 메뉴 생성
-                nickNameModal(interaction);
+                submitNicknameModal(interaction);
                 break;
 
             case 'removeNickNames': // 닉네임 삭제 제출 -> DB 저장
-                nicknameDeleteHandler(interaction);
+                deleteNickname(interaction);
                 break;
 
             /* 서버 메뉴 보이기 or 숨기기 */

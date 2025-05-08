@@ -76,7 +76,7 @@ module.exports = async (interaction) => {
         });
 
     } catch (error) {
-        logger.error('[nicknameDeletionMenu] 닉네임 삭제를 위한 메뉴 구성중 오류', {
+        logger.error('[deleteNicknameMenu] 닉네임 삭제를 위한 메뉴 구성중 오류', {
             userId: interaction.member.id,
             stack: error.stack
         })

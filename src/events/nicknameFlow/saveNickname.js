@@ -1,11 +1,33 @@
-const UserSettings = require('../../../services/UserSettings');
+const UserSettings = require('../../services/UserSettings');
 const logger = require('@utils/logger');
 const getStateMessage = require('@shared/utils/stateMessage');
 const RIOT_GAMES = require('@constants/riotGames')
-const formatRiotTag = require('../nickNameModules/formatRiotTag');
 const GAME_TYPES = require('@constants/gameTypes');
-const fetchSteamProfile = require('../nickNameModules/fetchSteamProfile');
+const fetchSteamProfile = require('../../shared/api/fetchSteamProfile');
 const ERROR_KEY = require('@constants/errorKeys');
+
+/**
+ * Riot Tag를 포맷팅합니다.
+ * 
+ * - 'KR1' 태그는 대문자로 통일
+ * - 닉네임이 2글자일 경우 중간에 공백 추가
+ * 
+ * @param {string} nickname - '닉네임#태그' 형식의 문자열
+ * @returns {string} 포맷팅된 Riot Tag
+ */
+function formatRiotTag(nickname) {
+    let [name, tag] = nickname.split('#');
+
+    // 'kr1' 또는 'kR1' 등은 'KR1'로 통일
+    if (tag.toUpperCase() === 'KR1')
+        tag = 'KR1';
+
+    // 닉네임이 두 글자일 경우 중간에 공백 삽입
+    if (name.length === 2)
+        name = `${name[0]} ${name[1]}`;
+
+    return `${name}#${tag}`;
+};
 
 /**
  * 라이엇 태그 포맷 검사 정규식
@@ -107,7 +129,7 @@ module.exports = async (interaction) => {
         await interaction.editReply({ content: getStateMessage(resultKey), ephemeral: true });
 
     } catch (error) {
-        logger.error('[processAndSaveNickname] 닉네임 저장 중 오류 발생', {
+        logger.error('[saveNickname] 닉네임 저장 중 오류 발생', {
             userId,
             gameType,
             rawNickname,

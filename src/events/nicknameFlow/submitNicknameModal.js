@@ -1,6 +1,6 @@
-const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, InteractionType } = require('discord.js');
-const resetMenuSelection = require('../../../shared/utils/resetMenuSelection');
-const { description } = require('../../../module/games/gameData');
+const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle } = require('discord.js');
+const resetMenuSelection = require('../../shared/utils/resetMenuSelection');
+const { description } = require('../../module/games/gameData');
 const logger = require('@utils/logger');
 
 // 모달 생성
@@ -34,9 +34,8 @@ module.exports = async (interaction) => {
         };
 
         //  사용자가 'noOptions'을 선택한 경우 함수 종료
-        if (gameType === 'noOptions') {
+        if (gameType === 'noOptions')
             return await interaction.deferUpdate();
-        };
 
         // 모달을 생성합니다.
         const modal = buildModal(gameType)
@@ -45,7 +44,7 @@ module.exports = async (interaction) => {
         await interaction.showModal(modal);
 
     } catch (error) {
-        logger.error('[nickNameModal] 닉네임 모달 처리중 오류 발생', {
+        logger.error('[submitNicknameModal] 닉네임 모달 처리중 오류 발생', {
             gameType,
             stack: error.stack
         })
