@@ -1,4 +1,6 @@
 const { PermissionsBitField } = require('discord.js');
+const getDisplayName = require('./getDisplayName');
+
 
 /**
  * 주어진 멤버가 관리자 권한을 가지고 있는지 확인합니다.
@@ -11,9 +13,10 @@ function isAdmin(member) {
         return member.permissions.has(PermissionsBitField.Flags.Administrator);
     } catch (error) {
         console.error('[isAdmin] 관리자 권한 확인 중 예외 발생:', {
-            memberId: member?.id,
-            username: member?.user?.username,
-            error
+            memberId: member.id,
+            username: member.user.username,
+            displayName: getDisplayName(member),
+            stack: error.stack
         });
 
         return false;

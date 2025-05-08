@@ -4,20 +4,20 @@
  * @description 봇 전반에서 사용하는 게임 키워드를 중앙에서 관리합니다.
  */
 const GAME_TYPES = {
-    // Steam 관련
+    // Steam
     STEAM: 'steam',
     RAINBOW_SIX: 'rainbowSix',
-    STEAM_BATTLEGROUNDS: 'steamBattleGround',
 
-    // Kakao 관련
-    KAKAO_BATTLEGROUNDS: 'kakaoBattleGround',
-
-    // Riot 관련
+    // Riot
     LEAGUE_OF_LEGENDS: 'leagueOfLegends',
     TEAMFIGHT_TACTICS: 'teamfightTactics',
     VALORANT: 'valorant',
 
-    // Blizzard 관련
+    // BattleGround
+    STEAM_BATTLEGROUNDS: 'steamBattleGround',
+    KAKAO_BATTLEGROUNDS: 'kakaoBattleGround',
+
+    // Blizzard
     BLIZZARD: 'blizzard',
     OVERWATCH_2: 'overWatchTwo',
 

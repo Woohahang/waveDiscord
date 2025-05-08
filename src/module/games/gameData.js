@@ -13,7 +13,6 @@ const games = [
 
 const gameLabels = {
     steam: 'Steam',
-    rainbowSix: 'Rainbow Six',
     leagueOfLegends: 'League of Legends',
     teamfightTactics: 'Teamfight Tactics',
     valorant: 'Valorant',
@@ -22,6 +21,7 @@ const gameLabels = {
     blizzard: 'Blizzard',
     overWatchTwo: 'OVERWATCH 2',
     lostArk: 'Lost Ark',
+    rainbowSix: 'Rainbow Six',
 };
 
 const description = {
