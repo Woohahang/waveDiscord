@@ -12,13 +12,8 @@ async function fetchSteamProfile(profileLink) {
         if (steamIdMatch) {
             steamId = steamIdMatch[1];
         } else {
-            // 사용자 정의 URL에서 Steam ID 추출
-            const customUrlMatch = profileLink.match(/\/id\/([^\/]+)/);
-            if (!customUrlMatch) {
-                throw new InvalidProfileLinkError('유효하지 않은 프로필 링크, profileLink : ' + profileLink);
-            };
-
-            const customUrl = customUrlMatch[1];
+            // 사용자 정의 URL -> Steam ID 변환
+            const customUrl = profileLink.match(/\/id\/([^\/]+)/)[1];
             const resolveUrl = `https://api.steampowered.com/ISteamUser/ResolveVanityURL/v1/?key=${steamApiKey}&vanityurl=${customUrl}`;
             const { data: { response } } = await axios.get(resolveUrl);
 

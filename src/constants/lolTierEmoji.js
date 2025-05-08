@@ -1,9 +1,10 @@
+const BOT_IDS = require('./botIds');
 const botInfo = require('../utils/botInfo');
 
 // 봇 ID에 따른 롤 티어 이모지 ID 맵핑
 const lolTierEmojiIdMap = {
     // Wave (ID: 1227561479801409566)
-    '1227561479801409566': {
+    [BOT_IDS.WAVE]: {
         CHALLENGER: '1365067284774654043',
         GRANDMASTER: '1365067306119462932',
         MASTER: '1365067320061591663',
@@ -19,7 +20,7 @@ const lolTierEmojiIdMap = {
     },
 
     // WaveTest (ID: 1234318546641752144)
-    '1234318546641752144': {
+    [BOT_IDS.WAVE_TEST]: {
         CHALLENGER: '1366852841490223104',
         GRANDMASTER: '1366852859089522708',
         MASTER: '1366852883357634761',

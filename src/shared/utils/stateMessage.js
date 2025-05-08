@@ -1,4 +1,5 @@
 const STATE_KEYS = require('@constants/stateKeys');
+const ERROR_KEY = require('@constants/errorKeys');
 
 const STATE_MESSAGES = {
     [STATE_KEYS.NO_USER_DATA]:
@@ -39,7 +40,17 @@ const STATE_MESSAGES = {
     [STATE_KEYS.NICKNAME_DELETE_SUCCESS]:
         '\n' + `## 닉네임 삭제 완료` +
         '\n' + '> * 닉네임이 성공적으로 삭제되었습니다.' +
-        '\n' + '> * 문제가 발생하면 **Wave** 디스코드 채널로 문의해 주세요.'
+        '\n' + '> * 문제가 발생하면 **Wave** 디스코드 채널로 문의해 주세요.',
+
+    [ERROR_KEY.INVALID_RIOT_TAG_FORMAT]:
+        '\n' + `## 닉네임 등록 실패` +
+        '\n' + '> * 라이엇 태그 형식이 잘못되었습니다.' +
+        '\n' + '> * 문제가 지속되면 **Wave** 디스코드 채널로 문의해 주세요.',
+
+    [ERROR_KEY.INVALID_STEAM_PROFILE_LINK]:
+        '\n' + `## 프로필 주소 등록 실패` +
+        '\n' + '> * 스팀 프로필 주소가 아닙니다.' +
+        '\n' + '> * 📌 ① 스팀 페이지 프로필  ② 좌측 상단의 주소 복사 붙여넣기'
 
 };
 

@@ -1,32 +1,24 @@
-// formatRiotTag.js
+/**
+ * Riot Tag를 포맷팅합니다.
+ * 
+ * - 'KR1' 태그는 대문자로 통일
+ * - 닉네임이 2글자일 경우 중간에 공백 추가
+ * 
+ * @param {string} nickname - '닉네임#태그' 형식의 문자열
+ * @returns {string} 포맷팅된 Riot Tag
+ */
+function formatRiotTag(nickname) {
+    let [name, tag] = nickname.split('#');
 
-function formatRiotTag(nickName) {
-    try {
-        // 태그가 없다면 #KR1 추가
-        if (!nickName.includes('#')) {
-            nickName += '#KR1';
-        };
+    // 'kr1' 또는 'kR1' 등은 'KR1'로 통일
+    if (tag.toUpperCase() === 'KR1')
+        tag = 'KR1';
 
-        // 태그 이름을 대문자로 변환
-        let [namePart, riotTag] = nickName.split('#');
-        let upperCaseTag = riotTag.toUpperCase();
+    // 닉네임이 두 글자일 경우 중간에 공백 삽입
+    if (name.length === 2)
+        name = `${name[0]} ${name[1]}`;
 
-        // kr1, kR1 -> KR1 변환
-        if (upperCaseTag === 'KR1') {
-            riotTag = upperCaseTag;
-        };
-
-        // 두 글자 닉네임에 대해 가운데에 띄어쓰기 추가
-        if (namePart.length === 2) {
-            namePart = namePart[0] + ' ' + namePart[1];
-        };
-
-        nickName = namePart + '#' + riotTag;
-
-        return nickName;
-    } catch (error) {
-        console.error('formatRiotTag.js 예외 : ', error);
-    };
+    return `${name}#${tag}`;
 };
 
 module.exports = formatRiotTag;
