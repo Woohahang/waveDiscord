@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
+const GAME_TYPES = require('@constants/gameTypes');
 
 let guildSettingsSchema = new mongoose.Schema({
 
-    guildId: String,
-    guildName: String,
+    guildId: { type: String, required: true, unique: true },
+    guildName: { type: String, required: true },
     ownerId: String,
 
     // Wave 채널 id 저장
@@ -18,16 +19,16 @@ let guildSettingsSchema = new mongoose.Schema({
 
 
     // 길드에서 다루는 게임
-    steam: { type: Boolean, default: false },
-    leagueOfLegends: { type: Boolean, default: false },
-    teamfightTactics: { type: Boolean, default: false },
-    valorant: { type: Boolean, default: false },
-    steamBattleGround: { type: Boolean, default: false },
-    kakaoBattleGround: { type: Boolean, default: false },
-    rainbowSix: { type: Boolean, default: false },
-    blizzard: { type: Boolean, default: false },
-    overWatchTwo: { type: Boolean, default: false },
-    lostArk: { type: Boolean, default: false },
+    [GAME_TYPES.STEAM]: { type: Boolean, default: false },
+    [GAME_TYPES.LEAGUE_OF_LEGENDS]: { type: Boolean, default: false },
+    [GAME_TYPES.TEAMFIGHT_TACTICS]: { type: Boolean, default: false },
+    [GAME_TYPES.VALORANT]: { type: Boolean, default: false },
+    [GAME_TYPES.STEAM_BATTLEGROUNDS]: { type: Boolean, default: false },
+    [GAME_TYPES.KAKAO_BATTLEGROUNDS]: { type: Boolean, default: false },
+    [GAME_TYPES.RAINBOW_SIX]: { type: Boolean, default: false },
+    [GAME_TYPES.BLIZZARD]: { type: Boolean, default: false },
+    [GAME_TYPES.OVERWATCH_2]: { type: Boolean, default: false },
+    [GAME_TYPES.LOST_ARK]: { type: Boolean, default: false },
 
 });
 
