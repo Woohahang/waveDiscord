@@ -11,49 +11,75 @@ const resetMenuSelection = require('@shared/utils/resetMenuSelection');
 const replyStateMessage = require('@shared/utils/replyStateMessage');
 const logger = require('@utils/logger');
 
-// 각 메뉴 동작에 따른 표시 여부 매핑 (false: 표시됨, true: 숨김)
+// 메뉴 동작에 따라 해당 게임이 길드 설정에서 보이는지 여부를 정의 (false: 보이는 상태 → 표시 가능, true: 숨김 상태 → 제거 가능)
 const menuVisibilityMap = {
     showMenu: false,
     hideMenu: true
 };
 
-// 각 메뉴 동작에 따른 상태 메시지 키
+// 각 메뉴 동작에 따라 응답할 상태 메시지 키를 지정
 const menuStateKey = {
     showMenu: STATE_KEYS.NO_MENU_TO_SHOW,
     hideMenu: STATE_KEYS.NO_MENU_TO_HIDE,
 };
 
+// 각 메뉴 동작에 따라 SelectMenu의 placeholder 텍스트 설정
+const PLACEHOLDER_TEXT = {
+    showMenu: '추가할 게임을 선택하세요',
+    hideMenu: '제거할 게임을 선택하세요',
+};
+
+// 각 메뉴 동작에 따라 메뉴 설명에 붙일 텍스트 설정
+const ACTION_SUFFIX = {
+    showMenu: ' 추가하기 !',
+    hideMenu: ' 삭제하기 !',
+};
+
 /**
- * 게임 메뉴 옵션을 포함한 SelectMenu 컴포넌트를 구성합니다.
- * @param {string[]} options - 선택 가능한 게임 키 리스트
- * @param {string} value - 'showMenu' 또는 'hideMenu'
+ * 주어진 게임 필드와 메뉴 동작에 따라 SelectMenu 옵션을 생성합니다.
+ * 
+ * @param {string} field - 게임 키 (예: 'leagueOfLegends')
+ * @param {string} menuAction - 'showMenu' 또는 'hideMenu'
+ * @returns {StringSelectMenuOptionBuilder}
+ */
+function createMenuOption(field, menuAction) {
+    const suffix = ACTION_SUFFIX[menuAction];
+
+    return new StringSelectMenuOptionBuilder()
+        .setLabel(GAME_DISPLAY_LABELS[field])
+        .setDescription(GAME_DISPLAY_NAMES[field] + suffix)
+        .setValue(field)
+};
+
+/**
+ * SelectMenu 옵션들을 포함한 ActionRow를 생성합니다.
+ * 
+ * @param {StringSelectMenuOptionBuilder[]} menuOptions - SelectMenu에 포함할 옵션 리스트
+ * @param {string} menuAction - 'showMenu' 또는 'hideMenu'
  * @returns {ActionRowBuilder}
  */
-function buildMenuActionRow(options, value) {
+function buildMenuActionRow(menuOptions, menuAction) {
+    const placeholder = PLACEHOLDER_TEXT[menuAction];
+
     const select = new StringSelectMenuBuilder()
-        .setCustomId(value)
-        .setPlaceholder(value === 'showMenu' ? ' 추가하기 !' : ' 삭제하기 !')
+        .setCustomId(menuAction)
+        .setPlaceholder(placeholder)
         .setMinValues(1)
-        .setMaxValues(options.length)
-        .addOptions(
-            options.map(field => (
-                new StringSelectMenuOptionBuilder()
-                    .setLabel(GAME_DISPLAY_LABELS[field])
-                    .setDescription(GAME_DISPLAY_NAMES[field] + (value === 'showMenu' ? ' 추가하기 !' : ' 삭제하기 !'))
-                    .setValue(field)
-            ))
-        );
+        .setMaxValues(menuOptions.length)
+        .addOptions(menuOptions);
 
     return new ActionRowBuilder().addComponents(select);
 };
 
 /**
- * 관리자 전용: 게임 메뉴 숨기기/표시 토글을 위한 메뉴를 응답합니다.
+ * 서버 관리자 전용: 게임 메뉴를 표시하거나 숨기는 SelectMenu를 생성 및 응답합니다.
+ * 
+ * @param {import('discord.js').StringSelectMenuInteraction} interaction 
  */
 module.exports = async (interaction) => {
 
     const guild = interaction.guild;
-    const value = interaction.values[0]; // 'showMenu' 또는 'hideMenu'
+    const menuAction = interaction.values[0]; // 'showMenu' 또는 'hideMenu'
 
     try {
         // 기존 메시지의 선택 상태 초기화
@@ -63,35 +89,38 @@ module.exports = async (interaction) => {
         if (!isAdmin(interaction.member))
             return await replyStateMessage(interaction, STATE_KEYS.NO_ADMIN_PERMISSION);
 
-        // 길드 인스턴스 생성 및 길드 데이터 불러오기
+        // 길드 설정 정보 불러오기
         const guildSettings = new GuildSettings(guild.id);
         const guildData = await guildSettings.loadOrCreate();
 
-        // 사용자가 선택한 메뉴의 대상 값 추출 (true/false)
-        const targetValue = menuVisibilityMap[value];
+        // 표시/숨김 여부에 해당하는 필드값(true 또는 false) 추출
+        const targetValue = menuVisibilityMap[menuAction];
         if (targetValue === undefined) {
             logger.error('[gameMenuToggle] menuVisibilityMap 정의되어 있지 않는 값', {
                 guildId: guild.id,
                 guildName: guild.name,
-                value,
+                menuAction,
             })
             return await replyStateMessage(interaction, ERROR_KEY.UNKNOWN_MENU_SELECTION);
         }
 
-        // 현재 길드 설정에서 해당 상태(true/false)에 해당하는 게임 필터링
-        let options = filterKeysByValue(guildData, targetValue);
+        // 현재 길드 설정에서 해당 값(true/false)을 가진 게임 키만 필터링
+        const matchingGameKeys = filterKeysByValue(guildData, targetValue);
 
-        // 해당 상태의 메뉴가 존재하지 않으면 메시지로 응답
-        if (options.length === 0) {
-            const key = menuStateKey[value];
+        // 해당 상태에 맞는 게임이 없으면 메시지 응답
+        if (matchingGameKeys.length === 0) {
+            const key = menuStateKey[menuAction];
             return await replyStateMessage(interaction, key);
         }
 
-        // GAME_TYPES 기준으로 정렬 (일관된 표시 순서 보장)
-        options = Object.values(GAME_TYPES).filter(label => options.includes(label));
+        // GAME_TYPES 순서를 기준으로 정렬하여 일관된 메뉴 표시
+        const sortedGameKeys = Object.values(GAME_TYPES).filter(label => matchingGameKeys.includes(label));
 
-        // 선택 메뉴 구성 및 응답
-        const row = buildMenuActionRow(options, value);
+        // SelectMenu 옵션 생성
+        const menuOptions = sortedGameKeys.map(gameType => createMenuOption(gameType, menuAction));
+
+        // 메뉴 구성 후 사용자에게 응답
+        const row = buildMenuActionRow(menuOptions, menuAction);
         await interaction.reply({
             components: [row],
             ephemeral: true
