@@ -181,15 +181,18 @@ class GuildSettings {
 
     /**
     * 게임 표시 여부를 저장합니다.
-    * @param {string[]} keys 게임 키 배열 (예: ['leagueOfLegends', 'valorant'])
+    * 
+    * @param {string[]} gameKeys 게임 키 배열 (예: ['leagueOfLegends', 'valorant'])
     * @param {boolean} isVisible 표시 여부
-    * @returns {object} 업데이트된 guildData
+    * @returns {{ updatedGuildData: object | null, resultKey: string }} 저장 결과 객체
+    * - updatedGuildData: 저장된 guildData 객체 (실패 시 null)
+    * - resultKey: 상태 키 (예: STATE_KEYS.GUILD_UPDATE_SUCCESS, ERROR_KEY.GUILD_UPDATE_FAILED)
     */
-    async saveGameVisibility(isVisible, keys) {
+    async saveGameVisibility(isVisible, gameKeys) {
         try {
             const guildData = await this.loadOrCreate();
 
-            keys.forEach(key => {
+            gameKeys.forEach(key => {
                 guildData[key] = isVisible;
             });
 
@@ -199,10 +202,11 @@ class GuildSettings {
             return { updatedGuildData: guildData, resultKey: STATE_KEYS.GUILD_UPDATE_SUCCESS };
 
         } catch (error) {
-            logger.error('[GuildSettings.saveGameVisibility] 게임 표지 여부 저장 중 오류', {
+            logger.error('[GuildSettings.saveGameVisibility] 게임 표시 여부 저장 중 DB 처리 실패', {
                 guildId: this.guildId,
                 isVisible,
-                keys
+                gameKeys,
+                errorMessage: error.message
             });
 
             return { updatedGuildData: null, resultKey: ERROR_KEY.GUILD_UPDATE_FAILED };
