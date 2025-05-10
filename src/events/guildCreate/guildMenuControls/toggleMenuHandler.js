@@ -1,52 +1,50 @@
-// toggleMenuHandler.js
-
+const getStateMessage = require('@shared/utils/stateMessage');
 const GuildSettings = require('../../../services/GuildSettings');
 const adminChannelUpDate = require('../update/updateModule/adminChannelUpDate');
 const mainChannelUpdate = require('../update/updateModule/mainChannelUpdate');
-const { updateCompleted, updateFailed } = require('../update/updateModule/message');
+const logger = require('@utils/logger');
+const STATE_KEYS = require('@constants/stateKeys');
 
+/**
+ * 서버 관리자 전용: 사용자가 선택한 게임의 가시성을 변경하는 기능을 수행합니다.
+ * 업데이트 후, 관리자 채널과 메인 채널을 업데이트하며, 사용자에게 완료 상태를 응답합니다.
+ * 
+ * @param {import('discord.js').StringSelectMenuInteraction} interaction - Discord의 interaction 객체
+ */
 module.exports = async (interaction) => {
+
+    // 사용자 요청에 따른 메뉴 동작 유형 ('showMenu' 또는 'hideMenu')
+    const menuAction = interaction.customId;
+
+    // '보이기' 또는 '숨기기' 여부를 결정합니다.
+    const isVisible = (menuAction === 'showMenu');
+
+    // 사용자가 선택한 게임 키 목록 (예: ['leagueOfLegends', 'valorant'] 등)
+    const selectedGameKeys = interaction.values;
+
     try {
-        // interaction 객체에서 customId와 선택된 값을 가져옵니다.
-        const customid = interaction.customId;
-        const selections = interaction.values;
-
-        // 길드 인스턴스 생성를 생성하고 불러옵니다.
+        // 길드 설정 정보 불러오기
         const guildSettings = new GuildSettings(interaction.guild.id);
-        let guildData = await guildSettings.loadOrCreate();
 
-        // 게임들을 숨기거나 보이게합니다.
-        selections.forEach(selection => {
-            const action = customid === 'showMenu' ? true : false;
-
-            guildData[selection] = action;
-        });
-
-        // 변경된 데이터를 DB에 저장합니다.
-        await guildData.save();
+        // 게임의 가시성을 설정하고 업데이트된 길드 데이터를 반환
+        const { updatedGuildData, resultKey } = await guildSettings.saveGameVisibility(isVisible, selectedGameKeys);
 
         // 사용자에게 초기 응답을 즉시 보냅니다.
         await interaction.update({ content: '업데이트를 시작했습니다. 잠시만 기다려주세요...', components: [], ephemeral: true });
 
-        // 서버 채널을 업데이트합니다.
-        await Promise.all([
-            adminChannelUpDate(interaction),
-            mainChannelUpdate(interaction, guildData),
-        ]);
+        if (resultKey === STATE_KEYS.GUILD_UPDATE_SUCCESS)
+            await Promise.all([
+                adminChannelUpDate(interaction),
+                mainChannelUpdate(interaction, updatedGuildData),
+            ]);
 
-        await interaction.editReply({ content: updateCompleted, components: [], ephemeral: true });
+        await interaction.editReply({ content: getStateMessage(resultKey), components: [], ephemeral: true });
 
     } catch (error) {
-        interaction.editReply({ content: updateFailed, ephemeral: true });
-        console.error('toggleMenuHandler.js 업데이트 실패 : ', error);
+        logger.error('[toggleMenuHandler] 메뉴 업데이트 도중 오류', {
+            menuAction,
+            selectedGameKeys,
+            stack: error.stack
+        })
     };
 };
-
-
-
-/*
-메세지 20초 뒤 삭제 하는 방법은
-
-reply 만 된다고 한다. 이전 상호작용에서 대답을 안 하게 하고
-여기서 reply를 써서 셋타임 아웃을 하면 될 것 같은데 아직 안 해봤다.
-*/

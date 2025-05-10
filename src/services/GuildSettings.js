@@ -1,4 +1,7 @@
+const ERROR_KEY = require('@constants/errorKeys');
 const guildSchema = require('../mongoDB/guildSettingsSchema');
+const logger = require('@utils/logger');
+const STATE_KEYS = require('@constants/stateKeys');
 
 class GuildSettings {
     // 모든 길드 데이터를 저장하는 정적 객체입니다.
@@ -175,6 +178,36 @@ class GuildSettings {
             throw error;
         };
     };
+
+    /**
+    * 게임 표시 여부를 저장합니다.
+    * @param {string[]} keys 게임 키 배열 (예: ['leagueOfLegends', 'valorant'])
+    * @param {boolean} isVisible 표시 여부
+    * @returns {object} 업데이트된 guildData
+    */
+    async saveGameVisibility(isVisible, keys) {
+        try {
+            const guildData = await this.loadOrCreate();
+
+            keys.forEach(key => {
+                guildData[key] = isVisible;
+            });
+
+            await guildData.save();
+            this.#cacheGuildData(guildData);
+
+            return { updatedGuildData: guildData, resultKey: STATE_KEYS.GUILD_UPDATE_SUCCESS };
+
+        } catch (error) {
+            logger.error('[GuildSettings.saveGameVisibility] 게임 표지 여부 저장 중 오류', {
+                guildId: this.guildId,
+                isVisible,
+                keys
+            });
+
+            return { updatedGuildData: null, resultKey: ERROR_KEY.GUILD_UPDATE_FAILED };
+        }
+    }
 
 };
 

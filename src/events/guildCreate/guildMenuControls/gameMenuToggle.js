@@ -11,10 +11,15 @@ const resetMenuSelection = require('@shared/utils/resetMenuSelection');
 const replyStateMessage = require('@shared/utils/replyStateMessage');
 const logger = require('@utils/logger');
 
-// 메뉴 동작에 따라 해당 게임이 길드 설정에서 보이는지 여부를 정의 (false: 보이는 상태 → 표시 가능, true: 숨김 상태 → 제거 가능)
+/**
+ * 메뉴 동작에 따라 필터링할 게임의 표시 상태를 매핑합니다.
+ * 
+ * - 'showMenu': 현재 숨겨진(false) 게임들만 필터링하여 표시 (→ 유저가 추가할 수 있게 하기 위함)
+ * - 'hideMenu': 현재 표시 중(true)인 게임들만 필터링하여 표시 (→ 유저가 숨길 수 있게 하기 위함)
+ */
 const menuVisibilityMap = {
-    showMenu: false,
-    hideMenu: true
+    showMenu: false,    // 현재 숨겨진 게임들 중에서 추가할 게임을 고르기 위해 필터링
+    hideMenu: true      // 현재 보이는 게임들 중에서 숨길 게임을 고르기 위해 필터링
 };
 
 // 각 메뉴 동작에 따라 응답할 상태 메시지 키를 지정
@@ -72,9 +77,12 @@ function buildMenuActionRow(menuOptions, menuAction) {
 };
 
 /**
- * 서버 관리자 전용: 게임 메뉴를 표시하거나 숨기는 SelectMenu를 생성 및 응답합니다.
+ * 서버 관리자 전용: 길드 내 게임 메뉴를 표시하거나 숨기는 SelectMenu를 생성하여 응답합니다.
  * 
- * @param {import('discord.js').StringSelectMenuInteraction} interaction 
+ * - 'showMenu'를 선택하면, 현재 숨겨진 게임 목록을 보여주어 관리자가 추가할 수 있도록 합니다.
+ * - 'hideMenu'를 선택하면, 현재 보이는 게임 목록을 보여주어 관리자가 삭제할 수 있도록 합니다.
+ * 
+ * @param {import('discord.js').StringSelectMenuInteraction} interaction - SelectMenuInteraction 객체, 사용자가 선택한 메뉴 값에 따라 처리됩니다.
  */
 module.exports = async (interaction) => {
 
