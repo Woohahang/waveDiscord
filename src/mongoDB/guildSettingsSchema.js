@@ -4,19 +4,12 @@ const GAME_TYPES = require('@constants/gameTypes');
 let guildSettingsSchema = new mongoose.Schema({
 
     guildId: { type: String, required: true, unique: true },
-    guildName: { type: String, required: true },
+    guildName: { type: String },
     ownerId: String,
 
     // Wave 채널 id 저장
     mainChannelId: String,
     adminChannelId: String,
-
-
-    // 별명 양식들 및 별명을 나누는 분리기호
-    aliasPatterns: [String],
-    aliasSeparator: String,
-    aliasRoleId: String,
-
 
     // 길드에서 다루는 게임
     [GAME_TYPES.STEAM]: { type: Boolean, default: false },

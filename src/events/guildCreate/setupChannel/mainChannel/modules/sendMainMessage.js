@@ -1,4 +1,4 @@
-const gameMenu = require('../../../../../module/games/gameMenu');
+const buildNicknameSelectMenu = require('../../../../../module/games/buildNicknameSelectMenu');
 const waveButton = require('../modules/waveButton');
 
 const contentMessage =
@@ -9,7 +9,7 @@ const contentMessage =
 async function sendMainMessage(channel, guildData) {
     try {
         // 첫 번째 메세지를 보냅니다.
-        await channel.send({ content: contentMessage, components: [gameMenu(guildData)] });
+        await channel.send({ content: contentMessage, components: [buildNicknameSelectMenu(guildData)] });
 
         // 두 번째 메세지를 보냅니다.
         await channel.send({ components: [waveButton()] });

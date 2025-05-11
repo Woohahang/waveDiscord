@@ -9,6 +9,8 @@ const setupMainChannel = require('../events/guildCreate/setupChannel/mainChannel
 /* 개인 DM */
 const adminPermissionRequest = require('../events/userChannel/ownerMessage/handler/adminPermissionRequest');
 
+const logger = require('@utils/logger');
+
 /**
  * 길드에 초대되었을 때 실행되는 함수입니다.
  * 
@@ -34,6 +36,8 @@ module.exports = async (guild) => {
             await adminPermissionRequest(guild);
         };
     } catch (error) {
-        console.error('guildCreate.js 예외 : ', error);
+        logger.error('[guildCreate] interaction handlers 오류', {
+            stack: error.stack
+        });
     };
 };
