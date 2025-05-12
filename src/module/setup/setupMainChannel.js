@@ -5,6 +5,7 @@ const botInfo = require('@utils/botInfo');
 const logger = require('@utils/logger');
 const buildNicknameSelectMenu = require("./buildNicknameSelectMenu");
 const safeFetchChannel = require("@utils/discord/safeFetchChannel");
+const fetchBotMessages = require("@utils/discord/fetchBotMessages");
 
 const contentMessage =
     '## :star: Wave 메인 명령어' + '\n' +
@@ -31,8 +32,7 @@ module.exports = async (guild) => {
         }
 
         // 최근 메시지 중 Wave 봇이 보낸 메시지 필터링
-        const messages = await channel.messages.fetch({ limit: 30 });
-        const botMessages = messages.filter(msg => msg.author.id === botInfo.get().botId);
+        const botMessages = await fetchBotMessages(channel, botInfo.get().botId);
 
         // 새 메시지를 전송
         await channel.send({
@@ -48,8 +48,11 @@ module.exports = async (guild) => {
 
     } catch (error) {
         logger.error('[setupMainChannel] 메인 채널 셋업 중 오류', {
+            errorMessage: error.message,
             guildId: guild.id,
-            stack: error.stack
+            channelType: 'mainChannel',
         })
+
+        throw error;
     }
 };

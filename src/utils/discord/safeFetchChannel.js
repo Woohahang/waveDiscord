@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 const UNKNOWN_CHANNEL_ERROR = 10003;
 
 /**
@@ -11,7 +12,10 @@ const UNKNOWN_CHANNEL_ERROR = 10003;
  */
 async function safeFetchChannel(guild, channelId) {
     try {
-        return await guild.channels.fetch(channelId);
+        if (!channelId) return null;
+
+        else return await guild.channels.fetch(channelId);
+
     } catch (error) {
         if (error.code === UNKNOWN_CHANNEL_ERROR)
             return null;

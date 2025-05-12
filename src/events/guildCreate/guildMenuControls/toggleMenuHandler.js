@@ -1,9 +1,9 @@
 const getStateMessage = require('@shared/utils/stateMessage');
 const GuildSettings = require('../../../services/GuildSettings');
-const adminChannelUpDate = require('../update/updateModule/adminChannelUpDate');
 const logger = require('@utils/logger');
 const STATE_KEYS = require('@constants/stateKeys');
 const setupMainChannel = require('@module/setup/setupMainChannel');
+const setupAdminChannel = require('@module/setup/setupAdminChannel');
 
 /**
  * 서버 관리자 전용: 사용자가 선택한 게임의 가시성을 변경하는 기능을 수행합니다.
@@ -34,7 +34,7 @@ module.exports = async (interaction) => {
 
         if (resultKey === STATE_KEYS.GUILD_UPDATE_SUCCESS)
             await Promise.all([
-                adminChannelUpDate(interaction),
+                setupAdminChannel(interaction.guild),
                 setupMainChannel(interaction.guild)
             ]);
 
