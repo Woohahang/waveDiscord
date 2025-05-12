@@ -1,9 +1,9 @@
 const GuildSettings = require('../../../../services/GuildSettings');
 const isAdmin = require('../../../../shared/utils/isAdmin');
 const adminChannelUpDate = require('../updateModule/adminChannelUpDate'); // 관리자 채널 업데이트
-const mainChannelUpdate = require('../updateModule/mainChannelUpdate'); // 메인 채널 업데이트
 const saveGuildOwnerData = require('../../setupChannel/guildOwnerData/handler/saveGuildOwnerData'); // 길드 오너 ID 및 길드 이름 업데이트
 const { updateCompleted, updateFailed } = require('../updateModule/message'); // 업데이트 상태 메세지
+const setupMainChannel = require('@module/setup/setupMainChannel');
 
 module.exports = async (interaction) => {
     try {
@@ -25,7 +25,7 @@ module.exports = async (interaction) => {
         // ⚠️ 절대 병렬 처리 금지!
         await saveGuildOwnerData(guild);
         await adminChannelUpDate(interaction, guildData);
-        await mainChannelUpdate(interaction, guildData);
+        await setupMainChannel(guild);
 
         // 업데이트 완료 메세지 전송
         await interaction.editReply({ content: updateCompleted, components: [], ephemeral: true });

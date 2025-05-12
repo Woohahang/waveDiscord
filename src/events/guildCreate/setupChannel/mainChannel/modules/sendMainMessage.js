@@ -1,4 +1,4 @@
-const buildNicknameSelectMenu = require('../../../../../module/games/buildNicknameSelectMenu');
+const buildNicknameSelectMenu = require('../../../../../module/setup/buildNicknameSelectMenu');
 const waveButton = require('../modules/waveButton');
 
 const contentMessage =
