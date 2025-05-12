@@ -1,4 +1,4 @@
-const getDisplayName = require('@shared/utils/getDisplayName');
+const getDisplayName = require('@utils/discord/getDisplayName');
 
 /**
  * 서버 멤버들의 ID와 displayName을 매핑한 Map을 반환합니다.

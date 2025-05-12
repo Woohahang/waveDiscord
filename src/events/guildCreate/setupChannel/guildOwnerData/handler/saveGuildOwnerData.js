@@ -1,5 +1,5 @@
 const GuildSettings = require('../../../../../services/GuildSettings');
-const getGuildOwnerData = require('../modules/getGuildOwnerData');
+const logger = require('@utils/logger');
 
 /**
  * 길드에 초대될 시 오너 정보를 저장합니다.
@@ -7,16 +7,22 @@ const getGuildOwnerData = require('../modules/getGuildOwnerData');
  * @param {Object} guild - 길드 객체
  */
 module.exports = async (guild) => {
-    try {
-        // 길드 이름 및 오너 ID를 가져옵니다.
-        const ownerData = getGuildOwnerData(guild);
 
+    const ownerData = {
+        ownerId: guild.ownerId,
+        guildName: guild.name
+    }
+
+    try {
         // 길드 이름 및 오너 ID를 저장합니다.
         const guildSettings = new GuildSettings(guild.id)
         await guildSettings.saveGuildOwnerData(ownerData);
 
-        console.log(`길드 오너 데이터 저장 완료: ${ownerData.guildName} (Owner ID: ${ownerData.ownerId})`);
     } catch (error) {
-        console.error('saveGuildOwnerData.js 예외 : ', error);
+        logger.error('[saveGuildOwnerData] 오너 정보 저장 중 오류', {
+            guildId: guild.id,
+            ownerData,
+            stack: error.stack
+        })
     };
 };

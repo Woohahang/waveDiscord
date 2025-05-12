@@ -1,5 +1,5 @@
 const { PermissionsBitField } = require('discord.js');
-const getDisplayName = require('./getDisplayName');
+const getDisplayName = require('../../utils/discord/getDisplayName');
 
 
 /**

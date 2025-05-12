@@ -1,5 +1,5 @@
 const { clientId } = require('../../../../../config.json');
-const getDisplayName = require('@shared/utils/getDisplayName');
+const getDisplayName = require('@utils/discord/getDisplayName');
 const logger = require('@utils/logger');
 
 /* 중복 된 유저 정보 메세지 삭제 */

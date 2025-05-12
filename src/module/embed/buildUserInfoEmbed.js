@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const getDisplayName = require('../../shared/utils/getDisplayName');
+const getDisplayName = require('../../utils/discord/getDisplayName');
 const WAVE_ICON_URL = require('../../constants/waveIcon');
 
 /**

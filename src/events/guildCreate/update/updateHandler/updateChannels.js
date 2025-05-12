@@ -15,10 +15,6 @@ module.exports = async (interaction) => {
 
         const guild = interaction.guild;
 
-        // 길드 인스턴스 생성 및 길드 데이터를 불러옵니다.
-        const guildSettings = new GuildSettings(guild.id);
-        const guildData = await guildSettings.loadOrCreate();
-
         // '업데이트 중' 메시지 전송
         await interaction.deferReply({ ephemeral: true });
 

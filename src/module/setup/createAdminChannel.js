@@ -12,8 +12,7 @@ async function createAdminChannel(guild) {
             }],
         });
     } catch (error) {
-        console.error('createAdminChannel.js 예외 : ', error);
-        throw error;
+        throw new Error(`[createAdminChannel] 관리자 채널 생성 중 오류: ${error.message}`);
     };
 };
 

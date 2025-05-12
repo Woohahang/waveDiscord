@@ -1,5 +1,5 @@
 const { clientId } = require('../../../../../config.json');
-const getDisplayName = require('@shared/utils/getDisplayName');
+const getDisplayName = require('@utils/discord/getDisplayName');
 const logger = require('@utils/logger');
 
 // 채널에 있는 멤버들의 이름을 가져오는 함수
