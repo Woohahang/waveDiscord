@@ -2,9 +2,6 @@ const { checkGuildAdmin } = require('../module/checkAdminPermissionOn');
 
 const saveGuildOwnerData = require('../events/guildCreate/setupChannel/guildOwnerData/handler/saveGuildOwnerData');
 
-// const setupAdminChannel = require('../events/guildCreate/setupChannel/adminChannel/handler/setupAdminChannel');
-// const setupMainChannel = require('../events/guildCreate/setupChannel/mainChannel/handler/setupMainChannel');
-
 const setupAdminChannel = require('@module/setup/setupAdminChannel');
 const setupMainChannel = require('@module/setup/setupMainChannel');
 

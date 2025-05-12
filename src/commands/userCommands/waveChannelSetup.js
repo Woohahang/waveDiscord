@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
-const setupAdminChannel = require('../../events/guildCreate/setupChannel/adminChannel/handler/setupAdminChannel');
-const setupMainChannel = require('../../events/guildCreate/setupChannel/mainChannel/handler/setupMainChannel');
+
+const setupMainChannel = require('@module/setup/setupMainChannel');
+const setupAdminChannel = require('@module/setup/setupAdminChannel');
 
 const SETUP_COMPLETE_MESSAGE =
     '## 셋업 완료' + '\n' +

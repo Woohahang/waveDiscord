@@ -1,4 +1,4 @@
-const createMainChannel = require("@events/guildCreate/setupChannel/mainChannel/modules/createMainChannel");
+const createMainChannel = require("./createMainChannel");
 const GuildSettings = require("@services/GuildSettings");
 const createMainSetupButtons = require("./createMainSetupButtons");
 const botInfo = require('@utils/botInfo');
