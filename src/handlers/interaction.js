@@ -1,7 +1,7 @@
 /* 닉네임 저장 */
 const submitNicknameModal = require('../events/nicknameFlow/submitNicknameModal');
 const deleteNickname = require('../events/nicknameFlow/deleteNickname');
-const saveNickname = require('../events/nicknameFlow/saveNickname');
+const submitNickname = require('../events/nicknameFlow/submitNickname');
 
 /* 닉네임 삭제 */
 const deleteNicknameMenu = require('../events/nicknameFlow/deleteNicknameMenu');
@@ -92,7 +92,7 @@ async function handleSubmitModal(interaction) {
 
         switch (customIdParts) {
             case 'submitNickname':
-                await saveNickname(interaction);
+                await submitNickname(interaction);
                 break;
 
         };

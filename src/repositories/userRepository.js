@@ -2,6 +2,23 @@ const userSchema = require('../mongoDB/userSchema');
 
 class UserRepository {
 
+    /**
+     * 유저 데이터를 DB에 저장합니다.
+     * 
+     * @param {Object} userData - 저장할 유저 데이터
+     * @returns {Promise<void>}
+     */
+    async saveUserData(userData) {
+        try {
+            if (!userData)
+                throw new Error('유저 데이터가 유효하지 않습니다.');
+
+            await userData.save();
+        } catch (error) {
+            throw new Error('[UserRepository.saveUserData] 유저 데이터 저장 중 오류 발생: ' + error.message);
+        }
+    }
+
     async findUserById(userId) {
         return userSchema.findOne({ userId });
     }

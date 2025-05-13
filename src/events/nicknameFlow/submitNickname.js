@@ -5,6 +5,7 @@ const RIOT_GAMES = require('@constants/riotGames')
 const GAME_TYPES = require('@constants/gameTypes');
 const fetchSteamProfile = require('../../shared/api/fetchSteamProfile');
 const ERROR_KEY = require('@constants/errorKeys');
+const STATE_KEYS = require('@constants/stateKeys');
 
 /**
  * Riot Tag를 포맷팅합니다.
@@ -50,7 +51,7 @@ function isValidSteamLink(link) {
  * - 게임 종류에 따라 입력값의 형식이 맞는지 확인
  * - 오류가 있을 경우 ERROR_KEY 반환, 없으면 null 반환
  */
-function validateNickname(gameType, rawNickname) {
+function getNicknameValidationError(gameType, rawNickname) {
     if (RIOT_GAMES.includes(gameType)) {
 
         if (!RIOT_TAG_REGEX.test(rawNickname))
@@ -98,6 +99,38 @@ function formatNicknameByGame(gameType, rawNickname) {
 }
 
 /**
+ * 닉네임 사용 가능 여부를 확인하고, 문제가 있을 경우 상태 키를 반환합니다.
+ *
+ * - 중복된 닉네임인지 확인
+ * - 게임별 닉네임 등록 제한(최대 5개) 확인
+ *
+ * @param {Object} userData - 사용자의 게임별 닉네임 데이터
+ * @param {string} gameType - 게임 종류 (예: LEAGUE_OF_LEGENDS, STEAM 등)
+ * @param {string} nickname - 저장하려는 닉네임 또는 유저 식별자
+ * @returns {string|null} 상태 키 (중복 또는 제한 초과 시), 없으면 null
+ */
+function getNicknameAvailabilityError(userData, gameType, nickname) {
+
+    if (GAME_TYPES.LEAGUE_OF_LEGENDS === gameType) {
+        // 리그오브레전드는 닉네임 중복을 summonerName 필드를 기준으로 판단
+        if (userData[gameType].some(entry => entry.summonerName === nickname))
+            return STATE_KEYS.NICKNAME_SAVE_DUPLICATE;
+    }
+    else {
+        // 닉네임 중복 여부 확인
+        if (userData[gameType].includes(nickname))
+            return STATE_KEYS.NICKNAME_SAVE_DUPLICATE;
+    }
+
+    // 닉네임 5개까지 저장 가능
+    if (userData[gameType].length >= 5)
+        return STATE_KEYS.NICKNAME_SAVE_LIMIT_EXCEEDED;
+
+    // 에러 없음
+    return null;
+}
+
+/**
  * 사용자의 닉네임 입력을 처리하고, 게임 종류에 따라 전처리 후 DB에 저장합니다.
  */
 module.exports = async (interaction) => {
@@ -112,8 +145,8 @@ module.exports = async (interaction) => {
         await interaction.deferReply({ ephemeral: true });
 
         // 닉네임 유효성 검사
-        let errorKey = validateNickname(gameType, rawNickname);
-        if (errorKey) return await interaction.editReply({ content: getStateMessage(errorKey), ephemeral: true });
+        let validationErrorKey = getNicknameValidationError(gameType, rawNickname);
+        if (validationErrorKey) return await interaction.editReply({ content: getStateMessage(validationErrorKey), ephemeral: true });
 
         // 게임 타입에 맞는 닉네임 포맷터
         const formattedNickname = formatNicknameByGame(gameType, rawNickname);
@@ -123,13 +156,20 @@ module.exports = async (interaction) => {
 
         // 유저 설정 객체 생성 및 닉네임 DB 저장
         const userSettings = new UserSettings(userId);
-        const resultKey = await userSettings.userNicknameSaver(gameType, nickname);
+        const userData = await userSettings.loadUserData();
+
+        // 닉네임 사용 가능 여부 확인
+        const availabilityErrorKey = getNicknameAvailabilityError(userData, gameType, nickname);
+        if (availabilityErrorKey) return await interaction.editReply({ content: getStateMessage(availabilityErrorKey), ephemeral: true });
+
+        // 닉네임이 유효하다면, 해당 닉네임을 DB에 저장
+        await userSettings.saveNickname(gameType, nickname);
 
         // 결과 메시지 전송
-        await interaction.editReply({ content: getStateMessage(resultKey), ephemeral: true });
+        await interaction.editReply({ content: getStateMessage(STATE_KEYS.NICKNAME_SAVE_SUCCESS), ephemeral: true });
 
     } catch (error) {
-        logger.error('[saveNickname] 닉네임 저장 중 오류 발생', {
+        logger.error('[submitNickname] 닉네임 저장 중 오류 발생', {
             userId,
             gameType,
             rawNickname,
