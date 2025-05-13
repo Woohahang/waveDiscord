@@ -1,10 +1,7 @@
-// voiceStateUpdate.js
-
-const { checkVoiceAdmin } = require('../module/checkAdminPermissionOn');
-
 const voiceJoin = require('../events/voiceChannelEmbed/handlers/voiceJoin');
 const voiceDeleteEmbed = require('../events/voiceChannelEmbed/handlers/voiceDeleteEmbed');
 const deleteInactiveVoiceEmbeds = require('../events/voiceChannelEmbed/handlers/deleteInactiveVoiceEmbeds');
+const isBotAdmin = require('@utils/discord/isBotAdmin');
 
 function getVoiceStateChange(oldState, newState) {
     if (!oldState.channel && newState.channel)
@@ -19,7 +16,7 @@ function getVoiceStateChange(oldState, newState) {
 
 module.exports = async (oldState, newState) => {
     try {
-        if (!checkVoiceAdmin(newState) || !checkVoiceAdmin(oldState)) return; // Wave 봇이 관리자 권한 받았는지 체크
+        if (!isBotAdmin(newState.guild) || !isBotAdmin(oldState.guild)) return; //봇이 관리자 권한 받았는지 체크
 
         const voiceStateChange = getVoiceStateChange(oldState, newState);
 

@@ -1,9 +1,11 @@
+const GAME_TYPES = require('./gameTypes')
+
 const platforms = {
-    steam: ['steam', 'rainbowSix'],
-    riotGames: ['leagueOfLegends', 'teamfightTactics', 'valorant'],
-    battleGround: ['steamBattleGround', 'kakaoBattleGround'],
-    blizzard: ['blizzard', 'overWatchTwo'],
-    lostArk: ['lostArk'],
+    steam: [GAME_TYPES.STEAM, GAME_TYPES.RAINBOW_SIX],
+    riotGames: [GAME_TYPES.LEAGUE_OF_LEGENDS, GAME_TYPES.TEAMFIGHT_TACTICS, GAME_TYPES.VALORANT],
+    battleGround: [GAME_TYPES.STEAM_BATTLEGROUNDS, GAME_TYPES.KAKAO_BATTLEGROUNDS],
+    blizzard: [GAME_TYPES.BLIZZARD, GAME_TYPES.OVERWATCH_2],
+    lostArk: [GAME_TYPES.LOST_ARK],
 };
 
 module.exports = platforms;

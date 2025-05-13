@@ -106,9 +106,6 @@ class GuildSettings {
     * 
     * @param {string[]} gameKeys 게임 키 배열 (예: ['leagueOfLegends', 'valorant'])
     * @param {boolean} isVisible 표시 여부
-    * @returns {{ updatedGuildData: object | null, resultKey: string }} 저장 결과 객체
-    * - updatedGuildData: 저장된 guildData 객체 (실패 시 null)
-    * - resultKey: 상태 키 (예: STATE_KEYS.GUILD_UPDATE_SUCCESS, ERROR_KEY.GUILD_UPDATE_FAILED)
     */
     async saveGameVisibility(isVisible, gameKeys) {
         try {

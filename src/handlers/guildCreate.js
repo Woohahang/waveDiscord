@@ -1,5 +1,3 @@
-const { checkGuildAdmin } = require('../module/checkAdminPermissionOn');
-
 const saveBasicGuildInfo = require('../module/setup/saveBasicGuildInfo');
 
 const setupAdminChannel = require('@module/setup/setupAdminChannel');
@@ -9,6 +7,7 @@ const setupMainChannel = require('@module/setup/setupMainChannel');
 const adminPermissionRequest = require('../events/userChannel/ownerMessage/handler/adminPermissionRequest');
 
 const logger = require('@utils/logger');
+const isBotAdmin = require('@utils/discord/isBotAdmin');
 
 /**
  * 길드에 초대되었을 때 실행되는 함수입니다.
@@ -23,7 +22,7 @@ const logger = require('@utils/logger');
 module.exports = async (guild) => {
     try {
         // Wave 가 관리자 권한을 받았는지 체크합니다.
-        if (checkGuildAdmin(guild)) {
+        if (isBotAdmin(guild)) {
 
             // ⚠️ 절대 병렬 처리 금지!
             await saveBasicGuildInfo(guild); // 길드 이름 및 오너 ID를 저장합니다.

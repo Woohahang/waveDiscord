@@ -1,6 +1,3 @@
-/* 관리자 권한 체크 */
-const { checkInteractionAdmin } = require('../module/checkAdminPermissionOn');
-
 /* 닉네임 저장 */
 const submitNicknameModal = require('../events/nicknameFlow/submitNicknameModal');
 const deleteNickname = require('../events/nicknameFlow/deleteNickname');
@@ -8,7 +5,6 @@ const saveNickname = require('../events/nicknameFlow/saveNickname');
 
 /* 닉네임 삭제 */
 const deleteNicknameMenu = require('../events/nicknameFlow/deleteNicknameMenu');
-
 
 /* 길드 메뉴 컨트롤 */
 const gameMenuToggle = require('@events/guildMenuControls/gameMenuToggle');
@@ -22,11 +18,11 @@ const createUserInfoSelectMenu = require('../events/userInfo/createUserInfoSelec
 
 const showUserInfo = require('../events/userInfo/showUserInfo');
 const deleteUserInfo = require('../events/userInfo/deleteUserInfo');
+const isBotAdmin = require('@utils/discord/isBotAdmin');
 
 module.exports = async (interaction) => {
     try {
-        if (!checkInteractionAdmin(interaction)) return; // 봇이 관리자 권한을 받았는지 체크
-
+        if (!isBotAdmin(interaction.guild)) return;
 
         if (interaction.isButton()) {
             handleButtonInteraction(interaction);
