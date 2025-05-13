@@ -24,5 +24,7 @@ module.exports = async (guild) => {
             ownerData,
             stack: error.stack
         })
+
+        throw error;
     };
 };
