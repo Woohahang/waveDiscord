@@ -1,9 +1,11 @@
 const getStateMessage = require('@shared/utils/stateMessage');
-const GuildSettings = require('../../../services/GuildSettings');
+const GuildSettings = require('@services/GuildSettings');
 const logger = require('@utils/logger');
 const STATE_KEYS = require('@constants/stateKeys');
 const setupMainChannel = require('@module/setup/setupMainChannel');
 const setupAdminChannel = require('@module/setup/setupAdminChannel');
+const saveBasicGuildInfo = require('@module/setup/saveBasicGuildInfo');
+const ERROR_KEY = require('@constants/errorKeys');
 
 /**
  * 서버 관리자 전용: 사용자가 선택한 게임의 가시성을 변경하는 기능을 수행합니다.
@@ -27,16 +29,18 @@ module.exports = async (interaction) => {
         const guildSettings = new GuildSettings(interaction.guild.id);
 
         // 게임의 가시성을 설정하고 업데이트된 길드 데이터를 반환
-        const { updatedGuildData, resultKey } = await guildSettings.saveGameVisibility(isVisible, selectedGameKeys);
+        await guildSettings.saveGameVisibility(isVisible, selectedGameKeys);
 
         // 사용자에게 초기 응답을 즉시 보냅니다.
         await interaction.update({ content: '업데이트를 시작했습니다. 잠시만 기다려주세요...', components: [], ephemeral: true });
 
-        if (resultKey === STATE_KEYS.GUILD_UPDATE_SUCCESS)
-            await Promise.all([
-                setupAdminChannel(interaction.guild),
-                setupMainChannel(interaction.guild)
-            ]);
+        const resultKey = await Promise.all([
+            saveBasicGuildInfo(interaction.guild),
+            setupAdminChannel(interaction.guild),
+            setupMainChannel(interaction.guild)
+        ])
+            .then(() => STATE_KEYS.GUILD_UPDATE_SUCCESS)
+            .catch(() => ERROR_KEY.GUILD_UPDATE_FAILED);
 
         await interaction.editReply({ content: getStateMessage(resultKey), components: [], ephemeral: true });
 

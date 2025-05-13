@@ -11,11 +11,11 @@ const deleteNicknameMenu = require('../events/nicknameFlow/deleteNicknameMenu');
 
 
 /* 길드 메뉴 컨트롤 */
-const gameMenuToggle = require('../events/guildCreate/guildMenuControls/gameMenuToggle');
-const toggleMenuHandler = require('../events/guildCreate/guildMenuControls/toggleMenuHandler');
+const gameMenuToggle = require('@events/guildMenuControls/gameMenuToggle');
+const toggleMenuHandler = require('@events/guildMenuControls/toggleMenuHandler');
 
 /* 채널 업데이트 */
-const updateChannels = require('../events/guildCreate/update/updateHandler/updateChannels');
+const onGuildUpdateButtonPressed = require('@events/guildUpdate/onGuildUpdateButtonPressed');
 
 /* 멀티 툴 */
 const createUserInfoSelectMenu = require('../events/userInfo/createUserInfoSelectMenu');
@@ -69,7 +69,7 @@ async function handleButtonInteraction(interaction) {
 
         switch (customId) {
             case 'upDateButton':
-                await updateChannels(interaction);
+                await onGuildUpdateButtonPressed(interaction);
                 break;
 
             case 'removeButton':

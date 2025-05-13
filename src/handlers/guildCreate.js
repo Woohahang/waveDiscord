@@ -1,6 +1,6 @@
 const { checkGuildAdmin } = require('../module/checkAdminPermissionOn');
 
-const saveGuildOwnerData = require('../events/guildCreate/setupChannel/guildOwnerData/handler/saveGuildOwnerData');
+const saveBasicGuildInfo = require('../module/setup/saveBasicGuildInfo');
 
 const setupAdminChannel = require('@module/setup/setupAdminChannel');
 const setupMainChannel = require('@module/setup/setupMainChannel');
@@ -26,7 +26,7 @@ module.exports = async (guild) => {
         if (checkGuildAdmin(guild)) {
 
             // ⚠️ 절대 병렬 처리 금지!
-            await saveGuildOwnerData(guild); // 길드 이름 및 오너 ID를 저장합니다.
+            await saveBasicGuildInfo(guild); // 길드 이름 및 오너 ID를 저장합니다.
             await setupMainChannel(guild); // Wave 메인 채널을 생성합니다.
             await setupAdminChannel(guild); // Wave 관리자 채널을 생성합니다.
 

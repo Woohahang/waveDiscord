@@ -1,4 +1,4 @@
-const GuildSettings = require('../../../../../services/GuildSettings');
+const GuildSettings = require('../../services/GuildSettings');
 const logger = require('@utils/logger');
 
 /**
@@ -16,10 +16,10 @@ module.exports = async (guild) => {
     try {
         // 길드 이름 및 오너 ID를 저장합니다.
         const guildSettings = new GuildSettings(guild.id)
-        await guildSettings.saveGuildOwnerData(ownerData);
+        await guildSettings.updateBasicInfo(ownerData);
 
     } catch (error) {
-        logger.error('[saveGuildOwnerData] 오너 정보 저장 중 오류', {
+        logger.error('[saveBasicGuildInfo] 오너 정보 저장 중 오류', {
             guildId: guild.id,
             ownerData,
             stack: error.stack

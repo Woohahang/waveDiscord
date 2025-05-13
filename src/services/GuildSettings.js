@@ -74,7 +74,7 @@ class GuildSettings {
         };
     };
 
-    async saveGuildOwnerData(ownerData) {
+    async updateBasicInfo(ownerData) {
         try {
             // 캐시에서 길드 데이터를 로드 하거나 데이터 베이스에서 로드합니다.
             let guildData = await this.loadOrCreate();
@@ -91,7 +91,7 @@ class GuildSettings {
             GuildCacheManager.set(this.guildId, guildData);
 
         } catch (error) {
-            logger.error('[GuildSettings.saveGuildOwnerData] 서버 주인 업데이트 중 DB 오류', {
+            logger.error('[GuildSettings.updateBasicInfo] 서버 주인 업데이트 중 DB 오류', {
                 guildId: this.guildId,
                 ownerData,
                 errorMessage: error.message
@@ -121,8 +121,6 @@ class GuildSettings {
             await guildRepository.saveGuildData(guildData);
             GuildCacheManager.set(this.guildId, guildData);
 
-            return { updatedGuildData: guildData, resultKey: STATE_KEYS.GUILD_UPDATE_SUCCESS };
-
         } catch (error) {
             logger.error('[GuildSettings.saveGameVisibility] 게임 표시 여부 저장 중 DB 처리 실패', {
                 guildId: this.guildId,
@@ -131,7 +129,7 @@ class GuildSettings {
                 errorMessage: error.message
             });
 
-            return { updatedGuildData: null, resultKey: ERROR_KEY.GUILD_UPDATE_FAILED };
+            throw error;
         }
     }
 
