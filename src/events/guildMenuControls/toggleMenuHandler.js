@@ -15,6 +15,8 @@ const ERROR_KEY = require('@constants/errorKeys');
  */
 module.exports = async (interaction) => {
 
+    const guild = interaction.guild;
+
     // 사용자 요청에 따른 메뉴 동작 유형 ('showMenu' 또는 'hideMenu')
     const menuAction = interaction.customId;
 
@@ -26,7 +28,7 @@ module.exports = async (interaction) => {
 
     try {
         // 길드 설정 정보 불러오기
-        const guildSettings = new GuildSettings(interaction.guild.id);
+        const guildSettings = new GuildSettings(guild.id);
 
         // 게임의 가시성을 설정하고 업데이트된 길드 데이터를 반환
         await guildSettings.saveGameVisibility(isVisible, selectedGameKeys);
@@ -35,12 +37,18 @@ module.exports = async (interaction) => {
         await interaction.update({ content: '업데이트를 시작했습니다. 잠시만 기다려주세요...', components: [], ephemeral: true });
 
         const resultKey = await Promise.all([
-            saveBasicGuildInfo(interaction.guild),
-            setupAdminChannel(interaction.guild),
-            setupMainChannel(interaction.guild)
+            saveBasicGuildInfo(guild),
+            setupAdminChannel(guild),
+            setupMainChannel(guild)
         ])
             .then(() => STATE_KEYS.GUILD_UPDATE_SUCCESS)
-            .catch(() => ERROR_KEY.GUILD_UPDATE_FAILED);
+            .catch(() => {
+                logger.error('[toggleMenuHandler] 길드 업데이트 실패', {
+                    guildId: guild.id,
+                    stack: error.stack
+                });
+                return ERROR_KEY.GUILD_UPDATE_FAILED;
+            });
 
         await interaction.editReply({ content: getStateMessage(resultKey), components: [], ephemeral: true });
 

@@ -25,7 +25,13 @@ module.exports = async (interaction) => {
             setupMainChannel(guild)
         ])
             .then(() => STATE_KEYS.GUILD_UPDATE_SUCCESS)
-            .catch(() => ERROR_KEY.GUILD_UPDATE_FAILED)
+            .catch((error) => {
+                logger.error('[onGuildUpdateButtonPressed] 길드 업데이트 실패', {
+                    guildId: guild.id,
+                    stack: error.stack
+                });
+                return ERROR_KEY.GUILD_UPDATE_FAILED;
+            })
 
         await interaction.editReply({ content: getStateMessage(resultKey), components: [], ephemeral: true });
 
