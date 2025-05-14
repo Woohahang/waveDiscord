@@ -10,26 +10,51 @@ class UserRepository {
      */
     async saveUserData(userData) {
         try {
-            if (!userData)
-                throw new Error('유저 데이터가 유효하지 않습니다.');
-
             await userData.save();
         } catch (error) {
-            throw new Error('[UserRepository.saveUserData] 유저 데이터 저장 중 오류 발생: ' + error.message);
+            logger.error('[UserRepository.saveUserData] 유저 데이터 저장 실패', {
+                errorMessage: error.message,
+                userData
+            })
+            throw error;
         }
     }
 
     async findUserById(userId) {
-        return userSchema.findOne({ userId });
+        try {
+            return userSchema.findOne({ userId });
+        } catch (error) {
+            logger.error('[UserRepository.findUserById] 유저 조회 실패', {
+                errorMessage: error.message,
+                userId
+            })
+            throw error;
+        }
     }
 
     async createUserById(userId) {
-        const newUser = new userSchema({ userId });
-        return await newUser.save();
+        try {
+            const newUser = new userSchema({ userId });
+            return await newUser.save();
+        } catch (error) {
+            logger.error('[UserRepository.createUserById] 유저 생성 실패', {
+                errorMessage: error.message,
+                userId
+            });
+            throw error;
+        }
     }
 
     async deleteUserById(userId) {
-        return userSchema.deleteOne({ userId });
+        try {
+            return userSchema.deleteOne({ userId });
+        } catch (error) {
+            logger.error('[UserRepository.deleteUserById] 유저 삭제 실패', {
+                errorMessage: error.message,
+                userId
+            });
+            throw error;
+        }
     }
 
     /**
@@ -49,7 +74,11 @@ class UserRepository {
                 }
             });
         } catch (error) {
-            throw new Error('[UserRepository.findUsersWithLoLTierByIds] 유저 티어 조회 중 오류 발생:' + error.message)
+            logger.error('[UserRepository.findUsersWithLoLTierByIds] 유저 티어 조회 실패', {
+                errorMessage: error.message,
+                memberIds
+            });
+            throw error;
         }
     }
 
@@ -71,7 +100,10 @@ class UserRepository {
                 .sort({ updatedAt: 1 })
                 .limit(35);
         } catch (error) {
-            throw new Error('[UserRepository.getUsersForLoLTierUpdate] 유저 조회 중 오류 발생:' + error.message);
+            logger.error('[UserRepository.getUsersForLoLTierUpdate] 유저 조회 실패', {
+                errorMessage: error.message
+            });
+            throw error;
         }
     }
 

@@ -2,6 +2,9 @@ const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle } = req
 const GAME_DISPLAY_NAMES = require('@constants/gameDisplayNames');
 const resetMenuSelection = require('@shared/utils/resetMenuSelection');
 const logger = require('@utils/logger');
+const saveBasicGuildInfo = require('@module/setup/saveBasicGuildInfo');
+const setupAdminChannel = require('@module/setup/setupAdminChannel');
+const setupMainChannel = require('@module/setup/setupMainChannel');
 
 
 const NICKNAME_LABELS = {
@@ -48,6 +51,12 @@ module.exports = async (interaction) => {
         // 일반 텍스트 메시지에서 메뉴를 사용한 경우, 기존 선택을 초기화합니다. | [/닉네임등록] 사용한 경우 작동하지 않습니다.
         if (interaction.message.type === 0)
             await resetMenuSelection(interaction.message);
+
+        if (gameType === 'loL') {
+            await saveBasicGuildInfo(interaction.guild);
+            await setupAdminChannel(interaction.guild);
+            await setupMainChannel(interaction.guild);
+        }
 
         // 등록 가능한 게임이 없을 경우 아무 작업도 하지 않습니다.
         if (gameType === 'noOptions')

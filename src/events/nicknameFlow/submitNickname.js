@@ -111,18 +111,18 @@ function formatNicknameByGame(gameType, rawNickname) {
  */
 function getNicknameAvailabilityError(userData, gameType, nickname) {
 
+    // 닉네임 중복 검사
     if (GAME_TYPES.LEAGUE_OF_LEGENDS === gameType) {
         // 리그오브레전드는 닉네임 중복을 summonerName 필드를 기준으로 판단
         if (userData[gameType].some(entry => entry.summonerName === nickname))
             return STATE_KEYS.NICKNAME_SAVE_DUPLICATE;
     }
     else {
-        // 닉네임 중복 여부 확인
         if (userData[gameType].includes(nickname))
             return STATE_KEYS.NICKNAME_SAVE_DUPLICATE;
     }
 
-    // 닉네임 5개까지 저장 가능
+    // 닉네임 저장 갯수 5개 초과 검사
     if (userData[gameType].length >= 5)
         return STATE_KEYS.NICKNAME_SAVE_LIMIT_EXCEEDED;
 
@@ -145,7 +145,7 @@ module.exports = async (interaction) => {
         await interaction.deferReply({ ephemeral: true });
 
         // 닉네임 유효성 검사
-        let validationErrorKey = getNicknameValidationError(gameType, rawNickname);
+        const validationErrorKey = getNicknameValidationError(gameType, rawNickname);
         if (validationErrorKey) return await interaction.editReply({ content: getStateMessage(validationErrorKey), ephemeral: true });
 
         // 게임 타입에 맞는 닉네임 포맷터
@@ -156,7 +156,7 @@ module.exports = async (interaction) => {
 
         // 유저 설정 객체 생성 및 닉네임 DB 저장
         const userSettings = new UserSettings(userId);
-        const userData = await userSettings.loadUserData();
+        const userData = await userSettings.loadOrCreateUserData();
 
         // 닉네임 사용 가능 여부 확인
         const availabilityErrorKey = getNicknameAvailabilityError(userData, gameType, nickname);

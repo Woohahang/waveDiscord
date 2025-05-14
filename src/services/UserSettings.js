@@ -10,7 +10,7 @@ class UserSettings {
         this.userId = userId;
     }
 
-    async #loadOrCreateUserData() {
+    async loadOrCreateUserData() {
         let userData = UserCacheManager.get(this.userId);
         if (!userData) {
             userData = await userRepository.findUserById(this.userId);
@@ -46,7 +46,7 @@ class UserSettings {
         try {
             let userData = UserCacheManager.get(this.userId);
             if (!userData)
-                userData = await this.#loadOrCreateUserData();
+                userData = await this.loadOrCreateUserData();
 
             // 게임 종류에 따라 닉네임을 저장
             switch (gameType) {
@@ -77,7 +77,7 @@ class UserSettings {
             UserCacheManager.set(this.userId, userData);
 
         } catch (error) {
-            console.error('[userNicknameSaver] 닉네임 저장 중 DB 오류', {
+            logger.error('[UserSettings.saveNickname] 닉네임 저장 중 오류', {
                 gameType,
                 nickname,
                 errorMessage: error.message
