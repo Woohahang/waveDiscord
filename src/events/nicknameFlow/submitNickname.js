@@ -115,16 +115,16 @@ function getNicknameAvailabilityError(userData, gameType, nickname) {
     if (GAME_TYPES.LEAGUE_OF_LEGENDS === gameType) {
         // 리그오브레전드는 닉네임 중복을 summonerName 필드를 기준으로 판단
         if (userData[gameType].some(entry => entry.summonerName === nickname))
-            return STATE_KEYS.NICKNAME_SAVE_DUPLICATE;
+            return ERROR_KEY.NICKNAME_SAVE_DUPLICATE;
     }
     else {
         if (userData[gameType].includes(nickname))
-            return STATE_KEYS.NICKNAME_SAVE_DUPLICATE;
+            return ERROR_KEY.NICKNAME_SAVE_DUPLICATE;
     }
 
     // 닉네임 저장 갯수 5개 초과 검사
     if (userData[gameType].length >= 5)
-        return STATE_KEYS.NICKNAME_SAVE_LIMIT_EXCEEDED;
+        return ERROR_KEY.NICKNAME_SAVE_LIMIT_EXCEEDED;
 
     // 에러 없음
     return null;
