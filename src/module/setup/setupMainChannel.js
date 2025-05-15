@@ -32,7 +32,7 @@ module.exports = async (guild) => {
         }
 
         // 최근 메시지 중 Wave 봇이 보낸 메시지 필터링
-        const botMessages = await fetchBotMessages(channel, botInfo.get().botId);
+        const botMessages = await fetchBotMessages(channel);
 
         // 새 메시지를 전송
         await channel.send({

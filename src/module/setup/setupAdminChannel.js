@@ -5,6 +5,7 @@ const createAdminMenuSelect = require('./createAdminMenuSelect');
 const createAdminChannel = require("@module/setup/createAdminChannel");
 const logger = require("@utils/logger");
 const botInfo = require('@utils/botInfo');
+const fetchBotMessages = require("@utils/discord/fetchBotMessages");
 
 module.exports = async (guild) => {
     try {
@@ -19,8 +20,7 @@ module.exports = async (guild) => {
         }
 
         // 최근 메시지 중 Wave 봇이 보낸 메시지 필터링
-        const messages = await channel.messages.fetch({ limit: 30 });
-        const botMessages = messages.filter(msg => msg.author.id === botInfo.get().botId);
+        const botMessages = await fetchBotMessages(channel);
 
         await channel.send({
             content: '# ⭐ Wave 관리자 채널',
