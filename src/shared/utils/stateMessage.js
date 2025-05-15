@@ -32,7 +32,7 @@ const STATE_MESSAGES = {
         '\n' + '> * 해당 게임은 저장할 수 있는 닉네임 개수를 초과했습니다.' +
         '\n' + '> * 문제가 지속되면 **Wave** 디스코드 채널로 문의해 주세요.',
 
-    [STATE_KEYS.NICKNAME_SAVE_DUPLICATE]:
+    [ERROR_KEY.NICKNAME_SAVE_DUPLICATE]:
         '\n' + `## 닉네임 등록 실패` +
         '\n' + '> * 중복 된 닉네임이 있습니다.' +
         '\n' + '> * 문제가 지속되면 **Wave** 디스코드 채널로 문의해 주세요.',

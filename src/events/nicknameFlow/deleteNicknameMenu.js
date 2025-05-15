@@ -1,10 +1,10 @@
 const { StringSelectMenuBuilder, ActionRowBuilder } = require('discord.js');
 const UserSettings = require('@services/UserSettings');
-const replyStateMessage = require('@shared/utils/replyStateMessage');
 const GAME_TYPES = require('@constants/gameTypes');
 const GAME_DISPLAY_NAMES = require('@constants/gameDisplayNames');
 const logger = require('@utils/logger');
-const STATE_KEYS = require('@constants/stateKeys')
+const STATE_KEYS = require('@constants/stateKeys');
+const sendStateMessage = require('@utils/discord/sendStateMessage');
 
 function createOptions(userData) {
     const options = [];
@@ -60,11 +60,11 @@ module.exports = async (interaction) => {
         // 유저 인스턴스 생성 및 유저 데이터를 불러옵니다.
         const userSettings = new UserSettings(userId);
         const userData = await userSettings.loadUserData();
-        if (!userData) return await replyStateMessage(interaction, STATE_KEYS.NO_USER_DATA);
+        if (!userData) return await sendStateMessage(interaction, STATE_KEYS.NO_USER_DATA);
 
         // 유저 닉네임 옵션을 생성합니다.
         const options = createOptions(userData);
-        if (options.length === 0) return await replyStateMessage(interaction, STATE_KEYS.NO_NICKNAMES);
+        if (options.length === 0) return await sendStateMessage(interaction, STATE_KEYS.NO_NICKNAMES);
 
         // 닉네임 선택 메뉴를 생성합니다.
         const selectMenu = createNicknameDeleteMenu(options);

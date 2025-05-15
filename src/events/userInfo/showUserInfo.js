@@ -2,8 +2,8 @@ const UserSettings = require('../../services/UserSettings');
 const buildUserDataFields = require('../../module/embed/buildUserDataFields');
 const buildUserInfoEmbed = require('../../module/embed/buildUserInfoEmbed');
 const logger = require('@utils/logger');
-const replyStateMessage = require('@shared/utils/replyStateMessage');
 const STATE_KEYS = require('@constants/stateKeys');
+const sendStateMessage = require('@utils/discord/sendStateMessage');
 
 /**
  * 사용자 정보를 기반으로 Discord 임베드를 생성하고 응답하는 함수
@@ -17,11 +17,11 @@ module.exports = async (interaction) => {
         const userData = await userSettings.loadUserData();
 
         // 유저 데이터가 없는 경우 삭제된 것으로 간주하고 안내 메시지를 보냅니다.
-        if (!userData) return await replyStateMessage(interaction, STATE_KEYS.NO_USER_DATA);
+        if (!userData) return await sendStateMessage(interaction, STATE_KEYS.NO_USER_DATA);
 
         // 유저 데이터를 기반으로 embed 필드를 생성합니다.
         const fields = buildUserDataFields(userData);
-        if (!fields) return await replyStateMessage(interaction, STATE_KEYS.NO_NICKNAMES);
+        if (!fields) return await sendStateMessage(interaction, STATE_KEYS.NO_NICKNAMES);
 
         // 마지막 업데이트 시간을 Date 객체로 변환합니다.
         const updatedAt = new Date(userData.updatedAt);

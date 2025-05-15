@@ -43,7 +43,7 @@ module.exports = async (newState) => {
         if (error.code === 10008 || error.code === 10003) return;
 
         logger.error('음성 채널 입장 중 에러', {
-            guildName: guild.name,
+            guildId: guild.id,
             memberId: member.id,
             stack: error.stack
         })

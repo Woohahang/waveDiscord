@@ -6,6 +6,8 @@ const GAME_TYPES = require('@constants/gameTypes');
 const fetchSteamProfile = require('../../shared/api/fetchSteamProfile');
 const ERROR_KEY = require('@constants/errorKeys');
 const STATE_KEYS = require('@constants/stateKeys');
+const sendStateMessage = require('@utils/discord/sendStateMessage');
+const REPLY_METHODS = require('@constants/replyMethods');
 
 /**
  * Riot Tag를 포맷팅합니다.
@@ -146,7 +148,8 @@ module.exports = async (interaction) => {
 
         // 닉네임 유효성 검사
         const validationErrorKey = getNicknameValidationError(gameType, rawNickname);
-        if (validationErrorKey) return await interaction.editReply({ content: getStateMessage(validationErrorKey), ephemeral: true });
+        if (validationErrorKey)
+            return await sendStateMessage(interaction, validationErrorKey, REPLY_METHODS.EDIT);
 
         // 게임 타입에 맞는 닉네임 포맷터
         const formattedNickname = formatNicknameByGame(gameType, rawNickname);
@@ -160,13 +163,14 @@ module.exports = async (interaction) => {
 
         // 닉네임 사용 가능 여부 확인
         const availabilityErrorKey = getNicknameAvailabilityError(userData, gameType, nickname);
-        if (availabilityErrorKey) return await interaction.editReply({ content: getStateMessage(availabilityErrorKey), ephemeral: true });
+        if (availabilityErrorKey)
+            return await sendStateMessage(interaction, availabilityErrorKey, REPLY_METHODS.EDIT)
 
         // 닉네임이 유효하다면, 해당 닉네임을 DB에 저장
         await userSettings.saveNickname(gameType, nickname);
 
         // 결과 메시지 전송
-        await interaction.editReply({ content: getStateMessage(STATE_KEYS.NICKNAME_SAVE_SUCCESS), ephemeral: true });
+        await sendStateMessage(interaction, STATE_KEYS.NICKNAME_SAVE_SUCCESS, REPLY_METHODS.EDIT);
 
     } catch (error) {
         logger.error('[submitNickname] 닉네임 저장 중 오류 발생', {

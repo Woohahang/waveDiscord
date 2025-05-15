@@ -8,8 +8,8 @@ const GuildSettings = require('@services/GuildSettings');
 const isAdmin = require('@shared/utils/isAdmin');
 const filterKeysByValue = require('@shared/utils/filterKeysByValue');
 const resetMenuSelection = require('@shared/utils/resetMenuSelection');
-const replyStateMessage = require('@shared/utils/replyStateMessage');
 const logger = require('@utils/logger');
+const sendStateMessage = require('@utils/discord/sendStateMessage');
 
 /**
  * 메뉴 동작에 따라 필터링할 게임의 표시 상태를 매핑합니다.
@@ -95,7 +95,8 @@ module.exports = async (interaction) => {
 
         // 관리자 권한 검증
         if (!isAdmin(interaction.member))
-            return await replyStateMessage(interaction, STATE_KEYS.NO_ADMIN_PERMISSION);
+            return await sendStateMessage(interaction, STATE_KEYS.NO_ADMIN_PERMISSION);
+
 
         // 길드 설정 정보 불러오기
         const guildSettings = new GuildSettings(guild.id);
@@ -109,7 +110,7 @@ module.exports = async (interaction) => {
                 guildName: guild.name,
                 menuAction,
             })
-            return await replyStateMessage(interaction, ERROR_KEY.UNKNOWN_MENU_SELECTION);
+            return await sendStateMessage(interaction, ERROR_KEY.UNKNOWN_MENU_SELECTION);
         }
 
         // 현재 길드 설정에서 해당 값(true/false)을 가진 게임 키만 필터링
@@ -118,7 +119,7 @@ module.exports = async (interaction) => {
         // 해당 상태에 맞는 게임이 없으면 메시지 응답
         if (matchingGameKeys.length === 0) {
             const key = menuStateKey[menuAction];
-            return await replyStateMessage(interaction, key);
+            return await sendStateMessage(interaction, key);
         }
 
         // GAME_TYPES 순서를 기준으로 정렬하여 일관된 메뉴 표시
