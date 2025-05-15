@@ -1,45 +1,47 @@
-/* 닉네임 저장 */
-const submitNicknameModal = require('../events/nicknameFlow/submitNicknameModal');
-const deleteNickname = require('../events/nicknameFlow/deleteNickname');
-const submitNickname = require('../events/nicknameFlow/submitNickname');
+// 닉네임 관련
+const submitNicknameModal = require('@events/nicknameFlow/submitNicknameModal');
+const deleteNickname = require('@events/nicknameFlow/deleteNickname');
+const submitNickname = require('@events/nicknameFlow/submitNickname');
+const deleteNicknameMenu = require('@events/nicknameFlow/deleteNicknameMenu');
 
-/* 닉네임 삭제 */
-const deleteNicknameMenu = require('../events/nicknameFlow/deleteNicknameMenu');
-
-/* 길드 메뉴 컨트롤 */
+// 서버 설정 관련
 const gameMenuToggle = require('@events/guildMenuControls/gameMenuToggle');
 const toggleMenuHandler = require('@events/guildMenuControls/toggleMenuHandler');
-
-/* 채널 업데이트 */
 const onGuildUpdateButtonPressed = require('@events/guildUpdate/onGuildUpdateButtonPressed');
 
-/* 멀티 툴 */
-const createUserInfoSelectMenu = require('../events/userInfo/createUserInfoSelectMenu');
+// 유저 정보
+const showUserInfo = require('@events/userInfo/showUserInfo');
+const createUserInfoSelectMenu = require('@events/userInfo/createUserInfoSelectMenu');
+const deleteUserInfo = require('@events/userInfo/deleteUserInfo');
 
-const showUserInfo = require('../events/userInfo/showUserInfo');
-const deleteUserInfo = require('../events/userInfo/deleteUserInfo');
+// 유틸
 const isBotAdmin = require('@utils/discord/isBotAdmin');
+const logger = require('@utils/logger');
 
 module.exports = async (interaction) => {
-    try {
-        if (!isBotAdmin(interaction.guild)) return;
+    if (!isBotAdmin(interaction.guild)) return;
 
-        if (interaction.isButton()) {
-            handleButtonInteraction(interaction);
+    if (interaction.isButton()) {
+        await handleButtonInteraction(interaction);
 
-        } else if (interaction.isModalSubmit()) {
-            handleSubmitModal(interaction);
+    } else if (interaction.isModalSubmit()) {
+        await handleSubmitModal(interaction);
 
-        } else if (interaction.isStringSelectMenu()) {
-            await handleStringSelectMenu(interaction);
+    } else if (interaction.isStringSelectMenu()) {
+        await handleStringSelectMenu(interaction);
 
-        } else if (interaction.isChatInputCommand()) {
-            await handleChatInputCommand(interaction);
-        };
+    } else if (interaction.isChatInputCommand()) {
+        await handleChatInputCommand(interaction);
+    }
 
-    } catch (error) {
-        console.error('interaction.js 예외 : ', error);
-    };
+    else {
+        logger.error('[interaction] Unknown interaction type', {
+            type: interaction.type,
+            user: interaction.user?.tag,
+            customId: interaction.customId,
+            commandName: interaction.commandName,
+        })
+    }
 };
 
 async function handleChatInputCommand(interaction) {
@@ -60,87 +62,85 @@ async function handleChatInputCommand(interaction) {
 
 
 async function handleButtonInteraction(interaction) {
-    try {
-        const customId = interaction.customId;
+    const customId = interaction.customId;
 
-        switch (customId) {
-            case 'upDateButton':
-                await onGuildUpdateButtonPressed(interaction);
-                break;
+    switch (customId) {
+        case 'upDateButton':
+            await onGuildUpdateButtonPressed(interaction);
+            break;
 
-            case 'removeButton':
-                deleteNicknameMenu(interaction);
-                break;
+        case 'removeButton':
+            await deleteNicknameMenu(interaction);
+            break;
 
-            case 'multitoolsButton':
-                createUserInfoSelectMenu(interaction);
-                break;
+        case 'multitoolsButton':
+            await createUserInfoSelectMenu(interaction);
+            break;
 
-            default:
-                console.log('isButton 에서 알 수 없는 customId : ', customId);
-        };
-    } catch (error) {
-        console.error('interaction.handleButtonInteraction() 예외 : ', error);
-    };
-};
+        default:
+            logger.error('[interaction.handleButtonInteraction] Unknown customId', {
+                customId
+            });
+    }
+}
 
 
 async function handleSubmitModal(interaction) {
-    try {
-        const customId = interaction.customId;
-        const customIdParts = customId.split('_')[0];
+    const customId = interaction.customId;
+    const customIdParts = customId.split('_')[0];
 
-        switch (customIdParts) {
-            case 'submitNickname':
-                await submitNickname(interaction);
-                break;
+    switch (customIdParts) {
+        case 'submitNickname':
+            await submitNickname(interaction);
+            break;
 
-        };
-    } catch (error) {
-        console.error('interaction.handleSubmitModal() 예외 : ', error);
+        default:
+            logger.error('[interaction.handleSubmitModal] Unknown customIdParts', {
+                customId,
+                customIdParts
+            })
     };
 };
 
 async function handleStringSelectMenu(interaction) {
-    try {
-        const values = interaction.values;
-        const customId = interaction.customId;
+    const values = interaction.values;
+    const customId = interaction.customId;
 
-        switch (customId) {
-            case 'gameMenu': // 닉네임 등록 모달 메뉴 생성
-                submitNicknameModal(interaction);
-                break;
+    switch (customId) {
+        case 'gameMenu': // 닉네임 등록 모달 메뉴 생성
+            await submitNicknameModal(interaction);
+            break;
 
-            case 'removeNickNames': // 닉네임 삭제 제출 -> DB 저장
-                deleteNickname(interaction);
-                break;
+        case 'removeNickNames': // 닉네임 삭제 제출 -> DB 저장
+            await deleteNickname(interaction);
+            break;
 
-            /* 서버 메뉴 보이기 or 숨기기 */
-            case 'adminMenuId':
-                // 게임 메뉴 띄우기
-                if (values.includes('showMenu') || values.includes('hideMenu'))
-                    gameMenuToggle(interaction);
-                break;
+        /* 서버 메뉴 보이기 or 숨기기 */
+        case 'adminMenuId':
+            // 게임 메뉴 띄우기
+            if (values.includes('showMenu') || values.includes('hideMenu'))
+                await gameMenuToggle(interaction);
+            break;
 
-            // 게임 메뉴 DB에 저장하고 서버 채널 업데이트
-            case 'showMenu':
-            case 'hideMenu':
-                toggleMenuHandler(interaction);
-                break;
+        // 게임 메뉴 DB에 저장하고 서버 채널 업데이트
+        case 'showMenu':
+        case 'hideMenu':
+            await toggleMenuHandler(interaction);
+            break;
 
-            case 'multitoolsMenu':
-                if (values.includes('showUserInfo'))
-                    showUserInfo(interaction);
+        case 'multitoolsMenu':
+            if (values.includes('showUserInfo'))
+                await showUserInfo(interaction);
 
-                if (values.includes('deleteUserInfo'))
-                    deleteUserInfo(interaction);
-                break;
+            if (values.includes('deleteUserInfo'))
+                await deleteUserInfo(interaction);
+            break;
 
-            default:
-                console.log('isMessageComponent 에서 알 수 없는 customId : ', customId);
-        };
-
-    } catch (error) {
-        console.error('interaction.handleStringSelectMenu() 예외 : ', error);
+        default:
+            logger.error('[interaction.handleStringSelectMenu] Unknown customId', {
+                customId,
+                values
+            })
     };
+
 };
