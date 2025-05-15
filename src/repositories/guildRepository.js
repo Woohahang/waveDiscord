@@ -1,36 +1,43 @@
+const logger = require('@utils/logger');
 const guildSchema = require('../mongoDB/guildSettingsSchema');
 
 class GuildRepository {
 
-    static async findDuplicateGuildIds() {
-        const duplicates = await guildSchema.aggregate([
-            {
-                $group: {
-                    _id: '$guildId',
-                    count: { $sum: 1 },
-                    docs: { $push: '$_id' }
-                }
-            },
-            {
-                $match: {
-                    count: { $gt: 1 }
-                }
-            }
-        ]);
-        return duplicates;
-    }
-
     async findGuildById(guildId) {
-        return guildSchema.findOne({ guildId });
+        try {
+            return guildSchema.findOne({ guildId });
+        } catch (error) {
+            logger.error('[GuildRepository.findGuildById] 길드 조회 실패', {
+                errorMessage: error.message,
+                guildId
+            });
+            throw error;
+        }
     }
 
     async createGuild(guildId) {
-        const newGuild = new guildSchema({ guildId });
-        return await newGuild.save();
+        try {
+            const newGuild = new guildSchema({ guildId });
+            return await newGuild.save();
+        } catch (error) {
+            logger.error('[GuildRepository.createGuild] 길드 생성 실패', {
+                errorMessage: error.message,
+                guildId
+            });
+            throw error;
+        }
     }
 
     async saveGuildData(guildData) {
-        return await guildData.save();
+        try {
+            return await guildData.save();
+        } catch (error) {
+            logger.error('[GuildRepository.saveGuildData] 길드 데이터 저장 실패', {
+                errorMessage: error.message,
+                guildData
+            });
+            throw error;
+        }
     }
 
 }
