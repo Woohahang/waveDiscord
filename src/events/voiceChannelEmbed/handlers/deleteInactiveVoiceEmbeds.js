@@ -1,5 +1,5 @@
+const fetchBotMessages = require('@utils/discord/fetchBotMessages');
 const getDisplayName = require('@utils/discord/getDisplayName');
-const getWaveBotMessagesFromCache = require('@utils/discord/getWaveBotMessagesFromCache');
 const logger = require('@utils/logger');
 
 // 채널에 있는 멤버들의 이름을 가져오는 함수
@@ -25,7 +25,7 @@ module.exports = async (newState) => {
 
     try {
         // 해당 채널에서 Wave 봇이 보낸 메시지를 가지고 옵니다.
-        const messages = getWaveBotMessagesFromCache(channel);
+        const messages = await fetchBotMessages(channel);
 
         // 채널에 있는 멤버들의 이름을 가지고 옵니다.
         const channelMembers = getChannelMembers(channel);

@@ -36,12 +36,5 @@ module.exports = async (oldState, newState) => {
             await voiceDeleteEmbed(oldState);
             break;
 
-        default:
-            logger.error('[voiceStateUpdate] Unknown voice state change detected', {
-                guildId: newState.guild?.id || oldState.guild?.id,
-                userId: newState.id || oldState.id,
-                oldChannelId: oldState.channel?.id,
-                newChannelId: newState.channel?.id
-            })
     };
 };

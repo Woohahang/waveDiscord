@@ -1,7 +1,7 @@
-const getWaveBotMessagesFromCache = require('@utils/discord/getWaveBotMessagesFromCache');
 const getDisplayName = require('@utils/discord/getDisplayName');
 const filterMessagesByEmbedAuthor = require('@utils/discord/filterMessagesByEmbedAuthor');
 const logger = require('@utils/logger');
+const fetchBotMessages = require('@utils/discord/fetchBotMessages');
 
 /**
  * 사용자가 음성 채널에서 퇴장할 때,
@@ -21,7 +21,8 @@ module.exports = async (oldState) => {
     const displayName = getDisplayName(member);
 
     // 해당 채널에서 Wave 봇이 보낸 메시지 목록
-    const messages = getWaveBotMessagesFromCache(channel);
+    const messages = await fetchBotMessages(channel);
+    if (!messages) return;
 
     // 사용자의 임베드를 찾아 필터링
     const messagesToDelete = filterMessagesByEmbedAuthor(messages, displayName, avatarURL);

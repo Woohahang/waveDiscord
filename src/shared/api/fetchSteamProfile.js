@@ -33,7 +33,7 @@ async function fetchSteamProfile(profileLink) {
         // 스팀 닉네임
         const playerName = players[0].personaname;
 
-        return { playerName, profileLink };
+        return playerName;
 
     } catch (error) {
         throw error;

@@ -8,6 +8,7 @@ const ERROR_KEY = require('@constants/errorKeys');
 const STATE_KEYS = require('@constants/stateKeys');
 const sendStateMessage = require('@utils/discord/sendStateMessage');
 const REPLY_METHODS = require('@constants/replyMethods');
+const fetchLeagueTier = require('@shared/api/fetchLeagueOfLegendsTier');
 
 /**
  * Riot Tag를 포맷팅합니다.
@@ -73,9 +74,12 @@ function getNicknameValidationError(gameType, rawNickname) {
  * - 스팀은 프로필 정보를 API로 가져옴
  * - 라이엇 등은 그대로 반환
  */
-async function fetchGameUserInfo(gameType, formattedNickname) {
+async function fetchUserGameData(gameType, formattedNickname) {
     if (GAME_TYPES.STEAM === gameType)
         return await fetchSteamProfile(formattedNickname);
+
+    if (GAME_TYPES.LEAGUE_OF_LEGENDS === gameType)
+        return await fetchLeagueTier(formattedNickname);
 
     return formattedNickname;
 }
@@ -133,6 +137,40 @@ function getNicknameAvailabilityError(userData, gameType, nickname) {
 }
 
 /**
+ * 게임 종류에 따라 사용자 게임 정보를 저장할 객체를 생성합니다.
+ * 
+ * @param {string} gameType - 게임 종류 (예: LEAGUE_OF_LEGENDS, STEAM 등)
+ * @param {string} formattedNickname - 게임 타입에 맞게 포맷된 닉네임
+ * @param {Object|string|null} gameEntry - API 호출 결과 등 게임별 추가 데이터
+ * @returns {Object} DB에 저장할 게임별 닉네임 엔트리 객체
+ */
+function createUserGameEntry(gameType, formattedNickname, gameEntry) {
+    switch (gameType) {
+        case GAME_TYPES.LEAGUE_OF_LEGENDS:
+            return {
+                summonerName: formattedNickname,
+                tier: gameEntry?.tier ?? null,                 // 'DIAMOND', 'PLATINUM', 'GOLD' ..
+                rank: gameEntry?.rank ?? null,                 // 'I', 'II', 'III', 'IV'
+                leaguePoints: gameEntry?.leaguePoints ?? null, // 20LP ..
+            };
+
+        case GAME_TYPES.STEAM:
+            return {
+                playerName: gameEntry,         // 스팀 API에서 받은 플레이어 이름
+                profileLink: formattedNickname // 스팀 프로필 링크
+
+            };
+
+        default:
+            // 기타 게임은 닉네임만 저장
+            return {
+                nickname: formattedNickname
+            };
+
+    }
+}
+
+/**
  * 사용자의 닉네임 입력을 처리하고, 게임 종류에 따라 전처리 후 DB에 저장합니다.
  */
 module.exports = async (interaction) => {
@@ -140,7 +178,7 @@ module.exports = async (interaction) => {
     // 유저 ID 및 게임 종류, 입력된 닉네임 추출
     const userId = interaction.member.id;
     const gameType = interaction.customId.split('_')[1];
-    let rawNickname = interaction.fields.getTextInputValue('nicknameInput');
+    const rawNickname = interaction.fields.getTextInputValue('nicknameInput');
 
     try {
         // 응답을 지연시켜 '처리 중...' 표시
@@ -154,20 +192,23 @@ module.exports = async (interaction) => {
         // 게임 타입에 맞는 닉네임 포맷터
         const formattedNickname = formatNicknameByGame(gameType, rawNickname);
 
-        // 게임 유저 정보 조회 (게임 타입별)
-        const nickname = await fetchGameUserInfo(gameType, formattedNickname);
-
         // 유저 설정 객체 생성 및 닉네임 DB 저장
         const userSettings = new UserSettings(userId);
         const userData = await userSettings.loadOrCreateUserData();
 
         // 닉네임 사용 가능 여부 확인
-        const availabilityErrorKey = getNicknameAvailabilityError(userData, gameType, nickname);
+        const availabilityErrorKey = getNicknameAvailabilityError(userData, gameType, formattedNickname);
         if (availabilityErrorKey)
-            return await sendStateMessage(interaction, availabilityErrorKey, REPLY_METHODS.EDIT)
+            return await sendStateMessage(interaction, availabilityErrorKey, REPLY_METHODS.EDIT);
+
+        // 게임 유저 정보 조회 (게임 타입별)
+        const userGameData = await fetchUserGameData(gameType, formattedNickname);
+
+        // 게임 정보로 DB 저장용 닉네임 객체 생성
+        const nicknameEntry = createUserGameEntry(gameType, formattedNickname, userGameData);
 
         // 닉네임이 유효하다면, 해당 닉네임을 DB에 저장
-        await userSettings.saveNickname(gameType, nickname);
+        await userSettings.saveUserGameNickname(gameType, nicknameEntry);
 
         // 결과 메시지 전송
         await sendStateMessage(interaction, STATE_KEYS.NICKNAME_SAVE_SUCCESS, REPLY_METHODS.EDIT);

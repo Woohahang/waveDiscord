@@ -14,8 +14,11 @@ async function fetchBotMessages(channel, limit = 30) {
         const messages = await channel.messages.fetch({ limit });
         return messages.filter(msg => msg.author.id === botInfo.get().botId);
     } catch (error) {
+        // 10003: Unknown Channel 채널이 없는 경우 무시
+        if (error.code === 10003) return null;
+
         logger.error('[fetchBotMessages] Wave 봇이 보낸 메시지를 가져오는 중 오류', {
-            stack: error.stack
+            errorMessage: error.message
         })
         throw error;
     }

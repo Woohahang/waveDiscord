@@ -35,6 +35,7 @@ async function fetchLeagueTier(nickname) {
         const soloRank = leagueRes.data.find(entry => entry.queueType === 'RANKED_SOLO_5x5');
 
         return {
+            summonerName: nickname,
             tier: soloRank?.tier ?? null,                 // 'DIAMOND', 'PLATINUM', 'GOLD' ..
             rank: soloRank?.rank ?? null,                 // 'I', 'II', 'III', 'IV'
             leaguePoints: soloRank?.leaguePoints ?? null, // 20LP ..
