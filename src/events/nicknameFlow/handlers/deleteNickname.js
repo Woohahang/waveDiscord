@@ -1,5 +1,5 @@
-const UserSettings = require('../../services/UserSettings');
-const messageAutoDelete = require('../../module/common/messageAutoDelete');
+const UserSettings = require('../../../services/UserSettings');
+const messageAutoDelete = require('../../../module/common/messageAutoDelete');
 const getStateMessage = require('@shared/utils/stateMessage');
 const logger = require('@utils/logger');
 

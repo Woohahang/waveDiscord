@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const deleteNicknameMenu = require('../../events/nicknameFlow/deleteNicknameMenu');
+const deleteNicknameMenu = require('../../events/nicknameFlow/handlers/deleteNicknameMenu');
 
 module.exports = {
     // 슬래시 명령어를 정의합니다.

@@ -1,8 +1,8 @@
 // 닉네임 관련
-const submitNicknameModal = require('@events/nicknameFlow/submitNicknameModal');
-const deleteNickname = require('@events/nicknameFlow/deleteNickname');
-const submitNickname = require('@events/nicknameFlow/submitNickname');
-const deleteNicknameMenu = require('@events/nicknameFlow/deleteNicknameMenu');
+const submitNicknameModal = require('@events/nicknameFlow/handlers/submitNicknameModal');
+const deleteNickname = require('@events/nicknameFlow/handlers/deleteNickname');
+const submitNickname = require('@events/nicknameFlow/handlers/submitNickname');
+const deleteNicknameMenu = require('@events/nicknameFlow/handlers/deleteNicknameMenu');
 
 // 서버 설정 관련
 const gameMenuToggle = require('@events/guildMenuControls/gameMenuToggle');

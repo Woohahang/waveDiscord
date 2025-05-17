@@ -32,7 +32,7 @@ module.exports = async (oldState) => {
       .catch(error => {
         // 예외 처리: 채널이나 메시지가 이미 삭제된 경우 무시
         // 10003: Unknown Channel, 10008: Unknown Message
-        if (error.code === 10008 || error.code === 10003) return;
+        if (error.code === 10008 || error.code === 10003 || error.code === 'ChannelNotCached') return;
         throw error;
       });
 
