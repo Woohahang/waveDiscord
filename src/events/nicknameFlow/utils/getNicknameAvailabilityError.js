@@ -13,21 +13,28 @@ const GAME_TYPES = require("@constants/gameTypes");
  * @returns {string|null} 상태 키 (중복 또는 제한 초과 시), 없으면 null
  */
 function getNicknameAvailabilityError(userData, gameType, nickname) {
+    const entries = userData[gameType];
 
     // 닉네임 중복 검사
-    if (GAME_TYPES.LEAGUE_OF_LEGENDS === gameType) {
-        // 리그오브레전드는 닉네임 중복을 summonerName 필드를 기준으로 판단
-        if (userData[gameType].some(entry => entry.summonerName === nickname))
-            return ERROR_KEY.NICKNAME_SAVE_DUPLICATE;
-    }
-    else {
-        if (userData[gameType].includes(nickname))
-            return ERROR_KEY.NICKNAME_SAVE_DUPLICATE;
-    }
+    const isDuplicate = (() => {
+        switch (gameType) {
+            case GAME_TYPES.LEAGUE_OF_LEGENDS:
+                return entries.some(entry => entry.summonerName === nickname);
+
+            case GAME_TYPES.STEAM:
+                return entries.some(entry => entry.profileLink === nickname);
+
+            default:
+                return entries.includes(nickname);
+        }
+    })();
+    if (isDuplicate)
+        return ERROR_KEY.NICKNAME_SAVE_DUPLICATE;
 
     // 닉네임 저장 갯수 5개 초과 검사
-    if (userData[gameType].length >= 5)
+    if (entries.length >= 5)
         return ERROR_KEY.NICKNAME_SAVE_LIMIT_EXCEEDED;
+
 
     // 에러 없음
     return null;

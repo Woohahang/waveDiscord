@@ -27,9 +27,7 @@ function createUserGameEntry(gameType, formattedNickname, gameEntry) {
 
         default:
             // 기타 게임은 닉네임만 저장
-            return {
-                nickname: formattedNickname
-            };
+            return formattedNickname;
     }
 }
 

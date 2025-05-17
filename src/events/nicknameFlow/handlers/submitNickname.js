@@ -1,6 +1,5 @@
-const UserSettings = require('../../../services/UserSettings');
+const UserSettings = require('@services/UserSettings');
 const logger = require('@utils/logger');
-const STATE_KEYS = require('@constants/stateKeys');
 const sendStateMessage = require('@utils/discord/sendStateMessage');
 const REPLY_METHODS = require('@constants/replyMethods');
 const getNicknameValidationError = require('../utils/getNicknameValidationError');
@@ -48,10 +47,10 @@ module.exports = async (interaction) => {
         const nicknameEntry = createUserGameEntry(gameType, formattedNickname, userGameData);
 
         // 닉네임이 유효하다면, 해당 닉네임을 DB에 저장
-        await userSettings.saveUserGameNickname(gameType, nicknameEntry);
+        const resultKey = await userSettings.saveUserGameNickname(gameType, nicknameEntry);
 
         // 결과 메시지 전송
-        await sendStateMessage(interaction, STATE_KEYS.NICKNAME_SAVE_SUCCESS, REPLY_METHODS.EDIT);
+        await sendStateMessage(interaction, resultKey, REPLY_METHODS.EDIT);
 
     } catch (error) {
         logger.error('[submitNickname] 닉네임 저장 중 오류 발생', {

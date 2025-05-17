@@ -4,6 +4,7 @@ const fetchLeagueOfLegendsTier = require('../shared/api/fetchLeagueOfLegendsTier
 const GAME_TYPES = require('../constants/gameTypes');
 const STATE_KEYS = require('@constants/stateKeys');
 const logger = require('@utils/logger');
+const ERROR_KEY = require('@constants/errorKeys');
 
 class UserSettings {
     constructor(userId) {
@@ -54,14 +55,16 @@ class UserSettings {
             await userRepository.saveUserData(userData);
             UserCacheManager.set(this.userId, userData);
 
+            return STATE_KEYS.NICKNAME_SAVE_SUCCESS;
         } catch (error) {
-            logger.error('[UserSettings.saveUserGameNickname ] 닉네임 저장 중 오류', {
-                errorMessage: error.message,
+            logger.error('[UserSettings.saveUserGameNickname] 닉네임 저장 중 오류', {
                 userId: this.userId,
                 gameType,
-                nicknameEntry
+                nicknameEntry: JSON.stringify(nicknameEntry),
+                stack: error.stack
             });
-            throw error;
+
+            return ERROR_KEY.NICKNAME_SAVE_FAILED;
         }
     }
 

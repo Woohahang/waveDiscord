@@ -17,7 +17,7 @@ function formatNicknameByGame(gameType, rawNickname) {
         // TODO: 블리자드, 스팀 등 추가 가능
 
         default:
-            return rawNickname;
+            return rawNickname.trim();
     }
 }
 

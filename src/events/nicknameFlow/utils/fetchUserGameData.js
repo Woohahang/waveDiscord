@@ -1,6 +1,6 @@
 const GAME_TYPES = require("@constants/gameTypes");
 const fetchLeagueTier = require("@shared/api/fetchLeagueOfLegendsTier");
-const fetchSteamProfile = require("@shared/api/fetchSteamProfile");
+const fetchSteamPlayerName = require("@shared/api/fetchSteamPlayerName");
 
 /**
  * 게임 종류에 따라 사용자 정보를 가져옴
@@ -9,7 +9,7 @@ const fetchSteamProfile = require("@shared/api/fetchSteamProfile");
  */
 async function fetchUserGameData(gameType, formattedNickname) {
     if (GAME_TYPES.STEAM === gameType)
-        return await fetchSteamProfile(formattedNickname);
+        return await fetchSteamPlayerName(formattedNickname);
 
     if (GAME_TYPES.LEAGUE_OF_LEGENDS === gameType)
         return await fetchLeagueTier(formattedNickname);

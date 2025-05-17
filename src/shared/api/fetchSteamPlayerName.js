@@ -1,8 +1,9 @@
 const UserProfileNotFoundError = require('../../utils/errors/UserProfileNotFoundError');
 const axios = require('axios');
 const { steamApiKey } = require('../../../../config.json');
+const logger = require('@utils/logger');
 
-async function fetchSteamProfile(profileLink) {
+async function fetchSteamPlayerName(profileLink) {
     try {
         let steamId;
 
@@ -24,20 +25,21 @@ async function fetchSteamProfile(profileLink) {
         }
 
         const url = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamApiKey}&steamids=${steamId}`;
-        const { data: { response: { players } } } = await axios.get(url);
+        const { data } = await axios.get(url);
 
-        if (players.length === 0) {
+        if (!data.response.players || data.response.players.length === 0) {
             throw new UserProfileNotFoundError('유저 정보를 찾을 수 없습니다.');
-        }
+        };
 
-        // 스팀 닉네임
-        const playerName = players[0].personaname;
-
-        return playerName;
+        return data.response.players[0].personaname;
 
     } catch (error) {
+        logger.error('[fetchSteamPlayerName] Steam 닉네임 조회 실패', {
+            errorMessage: error.message,
+            profileLink
+        })
         throw error;
     }
 };
 
-module.exports = fetchSteamProfile;
+module.exports = fetchSteamPlayerName;
