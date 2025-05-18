@@ -67,7 +67,7 @@ client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
     handleVoiceStateUpdate(oldState, newState);
 });
 
-const autoUpdateTiers = require('./events/autoUpdate/autoUpdateTiers.js');
+const autoUpdateTiers = require('./modules/autoUpdate/autoUpdateTiers.js');
 
 // 10분마다 실행되는 크론 잡 설정 (매 10분 0초에 실행)
 cron.schedule('*/10 * * * *', async () => {

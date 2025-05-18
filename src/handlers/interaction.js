@@ -1,18 +1,18 @@
 // 닉네임 관련
-const submitNicknameModal = require('@events/nicknameFlow/handlers/submitNicknameModal');
-const deleteNickname = require('@events/nicknameFlow/handlers/deleteNickname');
-const submitNickname = require('@events/nicknameFlow/handlers/submitNickname');
-const deleteNicknameMenu = require('@events/nicknameFlow/handlers/deleteNicknameMenu');
+const submitNicknameModal = require('@modules/nicknameFlow/handlers/submitNicknameModal');
+const deleteNickname = require('@modules/nicknameFlow/handlers/deleteNickname');
+const submitNickname = require('@modules/nicknameFlow/handlers/submitNickname');
+const deleteNicknameMenu = require('@modules/nicknameFlow/handlers/deleteNicknameMenu');
 
 // 서버 설정 관련
-const gameMenuToggle = require('@events/guildMenuControls/gameMenuToggle');
-const toggleMenuHandler = require('@events/guildMenuControls/toggleMenuHandler');
-const onGuildUpdateButtonPressed = require('@events/guildUpdate/onGuildUpdateButtonPressed');
+const gameMenuToggle = require('@modules/guildMenuControls/gameMenuToggle');
+const toggleMenuHandler = require('@modules/guildMenuControls/toggleMenuHandler');
+const onGuildUpdateButtonPressed = require('@modules/guildUpdate/onGuildUpdateButtonPressed');
 
 // 유저 정보
-const showUserInfo = require('@events/userInfo/showUserInfo');
-const createUserInfoSelectMenu = require('@events/userInfo/createUserInfoSelectMenu');
-const deleteUserInfo = require('@events/userInfo/deleteUserInfo');
+const showUserInfo = require('@modules/userInfo/showUserInfo');
+const createUserInfoSelectMenu = require('@modules/userInfo/createUserInfoSelectMenu');
+const deleteUserInfo = require('@modules/userInfo/deleteUserInfo');
 
 // 유틸
 const isBotAdmin = require('@utils/discord/isBotAdmin');

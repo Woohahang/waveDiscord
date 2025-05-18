@@ -4,7 +4,7 @@ const setupAdminChannel = require('@module/setup/setupAdminChannel');
 const setupMainChannel = require('@module/setup/setupMainChannel');
 
 /* 개인 DM */
-const adminPermissionRequest = require('../events/userChannel/ownerMessage/handler/adminPermissionRequest');
+const adminPermissionRequest = require('../modules/userChannel/ownerMessage/handler/adminPermissionRequest');
 
 const logger = require('@utils/logger');
 const isBotAdmin = require('@utils/discord/isBotAdmin');

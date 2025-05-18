@@ -24,6 +24,7 @@
     "@services": "src/services",
     "@shared": "src/shared",
     "@module": "src/module",
+    "@modules": "src/modules",
     "@repositories": "src/repositories"
   },
   "devDependencies": {

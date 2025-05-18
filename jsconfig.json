@@ -23,6 +23,9 @@
             "@module/*": [
                 "module/*"
             ],
+            "@modules/*": [
+                "modules/*"
+            ],
             "@repositories/*": [
                 "repositories/*"
             ]

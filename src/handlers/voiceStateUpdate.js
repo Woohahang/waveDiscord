@@ -1,6 +1,6 @@
-const voiceJoin = require('../events/voiceChannelEmbed/handlers/voiceJoin');
-const voiceDeleteEmbed = require('../events/voiceChannelEmbed/handlers/voiceDeleteEmbed');
-const deleteInactiveVoiceEmbeds = require('../events/voiceChannelEmbed/handlers/deleteInactiveVoiceEmbeds');
+const voiceJoin = require('../modules/voiceActivity/handlers/voiceJoin');
+const voiceDeleteEmbed = require('../modules/voiceActivity/handlers/voiceDeleteEmbed');
+const deleteInactiveVoiceEmbeds = require('../modules/voiceActivity/handlers/deleteInactiveVoiceEmbeds');
 const isBotAdmin = require('@utils/discord/isBotAdmin');
 const logger = require('@utils/logger');
 
