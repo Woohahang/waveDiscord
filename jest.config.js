@@ -7,6 +7,7 @@ module.exports = {
         '^@shared/(.*)$': '<rootDir>/src/shared/$1',
         '^@module/(.*)$': '<rootDir>/src/module/$1',
         '^@modules/(.*)$': '<rootDir>/src/modules/$1',
+        '^@handlers/(.*)$': '<rootDir>/src/handlers/$1',
         '^@repositories/(.*)$': '<rootDir>/src/repositories/$1'
     },
 };

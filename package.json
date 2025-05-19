@@ -25,6 +25,7 @@
     "@shared": "src/shared",
     "@module": "src/module",
     "@modules": "src/modules",
+    "@handlers": "src/handlers",
     "@repositories": "src/repositories"
   },
   "devDependencies": {

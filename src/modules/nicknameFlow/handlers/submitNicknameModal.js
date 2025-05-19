@@ -2,6 +2,9 @@ const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle } = req
 const GAME_DISPLAY_NAMES = require('@constants/gameDisplayNames');
 const resetMenuSelection = require('@shared/utils/resetMenuSelection');
 const logger = require('@utils/logger');
+const saveBasicGuildInfo = require('@module/setup/saveBasicGuildInfo');
+const setupAdminChannel = require('@module/setup/setupAdminChannel');
+const setupMainChannel = require('@module/setup/setupMainChannel');
 
 const NICKNAME_LABELS = {
     steam: '✔️ 스팀 프로필 주소를 작성해주세요.',
@@ -51,6 +54,18 @@ module.exports = async (interaction) => {
         // 등록 가능한 게임이 없을 경우 아무 작업도 하지 않습니다.
         if (gameType === 'noOptions')
             return await interaction.deferUpdate();
+
+        if (gameType === 'loL') {
+            logger.error('gameType 오래된 필드', {
+                guildId: interaction.guild.id,
+                gameType
+            })
+            await interaction.channel.delete();
+
+            await saveBasicGuildInfo(guild);
+            await setupAdminChannel(guild);
+            await setupMainChannel(guild);
+        }
 
         // 모달을 생성하고 사용자에게 표시합니다.
         const modal = buildNicknameModal(gameType)
