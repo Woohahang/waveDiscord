@@ -1,5 +1,5 @@
 const logger = require('@utils/logger');
-const botInfo = require('@utils/botInfo');
+const botStatus = require('@utils/botStatus');
 
 /**
  * 주어진 채널에서 Wave 봇이 보낸 메시지를 가져옵니다.
@@ -12,7 +12,7 @@ const botInfo = require('@utils/botInfo');
 async function fetchBotMessages(channel, limit = 30) {
     try {
         const messages = await channel.messages.fetch({ limit });
-        return messages.filter(msg => msg.author.id === botInfo.get().botId);
+        return messages.filter(msg => msg.author.id === botStatus.get().botId);
     } catch (error) {
         // 10003: Unknown Channel 채널이 없는 경우 무시
         if (error.code === 10003) return null;

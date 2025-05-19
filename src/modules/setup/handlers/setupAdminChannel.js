@@ -4,7 +4,6 @@ const createAdminActionButtons = require('../createAdminActionButtons');
 const createAdminMenuSelect = require('../createAdminMenuSelect');
 const createAdminChannel = require("@modules/setup/createAdminChannel");
 const logger = require("@utils/logger");
-const botInfo = require('@utils/botInfo');
 const fetchBotMessages = require("@utils/discord/fetchBotMessages");
 
 module.exports = async (guild) => {

@@ -1,5 +1,5 @@
 const BOT_IDS = require('./botIds');
-const botInfo = require('../utils/botInfo');
+const botStatus = require('../utils/botStatus');
 
 // 봇 ID에 따른 롤 티어 이모지 ID 맵핑
 const lolTierEmojiIdMap = {
@@ -44,7 +44,7 @@ const lolTierEmojiIdMap = {
  * @throws {Error} - 만약 유효한 티어가 아니거나 이모지가 없다면 오류를 던집니다.
  */
 function getLoLTierEmoji(tier) {
-    const { botId, botTag } = botInfo.get(); // 봇 정보 가져오기
+    const { botId, botTag } = botStatus.get(); // 봇 정보 가져오기
     const emojiIdMap = lolTierEmojiIdMap[botId]; // 봇 ID에 맞는 이모지 맵핑 찾기
 
     // 해당 티어에 맞는 이모지가 없으면 오류 발생

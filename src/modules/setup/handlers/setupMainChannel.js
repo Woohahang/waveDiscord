@@ -1,7 +1,6 @@
 const createMainChannel = require("../createMainChannel");
 const GuildSettings = require("@services/GuildSettings");
 const createMainSetupButtons = require("../createMainSetupButtons");
-const botInfo = require('@utils/botInfo');
 const logger = require('@utils/logger');
 const buildNicknameSelectMenu = require("../buildNicknameSelectMenu");
 const safeFetchChannel = require("@utils/discord/safeFetchChannel");

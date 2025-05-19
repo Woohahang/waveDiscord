@@ -3,6 +3,8 @@ const userCacheManager = require('@services/UserCacheManager');
 const { developerId } = require('../../../../config.json');
 const getElapsedTime = require('../../module/common/getElapsedTime');
 const formatDate = require('../../module/common/formatDate');
+const botStatus = require('@utils/botStatus');
+const logger = require('@utils/logger');
 
 /**
  * 상태 메시지를 생성하는 함수
@@ -25,11 +27,12 @@ module.exports = {
         .setDescription('봇의 연결 상태와 유저 정보를 확인합니다.'),
 
     async execute(interaction) {
-        try {
-            // 명령어를 실행한 사용자가 개발자인지 확인합니다.
-            const userId = interaction.user.id;
-            if (userId !== developerId) return;
 
+        // 명령어를 실행한 사용자가 개발자인지 확인합니다.
+        const user = interaction.user;
+        if (user.id !== developerId) return;
+
+        try {
             // 로드된 유저 수를 가져옵니다.
             const userCount = userCacheManager.count();
 
@@ -37,7 +40,7 @@ module.exports = {
             const guildCount = interaction.client.guilds.cache.size;
 
             // 봇 시작 시간을 가져옵니다.
-            const startTime = interaction.client.startTime;
+            const startTime = botStatus.get().startTime;
 
             // 디스코드 채팅에 비공개 메시지로 응답합니다.
             await interaction.reply({
@@ -46,7 +49,10 @@ module.exports = {
             });
 
         } catch (error) {
-            console.error('checkUserCount.js 예외 : ', error);
+            logger.error('[checkUserCount] /상태 커맨드 오류', {
+                userId: user.id,
+                error: error.stack
+            });
         };
 
     }

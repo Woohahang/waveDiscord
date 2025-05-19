@@ -1,4 +1,4 @@
-const botInfo = require('@utils/botInfo');
+const botStatus = require('@utils/botStatus');
 
 /**
  * 해당 채널의 메시지 캐시에서 Wave 봇이 보낸 메시지만 필터링합니다.
@@ -8,7 +8,7 @@ const botInfo = require('@utils/botInfo');
  */
 function getWaveBotMessagesFromCache(channel) {
     const messages = channel.messages.cache;
-    return messages.filter(msg => msg.author.id === botInfo.get().botId);
+    return messages.filter(msg => msg.author.id === botStatus.get().botId);
 }
 
 module.exports = getWaveBotMessagesFromCache;
