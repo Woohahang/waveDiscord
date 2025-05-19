@@ -1,4 +1,3 @@
-const getVoiceStateChange = require("@handlers/voiceStates/getVoiceStateChange");
 const deleteInactiveVoiceEmbeds = require("@modules/voiceActivity/handlers/deleteInactiveVoiceEmbeds");
 const voiceDeleteEmbed = require("@modules/voiceActivity/handlers/voiceDeleteEmbed");
 const voiceJoin = require("@modules/voiceActivity/handlers/voiceJoin");
@@ -12,18 +11,18 @@ module.exports = {
     async execute(oldState, newState) {
         if (!isBotAdmin(newState.guild) || !isBotAdmin(oldState.guild)) return;
 
-        if (VoiceStateChange.isJoin) {
+        if (VoiceStateChange.isJoin(oldState, newState)) {
             await voiceJoin(newState);
             await deleteInactiveVoiceEmbeds(newState);
         }
 
-        else if (VoiceStateChange.isExit) {
+        else if (VoiceStateChange.isMove(oldState, newState)) {
+            await voiceJoin(newState);
+            await deleteInactiveVoiceEmbeds(newState);
             await voiceDeleteEmbed(oldState);
         }
 
-        else if (VoiceStateChange.isMove) {
-            await voiceJoin(newState);
-            await deleteInactiveVoiceEmbeds(newState);
+        else if (VoiceStateChange.isExit(oldState, newState)) {
             await voiceDeleteEmbed(oldState);
         }
 
