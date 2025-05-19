@@ -17,10 +17,10 @@ function formatNicknameLine(gameType, nickname) {
 
     switch (gameType) {
         case GAME_TYPES.STEAM:
-            return `${gameLogoEmoji} [${nickname.playerName}](${nickname.profileLink})`;
+            return `${gameLogoEmoji} [${nickname.nickname}](${nickname.profileLink})`;
 
         case GAME_TYPES.LEAGUE_OF_LEGENDS:
-            return `${gameLogoEmoji} [${nickname.summonerName}](${getGamesLink(gameType, nickname.summonerName)})`;
+            return `${gameLogoEmoji} [${nickname.nickname}](${getGamesLink(gameType, nickname.nickname)})`;
 
         case GAME_TYPES.OVERWATCH_2:
         case GAME_TYPES.BLIZZARD:

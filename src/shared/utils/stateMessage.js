@@ -27,7 +27,7 @@ const STATE_MESSAGES = {
         '\n' + '> * 음성 채널 입장 후 채팅을 열어보세요 !' +
         '\n' + '> * **Wave** 가 사용자 정보를 보여줍니다 !',
 
-    [STATE_KEYS.NICKNAME_SAVE_LIMIT_EXCEEDED]:
+    [ERROR_KEY.NICKNAME_SAVE_LIMIT_EXCEEDED]:
         '\n' + `## 닉네임 등록 실패` +
         '\n' + '> * 해당 게임은 저장할 수 있는 닉네임 개수를 초과했습니다.' +
         '\n' + '> * 문제가 지속되면 **Wave** 디스코드 채널로 문의해 주세요.',

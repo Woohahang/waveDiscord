@@ -12,7 +12,7 @@ function createUserGameEntry(gameType, formattedNickname, gameEntry) {
     switch (gameType) {
         case GAME_TYPES.LEAGUE_OF_LEGENDS:
             return {
-                summonerName: formattedNickname,
+                nickname: formattedNickname,
                 tier: gameEntry?.tier ?? null,                 // 'DIAMOND', 'PLATINUM', 'GOLD' ..
                 rank: gameEntry?.rank ?? null,                 // 'I', 'II', 'III', 'IV'
                 leaguePoints: gameEntry?.leaguePoints ?? null, // 20LP ..
@@ -20,7 +20,7 @@ function createUserGameEntry(gameType, formattedNickname, gameEntry) {
 
         case GAME_TYPES.STEAM:
             return {
-                playerName: gameEntry,         // 스팀 API에서 받은 플레이어 이름
+                nickname: gameEntry,         // 스팀 API에서 받은 플레이어 이름
                 profileLink: formattedNickname // 스팀 프로필 링크
 
             };

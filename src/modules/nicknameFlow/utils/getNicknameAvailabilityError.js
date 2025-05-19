@@ -19,10 +19,10 @@ function getNicknameAvailabilityError(userData, gameType, nickname) {
     const isDuplicate = (() => {
         switch (gameType) {
             case GAME_TYPES.LEAGUE_OF_LEGENDS:
-                return entries.some(entry => entry.summonerName === nickname);
+                return entries.some(entry => entry.nickname === nickname);
 
             case GAME_TYPES.STEAM:
-                return entries.some(entry => entry.profileLink === nickname);
+                return entries.some(entry => entry.nickname === nickname);
 
             default:
                 return entries.includes(nickname);
@@ -32,10 +32,9 @@ function getNicknameAvailabilityError(userData, gameType, nickname) {
         return ERROR_KEY.NICKNAME_SAVE_DUPLICATE;
 
     // 닉네임 저장 갯수 5개 초과 검사
-    if (entries.length >= 5)
+    if (entries.length >= 5) {
         return ERROR_KEY.NICKNAME_SAVE_LIMIT_EXCEEDED;
-
-
+    }
     // 에러 없음
     return null;
 }

@@ -7,11 +7,11 @@ let userSchema = new mongoose.Schema({
 
     // 유저의 게임 닉네임들을 다루는 필드입니다.
     [GAME_TYPES.STEAM]: [{
-        playerName: String,
+        nickname: String,
         profileLink: String
     }],
     [GAME_TYPES.LEAGUE_OF_LEGENDS]: [{
-        summonerName: {
+        nickname: {
             type: String,
             required: true
         },
