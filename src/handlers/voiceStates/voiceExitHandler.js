@@ -1,7 +1,7 @@
-const voiceDeleteEmbed = require("@modules/voiceActivity/handlers/voiceDeleteEmbed");
+const deleteUserInfoEmbed = require("@modules/voiceActivity/handlers/deleteUserInfoEmbed");
 
 async function voiceExitHandler(oldState) {
-    await voiceDeleteEmbed(oldState);
+    await deleteUserInfoEmbed(oldState);
 }
 
 module.exports = voiceExitHandler;
