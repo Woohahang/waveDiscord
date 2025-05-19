@@ -2,9 +2,9 @@ const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle } = req
 const GAME_DISPLAY_NAMES = require('@constants/gameDisplayNames');
 const resetMenuSelection = require('@shared/utils/resetMenuSelection');
 const logger = require('@utils/logger');
-const saveBasicGuildInfo = require('@module/setup/saveBasicGuildInfo');
-const setupAdminChannel = require('@module/setup/setupAdminChannel');
-const setupMainChannel = require('@module/setup/setupMainChannel');
+const saveBasicGuildInfo = require('@modules/setup/handlers/saveBasicGuildInfo');
+const setupAdminChannel = require('@modules/setup/handlers/setupAdminChannel');
+const setupMainChannel = require('@modules/setup/handlers/setupMainChannel');
 
 const NICKNAME_LABELS = {
     steam: '✔️ 스팀 프로필 주소를 작성해주세요.',

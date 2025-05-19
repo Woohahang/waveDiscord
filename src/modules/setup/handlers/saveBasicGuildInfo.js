@@ -1,4 +1,4 @@
-const GuildSettings = require('../../services/GuildSettings');
+const GuildSettings = require('../../../services/GuildSettings');
 const logger = require('@utils/logger');
 
 /**

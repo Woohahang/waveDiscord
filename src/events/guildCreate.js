@@ -1,6 +1,6 @@
-const saveBasicGuildInfo = require('@module/setup/saveBasicGuildInfo');
-const setupAdminChannel = require('@module/setup/setupAdminChannel');
-const setupMainChannel = require('@module/setup/setupMainChannel');
+const saveBasicGuildInfo = require('@modules/setup/handlers/saveBasicGuildInfo');
+const setupAdminChannel = require('@modules/setup/handlers/setupAdminChannel');
+const setupMainChannel = require('@modules/setup/handlers/setupMainChannel');
 const adminPermissionRequest = require('@modules/userChannel/ownerMessage/handler/adminPermissionRequest');
 const isBotAdmin = require('@utils/discord/isBotAdmin');
 const { Events } = require('discord.js');

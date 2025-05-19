@@ -9,19 +9,11 @@ module.exports = {
     name: Events.InteractionCreate,
     once: false,
     async execute(interaction) {
-        if (!isBotAdmin(interaction.guild)) return;
+        if (!interaction.guild || !isBotAdmin(interaction.guild)) return;
 
-        if (interaction.isButton()) {
-            await handleButtonInteraction(interaction);
-
-        } else if (interaction.isModalSubmit()) {
-            await handleSubmitModal(interaction);
-
-        } else if (interaction.isStringSelectMenu()) {
-            await handleStringSelectMenu(interaction);
-
-        } else if (interaction.isChatInputCommand()) {
-            await handleChatInputCommand(interaction);
-        }
+        if (interaction.isButton()) await handleButtonInteraction(interaction);
+        else if (interaction.isModalSubmit()) await handleSubmitModal(interaction);
+        else if (interaction.isStringSelectMenu()) await handleStringSelectMenu(interaction);
+        else if (interaction.isChatInputCommand()) await handleChatInputCommand(interaction);
     }
 }

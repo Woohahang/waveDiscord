@@ -2,12 +2,10 @@ require('module-alias/register');
 
 const fs = require('node:fs');
 const path = require('node:path');
-
-const cron = require('node-cron');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
-
 const { token } = require('../../config.json');
-const connectToDatabase = require('./mongoDB/database.js');
+const connectMongoDB = require('./mongoDB/connectMongoDB.js');
+const logger = require('@utils/logger');
 
 const client = new Client({
     intents: [
@@ -20,27 +18,22 @@ const client = new Client({
     ]
 });
 
+// MongoDB 연결
+(async () => {
+    try {
+        await connectMongoDB();
+    } catch (error) {
+        logger.error('[index] MongoDB 연결 실패', {
+            stack: error.stack
+        });
+        process.exit(1);
+    }
+})();
+
+
 client.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
-
-
-// MongoDB 연결
-connectToDatabase();
-
-const eventsPath = path.join(__dirname, 'events');
-const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
-
-eventFiles.forEach(file => {
-    const event = require(`@events/${file}`);
-    if (event.once)
-        client.once(event.name, (...args) => event.execute(...args));
-    else
-        client.on(event.name, (...args) => event.execute(...args));
-});
-
-
-
 
 // 커맨드 파일 읽기
 for (const folder of commandFolders) {
@@ -57,11 +50,21 @@ for (const folder of commandFolders) {
     };
 };
 
-const autoUpdateTiers = require('./modules/autoUpdate/autoUpdateTiers.js');
+/*테스트 코드*/
+// const commandPath = path.join(__dirname, 'commands');
+// const commandFiles = fs.readdirSync(commandPath).filter(file => file.endsWith('.js'));
+/*테스트 코드*/
 
-// 10분마다 실행되는 크론 잡 설정 (매 10분 0초에 실행)
-cron.schedule('*/10 * * * *', async () => {
-    await autoUpdateTiers();
+
+const eventsPath = path.join(__dirname, 'events');
+const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
+
+eventFiles.forEach(file => {
+    const event = require(`@events/${file}`);
+    if (event.once)
+        client.once(event.name, (...args) => event.execute(...args));
+    else
+        client.on(event.name, (...args) => event.execute(...args));
 });
 
 client.login(token);

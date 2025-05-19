@@ -2,9 +2,9 @@ const getStateMessage = require('@shared/utils/stateMessage');
 const GuildSettings = require('@services/GuildSettings');
 const logger = require('@utils/logger');
 const STATE_KEYS = require('@constants/stateKeys');
-const setupMainChannel = require('@module/setup/setupMainChannel');
-const setupAdminChannel = require('@module/setup/setupAdminChannel');
-const saveBasicGuildInfo = require('@module/setup/saveBasicGuildInfo');
+const setupMainChannel = require('@modules/setup/handlers/setupMainChannel');
+const setupAdminChannel = require('@modules/setup/handlers/setupAdminChannel');
+const saveBasicGuildInfo = require('@modules/setup/handlers/saveBasicGuildInfo');
 const ERROR_KEY = require('@constants/errorKeys');
 
 /**
