@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
-const getDisplayName = require('../../utils/discord/getDisplayName');
-const WAVE_ICON_URL = require('../../constants/waveIcon');
+const getDisplayName = require('@utils/discord/getDisplayName');
+const WAVE_ICON_URL = require('@constants/waveIcon');
 
 /**
  * 유저 데이터를 바탕으로 Discord Embed를 생성합니다.

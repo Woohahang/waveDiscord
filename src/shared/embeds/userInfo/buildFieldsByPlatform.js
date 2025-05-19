@@ -1,6 +1,6 @@
 const buildGameFieldValue = require('./buildGameFieldValue');
-const platforms = require('../../constants/platforms');
-const platformNames = require('../../constants/platformNames');
+const platforms = require('@constants/platforms');
+const platformNames = require('@constants/platformNames');
 
 /**
  * 유저가 등록한 게임 닉네임 데이터를 기반으로

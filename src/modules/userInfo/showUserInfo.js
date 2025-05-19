@@ -1,9 +1,9 @@
-const UserSettings = require('../../services/UserSettings');
-const buildUserDataFields = require('../embed/buildUserDataFields');
-const buildUserInfoEmbed = require('../embed/buildUserInfoEmbed');
-const logger = require('@utils/logger');
 const STATE_KEYS = require('@constants/stateKeys');
+const UserSettings = require('@services/UserSettings');
+const buildUserDataFields = require('@shared/embeds/userInfo/buildUserDataFields');
+const buildUserInfoEmbed = require('@shared/embeds/userInfo/buildUserInfoEmbed');
 const sendStateMessage = require('@utils/discord/sendStateMessage');
+const logger = require('@utils/logger');
 
 /**
  * 사용자 정보를 기반으로 Discord 임베드를 생성하고 응답하는 함수

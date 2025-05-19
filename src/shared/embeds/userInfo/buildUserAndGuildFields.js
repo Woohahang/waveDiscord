@@ -1,5 +1,5 @@
 const buildFieldsByPlatform = require('./buildFieldsByPlatform');
-const filterKeysByValue = require('../../shared/utils/filterKeysByValue');
+const filterKeysByValue = require('@shared/utils/filterKeysByValue');
 
 /**
  * 유저 데이터와 길드 설정을 기반으로 디스코드 임베드 필드를 생성합니다.

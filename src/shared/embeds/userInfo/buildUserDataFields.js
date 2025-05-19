@@ -1,4 +1,4 @@
-const platforms = require('../../constants/platforms');
+const platforms = require('@constants/platforms');
 const buildFieldsByPlatform = require('./buildFieldsByPlatform');
 
 /**

@@ -1,7 +1,7 @@
-const GuildSettings = require('../../../services/GuildSettings');
-const UserSettings = require('../../../services/UserSettings');
-const buildUserInfoEmbed = require('../../embed/buildUserInfoEmbed')
-const buildUserAndGuildFields = require('../../embed/buildUserAndGuildFields');
+const GuildSettings = require('@services/GuildSettings');
+const UserSettings = require('@services/UserSettings');
+const buildUserInfoEmbed = require('@shared/embeds/userInfo/buildUserInfoEmbed')
+const buildUserAndGuildFields = require('@shared/embeds/userInfo/buildUserAndGuildFields');
 const logger = require('@utils/logger');
 
 /**

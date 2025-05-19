@@ -4,6 +4,7 @@ const setupMainChannel = require('@modules/setup/handlers/setupMainChannel');
 const setupAdminChannel = require('@modules/setup/handlers/setupAdminChannel');
 const saveBasicGuildInfo = require('@modules/setup/handlers/saveBasicGuildInfo');
 const getStateMessage = require('@shared/utils/stateMessage');
+const logger = require('@utils/logger');
 
 /**
  * Wave 전용 채널을 생성 및 업데이트하는 기능을 수행합니다.

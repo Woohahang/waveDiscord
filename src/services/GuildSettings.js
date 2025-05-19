@@ -1,6 +1,4 @@
-const ERROR_KEY = require('@constants/errorKeys');
 const logger = require('@utils/logger');
-const STATE_KEYS = require('@constants/stateKeys');
 const GuildCacheManager = require('./GuildCacheManager');
 const guildRepository = require('../repositories/guildRepository');
 
@@ -37,7 +35,7 @@ class GuildSettings {
             logger.error('[GuildSettings.loadOrCreate] 길드 데이터를 불러오는 중 DB 오류', {
                 guildId: this.guildId,
                 errorMessage: error.message
-            })
+            });
             return null;
         };
     };
@@ -59,7 +57,8 @@ class GuildSettings {
                 channelType,
                 channelId,
                 errorMessage: error.message
-            })
+            });
+            throw error;
         };
     };
 
@@ -85,8 +84,7 @@ class GuildSettings {
                 guildId: this.guildId,
                 ownerData,
                 errorMessage: error.message
-            })
-
+            });
             throw error;
         };
     };
@@ -115,7 +113,6 @@ class GuildSettings {
                 gameKeys,
                 errorMessage: error.message
             });
-
             throw error;
         }
     }
