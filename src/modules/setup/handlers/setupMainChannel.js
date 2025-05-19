@@ -27,7 +27,7 @@ module.exports = async (guild) => {
         let channel = await safeFetchChannel(guild, guildData.mainChannelId);
         if (!channel) {
             channel = await createMainChannel(guild);
-            await guildSettings.saveChannelId('mainChannel', channel.id);
+            await guildSettings.saveChannelId('mainChannelId', channel.id);
         }
 
         // 최근 메시지 중 Wave 봇이 보낸 메시지 필터링

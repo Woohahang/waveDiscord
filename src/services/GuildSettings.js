@@ -48,20 +48,9 @@ class GuildSettings {
             // 캐시에서 길드 데이터를 로드 하거나 데이터 베이스에서 로드합니다.
             let guildData = await this.loadOrCreate();
 
-            // 채널 타입에 따라 채널 id를 저장합니다.
-            switch (channelType) {
-                case 'adminChannel':
-                    guildData.adminChannelId = channelId;
-                    break;
-                case 'mainChannel':
-                    guildData.mainChannelId = channelId;
-                    break;
-                default:
-                    throw new Error('유효하지 않은 채널 타입입니다.');
-            };
+            guildData[channelType] = channelId;
 
             await guildRepository.saveGuildData(guildData);
-
             GuildCacheManager.set(this.guildId, guildData);
 
         } catch (error) {
