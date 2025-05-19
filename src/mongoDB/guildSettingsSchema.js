@@ -6,6 +6,7 @@ let guildSettingsSchema = new mongoose.Schema({
     guildId: { type: String, required: true, unique: true },
     guildName: { type: String },
     ownerId: String,
+    ownerUsername: String,
 
     // Wave 채널 id 저장
     mainChannelId: String,

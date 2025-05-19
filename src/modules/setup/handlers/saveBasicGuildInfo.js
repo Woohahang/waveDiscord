@@ -7,13 +7,15 @@ const logger = require('@utils/logger');
  * @param {Object} guild - 길드 객체
  */
 module.exports = async (guild) => {
-
-    const ownerData = {
-        ownerId: guild.ownerId,
-        guildName: guild.name
-    }
-
     try {
+        const owner = await guild.fetchOwner();
+
+        const ownerData = {
+            guildName: guild.name,
+            ownerId: guild.ownerId,
+            ownerUsername: owner.user.username
+        }
+
         // 길드 이름 및 오너 ID를 저장합니다.
         const guildSettings = new GuildSettings(guild.id)
         await guildSettings.updateBasicInfo(ownerData);
@@ -21,7 +23,6 @@ module.exports = async (guild) => {
     } catch (error) {
         logger.error('[saveBasicGuildInfo] 오너 정보 저장 중 오류', {
             guildId: guild.id,
-            ownerData,
             stack: error.stack
         })
 
