@@ -3,6 +3,7 @@ const deleteInactiveVoiceEmbeds = require("@modules/voiceActivity/handlers/delet
 const voiceDeleteEmbed = require("@modules/voiceActivity/handlers/voiceDeleteEmbed");
 const voiceJoin = require("@modules/voiceActivity/handlers/voiceJoin");
 const isBotAdmin = require("@utils/discord/isBotAdmin");
+const VoiceStateChange = require("@utils/discord/VoiceStateChange");
 const { Events } = require("discord.js");
 
 module.exports = {
@@ -11,24 +12,20 @@ module.exports = {
     async execute(oldState, newState) {
         if (!isBotAdmin(newState.guild) || !isBotAdmin(oldState.guild)) return;
 
-        const voiceStateChange = getVoiceStateChange(oldState, newState);
+        if (VoiceStateChange.isJoin) {
+            await voiceJoin(newState);
+            await deleteInactiveVoiceEmbeds(newState);
+        }
 
-        switch (voiceStateChange) {
-            case 'voiceJoin': // 음성 채널 입장
-                await voiceJoin(newState);
-                await deleteInactiveVoiceEmbeds(newState);
-                break;
+        else if (VoiceStateChange.isExit) {
+            await voiceDeleteEmbed(oldState);
+        }
 
-            case 'voiceMove': // 음성 채널 이동
-                await voiceJoin(newState);
-                await deleteInactiveVoiceEmbeds(newState);
-                await voiceDeleteEmbed(oldState);
-                break;
+        else if (VoiceStateChange.isMove) {
+            await voiceJoin(newState);
+            await deleteInactiveVoiceEmbeds(newState);
+            await voiceDeleteEmbed(oldState);
+        }
 
-            case 'voiceExit': // 음성 채널 퇴장
-                await voiceDeleteEmbed(oldState);
-                break;
-
-        };
     }
 }
