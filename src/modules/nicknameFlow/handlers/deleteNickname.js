@@ -1,5 +1,5 @@
 const UserSettings = require('../../../services/UserSettings');
-const messageAutoDelete = require('../../../module/common/messageAutoDelete');
+const messageAutoDelete = require('../../../utils/discord/messageAutoDelete');
 const getStateMessage = require('@shared/utils/stateMessage');
 const logger = require('@utils/logger');
 

@@ -1,8 +1,8 @@
 const { SlashCommandBuilder } = require('discord.js');
 const userCacheManager = require('@services/UserCacheManager');
 const { developerId } = require('../../../../config.json');
-const getElapsedTime = require('../../module/common/getElapsedTime');
-const formatDate = require('../../module/common/formatDate');
+const getElapsedTime = require('../../utils/getElapsedTime');
+const formatDate = require('../../utils/formatDate');
 const botStatus = require('@utils/botStatus');
 const logger = require('@utils/logger');
 
