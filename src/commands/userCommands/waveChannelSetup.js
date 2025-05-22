@@ -5,6 +5,8 @@ const setupAdminChannel = require('@modules/setup/handlers/setupAdminChannel');
 const saveBasicGuildInfo = require('@modules/setup/handlers/saveBasicGuildInfo');
 const getStateMessage = require('@shared/utils/stateMessage');
 const logger = require('@utils/logger');
+const sendStateMessage = require('@utils/discord/sendStateMessage');
+const REPLY_METHODS = require('@constants/replyMethods');
 
 /**
  * Wave 전용 채널을 생성 및 업데이트하는 기능을 수행합니다.
@@ -29,7 +31,7 @@ module.exports = {
             await setupAdminChannel(guild);
 
             // 설정 완료 메시지를 사용자에게 응답합니다.
-            await interaction.editReply({ content: getStateMessage(STATE_KEYS.SETUP_COMPLETE_MESSAGE), ephemeral: true });
+            await sendStateMessage(interaction, STATE_KEYS.SETUP_COMPLETE_MESSAGE, REPLY_METHODS.EDIT);
 
         } catch (error) {
             logger.error('[waveChannelSetup] /셋업 커맨드 사용 오류', {
