@@ -22,8 +22,7 @@ function buildFieldsByPlatform(userData, gamesWithData) {
 
         // 각 게임의 닉네임 데이터를 문자열로 변환해 누적합니다
         games.forEach(game => {
-            const nicknames = userData[game];
-            value += buildGameFieldValue(game, nicknames) + '\n';
+            value += buildGameFieldValue(game, userData[game]) + '\n';
         });
 
         // 값이 있으면 필드로 추가합니다

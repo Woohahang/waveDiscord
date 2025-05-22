@@ -16,9 +16,6 @@ function createOptions(userData) {
             let nickname = '';
             switch (gameType) {
                 case GAME_TYPES.STEAM:
-                    nickname = entry.nickname;
-                    break;
-
                 case GAME_TYPES.LEAGUE_OF_LEGENDS:
                     nickname = entry.nickname;
                     break;

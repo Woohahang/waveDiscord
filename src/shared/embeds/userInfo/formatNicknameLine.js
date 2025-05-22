@@ -9,25 +9,25 @@ const getGamesLink = require('@shared/game/getGamesLink');
  * - 그 외: 닉네임과 검색 링크 포함
  *
  * @param {string} gameType - 게임 키 (예: 'steam', 'blizzard')
- * @param {Object|string} nickname - 닉네임 정보 (Steam은 객체, 그 외는 문자열)
+ * @param {Object|string} entrie - 닉네임 정보 (Steam은 객체, 그 외는 문자열)
  * @returns {string} - 포맷팅된 닉네임 문자열
  */
-function formatNicknameLine(gameType, nickname) {
+function formatNicknameLine(gameType, entrie) {
     const gameLogoEmoji = getGameLogoEmoji(gameType); // 해당 게임 이모지 구성
 
     switch (gameType) {
         case GAME_TYPES.STEAM:
-            return `${gameLogoEmoji} [${nickname.nickname}](${nickname.profileLink})`;
+            return `${gameLogoEmoji} [${entrie.nickname}](${entrie.profileLink})`;
 
         case GAME_TYPES.LEAGUE_OF_LEGENDS:
-            return `${gameLogoEmoji} [${nickname.nickname}](${getGamesLink(gameType, nickname.nickname)})`;
+            return `${gameLogoEmoji} [${entrie.nickname}](${getGamesLink(gameType, entrie.nickname)})`;
 
         case GAME_TYPES.OVERWATCH_2:
         case GAME_TYPES.BLIZZARD:
-            return `${gameLogoEmoji} ${nickname}`;
+            return `${gameLogoEmoji} ${entrie}`;
 
         default:
-            return `${gameLogoEmoji} [${nickname}](${getGamesLink(gameType, nickname)})`;
+            return `${gameLogoEmoji} [${entrie}](${getGamesLink(gameType, entrie)})`;
     }
 }
 
