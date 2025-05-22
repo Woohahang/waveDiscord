@@ -1,6 +1,5 @@
 const UserCacheManager = require('./UserCacheManager');
 const userRepository = require('@repositories/userRepository');
-const fetchLeagueOfLegendsTier = require('../shared/api/fetchLeagueOfLegendsTier');
 const GAME_TYPES = require('../constants/gameTypes');
 const STATE_KEYS = require('@constants/stateKeys');
 const logger = require('@utils/logger');
@@ -74,11 +73,8 @@ class UserSettings {
         for (const { gameType, nickname } of nicknamesToRemove) {
             switch (gameType) {
                 case GAME_TYPES.STEAM:
-                    userData[gameType] = [];
-                    break;
-
                 case GAME_TYPES.LEAGUE_OF_LEGENDS: {
-                    const index = userData[gameType].findIndex(entry => entry.summonerName === nickname);
+                    const index = userData[gameType].findIndex(entry => entry.nickname === nickname);
                     if (index > -1) userData[gameType].splice(index, 1);
                 } break;
 

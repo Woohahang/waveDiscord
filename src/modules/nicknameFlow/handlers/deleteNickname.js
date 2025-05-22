@@ -1,5 +1,5 @@
 const UserSettings = require('../../../services/UserSettings');
-const messageAutoDelete = require('../../../utils/discord/messageAutoDelete');
+const deleteMessageLater = require('../../../utils/discord/deleteMessageLater');
 const getStateMessage = require('@shared/utils/stateMessage');
 const logger = require('@utils/logger');
 
@@ -18,7 +18,7 @@ module.exports = async (interaction) => {
 
     const userId = interaction.member.id;
 
-    /** 
+    /**
      * @type {NicknameEntry[]} 
      * interaction.values는 문자열 배열이며, 각 요소는 JSON.stringify된 NicknameEntry입니다.
      */
@@ -37,7 +37,7 @@ module.exports = async (interaction) => {
         });
 
         // 20초 뒤 결과 메세지를 삭제합니다.
-        messageAutoDelete(resultMessage);
+        deleteMessageLater(resultMessage);
 
     } catch (error) {
         logger.error('[deleteNickname] 닉네임 삭제 처리 중 오류 발생', {

@@ -1,6 +1,7 @@
 const REPLY_METHODS = require('@constants/replyMethods');
 const getStateMessage = require('@shared/utils/stateMessage');
 const logger = require('@utils/logger');
+const deleteMessageLater = require('./deleteMessageLater');
 
 /**
  * 상태 메시지를 전송합니다.
@@ -13,6 +14,7 @@ async function sendStateMessage(interaction, stateKey, method = REPLY_METHODS.RE
     try {
         const content = getStateMessage(stateKey);
         await interaction[method]({ content, ephemeral: true });
+
     } catch (error) {
         logger.error('[sendStateMessage] 상태 메시지 전송 실패', {
             errorMessage: error.message,

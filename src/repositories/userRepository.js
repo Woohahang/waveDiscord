@@ -1,4 +1,5 @@
 const userSchema = require('../mongoDB/userSchema');
+const logger = require('@utils/logger');
 
 class UserRepository {
 
