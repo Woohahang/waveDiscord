@@ -3,7 +3,6 @@ const STATE_KEYS = require('@constants/stateKeys');
 const setupMainChannel = require('@modules/setup/handlers/setupMainChannel');
 const setupAdminChannel = require('@modules/setup/handlers/setupAdminChannel');
 const saveBasicGuildInfo = require('@modules/setup/handlers/saveBasicGuildInfo');
-const getStateMessage = require('@shared/utils/stateMessage');
 const logger = require('@utils/logger');
 const sendStateMessage = require('@utils/discord/sendStateMessage');
 const REPLY_METHODS = require('@constants/replyMethods');

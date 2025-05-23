@@ -51,7 +51,7 @@ function getTopTierUsers(lolTierUsers, memberMap) {
         return {
             displayName: memberMap.get(user.userId),
             userId: user.userId,
-            summonerName: bestEntry.summonerName,
+            nickname: bestEntry.nickname,
             tier: bestEntry.tier.toUpperCase(),
             rank: bestEntry.rank,
             leaguePoints: bestEntry.leaguePoints,
@@ -98,7 +98,7 @@ function buildRankingFields(users) {
 
     return availableTiers.map(tier => {
         const tierDisplayName = `${getLoLTierEmoji(tier)}  ${tier[0] + tier.slice(1).toLowerCase()}`
-        const userListText = users[tier].map(user => `${RANK_ROMAN[user.rank]} ${user.summonerName} ⦁ ${user.displayName}`).join('\n');
+        const userListText = users[tier].map(user => `${RANK_ROMAN[user.rank]} ${user.nickname} ⦁ ${user.displayName}`).join('\n');
 
         return { name: tierDisplayName, value: userListText };
     });
