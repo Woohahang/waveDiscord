@@ -1,11 +1,15 @@
 require('module-alias/register');
 
+const dotenv = require('dotenv');
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
-const { token } = require('../../config.json');
 const connectMongoDB = require('./mongoDB/connectMongoDB.js');
 const logger = require('@utils/logger');
+
+dotenv.config();
+
+const token = process.env.DISCORD_TOKEN;
 
 const client = new Client({
     intents: [
