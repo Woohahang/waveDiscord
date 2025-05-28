@@ -1,10 +1,10 @@
 const { SlashCommandBuilder } = require('discord.js');
 const userCacheManager = require('@services/UserCacheManager');
-const { developerId } = require('../../../../config.json');
 const getElapsedTime = require('../../utils/getElapsedTime');
 const formatDate = require('../../utils/formatDate');
 const botStatus = require('@utils/botStatus');
 const logger = require('@utils/logger');
+const developerId = process.env.DEVELOPER_ID;
 
 /**
  * 상태 메시지를 생성하는 함수

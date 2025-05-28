@@ -1,6 +1,7 @@
 const UserProfileNotFoundError = require('../../utils/errors/UserProfileNotFoundError');
 const axios = require('axios');
-const { steamApiKey } = require('../../../../config.json');
+const steamApiKey = process.env.STEAM_API_KEY;
+
 const logger = require('@utils/logger');
 
 async function fetchSteamPlayerName(profileLink) {
