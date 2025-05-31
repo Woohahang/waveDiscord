@@ -1,7 +1,7 @@
 const isAdmin = require('@shared/utils/isAdmin');
-const saveBasicGuildInfo = require('@modules/setup/handlers/saveBasicGuildInfo'); // 길드 오너 ID 및 길드 이름 업데이트
-const setupMainChannel = require('@modules/setup/handlers/setupMainChannel');
-const setupAdminChannel = require('@modules/setup/handlers/setupAdminChannel');
+const saveBasicGuildInfo = require('@modules/guildSetup/handlers/saveBasicGuildInfo'); // 길드 오너 ID 및 길드 이름 업데이트
+const setupMainChannel = require('@modules/guildSetup/handlers/setupMainChannel');
+const setupAdminChannel = require('@modules/guildSetup/handlers/setupAdminChannel');
 const logger = require('@utils/logger');
 const STATE_KEYS = require('@constants/stateKeys');
 const ERROR_KEY = require('@constants/errorKeys');

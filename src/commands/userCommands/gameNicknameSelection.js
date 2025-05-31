@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const GuildSettings = require('../../services/GuildSettings');
-const buildNicknameSelectMenu = require('@modules/setup/buildNicknameSelectMenu');
+const buildNicknameSelectMenu = require('@modules/guildSetup/buildNicknameSelectMenu');
 
 module.exports = {
     data: new SlashCommandBuilder()

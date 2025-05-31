@@ -1,8 +1,8 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const STATE_KEYS = require('@constants/stateKeys');
-const setupMainChannel = require('@modules/setup/handlers/setupMainChannel');
-const setupAdminChannel = require('@modules/setup/handlers/setupAdminChannel');
-const saveBasicGuildInfo = require('@modules/setup/handlers/saveBasicGuildInfo');
+const setupMainChannel = require('@modules/guildSetup/handlers/setupMainChannel');
+const setupAdminChannel = require('@modules/guildSetup/handlers/setupAdminChannel');
+const saveBasicGuildInfo = require('@modules/guildSetup/handlers/saveBasicGuildInfo');
 const logger = require('@utils/logger');
 const sendStateMessage = require('@utils/discord/sendStateMessage');
 const REPLY_METHODS = require('@constants/replyMethods');

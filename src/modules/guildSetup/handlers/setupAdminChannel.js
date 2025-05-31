@@ -2,7 +2,7 @@ const GuildSettings = require("@services/GuildSettings");
 const safeFetchChannel = require("@utils/discord/safeFetchChannel");
 const createAdminActionButtons = require('../createAdminActionButtons');
 const createAdminMenuSelect = require('../createAdminMenuSelect');
-const createAdminChannel = require("@modules/setup/createAdminChannel");
+const createAdminChannel = require("@modules/guildSetup/createAdminChannel");
 const logger = require("@utils/logger");
 const fetchBotMessages = require("@utils/discord/fetchBotMessages");
 
