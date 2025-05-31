@@ -1,10 +1,7 @@
 const { Events } = require('discord.js');
-const cron = require('node-cron');
-
-const { EVERY_TEN_MINUTES } = require('@constants/cronSchedules');
-const autoUpdateTiers = require('@modules/autoUpdate/autoUpdateTiers');
-const botStatus = require('@utils/botStatus');
 const logger = require('@utils/logger');
+const initializeBotStatus = require('@modules/botStartup/initializeBotStatus');
+const initializeCronJobs = require('@modules/botStartup/initializeCronJobs');
 
 module.exports = {
     name: Events.ClientReady,
@@ -12,12 +9,9 @@ module.exports = {
     async execute(readyClient) {
         const user = readyClient.user;
 
-        logger.info('[index] 봇 시작됨', { tag: user.tag, id: user.id });
-        botStatus.set(user);
+        logger.info('[clientReady] 봇 시작됨', { tag: user.tag, id: user.id });
 
-        cron.schedule(EVERY_TEN_MINUTES, async () => {
-            await autoUpdateTiers();
-        });
-
+        initializeBotStatus(user);
+        initializeCronJobs();
     }
 }
