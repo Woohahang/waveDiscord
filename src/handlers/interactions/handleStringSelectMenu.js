@@ -2,6 +2,7 @@ const gameMenuToggle = require("@modules/guildMenuControls/gameMenuToggle");
 const toggleMenuHandler = require("@modules/guildMenuControls/toggleMenuHandler");
 const deleteNickname = require("@modules/nicknameFlow/handlers/deleteNickname");
 const submitNicknameModal = require("@modules/nicknameFlow/handlers/submitNicknameModal");
+const handleRankView = require("@modules/rank/handleRankView");
 const deleteUserInfo = require("@modules/userInfo/deleteUserInfo");
 const showUserInfo = require("@modules/userInfo/showUserInfo");
 const logger = require("@utils/logger");
@@ -38,6 +39,10 @@ async function handleStringSelectMenu(interaction) {
 
             if (values.includes('deleteUserInfo'))
                 await deleteUserInfo(interaction);
+            break;
+
+        case 'select-game-rank':
+            await handleRankView(interaction);
             break;
 
         default:

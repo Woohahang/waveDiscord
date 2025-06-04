@@ -5,17 +5,14 @@ require('dotenv').config();
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const logger = require('@utils/logger');
 const connectMongoDB = require('./mongoDB/connectMongoDB.js');
-
-const token = process.env.DISCORD_TOKEN;
+const token = process.env.TEST_DISCORD_TOKEN;
 
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
-        GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildVoiceStates,
         GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.GuildEmojisAndStickers, // 이모지 스티커와 관련 인텐트입니다.
-        GatewayIntentBits.GuildMessageReactions, // 반응을 감지하는 인텐트입니다.
+        GatewayIntentBits.MessageContent,
     ]
 });
 
@@ -31,31 +28,24 @@ const client = new Client({
     }
 })();
 
-
+const commandsRootPath = path.join(__dirname, 'commands');
+const commandFolders = fs.readdirSync(commandsRootPath);
 client.commands = new Collection();
-const foldersPath = path.join(__dirname, 'commands');
-const commandFolders = fs.readdirSync(foldersPath);
 
-// 커맨드 파일 읽기
-for (const folder of commandFolders) {
-    const commandsPath = path.join(foldersPath, folder);
-    const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-    for (const file of commandFiles) {
-        const filePath = path.join(commandsPath, file);
+commandFolders.forEach(folder => {
+    const folderPath = path.join(commandsRootPath, folder);
+    const commandFiles = fs.readdirSync(folderPath).filter(file => file.endsWith('.js'));
+
+    commandFiles.forEach(file => {
+        const filePath = path.join(folderPath, file);
         const command = require(filePath);
-        if ('data' in command && 'execute' in command) {
+
+        if ('data' in command && 'execute' in command)
             client.commands.set(command.data.name, command);
-        } else {
-            console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
-        };
-    };
-};
-
-/*테스트 코드*/
-// const commandPath = path.join(__dirname, 'commands');
-// const commandFiles = fs.readdirSync(commandPath).filter(file => file.endsWith('.js'));
-/*테스트 코드*/
-
+        else
+            logger.warn(`[index] ${filePath} 명령어 파일의 필수 속성 "data" 또는 "execute"가 없습니다.`);
+    })
+})
 
 const eventsPath = path.join(__dirname, 'events');
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
