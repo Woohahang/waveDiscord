@@ -5,6 +5,8 @@ const groupUsersByTier = require("./groupUsersByTier");
 const buildRankingFields = require("./buildRankingFields");
 const buildEmbed = require("./buildEmbed");
 const mapUsersToTopTier = require("./mapUsersToTopTier");
+const MESSAGE_KEYS = require("@constants/messageKey");
+const getMessageByKey = require("@shared/utils/getMessageByKey");
 
 module.exports = async (interaction) => {
     const guild = interaction.guild;
@@ -31,7 +33,11 @@ module.exports = async (interaction) => {
         const fields = buildRankingFields(grouped);
         const embed = buildEmbed(guild, fields);
 
-        await interaction.reply({ embeds: [embed] });
+        // 커맨드에서 전송한 셀렉트 메뉴 삭제
+        await interaction.update({ content: getMessageByKey(MESSAGE_KEYS.RANK_RANKING_RESULT), components: [] });
+
+        // 랭킹 임베드 전송
+        await interaction.followUp({ embeds: [embed] });
 
     } catch (error) {
         logger.error('[handleRankView] 유저 티어 조회 또는 랭킹 임베드 생성 실패', {

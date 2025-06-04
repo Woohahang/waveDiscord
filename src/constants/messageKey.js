@@ -1,0 +1,8 @@
+const MESSAGE_KEYS = {
+    // 랭킹 관련 메시지
+    RANK_GAME_SELECT: 'RANK_GAME_SELECT',
+    RANK_RANKING_RESULT: 'RANK_RANKING_RESULT',
+
+};
+
+module.exports = MESSAGE_KEYS;
