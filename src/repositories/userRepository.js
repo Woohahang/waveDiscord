@@ -6,16 +6,16 @@ class UserRepository {
     /**
      * 유저 데이터를 DB에 저장합니다.
      * 
-     * @param {Object} userData - 저장할 유저 데이터
+     * @param {Object} userDoc - 저장할 유저 데이터
      * @returns {Promise<void>}
      */
-    async saveUserData(userData) {
+    async saveUserDoc(userDoc) {
         try {
-            await userData.save();
+            await userDoc.save();
         } catch (error) {
-            logger.error('[UserRepository.saveUserData] 유저 데이터 저장 실패', {
+            logger.error('[UserRepository.saveUserDoc] 유저 데이터 저장 실패', {
                 errorMessage: error.message,
-                userData
+                userDoc
             })
             throw error;
         }
