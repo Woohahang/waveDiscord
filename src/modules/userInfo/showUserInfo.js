@@ -15,18 +15,18 @@ module.exports = async (interaction) => {
     try {
         // 유저 인스턴스 생성 및 유저 데이터 불러옵니다.
         const userSettings = new UserSettings(member.id);
-        const userData = await userSettings.loadUserData();
+        const userProfile = await userSettings.getUserProfile();
 
         // 유저 데이터가 없는 경우 삭제된 것으로 간주하고 안내 메시지를 보냅니다.
-        if (!userData) return await sendStateMessage(interaction, STATE_KEYS.NO_USER_DATA);
+        if (!userProfile) return await sendStateMessage(interaction, STATE_KEYS.NO_USER_DATA);
 
         // 유저 데이터를 기반으로 embed 필드를 생성합니다.
         const allGameTypes = Object.values(GAME_TYPES);
-        const fields = buildUserGameFields(userData, allGameTypes);
+        const fields = buildUserGameFields(userProfile, allGameTypes);
         if (!fields.length) return await sendStateMessage(interaction, STATE_KEYS.NO_NICKNAMES);
 
         // 마지막 업데이트 시간을 Date 객체로 변환합니다.
-        const updatedAt = new Date(userData.updatedAt);
+        const updatedAt = new Date(userProfile.updatedAt);
 
         // 유저 데이터를 바탕으로 임베드를 생성합니다.
         const embed = buildUserInfoEmbed(member, fields, updatedAt);

@@ -11,24 +11,7 @@ class UserSettings {
         this.userId = userId;
     }
 
-    async loadOrCreateUserData() {
-        let userData = UserCacheManager.get(this.userId);
-
-        if (!userData.exists) {
-            let userDoc = await userRepository.findUserById(this.userId);
-
-            if (!userDoc) {
-                userDoc = await userRepository.createUserById(this.userId);
-            }
-
-            userData = new UserProfileDto(userDoc);
-            UserCacheManager.set(this.userId, userData);
-        }
-
-        return userData;
-    }
-
-    async loadUserData() {
+    async getUserProfile() {
         try {
             let userProfileDto = UserCacheManager.get(this.userId);
             if (!userProfileDto?.exists) {
@@ -43,7 +26,7 @@ class UserSettings {
 
             return userProfileDto;
         } catch (error) {
-            logger.error('[UserSettings.loadUserData] 유저 프로필 불러오는 중 오류', {
+            logger.error('[UserSettings.getUserProfile] 유저 프로필 불러오는 중 오류', {
                 errorMessage: error.message,
                 userId: this.userId
             })
@@ -88,7 +71,7 @@ class UserSettings {
 
     async saveUserGameNickname(gameType, nicknameEntry) {
         try {
-            const userDoc = await userRepository.findUserById(this.userId);
+            const userDoc = await this.loadUserDoc();
 
             userDoc[gameType].push(nicknameEntry);
             await userRepository.saveUserDoc(userDoc);
@@ -134,17 +117,17 @@ class UserSettings {
         return STATE_KEYS.NICKNAME_DELETE_SUCCESS;
     }
 
-    async deleteUserData() {
+    async deleteUser() {
         try {
-            const userData = await this.loadUserData();
-            if (!userData) return STATE_KEYS.NO_USER_DATA;
+            const userDoc = await this.loadUserDoc();
+            if (!userDoc) return STATE_KEYS.NO_USER_DATA;
 
             await userRepository.deleteUserById(this.userId);
             UserCacheManager.delete(this.userId);
             return STATE_KEYS.DELETE_SUCCESS;
 
         } catch (error) {
-            logger.error('[UserSettings.deleteUserData] 사용자 정보 삭제 중 DB 처리 실패', {
+            logger.error('[UserSettings.deleteUser] 사용자 정보 삭제 중 DB 처리 실패', {
                 errorMessage: error.message,
                 userId: this.userId
             });

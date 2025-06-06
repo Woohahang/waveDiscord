@@ -20,8 +20,8 @@ module.exports = async (newState) => {
     try {
         // 유저 인스턴스 생성 및 유저 데이터를 불러옵니다.
         const userSettings = new UserSettings(member.id);
-        const userData = await userSettings.loadUserData();
-        if (!userData) return;
+        const userProfile = await userSettings.getUserProfile();
+        if (!userProfile) return;
 
         // 길드 인스턴스 생성 및 길드 데이터를 불러옵니다.
         const guildSettings = new GuildSettings(guild.id);
@@ -29,12 +29,12 @@ module.exports = async (newState) => {
 
         // 임베드 필드를 만듭니다.
         const displayedGames = filterKeysByValue(guildData, true);
-        const availableGames = filterAvailableGames(displayedGames, userData);
-        let fields = buildUserGameFields(userData, availableGames);
+        const availableGames = filterAvailableGames(displayedGames, userProfile);
+        let fields = buildUserGameFields(userProfile, availableGames);
         if (!fields.length) return;
 
         // 마지막 업데이트 시간을 Date 객체로 변환합니다.
-        const updatedAt = new Date(userData.updatedAt);
+        const updatedAt = new Date(userProfile.updatedAt);
 
         // 임베드를 생성합니다.
         const embed = buildUserInfoEmbed(member, fields, updatedAt);
