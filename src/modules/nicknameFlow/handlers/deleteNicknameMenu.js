@@ -56,11 +56,11 @@ module.exports = async (interaction) => {
     try {
         // 유저 인스턴스 생성 및 유저 데이터를 불러옵니다.
         const userSettings = new UserSettings(userId);
-        const userData = await userSettings.loadUserData();
-        if (!userData) return await sendStateMessage(interaction, STATE_KEYS.NO_USER_DATA);
+        const userDoc = await userSettings.loadUserDoc();
+        if (!userDoc) return await sendStateMessage(interaction, STATE_KEYS.NO_USER_DATA);
 
         // 유저 닉네임 옵션을 생성합니다.
-        const options = createOptions(userData);
+        const options = createOptions(userDoc);
         if (options.length === 0) return await sendStateMessage(interaction, STATE_KEYS.NO_NICKNAMES);
 
         // 닉네임 선택 메뉴를 생성합니다.

@@ -33,10 +33,10 @@ module.exports = async (interaction) => {
 
         // 유저 설정 객체 생성 및 닉네임 DB 저장
         const userSettings = new UserSettings(userId);
-        const userData = await userSettings.loadOrCreateUserData();
+        const userDoc = await userSettings.loadOrCreateUserDoc();
 
         // 닉네임 사용 가능 여부 확인
-        const availabilityErrorKey = getNicknameAvailabilityError(userData, gameType, formattedNickname);
+        const availabilityErrorKey = getNicknameAvailabilityError(userDoc, gameType, formattedNickname);
         if (availabilityErrorKey)
             return await sendStateMessage(interaction, availabilityErrorKey, REPLY_METHODS.EDIT);
 

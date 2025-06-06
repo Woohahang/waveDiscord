@@ -4,6 +4,7 @@ const GAME_TYPES = require('../constants/gameTypes');
 const STATE_KEYS = require('@constants/stateKeys');
 const logger = require('@utils/logger');
 const ERROR_KEY = require('@constants/errorKeys');
+const UserProfileDto = require('@dtos/UserProfileDto');
 
 class UserSettings {
     constructor(userId) {
@@ -12,49 +13,91 @@ class UserSettings {
 
     async loadOrCreateUserData() {
         let userData = UserCacheManager.get(this.userId);
-        if (!userData) {
-            userData = await userRepository.findUserById(this.userId);
 
-            if (!userData) {
-                userData = await userRepository.createUserById(this.userId);
+        if (!userData.exists) {
+            let userDoc = await userRepository.findUserById(this.userId);
+
+            if (!userDoc) {
+                userDoc = await userRepository.createUserById(this.userId);
             }
+
+            userData = new UserProfileDto(userDoc);
             UserCacheManager.set(this.userId, userData);
         }
+
         return userData;
     }
 
     async loadUserData() {
         try {
-            let userData = UserCacheManager.get(this.userId);
-            if (!userData) {
-                userData = await userRepository.findUserById(this.userId);
-                if (userData) {
-                    UserCacheManager.set(this.userId, userData);
-                }
+            let userProfileDto = UserCacheManager.get(this.userId);
+            if (!userProfileDto?.exists) {
+                const userDoc = await this.loadUserDoc();
+                if (userDoc)
+                    userProfileDto = new UserProfileDto(userDoc);
+                else
+                    userProfileDto = new UserProfileDto(null);
+
             }
-            return userData;
+            UserCacheManager.set(this.userId, userProfileDto);
+
+            return userProfileDto;
         } catch (error) {
-            logger.error('[UserSettings.loadUserData] 유저 정보를 불러오는 중 오류', {
-                errorMEssage: error.message,
+            logger.error('[UserSettings.loadUserData] 유저 프로필 불러오는 중 오류', {
+                errorMessage: error.message,
                 userId: this.userId
             })
             throw error;
         }
     }
 
+    async loadUserDoc() {
+        try {
+            return await userRepository.findUserById(this.userId);
+        } catch (error) {
+            logger.error('[UserSettings.loadUserDoc] 유저 문서 불러오는 중 오류', {
+                errorMessage: error.message,
+                userId: this.userId
+            })
+            throw error;
+        }
+    }
+
+    async createUserDoc() {
+        try {
+            return await userRepository.createUserById(this.userId);
+        } catch (error) {
+            logger.error('[UserSettings.createUserDoc] 유저 문서 생성 중 오류', {
+                errorMessage: error.message,
+                userId: this.userId
+            })
+        }
+    }
+
+    async loadOrCreateUserDoc() {
+        try {
+            let userDoc = await this.loadUserDoc();
+            if (!userDoc) {
+                userDoc = await this.createUserDoc();
+            }
+            return userDoc;
+        } catch (error) {
+            throw error;
+        }
+    }
 
     async saveUserGameNickname(gameType, nicknameEntry) {
         try {
-            let userData = UserCacheManager.get(this.userId);
-            if (!userData)
-                userData = await this.loadOrCreateUserData();
+            const userDoc = await userRepository.findUserById(this.userId);
 
-            userData[gameType].push(nicknameEntry);
+            userDoc[gameType].push(nicknameEntry);
+            await userRepository.saveUserDoc(userDoc);
 
-            await userRepository.saveUserData(userData);
-            UserCacheManager.set(this.userId, userData);
+            const userProfileDto = new UserProfileDto(userDoc);
+            UserCacheManager.set(this.userId, userProfileDto);
 
             return STATE_KEYS.NICKNAME_SAVE_SUCCESS;
+
         } catch (error) {
             logger.error('[UserSettings.saveUserGameNickname] 닉네임 저장 중 오류', {
                 userId: this.userId,
@@ -68,25 +111,26 @@ class UserSettings {
     }
 
     async removeNicknames(nicknamesToRemove) {
-        const userData = await this.loadUserData();
+        const userDoc = await this.loadUserDoc();
 
         for (const { gameType, nickname } of nicknamesToRemove) {
             switch (gameType) {
                 case GAME_TYPES.STEAM:
                 case GAME_TYPES.LEAGUE_OF_LEGENDS: {
-                    const index = userData[gameType].findIndex(entry => entry.nickname === nickname);
-                    if (index > -1) userData[gameType].splice(index, 1);
+                    const index = userDoc[gameType].findIndex(entry => entry.nickname === nickname);
+                    if (index > -1) userDoc[gameType].splice(index, 1);
                 } break;
 
                 default: {
-                    const index = userData[gameType].indexOf(nickname);
-                    if (index > -1) userData[gameType].splice(index, 1);
+                    const index = userDoc[gameType].indexOf(nickname);
+                    if (index > -1) userDoc[gameType].splice(index, 1);
                 } break;
             }
         }
 
-        await userData.save();
-        UserCacheManager.set(this.userId, userData);
+        await userDoc.save();
+        const userProfileDto = new UserProfileDto(userDoc);
+        UserCacheManager.set(this.userId, userProfileDto);
         return STATE_KEYS.NICKNAME_DELETE_SUCCESS;
     }
 

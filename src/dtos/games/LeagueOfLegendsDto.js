@@ -7,6 +7,15 @@ class LeagueOfLegendsDto {
             leaguePoints: entry.leaguePoints
         }));
     }
+
+    hasNickname() {
+        return this.entries.some(entry => !!entry.nickname?.trim());
+    }
+
+    getNicknames() {
+        return this.entries.map(entry => entry.nickname);
+    }
+
 }
 
 module.exports = LeagueOfLegendsDto;
