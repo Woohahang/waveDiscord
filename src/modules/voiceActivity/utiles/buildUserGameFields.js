@@ -3,12 +3,6 @@ const GAME_TYPES = require("@constants/gameTypes");
 const platformNames = require("@constants/platformNames");
 const platforms = require("@constants/platforms");
 const getGamesLink = require("@shared/game/getGamesLink");
-const filterKeysByValue = require("@shared/utils/filterKeysByValue");
-
-
-function filterAvailableGames(displayedGames, userData) {
-    return displayedGames.filter(gameType => userData.hasNickname(gameType));
-}
 
 /**
  * 유저의 게임별 닉네임 정보를 { gameType, nickname } 형식으로 수집
@@ -81,16 +75,10 @@ function formatNickname(userData, gameType, nickname) {
  *
  * 반환 형식: { name: string, value: string }[] 형태의 Discord Embed 필드
  */
-module.exports = (userData, guildData) => {
-
-    // 길드에서 활성화된 게임 목록을 가져오기 (true로 설정된 게임)
-    const displayedGames = filterKeysByValue(guildData, true);
-
-    // 유저가 닉네임을 등록한 게임 중, 길드에서 사용하는 게임들
-    const availableGames = filterAvailableGames(displayedGames, userData);
+module.exports = (userData, gameTypes) => {
 
     // 유저가 등록한 닉네임 리스트를 { gameType, nickname } 형태로 수집
-    const gameNicknames = collectGameNicknames(userData, availableGames);
+    const gameNicknames = collectGameNicknames(userData, gameTypes);
 
     // 플랫폼별 닉네임 목록을 담는 객체 (예: { riot: [...], blizzard: [...] })
     const platformFieldsMap = {};
