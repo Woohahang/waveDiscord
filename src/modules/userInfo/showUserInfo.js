@@ -1,7 +1,8 @@
+const GAME_TYPES = require('@constants/gameTypes');
 const STATE_KEYS = require('@constants/stateKeys');
+const buildUserGameFields = require('@modules/voiceActivity/utiles/buildUserGameFields');
 const UserSettings = require('@services/UserSettings');
-const buildUserDataFields = require('@shared/embeds/userInfo/buildUserDataFields');
-const buildUserInfoEmbed = require('@shared/embeds/userInfo/buildUserInfoEmbed');
+const buildUserInfoEmbed = require('@modules/voiceActivity/utiles/buildUserInfoEmbed');
 const sendStateMessage = require('@utils/discord/sendStateMessage');
 const logger = require('@utils/logger');
 
@@ -20,8 +21,9 @@ module.exports = async (interaction) => {
         if (!userData) return await sendStateMessage(interaction, STATE_KEYS.NO_USER_DATA);
 
         // 유저 데이터를 기반으로 embed 필드를 생성합니다.
-        const fields = buildUserDataFields(userData);
-        if (!fields) return await sendStateMessage(interaction, STATE_KEYS.NO_NICKNAMES);
+        const allGameTypes = Object.values(GAME_TYPES);
+        const fields = buildUserGameFields(userData, allGameTypes);
+        if (!fields.length) return await sendStateMessage(interaction, STATE_KEYS.NO_NICKNAMES);
 
         // 마지막 업데이트 시간을 Date 객체로 변환합니다.
         const updatedAt = new Date(userData.updatedAt);

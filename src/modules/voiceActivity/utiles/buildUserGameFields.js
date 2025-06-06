@@ -2,7 +2,7 @@ const getGameLogoEmoji = require("@constants/gameLogoEmoji");
 const GAME_TYPES = require("@constants/gameTypes");
 const platformNames = require("@constants/platformNames");
 const platforms = require("@constants/platforms");
-const getGamesLink = require("@shared/game/getGamesLink");
+const getGamesLink = require("@modules/voiceActivity/utiles/getGamesLink");
 
 /**
  * 유저의 게임별 닉네임 정보를 { gameType, nickname } 형식으로 수집
