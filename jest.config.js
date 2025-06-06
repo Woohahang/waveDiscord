@@ -8,6 +8,7 @@ module.exports = {
         '^@module/(.*)$': '<rootDir>/src/module/$1',
         '^@modules/(.*)$': '<rootDir>/src/modules/$1',
         '^@handlers/(.*)$': '<rootDir>/src/handlers/$1',
-        '^@repositories/(.*)$': '<rootDir>/src/repositories/$1'
+        '^@repositories/(.*)$': '<rootDir>/src/repositories/$1',
+        '^@dtos/(.*)$': '<rootDir>/src/dtos/$1',
     },
 };

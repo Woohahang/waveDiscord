@@ -28,7 +28,8 @@
     "@module": "src/module",
     "@modules": "src/modules",
     "@handlers": "src/handlers",
-    "@repositories": "src/repositories"
+    "@repositories": "src/repositories",
+    "@dtos": "src/dtos"
   },
   "devDependencies": {
     "jest": "^29.7.0"

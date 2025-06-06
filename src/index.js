@@ -5,7 +5,7 @@ require('dotenv').config();
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const logger = require('@utils/logger');
 const connectMongoDB = require('./mongoDB/connectMongoDB.js');
-const token = process.env.DISCORD_TOKEN;
+const token = process.env.TEST_DISCORD_TOKEN;
 
 const client = new Client({
     intents: [
