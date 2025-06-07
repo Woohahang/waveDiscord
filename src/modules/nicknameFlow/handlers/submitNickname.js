@@ -33,7 +33,7 @@ module.exports = async (interaction) => {
 
         // 유저 설정 객체 생성 및 닉네임 DB 저장
         const userSettings = new UserSettings(userId);
-        const userDoc = await userSettings.loadOrCreateUserDoc();
+        const userDoc = await userSettings.loadOrCreateDoc();
 
         // 닉네임 사용 가능 여부 확인
         const availabilityErrorKey = getNicknameAvailabilityError(userDoc, gameType, formattedNickname);
@@ -47,7 +47,7 @@ module.exports = async (interaction) => {
         const nicknameEntry = createUserGameEntry(gameType, formattedNickname, userGameData);
 
         // 닉네임이 유효하다면, 해당 닉네임을 DB에 저장
-        const resultKey = await userSettings.saveUserGameNickname(gameType, nicknameEntry);
+        const resultKey = await userSettings.saveNickname(gameType, nicknameEntry);
 
         // 결과 메시지 전송
         await sendStateMessage(interaction, resultKey, REPLY_METHODS.EDIT);

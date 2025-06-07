@@ -15,7 +15,7 @@ module.exports = async (interaction) => {
     try {
         // 유저 인스턴스 생성 및 유저 데이터 불러옵니다.
         const userSettings = new UserSettings(member.id);
-        const userProfile = await userSettings.getUserProfile();
+        const userProfile = await userSettings.getProfile();
 
         // 유저 데이터가 없는 경우 삭제된 것으로 간주하고 안내 메시지를 보냅니다.
         if (!userProfile) return await sendStateMessage(interaction, STATE_KEYS.NO_USER_DATA);

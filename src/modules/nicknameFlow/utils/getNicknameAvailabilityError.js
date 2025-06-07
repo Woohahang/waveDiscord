@@ -7,13 +7,13 @@ const GAME_TYPES = require("@constants/gameTypes");
  * - 중복된 닉네임인지 확인
  * - 게임별 닉네임 등록 제한(최대 5개) 확인
  *
- * @param {Object} userData - 사용자의 게임별 닉네임 데이터
+ * @param {Object} userDoc - 사용자의 게임별 닉네임 데이터
  * @param {string} gameType - 게임 종류 (예: LEAGUE_OF_LEGENDS, STEAM 등)
  * @param {string} nickname - 저장하려는 닉네임 또는 유저 식별자
  * @returns {string|null} 상태 키 (중복 또는 제한 초과 시), 없으면 null
  */
-function getNicknameAvailabilityError(userData, gameType, nickname) {
-    const entries = userData[gameType];
+function getNicknameAvailabilityError(userDoc, gameType, nickname) {
+    const entries = userDoc[gameType];
 
     // 닉네임 중복 검사
     const isDuplicate = (() => {

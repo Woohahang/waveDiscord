@@ -5,14 +5,19 @@ const platforms = require("@constants/platforms");
 const getGamesLink = require("@modules/voiceActivity/utiles/getGamesLink");
 
 /**
+ * @typedef {import('@dtos/userProfileDto')} UserProfileDto
+*/
+
+
+/**
  * 유저의 게임별 닉네임 정보를 { gameType, nickname } 형식으로 수집
- * @param {UserData} userData
+ * @param {UserProfileDto} userProfile
  * @param {string[]} gameTypes
  * @returns {{ gameType: string, nickname: string }[]}
- */
-function collectGameNicknames(userData, gameTypes) {
+*/
+function collectGameNicknames(userProfile, gameTypes) {
     return gameTypes.flatMap(gameType => {
-        const nicknames = userData.getNicknameList(gameType);
+        const nicknames = userProfile.getNicknameList(gameType);
         return nicknames.map(nickname => ({ gameType, nickname }));
     });
 }
@@ -21,7 +26,7 @@ function collectGameNicknames(userData, gameTypes) {
  * gameType을 받아 해당 platform 이름 반환
  * @param {string} gameType
  * @returns {string | null}
- */
+*/
 function getPlatformNameByGameType(gameType) {
     for (const [platformName, gameTypes] of Object.entries(platforms)) {
         if (gameTypes.includes(gameType)) {
@@ -35,18 +40,23 @@ function getPlatformNameByGameType(gameType) {
  * gameType을 받아서 플랫폼의 표시 이름 반환
  * @param {string} gameType
  * @returns {string} ex) 'Blizzard'
- */
+*/
 function getPlatformDisplayNameByGameType(gameType) {
     const platformKey = getPlatformNameByGameType(gameType);
     return platformNames[platformKey];
 }
 
-function formatNickname(userData, gameType, nickname) {
+/**
+ * @param {UserProfileDto} userProfile
+ * @param {string} gameType
+ * @param {string} nickname
+*/
+function formatNickname(userProfile, gameType, nickname) {
     const emoji = getGameLogoEmoji(gameType);
 
     switch (gameType) {
         case GAME_TYPES.STEAM:
-            const profileLink = userData.steam.getProfileLink(nickname);
+            const profileLink = userProfile.steam.getProfileLink(nickname);
             return `${emoji} [${nickname}](${profileLink})`;
 
         case GAME_TYPES.LEAGUE_OF_LEGENDS:
@@ -75,10 +85,10 @@ function formatNickname(userData, gameType, nickname) {
  *
  * 반환 형식: { name: string, value: string }[] 형태의 Discord Embed 필드
  */
-module.exports = (userData, gameTypes) => {
+module.exports = (userProfile, gameTypes) => {
 
     // 유저가 등록한 닉네임 리스트를 { gameType, nickname } 형태로 수집
-    const gameNicknames = collectGameNicknames(userData, gameTypes);
+    const gameNicknames = collectGameNicknames(userProfile, gameTypes);
 
     // 플랫폼별 닉네임 목록을 담는 객체 (예: { riot: [...], blizzard: [...] })
     const platformFieldsMap = {};
@@ -88,7 +98,7 @@ module.exports = (userData, gameTypes) => {
             platformFieldsMap[gameType] = [];
         }
 
-        const displayName = formatNickname(userData, gameType, nickname); // 이모지, 링크 포함된 문자열
+        const displayName = formatNickname(userProfile, gameType, nickname); // 이모지, 링크 포함된 문자열
 
         platformFieldsMap[gameType].push(displayName);
     }

@@ -6,13 +6,13 @@ const logger = require('@utils/logger');
 const STATE_KEYS = require('@constants/stateKeys');
 const sendStateMessage = require('@utils/discord/sendStateMessage');
 
-function createOptions(userData) {
+function createOptions(userDoc) {
     const options = [];
 
     for (const gameType of Object.values(GAME_TYPES)) {
-        if (!userData[gameType] || userData[gameType].length === 0) continue;
+        if (!userDoc[gameType] || userDoc[gameType].length === 0) continue;
 
-        userData[gameType].forEach(entry => {
+        userDoc[gameType].forEach(entry => {
             let nickname = '';
             switch (gameType) {
                 case GAME_TYPES.STEAM:
@@ -56,7 +56,7 @@ module.exports = async (interaction) => {
     try {
         // 유저 인스턴스 생성 및 유저 데이터를 불러옵니다.
         const userSettings = new UserSettings(userId);
-        const userDoc = await userSettings.loadUserDoc();
+        const userDoc = await userSettings.loadDoc();
         if (!userDoc) return await sendStateMessage(interaction, STATE_KEYS.NO_USER_DATA);
 
         // 유저 닉네임 옵션을 생성합니다.

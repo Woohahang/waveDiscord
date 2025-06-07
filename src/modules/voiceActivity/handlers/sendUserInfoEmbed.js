@@ -20,7 +20,7 @@ module.exports = async (newState) => {
     try {
         // 유저 인스턴스 생성 및 유저 데이터를 불러옵니다.
         const userSettings = new UserSettings(member.id);
-        const userProfile = await userSettings.getUserProfile();
+        const userProfile = await userSettings.getProfile();
         if (!userProfile) return;
 
         // 길드 인스턴스 생성 및 길드 데이터를 불러옵니다.

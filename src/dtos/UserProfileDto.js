@@ -1,6 +1,11 @@
 const LeagueOfLegendsDto = require("./games/LeagueOfLegendsDto");
 const SteamDto = require("./games/SteamDto");
 
+/**
+ * 유저 프로필 DTO 클래스
+ * 
+ * - 유저가 등록한 다양한 게임 닉네임 정보를 통합적으로 관리
+ */
 class UserProfileDto {
 
     /**
@@ -30,6 +35,11 @@ class UserProfileDto {
         this.lostArk = doc.lostArk || [];
     }
 
+    /**
+     * 해당 게임 타입에 닉네임이 존재하는지 확인
+     * @param {string} gameType
+     * @returns {boolean}
+    */
     hasNickname(gameType) {
         const data = this[gameType];
         if (!data) return false;
@@ -41,6 +51,11 @@ class UserProfileDto {
         return Array.isArray(data) && data.length > 0;
     }
 
+    /**
+     * 해당 게임 타입에 등록된 닉네임 리스트를 반환
+     * @param {string} gameType
+     * @returns {string[]}
+    */
     getNicknameList(gameType) {
         const data = this[gameType];
         if (!data) return [];
