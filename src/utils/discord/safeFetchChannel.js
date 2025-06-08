@@ -1,4 +1,3 @@
-const Discord = require('discord.js');
 const UNKNOWN_CHANNEL_ERROR = 10003;
 
 /**
@@ -12,7 +11,7 @@ const UNKNOWN_CHANNEL_ERROR = 10003;
  */
 async function safeFetchChannel(guild, channelId) {
     try {
-        if (!channelId) return null;
+        if (!channelId) return null; // 중요! channelId 가 null 이거나 언디파인이면 모든 채널을 찾게 됨 이 유효성 검사는 정말 중요
 
         else return await guild.channels.fetch(channelId);
 

@@ -6,7 +6,6 @@ const GAME_DISPLAY_LABELS = require('@constants/gameLabels');
 const GAME_DISPLAY_NAMES = require('@constants/gameDisplayNames');
 const GuildSettings = require('@services/GuildSettings');
 const isAdmin = require('@shared/utils/isAdmin');
-const filterKeysByValue = require('@shared/utils/filterKeysByValue');
 const resetMenuSelection = require('@shared/utils/resetMenuSelection');
 const logger = require('@utils/logger');
 const sendStateMessage = require('@utils/discord/sendStateMessage');
