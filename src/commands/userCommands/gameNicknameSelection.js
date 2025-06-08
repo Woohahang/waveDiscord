@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const GuildSettings = require('../../services/GuildSettings');
 const buildNicknameSelectMenu = require('@modules/guildSetup/buildNicknameSelectMenu');
+const logger = require('@utils/logger');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -15,10 +16,10 @@ module.exports = {
         try {
             // 길드 인스턴스 생성를 생성하고 불러옵니다.
             const guildSettings = new GuildSettings(guild.id);
-            const guildData = await guildSettings.loadOrCreate();
+            const guildConfig = await guildSettings.getConfig();
 
             // 서버에 설정 된 게임 메뉴 불러오기
-            const row = buildNicknameSelectMenu(guildData);
+            const row = buildNicknameSelectMenu(guildConfig);
 
             // 게임 리스트를 불러옵니다.
             await interaction.reply({

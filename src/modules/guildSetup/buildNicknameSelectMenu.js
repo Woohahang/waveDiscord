@@ -57,25 +57,19 @@ function buildSelectMenu(options) {
 /**
  * 길드 설정에 따라 사용자에게 보여줄 SelectMenu 컴포넌트를 반환합니다.
  * 
- * @param {object} guildData - 길드의 게임 설정 객체 (예: { steam: true, leagueOfLegends: false, ... })
+ * @param {import('@dtos/GuildConfigDto')} guildConfig - 길드의 게임 설정 객체 (예: { steam: true, leagueOfLegends: false, ... })
  * @returns {ActionRowBuilder} Discord SelectMenu ActionRow 컴포넌트
  */
-module.exports = (guildData) => {
-    try {
-        // guildData에서 true로 설정된 게임 키만 필터링
-        const visibleGameKeys = filterKeysByValue(guildData, true);
+module.exports = (guildConfig) => {
+    const enabledGameTypes = guildConfig.getEnabledGames();
 
-        // GAME_TYPES 순서에 따라 정렬된 게임 키 배열 생성
-        const sortedGameKeys = Object.values(GAME_TYPES).filter(gameType => visibleGameKeys.includes(gameType));
+    // GAME_TYPES 순서에 따라 정렬된 게임 키 배열 생성
+    const sortedGameKeys = Object.values(GAME_TYPES).filter(gameType => enabledGameTypes.includes(gameType));
 
-        // 각 게임 키에 대한 옵션 생성
-        let options = sortedGameKeys.map(gameType => createOption(gameType));
-        if (options.length === 0)
-            options = createNoOptions();
+    // 각 게임 키에 대한 옵션 생성
+    let options = sortedGameKeys.map(gameType => createOption(gameType));
+    if (options.length === 0)
+        options = createNoOptions();
 
-        return buildSelectMenu(options);
-
-    } catch (error) {
-        throw new Error('[buildNicknameSelectMenu] 메인 채널 메뉴 구성 중 오류:' + error.message);
-    };
+    return buildSelectMenu(options);
 };
