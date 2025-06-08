@@ -27,10 +27,12 @@ module.exports = async (newState) => {
         const guildSettings = new GuildSettings(guild.id);
         const guildData = await guildSettings.loadOrCreate();
 
-        // 임베드 필드를 만듭니다.
+        // 길드 설정에서 활성화된 게임 중, 유저가 닉네임을 등록한 게임만 필터링합니다.
         const displayedGames = filterKeysByValue(guildData, true);
         const availableGames = filterAvailableGames(displayedGames, userProfile);
-        let fields = buildUserGameFields(userProfile, availableGames);
+
+        // 유저 닉네임 정보와 길드 설정을 바탕으로 임베드 필드를 생성합니다.
+        const fields = buildUserGameFields(userProfile, availableGames);
         if (!fields.length) return;
 
         // 마지막 업데이트 시간을 Date 객체로 변환합니다.
@@ -46,7 +48,7 @@ module.exports = async (newState) => {
         // 10008 : Unknown Message,  10003 : Unknown Channel
         if (error.code === 10008 || error.code === 10003) return;
 
-        logger.error('음성 채널 입장 중 에러', {
+        logger.error('[sendUserInfoEmbed] 유저 정보 전송 중 에러', {
             guildId: guild.id,
             memberId: member.id,
             stack: error.stack
