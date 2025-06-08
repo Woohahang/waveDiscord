@@ -5,6 +5,7 @@ const logger = require('@utils/logger');
 const buildNicknameSelectMenu = require("../buildNicknameSelectMenu");
 const safeFetchChannel = require("@utils/discord/safeFetchChannel");
 const fetchBotMessages = require("@utils/discord/fetchBotMessages");
+const { GUILD_CHANNEL_TYPES } = require("@constants/guild");
 
 const contentMessage =
     '## :star: Wave 메인 명령어' + '\n' +
@@ -21,13 +22,13 @@ module.exports = async (guild) => {
     try {
         // 길드 설정을 불러오거나 새로 생성
         const guildSettings = new GuildSettings(guild.id);
-        const guildData = await guildSettings.loadOrCreate();
+        const guildConfig = await guildSettings.getConfig();
 
         // 저장된 메인 채널이 존재하면 가져오고, 없거나 삭제된 경우 새로 생성
-        let channel = await safeFetchChannel(guild, guildData.mainChannelId);
+        let channel = await safeFetchChannel(guild, guildConfig.getMainChannelId());
         if (!channel) {
             channel = await createMainChannel(guild);
-            await guildSettings.saveChannelId('mainChannelId', channel.id);
+            await guildSettings.saveChannelId(GUILD_CHANNEL_TYPES.MAIN, channel.id);
         }
 
         // 최근 메시지 중 Wave 봇이 보낸 메시지 필터링
@@ -37,7 +38,7 @@ module.exports = async (guild) => {
         await channel.send({
             content: contentMessage,
             components: [
-                buildNicknameSelectMenu(guildData),
+                buildNicknameSelectMenu(guildConfig),
                 createMainSetupButtons()
             ]
         });
@@ -49,7 +50,7 @@ module.exports = async (guild) => {
         logger.error('[setupMainChannel] 메인 채널 셋업 중 오류', {
             errorMessage: error.message,
             guildId: guild.id,
-            channelType: 'mainChannel',
+            channelType: GUILD_CHANNEL_TYPES.MAIN,
         })
 
         throw error;

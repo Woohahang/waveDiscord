@@ -18,6 +18,16 @@ class GuildConfigDto {
         }
     }
 
+    /** 메인 채널 ID 반환 */
+    getMainChannelId() {
+        return this.mainChannelId;
+    }
+
+    /** 관리자 채널 ID 반환 */
+    getAdminChannelId() {
+        return this.adminChannelId;
+    }
+
     getEnabledGames() {
         return Object.entries(this.games)
             .filter(([, enabled]) => enabled)

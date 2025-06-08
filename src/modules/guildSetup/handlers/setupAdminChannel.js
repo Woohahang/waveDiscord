@@ -5,17 +5,19 @@ const createAdminMenuSelect = require('../createAdminMenuSelect');
 const createAdminChannel = require("@modules/guildSetup/createAdminChannel");
 const logger = require("@utils/logger");
 const fetchBotMessages = require("@utils/discord/fetchBotMessages");
+const { GUILD_CHANNEL_TYPES } = require("@constants/guild");
+
 
 module.exports = async (guild) => {
     try {
         // 길드 설정을 불러오거나 새로 생성
         const guildSettings = new GuildSettings(guild.id);
-        const guildData = await guildSettings.loadOrCreate();
+        const guildConfig = await guildSettings.getConfig();
 
-        let channel = await safeFetchChannel(guild, guildData.adminChannelId);
+        let channel = await safeFetchChannel(guild, guildConfig.getAdminChannelId());
         if (!channel) {
             channel = await createAdminChannel(guild);
-            await guildSettings.saveChannelId('adminChannelId', channel.id);
+            await guildSettings.saveChannelId(GUILD_CHANNEL_TYPES.ADMIN, channel.id);
         }
 
         // 최근 메시지 중 Wave 봇이 보낸 메시지 필터링
@@ -36,7 +38,7 @@ module.exports = async (guild) => {
         logger.error('[setupAdminChannel] 관리자 채널 구성 중 오류', {
             errorMessage: error.message,
             guildId: guild.id,
-            channelType: 'adminChannelId',
+            channelType: GUILD_CHANNEL_TYPES.ADMIN,
         })
 
         throw error;
