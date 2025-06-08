@@ -58,6 +58,50 @@ class UserRepository {
         }
     }
 
+    async addNickname(userId, gameType, nicknameEntry) {
+        try {
+            const update = { $push: { [gameType]: nicknameEntry } };
+            const options = { new: true }; // 업데이트 후 최신 문서 반환
+
+            const updatedUserDoc = await userSchema.findOneAndUpdate(
+                { userId },
+                update,
+                options
+            );
+
+            if (!updatedUserDoc) {
+                throw new Error('User not found');
+            }
+
+            return updatedUserDoc;
+        } catch (error) {
+            logger.error('[UserRepository.addNickname] 닉네임 추가 실패', {
+                userId,
+                gameType,
+                nicknameEntry,
+                errorMessage: error.message,
+            });
+            throw error;
+        }
+    }
+
+    async pullNicknameFromGameType(userId, gameType, pullCondition) {
+        try {
+            return await userSchema.findOneAndUpdate(
+                { userId },
+                { $pull: { [gameType]: pullCondition } }
+            );
+        } catch (error) {
+            logger.error('[UserRepository.pullNicknameFromGameType] 닉네임 삭제 실패', {
+                errorMessage: error.message,
+                userId,
+                gameType,
+                nickname
+            });
+            throw error;
+        }
+    }
+
     /**
      * 리그 오브 레전드 티어 정보가 존재하는 유저들을 조회합니다.
      * 

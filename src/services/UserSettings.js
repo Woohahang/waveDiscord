@@ -85,20 +85,23 @@ class UserSettings {
         }
     }
 
+    /**
+     * 특정 게임 타입에 닉네임을 추가하여 저장합니다.
+     * 
+     * @param {string} gameType - 닉네임을 추가할 게임 타입 (예: 'leagueOfLegends', 'steam' 등)
+     * @param {Object} nicknameEntry - 추가할 닉네임 정보 객체 (예: { nickname: '닉네임', ... })
+     * @returns {Promise<string>} 성공 시 닉네임 저장 성공 상태 키, 실패 시 에러 상태 키 반환
+    */
     async saveNickname(gameType, nicknameEntry) {
         try {
-            const userDoc = await this.loadDoc();
+            const updatedUserDoc = await userRepository.addNickname(this.userId, gameType, nicknameEntry);
 
-            userDoc[gameType].push(nicknameEntry);
+            this.userDoc = updatedUserDoc;
 
-            await userRepository.saveUserDoc(userDoc);
-            this.userDoc = userDoc;
-
-            const userProfileDto = new UserProfileDto(userDoc);
+            const userProfileDto = new UserProfileDto(updatedUserDoc);
             UserCacheManager.set(this.userId, userProfileDto);
 
             return STATE_KEYS.NICKNAME_SAVE_SUCCESS;
-
         } catch (error) {
             logger.error('[UserSettings.saveNickname] 닉네임 저장 중 오류', {
                 userId: this.userId,
@@ -112,29 +115,36 @@ class UserSettings {
     }
 
     async removeNicknames(nicknamesToRemove) {
-        const userDoc = await this.loadDoc();
+        try {
+            for (const { gameType, nickname } of nicknamesToRemove) {
+                let pullCondition;
+                switch (gameType) {
+                    case GAME_TYPES.STEAM:
+                    case GAME_TYPES.LEAGUE_OF_LEGENDS:
+                        pullCondition = { nickname };
+                        break;
+                    default:
+                        pullCondition = nickname;
+                }
 
-        for (const { gameType, nickname } of nicknamesToRemove) {
-            switch (gameType) {
-                case GAME_TYPES.STEAM:
-                case GAME_TYPES.LEAGUE_OF_LEGENDS: {
-                    const index = userDoc[gameType].findIndex(entry => entry.nickname === nickname);
-                    if (index > -1) userDoc[gameType].splice(index, 1);
-                } break;
-
-                default: {
-                    const index = userDoc[gameType].indexOf(nickname);
-                    if (index > -1) userDoc[gameType].splice(index, 1);
-                } break;
+                await userRepository.pullNicknameFromGameType(this.userId, gameType, pullCondition);
             }
+
+            const updatedDoc = await this.loadDoc();
+
+            this.userDoc = updatedDoc;
+
+            const userProfileDto = new UserProfileDto(updatedDoc);
+            UserCacheManager.set(this.userId, userProfileDto);
+
+            return STATE_KEYS.NICKNAME_DELETE_SUCCESS;
+        } catch (error) {
+            logger.error('[UserSettings.removeNicknames] 닉네임 제거 실패', {
+                userId: this.userId,
+                errorMessage: error.message
+            });
+            throw error;
         }
-
-        await userRepository.saveUserDoc(userDoc);
-        this.userDoc = userDoc;
-
-        const userProfileDto = new UserProfileDto(userDoc);
-        UserCacheManager.set(this.userId, userProfileDto);
-        return STATE_KEYS.NICKNAME_DELETE_SUCCESS;
     }
 
     async deleteUser() {
