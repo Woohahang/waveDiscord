@@ -1,4 +1,4 @@
-const GAME_TYPES = require("@constants/gameTypes");
+const { GAME_TYPES } = require("@constants/gameTypes");
 const fetchLeagueTier = require("@shared/api/fetchLeagueOfLegendsTier");
 const fetchSteamPlayerName = require("@shared/api/fetchSteamPlayerName");
 

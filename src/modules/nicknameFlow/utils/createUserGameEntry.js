@@ -1,4 +1,4 @@
-const GAME_TYPES = require("@constants/gameTypes");
+const { GAME_TYPES } = require("@constants/gameTypes");
 
 /**
  * 게임 종류에 따라 사용자 게임 정보를 저장할 객체를 생성합니다.

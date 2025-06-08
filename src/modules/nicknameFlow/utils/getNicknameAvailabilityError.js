@@ -1,5 +1,5 @@
 const ERROR_KEY = require("@constants/errorKeys");
-const GAME_TYPES = require("@constants/gameTypes");
+const { GAME_TYPES } = require("@constants/gameTypes");
 
 /**
  * 닉네임 사용 가능 여부를 확인하고, 문제가 있을 경우 상태 키를 반환합니다.

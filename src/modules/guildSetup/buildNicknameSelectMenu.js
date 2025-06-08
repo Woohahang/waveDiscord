@@ -1,6 +1,6 @@
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
 const filterKeysByValue = require('../../shared/utils/filterKeysByValue');
-const GAME_TYPES = require('@constants/gameTypes');
+const { GAME_TYPES } = require('@constants/gameTypes');
 const GAME_DISPLAY_LABELS = require('@constants/gameLabels');
 const GAME_DISPLAY_NAMES = require('@constants/gameDisplayNames');
 

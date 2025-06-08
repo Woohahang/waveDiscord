@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const GAME_TYPES = require('@constants/gameTypes');
+const { GAME_TYPES } = require('@constants/gameTypes');
 
 let userSchema = new mongoose.Schema({
 

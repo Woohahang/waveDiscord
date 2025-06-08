@@ -1,5 +1,5 @@
 const getGameLogoEmoji = require("@constants/gameLogoEmoji");
-const GAME_TYPES = require("@constants/gameTypes");
+const { GAME_TYPES } = require("@constants/gameTypes");
 const platformNames = require("@constants/platformNames");
 const platforms = require("@constants/platforms");
 const getGamesLink = require("@modules/voiceActivity/utiles/getGamesLink");

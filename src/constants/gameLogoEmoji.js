@@ -1,5 +1,5 @@
 const BOT_IDS = require('./botIds');
-const GAME_TYPES = require('./gameTypes');
+const { GAME_TYPES } = require('./gameTypes');
 const botStatus = require('../utils/botStatus');
 
 // 봇 ID에 따른 롤 티어 이모지 ID 맵핑

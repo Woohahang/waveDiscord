@@ -1,5 +1,5 @@
 const ERROR_KEY = require("@constants/errorKeys");
-const GAME_TYPES = require("@constants/gameTypes");
+const { GAME_TYPES } = require("@constants/gameTypes");
 const RIOT_GAMES = require("@constants/riotGames");
 
 /**

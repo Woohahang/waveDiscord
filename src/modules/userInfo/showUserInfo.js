@@ -1,4 +1,4 @@
-const GAME_TYPES = require('@constants/gameTypes');
+const { GAME_TYPES } = require('@constants/gameTypes');
 const STATE_KEYS = require('@constants/stateKeys');
 const buildUserGameFields = require('@modules/voiceActivity/utiles/buildUserGameFields');
 const UserSettings = require('@services/UserSettings');

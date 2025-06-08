@@ -1,6 +1,6 @@
 const formatNicknameByGame = require('../src/events/nicknameFlow/utils/formatNicknameByGame');
 const formatRiotTag = require('../src/events/nicknameFlow/utils/formatRiotTag');
-const GAME_TYPES = require('../src/constants/gameTypes');
+const { GAME_TYPES } = require('../src/constants/gameTypes');
 
 // formatRiotTag의 실제 동작 대신 mock 사용
 jest.mock('../src/events/nicknameFlow/utils/formatRiotTag', () => jest.fn());

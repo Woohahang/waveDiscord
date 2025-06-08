@@ -1,5 +1,5 @@
 const GAME_DISPLAY_NAMES = require('@constants/gameDisplayNames');
-const GAME_TYPES = require('@constants/gameTypes');
+const { GAME_TYPES } = require('@constants/gameTypes');
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
 
 function createGameRankSelectMenu() {

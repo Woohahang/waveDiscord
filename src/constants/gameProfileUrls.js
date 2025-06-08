@@ -1,4 +1,4 @@
-const GAME_TYPES = require("./gameTypes");
+const { GAME_TYPES } = require("./gameTypes");
 
 const gameProfileUrls = {
     [GAME_TYPES.LEAGUE_OF_LEGENDS]: nickname =>

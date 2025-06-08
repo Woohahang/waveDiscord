@@ -3,8 +3,8 @@ const UserSettings = require('@services/UserSettings');
 const buildUserInfoEmbed = require('@modules/voiceActivity/utiles/buildUserInfoEmbed')
 const logger = require('@utils/logger');
 const buildUserGameFields = require('../utiles/buildUserGameFields');
-const filterKeysByValue = require('@shared/utils/filterKeysByValue');
 const filterAvailableGames = require('../utiles/filterAvailableGames');
+const getGamesByCondition = require('@shared/utils/getGamesByCondition');
 
 /**
  * 사용자가 음성 채널에 참여할 때 호출되는 주요 함수입니다.
@@ -25,10 +25,10 @@ module.exports = async (newState) => {
 
         // 길드 인스턴스 생성 및 길드 데이터를 불러옵니다.
         const guildSettings = new GuildSettings(guild.id);
-        const guildData = await guildSettings.loadOrCreate();
+        const guildConfig = await guildSettings.getConfig();
 
         // 길드 설정에서 활성화된 게임 중, 유저가 닉네임을 등록한 게임만 필터링합니다.
-        const displayedGames = filterKeysByValue(guildData, true);
+        const displayedGames = getGamesByCondition(guildConfig, true);
         const availableGames = filterAvailableGames(displayedGames, userProfile);
 
         // 유저 닉네임 정보와 길드 설정을 바탕으로 임베드 필드를 생성합니다.

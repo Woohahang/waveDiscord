@@ -1,5 +1,5 @@
 const userRepository = require("@repositories/userRepository");
-const GAME_TYPES = require("@constants/gameTypes");
+const { GAME_TYPES } = require("@constants/gameTypes");
 
 const repositoryMethodMap = {
     [GAME_TYPES.LEAGUE_OF_LEGENDS]: 'findUsersWithLoLTierByIds',

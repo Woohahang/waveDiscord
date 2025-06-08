@@ -10,7 +10,7 @@ module.exports = async (guild) => {
     try {
         const owner = await guild.fetchOwner();
 
-        const ownerData = {
+        const guildMeta = {
             guildName: guild.name,
             ownerId: guild.ownerId,
             ownerUsername: owner.user.username
@@ -18,7 +18,7 @@ module.exports = async (guild) => {
 
         // 길드 이름 및 오너 ID를 저장합니다.
         const guildSettings = new GuildSettings(guild.id)
-        await guildSettings.updateBasicInfo(ownerData);
+        await guildSettings.updateBasicInfo(guildMeta);
 
     } catch (error) {
         logger.error('[saveBasicGuildInfo] 오너 정보 저장 중 오류', {

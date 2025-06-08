@@ -1,6 +1,6 @@
 const { StringSelectMenuBuilder, ActionRowBuilder } = require('discord.js');
 const UserSettings = require('@services/UserSettings');
-const GAME_TYPES = require('@constants/gameTypes');
+const { GAME_TYPES } = require('@constants/gameTypes');
 const GAME_DISPLAY_NAMES = require('@constants/gameDisplayNames');
 const logger = require('@utils/logger');
 const STATE_KEYS = require('@constants/stateKeys');

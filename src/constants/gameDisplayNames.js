@@ -1,4 +1,4 @@
-const GAME_TYPES = require('./gameTypes')
+const { GAME_TYPES } = require('./gameTypes')
 
 const GAME_DISPLAY_NAMES = {
     [GAME_TYPES.STEAM]: '스팀',

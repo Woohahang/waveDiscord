@@ -1,6 +1,6 @@
 const UserCacheManager = require('./UserCacheManager');
 const userRepository = require('@repositories/userRepository');
-const GAME_TYPES = require('../constants/gameTypes');
+const { GAME_TYPES } = require('../constants/gameTypes');
 const STATE_KEYS = require('@constants/stateKeys');
 const logger = require('@utils/logger');
 const ERROR_KEY = require('@constants/errorKeys');

@@ -1,6 +1,6 @@
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
 const STATE_KEYS = require('@constants/stateKeys');
-const GAME_TYPES = require('@constants/gameTypes');
+const { GAME_TYPES } = require('@constants/gameTypes');
 const ERROR_KEY = require('@constants/errorKeys');
 const GAME_DISPLAY_LABELS = require('@constants/gameLabels');
 const GAME_DISPLAY_NAMES = require('@constants/gameDisplayNames');
@@ -10,6 +10,7 @@ const filterKeysByValue = require('@shared/utils/filterKeysByValue');
 const resetMenuSelection = require('@shared/utils/resetMenuSelection');
 const logger = require('@utils/logger');
 const sendStateMessage = require('@utils/discord/sendStateMessage');
+const getGamesByCondition = require('@shared/utils/getGamesByCondition');
 
 /**
  * 메뉴 동작에 따라 필터링할 게임의 표시 상태를 매핑합니다.
@@ -100,7 +101,7 @@ module.exports = async (interaction) => {
 
         // 길드 설정 정보 불러오기
         const guildSettings = new GuildSettings(guild.id);
-        const guildData = await guildSettings.loadOrCreate();
+        const guildConfig = await guildSettings.getConfig();
 
         // 표시/숨김 여부에 해당하는 필드값(true 또는 false) 추출
         const targetValue = menuVisibilityMap[menuAction];
@@ -114,7 +115,7 @@ module.exports = async (interaction) => {
         }
 
         // 현재 길드 설정에서 해당 값(true/false)을 가진 게임 키만 필터링
-        const matchingGameKeys = filterKeysByValue(guildData, targetValue);
+        const matchingGameKeys = getGamesByCondition(guildConfig, targetValue);
 
         // 해당 상태에 맞는 게임이 없으면 메시지 응답
         if (matchingGameKeys.length === 0) {
