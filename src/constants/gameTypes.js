@@ -25,6 +25,6 @@ const GAME_TYPES = {
     LOST_ARK: 'lostArk',
 };
 
-const VALID_GAME_KEYS = Object.keys(GAME_TYPES);
+const VALID_GAME_KEYS = Object.values(GAME_TYPES);
 
 module.exports = { GAME_TYPES, VALID_GAME_KEYS };
