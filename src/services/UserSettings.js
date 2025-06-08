@@ -5,6 +5,7 @@ const STATE_KEYS = require('@constants/stateKeys');
 const logger = require('@utils/logger');
 const ERROR_KEY = require('@constants/errorKeys');
 const UserProfileDto = require('@dtos/userProfileDto');
+const validateGameType = require('@utils/validation/validateGameType');
 
 class UserSettings {
     constructor(userId) {
@@ -94,13 +95,18 @@ class UserSettings {
     */
     async saveNickname(gameType, nicknameEntry) {
         try {
+            // 1. 게임 타입 유효성 검사
+            validateGameType(gameType, this.userId);
+
+            // 2. 닉네임 추가 (DB)
             const updatedUserDoc = await userRepository.addNickname(this.userId, gameType, nicknameEntry);
 
+            // 3. 로컬 상태 및 캐시 갱신
             this.userDoc = updatedUserDoc;
-
             const userProfileDto = new UserProfileDto(updatedUserDoc);
             UserCacheManager.set(this.userId, userProfileDto);
 
+            // 4. 성공 상태 반환
             return STATE_KEYS.NICKNAME_SAVE_SUCCESS;
         } catch (error) {
             logger.error('[UserSettings.saveNickname] 닉네임 저장 중 오류', {
@@ -114,9 +120,23 @@ class UserSettings {
         }
     }
 
+    /**
+     * 주어진 게임 타입 및 닉네임 목록을 기반으로 해당 닉네임들을 제거합니다.
+     * 
+     * - 게임 타입 유효성 검사를 수행합니다.
+     * - gameType에 따라 MongoDB에서 제거 조건을 동적으로 구성합니다.
+     * - 제거 후 유저 정보를 갱신하고 캐시를 업데이트합니다.
+     * 
+     * @param {Array<{ gameType: string, nickname: string }>} nicknamesToRemove 제거할 닉네임 목록
+     * @returns {Promise<string>} 닉네임 제거 성공 상태 키
+    */
     async removeNicknames(nicknamesToRemove) {
         try {
             for (const { gameType, nickname } of nicknamesToRemove) {
+                // 1. 게임 타입 유효성 검사
+                validateGameType(gameType, this.userId);
+
+                // 2. MongoDB pull 조건 구성 
                 let pullCondition;
                 switch (gameType) {
                     case GAME_TYPES.STEAM:
@@ -127,16 +147,18 @@ class UserSettings {
                         pullCondition = nickname;
                 }
 
+                // 3. 닉네임 제거 (DB)
                 await userRepository.pullNicknameFromGameType(this.userId, gameType, pullCondition);
             }
 
             const updatedDoc = await this.loadDoc();
 
+            // 4. 로컬 상태 및 캐시 갱신
             this.userDoc = updatedDoc;
-
             const userProfileDto = new UserProfileDto(updatedDoc);
             UserCacheManager.set(this.userId, userProfileDto);
 
+            // 5. 성공 상태 반환
             return STATE_KEYS.NICKNAME_DELETE_SUCCESS;
         } catch (error) {
             logger.error('[UserSettings.removeNicknames] 닉네임 제거 실패', {
