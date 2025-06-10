@@ -1,6 +1,6 @@
 const GuildSettings = require('@services/GuildSettings');
 const UserSettings = require('@services/UserSettings');
-const buildUserInfoEmbed = require('@modules/voiceActivity/utiles/buildUserInfoEmbed')
+const buildUserInfoEmbed = require('@modules/voiceActivity/utiles/buildUserInfoEmbed');
 const logger = require('@utils/logger');
 const buildUserGameFields = require('../utiles/buildUserGameFields');
 const filterAvailableGames = require('../utiles/filterAvailableGames');
