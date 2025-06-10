@@ -180,7 +180,6 @@ class UserSettings {
             this.userDoc = null;
 
             return STATE_KEYS.DELETE_SUCCESS;
-
         } catch (error) {
             logger.error('[UserSettings.deleteUser] 사용자 정보 삭제 중 DB 처리 실패', {
                 errorMessage: error.message,
