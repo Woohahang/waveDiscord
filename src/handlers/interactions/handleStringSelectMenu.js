@@ -22,9 +22,7 @@ async function handleStringSelectMenu(interaction) {
 
         /* 서버 메뉴 보이기 or 숨기기 */
         case 'adminMenuId':
-            // 게임 메뉴 띄우기
-            if (values.includes('showMenu') || values.includes('hideMenu'))
-                await gameMenuToggle(interaction);
+            await gameMenuToggle(interaction);
             break;
 
         // 게임 메뉴 DB에 저장하고 서버 채널 업데이트
