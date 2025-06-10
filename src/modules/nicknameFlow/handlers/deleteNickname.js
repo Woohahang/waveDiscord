@@ -42,7 +42,7 @@ module.exports = async (interaction) => {
     } catch (error) {
         logger.error('[deleteNickname] 닉네임 삭제 처리 중 오류 발생', {
             userId,
-            nicknamesToRemove,
+            rawInput: interaction.values,
             stack: error.stack
         })
     };

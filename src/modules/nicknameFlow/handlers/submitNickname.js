@@ -16,7 +16,7 @@ module.exports = async (interaction) => {
 
     // 유저 ID 및 게임 종류, 입력된 닉네임 추출
     const userId = interaction.member.id;
-    const gameType = interaction.customId.split('_')[1];
+    const { gameType } = JSON.parse(interaction.customId);
     const rawNickname = interaction.fields.getTextInputValue('nicknameInput');
 
     try {

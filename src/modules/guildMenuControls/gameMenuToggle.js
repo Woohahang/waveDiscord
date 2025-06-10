@@ -97,7 +97,6 @@ module.exports = async (interaction) => {
         if (!isAdmin(interaction.member))
             return await sendStateMessage(interaction, STATE_KEYS.NO_ADMIN_PERMISSION);
 
-
         // 길드 설정 정보 불러오기
         const guildSettings = new GuildSettings(guild.id);
         const guildConfig = await guildSettings.getConfig();
