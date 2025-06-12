@@ -25,7 +25,7 @@ function buildNicknameModal(gameType) {
     const modalCustomId = JSON.stringify({ action: 'submitNickname', gameType });
 
     const modal = new ModalBuilder()
-        .setTitle(GAME_DISPLAY_NAMES[gameType])
+        .setTitle(GAME_DISPLAY_NAMES.ko[gameType])
         .setCustomId(modalCustomId);
 
     const input = new TextInputBuilder()

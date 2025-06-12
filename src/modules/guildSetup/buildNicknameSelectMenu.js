@@ -1,6 +1,5 @@
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
 const { GAME_TYPES } = require('@constants/gameTypes');
-const GAME_DISPLAY_LABELS = require('@constants/gameLabels');
 const GAME_DISPLAY_NAMES = require('@constants/gameDisplayNames');
 
 
@@ -25,15 +24,16 @@ function createNoOptions() {
  * @returns {StringSelectMenuOptionBuilder} Discord select 메뉴 옵션 객체
  */
 function createOption(gameType) {
-    let description
-    if (gameType === GAME_TYPES.STEAM)
-        description = '스팀 프로필 주소';
+    const gameNameKo = GAME_DISPLAY_NAMES.ko[gameType];
+    const gameNameEn = GAME_DISPLAY_NAMES.en[gameType];
 
-    else
-        description = `${GAME_DISPLAY_NAMES[gameType]} 닉네임`;
+    const description =
+        gameType === GAME_TYPES.STEAM
+            ? '스팀 프로필 주소'
+            : `${gameNameKo} 닉네임`;
 
     return new StringSelectMenuOptionBuilder()
-        .setLabel(GAME_DISPLAY_LABELS[gameType])
+        .setLabel(gameNameEn)
         .setDescription(description)
         .setValue(gameType);
 }
@@ -60,6 +60,7 @@ function buildSelectMenu(options) {
  * @returns {ActionRowBuilder} Discord SelectMenu ActionRow 컴포넌트
  */
 module.exports = (guildConfig) => {
+
     const enabledGameTypes = guildConfig.getEnabledGames();
 
     // GAME_TYPES 순서에 따라 정렬된 게임 키 배열 생성

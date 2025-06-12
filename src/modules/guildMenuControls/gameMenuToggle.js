@@ -2,7 +2,6 @@ const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder
 const STATE_KEYS = require('@constants/stateKeys');
 const { GAME_TYPES } = require('@constants/gameTypes');
 const ERROR_KEY = require('@constants/errorKeys');
-const GAME_DISPLAY_LABELS = require('@constants/gameLabels');
 const GAME_DISPLAY_NAMES = require('@constants/gameDisplayNames');
 const GuildSettings = require('@services/GuildSettings');
 const isAdmin = require('@shared/utils/isAdmin');
@@ -51,8 +50,8 @@ function createMenuOption(field, menuAction) {
     const suffix = ACTION_SUFFIX[menuAction];
 
     return new StringSelectMenuOptionBuilder()
-        .setLabel(GAME_DISPLAY_LABELS[field])
-        .setDescription(GAME_DISPLAY_NAMES[field] + suffix)
+        .setLabel(GAME_DISPLAY_NAMES.en[field])
+        .setDescription(GAME_DISPLAY_NAMES.ko[field] + suffix)
         .setValue(field)
 };
 

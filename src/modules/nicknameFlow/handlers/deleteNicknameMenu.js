@@ -29,7 +29,7 @@ function createOptions(userDoc) {
             options.push({
                 value,
                 label: nickname,
-                description: GAME_DISPLAY_NAMES[gameType]
+                description: GAME_DISPLAY_NAMES.ko[gameType]
             })
         })
     }
