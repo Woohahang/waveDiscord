@@ -11,8 +11,8 @@ async function fetchUserGameData(gameType, formattedNickname) {
     if (GAME_TYPES.STEAM === gameType)
         return await fetchSteamPlayerName(formattedNickname);
 
-    if (GAME_TYPES.LEAGUE_OF_LEGENDS === gameType)
-        return await fetchLeagueTier(formattedNickname);
+    // if (GAME_TYPES.LEAGUE_OF_LEGENDS === gameType)
+    // return await fetchLeagueTier(formattedNickname);
 
     return formattedNickname;
 }
