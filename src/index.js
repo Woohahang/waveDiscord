@@ -2,19 +2,13 @@ const fs = require('node:fs');
 const path = require('node:path');
 require('module-alias/register');
 require('dotenv').config();
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const { Collection } = require('discord.js');
 const logger = require('@utils/logger');
 const connectMongoDB = require('./mongoDB/connectMongoDB.js');
 const token = process.env.TEST_DISCORD_TOKEN;
+const createClient = require('./app/bootstrap/createClient.js')
 
-const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildVoiceStates,
-        GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.MessageContent,
-    ]
-});
+const client = createClient();
 
 // MongoDB 연결
 (async () => {
