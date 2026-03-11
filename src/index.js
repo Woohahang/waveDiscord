@@ -4,23 +4,19 @@ require('module-alias/register');
 require('dotenv').config();
 const { Collection } = require('discord.js');
 const logger = require('@utils/logger');
-const connectMongoDB = require('./mongoDB/connectMongoDB.js');
 const token = process.env.TEST_DISCORD_TOKEN;
 const createClient = require('./app/bootstrap/createClient.js')
+const connectDatabase = require('./app/bootstrap/connectDatabase.js');
 
 const client = createClient();
 
-// MongoDB 연결
-(async () => {
-    try {
-        await connectMongoDB();
-    } catch (error) {
-        logger.error('[index] MongoDB 연결 실패', {
-            stack: error.stack
-        });
-        process.exit(1);
-    }
-})();
+async function main() {
+
+    await connectDatabase()
+
+}
+
+main()
 
 const commandsRootPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(commandsRootPath);
