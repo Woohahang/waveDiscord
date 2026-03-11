@@ -5,8 +5,8 @@ require('dotenv').config();
 const { Collection } = require('discord.js');
 const logger = require('@utils/logger');
 const token = process.env.TEST_DISCORD_TOKEN;
-const createClient = require('./app/bootstrap/createClient.js')
-const connectDatabase = require('./app/bootstrap/connectDatabase.js');
+const createClient = require('./bootstrap/createClient.js')
+const connectDatabase = require('./bootstrap/connectDatabase.js');
 
 const client = createClient();
 
@@ -18,7 +18,7 @@ async function main() {
 
 main()
 
-const commandsRootPath = path.join(__dirname, 'commands');
+const commandsRootPath = path.join(__dirname, '../commands');
 const commandFolders = fs.readdirSync(commandsRootPath);
 client.commands = new Collection();
 
@@ -37,7 +37,7 @@ commandFolders.forEach(folder => {
     })
 })
 
-const eventsPath = path.join(__dirname, 'events');
+const eventsPath = path.join(__dirname, '../events');
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
 
 eventFiles.forEach(file => {
