@@ -1,7 +1,7 @@
 const gameMenuToggle = require("@modules/guildMenuControls/gameMenuToggle");
 const toggleMenuHandler = require("@modules/guildMenuControls/toggleMenuHandler");
 const deleteNickname = require("@modules/nicknameFlow/handlers/deleteNickname");
-const submitNicknameModal = require("@modules/nicknameFlow/handlers/submitNicknameModal");
+// const submitNicknameModal = require("@modules/nicknameFlow/handlers/submitNicknameModal");
 const handleRankView = require("@modules/rank/handleRankView");
 const deleteUserInfo = require("@modules/userInfo/deleteUserInfo");
 const showUserInfo = require("@modules/userInfo/showUserInfo");
@@ -12,9 +12,9 @@ async function handleStringSelectMenu(interaction) {
     const customId = interaction.customId;
 
     switch (customId) {
-        case 'gameMenu': // 닉네임 등록 모달 메뉴 생성
-            await submitNicknameModal(interaction);
-            break;
+        // case 'gameMenu': // 닉네임 등록 모달 메뉴 생성
+        //     await submitNicknameModal(interaction);
+        //     break;
 
         case 'removeNickNames': // 닉네임 삭제 제출 -> DB 저장
             await deleteNickname(interaction);

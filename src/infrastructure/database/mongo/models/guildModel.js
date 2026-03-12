@@ -29,10 +29,4 @@ let guildSettingsSchema = new mongoose.Schema({
 
 });
 
-// const GuildSettingsSchema = mongoose.model('guildSettingsSchema', guildSettingsSchema);
-
-// module.exports = GuildSettingsSchema;
-
-module.exports =
-    mongoose.models.guildSettingsSchema ||
-    mongoose.model('guildSettingsSchema', guildSettingsSchema);
+module.exports = mongoose.model('guildSettingsSchema', guildSettingsSchema);

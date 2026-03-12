@@ -5,15 +5,19 @@ require('dotenv').config();
 const { Collection } = require('discord.js');
 const logger = require('@utils/logger');
 const token = process.env.TEST_DISCORD_TOKEN;
-const createClient = require('./bootstrap/createClient.js')
+const createClient = require('./bootstrap/createClient.js');
 const connectDatabase = require('./bootstrap/connectDatabase.js');
+const createDependencies = require('./bootstrap/createDependencies.js');
+const registerEvents = require('./bootstrap/registerEvents.js');
 
 const client = createClient();
 
 async function main() {
 
-    await connectDatabase()
+    await connectDatabase();
+    const dependencies = createDependencies();
 
+    registerEvents(client, dependencies);
 }
 
 main()
