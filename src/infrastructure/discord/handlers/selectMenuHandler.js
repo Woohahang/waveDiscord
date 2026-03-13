@@ -3,8 +3,8 @@ const handleRemoveNicknamesMenu = require('../interactions/selectMenus/handleRem
 const logger = require("@utils/logger");
 
 async function selectMenuHandler(interaction, dependencies) {
-    const values = interaction.values;
     const customId = interaction.customId;
+    const values = interaction.values;
 
     switch (customId) {
         case 'gameMenu': // 닉네임 등록 모달 메뉴 생성

@@ -18,14 +18,12 @@ function getNicknameLabel(gameType) {
  * 닉네임 입력 모달을 생성합니다.
  */
 function buildNicknameModal(gameType) {
-    const modalCustomId = JSON.stringify({ action: 'submitNickname', gameType });
-
     const modal = new ModalBuilder()
         .setTitle(GAME_DISPLAY_NAMES.ko[gameType])
-        .setCustomId(modalCustomId);
+        .setCustomId('submitNickname');
 
     const input = new TextInputBuilder()
-        .setCustomId('nicknameInput')
+        .setCustomId(gameType)
         .setLabel(getNicknameLabel(gameType))
         .setStyle(TextInputStyle.Short);
 
