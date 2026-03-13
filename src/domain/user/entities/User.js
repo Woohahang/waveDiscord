@@ -5,24 +5,30 @@ class User {
         this.games = games
     }
 
+
     /**
      * 게임 닉네임을 저장합니다.
      *
      * @param {string} gameType
      * @param {string} nickname
     */
-    setNickname(gameType, nickname) {
-        if (!gameType) {
-            throw new Error("[User.setNickname] gameType is required");
-        }
+    addNickname(gameType, nickname) {
+        const nicknames = this.games[gameType];
 
-        if (!nickname) {
-            throw new Error("[User.setNickname] nickname is required");
-        }
-
-        this.games[gameType].push(
-            nickname,
+        const isDuplicate = nicknames.some(
+            entry => entry.nickname === nickname
         );
+
+        if (isDuplicate)
+            return "DUPLICATE_NICKNAME";
+
+        if (nicknames.length >= 5)
+            return "MAX_NICKNAME_LIMIT";
+
+        nicknames.push(nickname);
+        this.games[gameType] = nicknames;
+
+        return "NICKNAME_SAVE_SUCCESS";  // SAVE_NICKNAME_SUCCESS
     }
 
     /**
@@ -49,6 +55,9 @@ class User {
         this.games[gameType] =
             this.games[gameType].filter(n => n !== nickname)
     }
+
+    // 닉네임 중복 검사
+    // 닉네임 최대 개수 검사
 
 }
 
