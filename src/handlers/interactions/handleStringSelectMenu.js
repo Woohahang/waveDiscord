@@ -16,9 +16,9 @@ async function handleStringSelectMenu(interaction) {
         //     await submitNicknameModal(interaction);
         //     break;
 
-        case 'removeNickNames': // 닉네임 삭제 제출 -> DB 저장
-            await deleteNickname(interaction);
-            break;
+        // case 'removeNickNames': // 닉네임 삭제 제출 -> DB 저장
+        //     await deleteNickname(interaction);
+        //     break;
 
         /* 서버 메뉴 보이기 or 숨기기 */
         case 'adminMenuId':
