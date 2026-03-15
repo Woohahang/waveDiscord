@@ -1,4 +1,4 @@
-const handleSubmitNickname = require('../interactions/modal/handleSubmitNickname');
+const submitNickname = require('../interactions/modal/submitNickname');
 const logger = require("@utils/logger");
 
 async function modalSubmitHandler(interaction, dependencies) {
@@ -6,13 +6,12 @@ async function modalSubmitHandler(interaction, dependencies) {
 
     switch (customId) {
         case 'submitNickname':
-            return await handleSubmitNickname(interaction, dependencies);
+            await submitNickname(interaction, dependencies);
 
         default:
             logger.error('[modalSubmitHandler] Unknown customId', {
                 customId,
             })
-            return
     };
 }
 

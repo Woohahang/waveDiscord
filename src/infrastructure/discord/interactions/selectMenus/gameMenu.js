@@ -34,7 +34,7 @@ function buildNicknameModal(gameType) {
     return modal;
 };
 
-module.exports = async function handleGameMenu(interaction) {
+module.exports = async function gameMenu(interaction) {
 
     // 사용자의 상호작용에서 게임 제목을 추출합니다.
     const gameType = interaction.values[0];

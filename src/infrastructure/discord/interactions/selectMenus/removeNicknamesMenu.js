@@ -13,7 +13,7 @@ const logger = require('@utils/logger');
  *
  * @returns {Promise<void>} 
 */
-module.exports = async function handleRemoveNicknamesMenu(interaction, dependencies) {
+module.exports = async function removeNicknamesMenu(interaction, dependencies) {
 
     const userId = interaction.member.id;
     const nicknamesToRemove = interaction.values.map(JSON.parse);
