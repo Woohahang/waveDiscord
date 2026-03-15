@@ -20,6 +20,7 @@
   "keywords": [],
   "description": "",
   "_moduleAliases": {
+    "@application": "src/application",
     "@domain": "src/domain",
     "@infrastructure": "src/infrastructure",
     "@constants": "src/constants",
