@@ -1,15 +1,37 @@
 const mongoose = require('mongoose');
 const { GAME_TYPES } = require('@constants/gameTypes');
 
-let userSchema = new mongoose.Schema({
+/**
+ * nickname 만 필요한 기본 게임 엔트리 스키마
+ * 
+ * @returns {{ nickname: { type: String, required: boolean } }}
+ */
+function createNicknameEntry() {
+    return {
+        nickname: {
+            type: String,
+            required: true
+        }
+    };
+}
+
+const userSchema = new mongoose.Schema({
 
     userId: { type: String, required: true, unique: true },
 
-    // 유저의 게임 닉네임들을 다루는 필드입니다.
+    // 스팀
     [GAME_TYPES.STEAM]: [{
-        nickname: String,
-        profileLink: String
+        nickname: {             // Wave 에서 보여줄 Steam 표시 이름
+            type: String,
+            required: true
+        },
+        profileLink: {          // 해당 Steam 계정으로 연결되는 실제 프로필 주소
+            type: String,
+            required: true
+        },
     }],
+
+    // 리그오브레전드
     [GAME_TYPES.LEAGUE_OF_LEGENDS]: [{
         nickname: {
             type: String,
@@ -28,14 +50,31 @@ let userSchema = new mongoose.Schema({
             default: 0,
         }
     }],
-    [GAME_TYPES.TEAMFIGHT_TACTICS]: [String],
-    [GAME_TYPES.VALORANT]: [String],
-    [GAME_TYPES.STEAM_BATTLEGROUNDS]: [String],
-    [GAME_TYPES.KAKAO_BATTLEGROUNDS]: [String],
-    [GAME_TYPES.RAINBOW_SIX]: [String],
-    [GAME_TYPES.BLIZZARD]: [String],
-    [GAME_TYPES.OVERWATCH_2]: [String],
-    [GAME_TYPES.LOST_ARK]: [String],
+
+    // Teamfight Tactics
+    [GAME_TYPES.TEAMFIGHT_TACTICS]: [createNicknameEntry()],
+
+    // Valorant
+    [GAME_TYPES.VALORANT]: [createNicknameEntry()],
+
+    // Steam Battlegrounds
+    [GAME_TYPES.STEAM_BATTLEGROUNDS]: [createNicknameEntry()],
+
+    // Kakao Battlegrounds
+    [GAME_TYPES.KAKAO_BATTLEGROUNDS]: [createNicknameEntry()],
+
+    // Rainbow Six
+    [GAME_TYPES.RAINBOW_SIX]: [createNicknameEntry()],
+
+    // Blizzard
+    [GAME_TYPES.BLIZZARD]: [createNicknameEntry()],
+
+    // Overwatch 2
+    [GAME_TYPES.OVERWATCH_2]: [createNicknameEntry()],
+
+    // Lost Ark
+    [GAME_TYPES.LOST_ARK]: [createNicknameEntry()]
+
 
 }, {
     // .save() 함수를 사용하면 마지막 업데이트 시간을 자동 기록합니다.

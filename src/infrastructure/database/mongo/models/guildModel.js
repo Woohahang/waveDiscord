@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { GAME_TYPES } = require('@constants/gameTypes');
 
-let guildSettingsSchema = new mongoose.Schema({
+let guildSchema = new mongoose.Schema({
 
     // 서버 정보 저장
     guildId: { type: String, required: true, unique: true },
@@ -29,4 +29,4 @@ let guildSettingsSchema = new mongoose.Schema({
 
 });
 
-module.exports = mongoose.model('guildSettingsSchema', guildSettingsSchema);
+module.exports = mongoose.model('Guild', guildSchema);
