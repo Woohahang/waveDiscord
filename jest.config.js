@@ -1,5 +1,6 @@
 module.exports = {
     moduleNameMapper: {
+        '^@application/(.*)$': '<rootDir>/src/application/$1',
         '^@constants/(.*)$': '<rootDir>/src/constants/$1',
         '^@events/(.*)$': '<rootDir>/src/events/$1',
         '^@utils/(.*)$': '<rootDir>/src/utils/$1',
