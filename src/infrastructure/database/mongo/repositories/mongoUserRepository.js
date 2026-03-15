@@ -1,8 +1,12 @@
 const userModel = require("../models/userModel");
-const UserRepository = require('../../../../domain/user/repositories/UserRepository')
-const User = require('../../../../domain/user/entities/User')
+const UserRepository = require('../../../../domain/user/repositories/UserRepository');
+const User = require('../../../../domain/user/entities/User');
 
 class MongoUserRepository extends UserRepository {
+
+    // 언제 필요한지 아직 모르겠다.
+    // static fromDocument(document) {
+    // }
 
     async findById(userId) {
         const document = await userModel.findOne({ userId });
@@ -46,6 +50,8 @@ class MongoUserRepository extends UserRepository {
             ...user.games,
         };
     }
+
+
 }
 
 module.exports = MongoUserRepository;

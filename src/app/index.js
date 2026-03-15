@@ -20,7 +20,7 @@ async function main() {
     registerEvents(client, dependencies);
 }
 
-main()
+main();
 
 const commandsRootPath = path.join(__dirname, '../commands');
 const commandFolders = fs.readdirSync(commandsRootPath);

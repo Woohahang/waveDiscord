@@ -11,7 +11,6 @@ async function modalSubmitHandler(interaction, dependencies) {
         default:
             logger.error('[modalSubmitHandler] Unknown customId', {
                 customId,
-                values
             })
             return
     };

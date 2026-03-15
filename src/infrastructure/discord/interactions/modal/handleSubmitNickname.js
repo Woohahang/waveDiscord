@@ -12,8 +12,8 @@ module.exports = async function handleSubmitNickname(interaction, dependencies) 
     }
 
     const userId = interaction.member.id;
-    const gameType = field.customId;
-    const nickname = field.value;
+    const gameType = field.customId;            // 선택된 게임
+    const userInput = field.value;              // 사용자가 입력한 값
 
     try {
         // 응답을 지연시켜 '처리 중...' 표시
@@ -22,7 +22,7 @@ module.exports = async function handleSubmitNickname(interaction, dependencies) 
         const resultKey = await dependencies.registerNicknameUseCase.execute({
             userId,
             gameType,
-            nickname
+            userInput
         });
 
         // 결과 메시지 전송
@@ -32,10 +32,9 @@ module.exports = async function handleSubmitNickname(interaction, dependencies) 
         logger.error('[handleSubmitNickname] 닉네임 저장 중 오류 발생', {
             userId,
             gameType,
-            nickname,
+            userInput,
             stack: error.stack
         });
     }
-
 
 }

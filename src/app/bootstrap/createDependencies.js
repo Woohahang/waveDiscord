@@ -1,14 +1,18 @@
 const MongoUserRepository = require('../../infrastructure/database/mongo/repositories/mongoUserRepository');
 const MongoGuildRepository = require('../../infrastructure/database/mongo/repositories/mongoGuildRepository');
-const RegisterNicknameUseCase = require('../../application/nickname/usecases/RegisterNicknameUseCase');
+const RegisterNicknameUseCase = require('../../application/nickname/usecases/registerNicknameUseCase');
 const RemoveNicknameUseCase = require('../../application/nickname/usecases/removeNicknameUseCase');
 const VoiceProfileService = require("../../domain/voice/services/VoiceProfileService");               // 리팩터링 예정
 // const SendVoiceProfileUseCase = require("@application/voiceProfile/SendVoiceProfileUseCase");    // 리팩터링 예정
 
 /**
- * 객체 조립소
- * 각 계층의 클래스들을 직접 여기서 연결해서 **“실제로 실행 가능한 객체 그래프”**를 만드는 코드
-*/
+ * 애플리케이션에서 사용할 의존성을 조립합니다.
+ *
+ * 각 계층의 구현체를 생성하고,
+ * 유스케이스에 필요한 의존성을 연결한 뒤 반환합니다.
+ *
+ * @returns {Object} 조립된 유스케이스 목록
+ */
 module.exports = function createDependencies() {
 
     const userRepository = new MongoUserRepository();

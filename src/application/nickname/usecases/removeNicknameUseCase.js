@@ -1,5 +1,13 @@
 class RemoveNicknameUseCase {
 
+    /**
+     * @typedef {import("@domain/user/repositories/UserRepository")} UserRepository
+    */
+
+    /**
+     * @param {Object} deps
+     * @param {UserRepository} deps.userRepository
+    */
     constructor({ userRepository }) {
         this.userRepository = userRepository;
     }
@@ -11,11 +19,11 @@ class RemoveNicknameUseCase {
             return console.log('[RemoveNicknameUseCase] user not');
         }
 
-        const resultKey = user.removeNicknames(nicknamesToRemove);      // 상태키 리팩터링 예정
+        const resultKey = user.removeNicknames(nicknamesToRemove);
 
         await this.userRepository.save(user);
 
-        return 'NICKNAME_DELETE_SUCCESS';
+        return resultKey;
     }
 
 }
