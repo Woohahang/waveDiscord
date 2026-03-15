@@ -4,15 +4,20 @@ const logger = require('@utils/logger');
 
 async function connectDatabase() {
 
-    const uri = process.env.MONGODB_URI
+    const uri = process.env.MONGODB_URI;
+    const dbName = process.env.MONGO_DB_NAME;
 
     if (!uri) {
         throw new Error("[connectDatabase] MONGO_URI is not defined");
     }
 
-    await mongoose.connect(uri);
+    // await mongoose.connect(uri); ; 기존 코드
 
-    logger.info("[connectDatabase] MongoDB connected");
+    await mongoose.connect(uri, {
+        dbName: dbName
+    });
+
+    logger.info(`[connectDatabase] MongoDB connected (${dbName})`);
 }
 
 module.exports = connectDatabase;
