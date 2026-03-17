@@ -1,38 +1,5 @@
-const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle } = require('discord.js');
-const GAME_DISPLAY_NAMES = require('@constants/gameDisplayNames');
+const buildNicknameModal = require('../../components/buildNicknameModal');
 const resetMenuSelection = require('@shared/utils/resetMenuSelection');
-
-const NICKNAME_LABELS = {
-    steam: '✔️ 스팀 프로필 주소를 작성해주세요.',
-    default: '✔️ 최대 다섯 개의 닉네임을 등록할 수 있습니다.'
-};
-
-/**
- * 레이블을 게임 타입에 맞게 설정하는 함수
- */
-function getNicknameLabel(gameType) {
-    return NICKNAME_LABELS[gameType] || NICKNAME_LABELS.default;
-}
-
-/**
- * 닉네임 입력 모달을 생성합니다.
- */
-function buildNicknameModal(gameType) {
-    const modal = new ModalBuilder()
-        .setTitle(GAME_DISPLAY_NAMES.ko[gameType])
-        .setCustomId('submitNickname');
-
-    const input = new TextInputBuilder()
-        .setCustomId(gameType)
-        .setLabel(getNicknameLabel(gameType))
-        .setStyle(TextInputStyle.Short);
-
-    const nicknameInputRow = new ActionRowBuilder().addComponents(input);
-
-    modal.addComponents(nicknameInputRow);
-
-    return modal;
-};
 
 module.exports = async function gameMenu(interaction) {
 
@@ -48,12 +15,11 @@ module.exports = async function gameMenu(interaction) {
         if (gameType === 'noOptions')
             return await interaction.deferUpdate();
 
-        // 모달을 생성하고 사용자에게 표시합니다.
-        const modal = buildNicknameModal(gameType)
+        const modal = buildNicknameModal(gameType);
         await interaction.showModal(modal);
 
     } catch (error) {
-        logger.error('[handleGameMenu] 닉네임 모달 처리 중 오류 발생', {
+        logger.error('[gameMenu] 닉네임 모달 처리 중 오류 발생', {
             gameType,
             stack: error.stack
         })
