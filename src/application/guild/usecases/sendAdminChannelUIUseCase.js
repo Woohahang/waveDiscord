@@ -1,3 +1,5 @@
+const GUILD_RESULT_CODES = require('../constants/guildResultCodes');
+
 class SendAdminChannelUIUseCase {
 
     constructor({ guildRepository }) {
@@ -13,7 +15,7 @@ class SendAdminChannelUIUseCase {
         if (!guildEntity.adminChannelId)
             return {
                 ok: false,
-                code: "ADMIN_CHANNEL_NOT_SET"
+                code: GUILD_RESULT_CODES.ADMIN_CHANNEL_NOT_SET
             };
 
         return {

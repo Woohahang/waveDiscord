@@ -1,6 +1,7 @@
 const logger = require('@utils/logger');
 const syncGuildBasicInfo = require('../guild/syncGuildBasicInfo');
 const sendMainChannelUI = require('../guild/sendMainChannelUI');
+const sendAdminChannelUI = require('../guild/sendAdminChannelUI');
 
 /**
  * 봇이 새로운 서버에 추가될 때 실행되는 로직
@@ -14,6 +15,7 @@ async function guildCreateHandler(guild, dependencies) {
         await syncGuildBasicInfo(guild, dependencies);
 
         await sendMainChannelUI(guild, dependencies);
+        await sendAdminChannelUI(guild, dependencies);
 
     } catch (error) {
         logger.error('[guildCreateHandler] 길드 생성 이벤트 처리 중 오류 발생', {

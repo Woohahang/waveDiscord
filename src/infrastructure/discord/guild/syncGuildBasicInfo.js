@@ -1,11 +1,15 @@
 const logger = require('@utils/logger');
 
 /**
+ * @typedef {import('@application/guild/usecases/syncGuildInfoUseCase')} SyncGuildInfoUseCase
+*/
+
+/**
  * Discord 길드 객체에서 길드 기본 정보를 추출하여 저장 유스케이스를 실행합니다.
  *
  * @param {import('discord.js').Guild} guild
  * @param {Object} dependencies
- * @param {import('@application/guild/useCases/syncGuildInfoUseCase')} dependencies.syncGuildInfoUseCase
+ * @param {SyncGuildInfoUseCase} dependencies.syncGuildInfoUseCase
  */
 module.exports = async function syncGuildBasicInfo(guild, dependencies) {
     try {

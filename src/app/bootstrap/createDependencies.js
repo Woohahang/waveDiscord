@@ -2,8 +2,9 @@ const MongoUserRepository = require('@infrastructure/database/mongo/repositories
 const MongoGuildRepository = require('@infrastructure/database/mongo/repositories/mongoGuildRepository');
 const RegisterNicknameUseCase = require('@application/nickname/usecases/registerNicknameUseCase');
 const RemoveNicknameUseCase = require('@application/nickname/usecases/removeNicknameUseCase');
-const SyncGuildInfoUseCase = require('@application/guildSetup/usecases/syncGuildInfoUseCase');
+const SyncGuildInfoUseCase = require('@application/guild/usecases/syncGuildInfoUseCase');
 const SendMainChannelUIUseCase = require('@application/guild/usecases/sendMainChannelUIUseCase');
+const SendAdminChannelUIUseCase = require('@application/guild/usecases/sendAdminChannelUIUseCase');
 // const VoiceProfileService = require("@domain/voice/services/VoiceProfileService");               // 리팩터링 예정
 // const SendVoiceProfileUseCase = require("@application/voiceProfile/SendVoiceProfileUseCase");    // 리팩터링 예정
 
@@ -33,6 +34,9 @@ module.exports = function createDependencies() {
     const sendMainChannelUIUseCase =
         new SendMainChannelUIUseCase({ guildRepository });
 
+    const sendAdminChannelUIUseCase =
+        new SendAdminChannelUIUseCase({ guildRepository });
+
     // GetMainChannelIdUseCase
 
     // setupAdminChannelUseCase
@@ -47,6 +51,7 @@ module.exports = function createDependencies() {
         removeNicknameUseCase,
         syncGuildInfoUseCase,
         sendMainChannelUIUseCase,
+        sendAdminChannelUIUseCase,
         // sendVoiceProfileUseCase
     }
 
