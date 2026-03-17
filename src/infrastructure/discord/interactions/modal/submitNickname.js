@@ -2,12 +2,12 @@ const logger = require('@utils/logger');
 const sendStateMessage = require('@utils/discord/sendStateMessage');
 const REPLY_METHODS = require('@constants/replyMethods');
 
-module.exports = async function handleSubmitNickname(interaction, dependencies) {
+module.exports = async function submitNickname(interaction, dependencies) {
 
     // 제출된 모달 정보를 가지고 옵니다.
     const field = interaction.fields.fields.first();
     if (!field) {
-        logger.error('[handleSubmitNickname] 입력 필드를 찾을 수 없습니다.');
+        logger.error('[submitNickname] 입력 필드를 찾을 수 없습니다.');
         return;
     }
 
@@ -29,7 +29,7 @@ module.exports = async function handleSubmitNickname(interaction, dependencies) 
         await sendStateMessage(interaction, resultKey, REPLY_METHODS.EDIT);
 
     } catch (error) {
-        logger.error('[handleSubmitNickname] 닉네임 저장 중 오류 발생', {
+        logger.error('[submitNickname] 닉네임 저장 중 오류 발생', {
             userId,
             gameType,
             userInput,
