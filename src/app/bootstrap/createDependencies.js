@@ -1,8 +1,10 @@
-const MongoUserRepository = require('../../infrastructure/database/mongo/repositories/mongoUserRepository');
-const MongoGuildRepository = require('../../infrastructure/database/mongo/repositories/mongoGuildRepository');
-const RegisterNicknameUseCase = require('../../application/nickname/usecases/registerNicknameUseCase');
-const RemoveNicknameUseCase = require('../../application/nickname/usecases/removeNicknameUseCase');
-const VoiceProfileService = require("../../domain/voice/services/VoiceProfileService");               // 리팩터링 예정
+const MongoUserRepository = require('@infrastructure/database/mongo/repositories/mongoUserRepository');
+const MongoGuildRepository = require('@infrastructure/database/mongo/repositories/mongoGuildRepository');
+const RegisterNicknameUseCase = require('@application/nickname/usecases/registerNicknameUseCase');
+const RemoveNicknameUseCase = require('@application/nickname/usecases/removeNicknameUseCase');
+const SyncGuildInfoUseCase = require('@application/guildSetup/usecases/syncGuildInfoUseCase');
+const SendMainChannelUIUseCase = require('@application/guildSetup/usecases/sendMainChannelUIUseCase');
+// const VoiceProfileService = require("@domain/voice/services/VoiceProfileService");               // 리팩터링 예정
 // const SendVoiceProfileUseCase = require("@application/voiceProfile/SendVoiceProfileUseCase");    // 리팩터링 예정
 
 /**
@@ -15,14 +17,25 @@ const VoiceProfileService = require("../../domain/voice/services/VoiceProfileSer
  */
 module.exports = function createDependencies() {
 
+    // Repository, Service, External API ,Database, Cache 보통 DI는 이런 것들만 한다.
     const userRepository = new MongoUserRepository();
     const guildRepository = new MongoGuildRepository();
 
     const registerNicknameUseCase =
-        new RegisterNicknameUseCase({ userRepository })
+        new RegisterNicknameUseCase({ userRepository });
 
     const removeNicknameUseCase =
-        new RemoveNicknameUseCase({ userRepository })
+        new RemoveNicknameUseCase({ userRepository });
+
+    const syncGuildInfoUseCase =
+        new SyncGuildInfoUseCase({ guildRepository });
+
+    const sendMainChannelUIUseCase =
+        new SendMainChannelUIUseCase({ guildRepository });
+
+    // GetMainChannelIdUseCase
+
+    // setupAdminChannelUseCase
 
     // const voiceProfileService =
     // new VoiceProfileService(userRepository, guildRepository)            // 리팩터링 예정
@@ -32,6 +45,8 @@ module.exports = function createDependencies() {
     return {
         registerNicknameUseCase,
         removeNicknameUseCase,
+        syncGuildInfoUseCase,
+        sendMainChannelUIUseCase,
         // sendVoiceProfileUseCase
     }
 
