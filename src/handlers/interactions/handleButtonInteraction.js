@@ -8,7 +8,7 @@ async function handleButtonInteraction(interaction) {
 
     switch (customId) {
         case 'upDateButton':
-            await onGuildUpdateButtonPressed(interaction);
+            // await onGuildUpdateButtonPressed(interaction);
             break;
 
         case 'removeButton':

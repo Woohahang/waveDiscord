@@ -7,6 +7,7 @@ async function modalSubmitHandler(interaction, dependencies) {
     switch (customId) {
         case 'submitNickname':
             await submitNickname(interaction, dependencies);
+            break;
 
         default:
             logger.error('[modalSubmitHandler] Unknown customId', {

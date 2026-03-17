@@ -5,7 +5,7 @@ const commandHandler = require('../handlers/commandHandler');
 const modalSubmitHandler = require('../handlers/modalSubmitHandler');
 const selectMenuHandler = require('../handlers/selectMenuHandler');
 
-module.exports = (client, dependencies) => {
+module.exports = function interactionCreate(client, dependencies) {
 
     client.on(Events.InteractionCreate, async interaction => {
         try {
@@ -20,6 +20,7 @@ module.exports = (client, dependencies) => {
 
             if (interaction.isModalSubmit())
                 await modalSubmitHandler(interaction, dependencies);
+
         } catch (error) {
             logger.error('[interactionCreate] 인터랙션 처리 중 오류', {
                 interactionType: interaction.type,

@@ -23,9 +23,9 @@ module.exports = {
         if (isBotAdmin(guild)) {
 
             // ⚠️ 절대 병렬 처리 금지!
-            await saveBasicGuildInfo(guild); // 길드 이름 및 오너 ID를 저장합니다.
-            await setupMainChannel(guild); // Wave 메인 채널을 생성합니다.
-            await setupAdminChannel(guild); // Wave 관리자 채널을 생성합니다.
+            // await saveBasicGuildInfo(guild); // 길드 이름 및 오너 ID를 저장합니다.
+            // await setupMainChannel(guild); // Wave 메인 채널을 생성합니다.
+            // await setupAdminChannel(guild); // Wave 관리자 채널을 생성합니다.
 
         } else {
             // 관리자 권한을 받지 못 했다면 1:1 알림 DM을 전송합니다.
