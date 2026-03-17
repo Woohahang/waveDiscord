@@ -3,7 +3,7 @@ const MongoGuildRepository = require('@infrastructure/database/mongo/repositorie
 const RegisterNicknameUseCase = require('@application/nickname/usecases/registerNicknameUseCase');
 const RemoveNicknameUseCase = require('@application/nickname/usecases/removeNicknameUseCase');
 const SyncGuildInfoUseCase = require('@application/guildSetup/usecases/syncGuildInfoUseCase');
-const SendMainChannelUIUseCase = require('@application/guildSetup/usecases/sendMainChannelUIUseCase');
+const SendMainChannelUIUseCase = require('@application/guild/usecases/sendMainChannelUIUseCase');
 // const VoiceProfileService = require("@domain/voice/services/VoiceProfileService");               // 리팩터링 예정
 // const SendVoiceProfileUseCase = require("@application/voiceProfile/SendVoiceProfileUseCase");    // 리팩터링 예정
 

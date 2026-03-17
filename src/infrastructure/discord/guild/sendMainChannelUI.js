@@ -1,5 +1,6 @@
+const GUILD_RESULT_CODES = require('@application/guild/constants/guildResultCodes');
+const buildMainChannelPayload = require('../builders/buildMainChannelPayload');
 const logger = require('@utils/logger');
-const buildMainChannelPayload = require('../components/buildMainChannelPayload');
 
 // 메인 채널로 설정된 채널에 메세지를 전송합니다.
 module.exports = async function sendMainChannelUI(guild, dependencies) {
@@ -7,7 +8,7 @@ module.exports = async function sendMainChannelUI(guild, dependencies) {
         const result = await dependencies.sendMainChannelUIUseCase.execute({ guildId: guild.id })
 
         if (!result.ok) {
-            if (result.code === "MAIN_CHANNEL_NOT_SET") {
+            if (result.code === GUILD_RESULT_CODES.MAIN_CHANNEL_NOT_SET) {
                 // await guild.interaction.send("Wave Main 채널 ID를 설정해주세요.") - 구현 예정
                 return;
             }

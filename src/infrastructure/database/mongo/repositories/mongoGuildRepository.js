@@ -13,9 +13,7 @@ class MongoGuildRepository extends GuildRepository {
     async findById(guildId) {
         const document = await guildModel.findOne({ guildId });
 
-        if (!document) {
-            return null;
-        }
+        if (!document) return null;
 
         return this.toEntity(document);
     }
