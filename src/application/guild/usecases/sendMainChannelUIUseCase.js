@@ -2,12 +2,16 @@ const GUILD_RESULT_CODES = require('../constants/guildResultCodes');
 
 class SendMainChannelUIUseCase {
 
-    constructor({ guildRepository }) {
+    constructor({ guildRepository, guildCacheRepository }) {
         this.guildRepository = guildRepository;
+        this.guildCacheRepository = guildCacheRepository;
     }
 
     async execute({ guildId }) {
-        const guildEntity = await this.guildRepository.findById(guildId);
+        let guildEntity = await this.guildCacheRepository.get(guildId);
+
+        if (!guildEntity)
+            guildEntity = await this.guildRepository.findById(guildId);
 
         if (!guildEntity)
             throw new Error('[SendMainChannelUIUseCase] 길드 정보를 찾을 수 없습니다.');

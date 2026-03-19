@@ -6,29 +6,24 @@ const User = require('@domain/user/entities/User');
 class RegisterNicknameUseCase {
     /**
      * @typedef {import("@domain/user/repositories/UserRepository")} UserRepository
+     * @typedef {import("@application/user/ports/userCacheRepository")} UserCacheRepository
      * @typedef {import("@application/nickname/ports/gameProfileGateway")} GameProfileGateway
     */
 
     /**
      * @param {Object} deps
      * @param {UserRepository} deps.userRepository
+     * @param {UserCacheRepository} deps.userCacheRepository
      * @param {GameProfileGateway} deps.gameProfileGateway
     */
-    constructor({ userRepository, gameProfileGateway }) {
+    constructor({ userRepository, userCacheRepository, gameProfileGateway }) {
         this.userRepository = userRepository;
+        this.userCacheRepository = userCacheRepository;
         this.gameProfileGateway = gameProfileGateway;
     }
 
     /**
      * 사용자의 게임 닉네임을 등록합니다.
-     *
-     * 처리 흐름
-     * 1. 유저를 조회하고, 없으면 빈 유저를 생성합니다.
-     * 2. 게임 타입에 맞게 입력 닉네임 형식을 정리합니다.
-     * 3. 외부 게임 데이터를 조회합니다.
-     * 4. 저장용 닉네임 엔트리를 생성합니다.
-     * 5. 유저 엔티티에 닉네임을 추가합니다.
-     * 6. 변경된 유저를 저장합니다.
      *
      * @param {Object} input
      * @param {string} input.userId
@@ -37,7 +32,10 @@ class RegisterNicknameUseCase {
      * @returns {Promise<string>} 닉네임 등록 결과 키
      */
     async execute({ userId, gameType, userInput }) {
-        let user = await this.userRepository.findById(userId);
+        let user = await this.userCacheRepository.get(userId);
+
+        if (!user)
+            user = await this.userRepository.findById(userId);
 
         if (!user)
             user = User.createEmpty(userId);
@@ -66,6 +64,7 @@ class RegisterNicknameUseCase {
             return result;
 
         await this.userRepository.save(user);
+        await this.userCacheRepository.set(user);
 
         return result;
     }

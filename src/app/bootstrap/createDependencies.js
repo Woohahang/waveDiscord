@@ -1,11 +1,15 @@
 const MongoUserRepository = require('@infrastructure/database/mongo/repositories/mongoUserRepository');
 const MongoGuildRepository = require('@infrastructure/database/mongo/repositories/mongoGuildRepository');
 
+const MemoryUserCacheRepository = require('@infrastructure/cache/memory/memoryUserCacheRepository');
+const MemoryGuildCacheRepository = require('@infrastructure/cache/memory/memoryGuildCacheRepository');
+
 const GameProfileGatewayImpl = require('@infrastructure/external/GameProfileGatewayImpl');
 
 const RegisterNicknameUseCase = require('@application/nickname/usecases/registerNicknameUseCase');
 const RemoveNicknameUseCase = require('@application/nickname/usecases/removeNicknameUseCase');
 const GetRemovableNicknamesUseCase = require('@application/nickname/usecases/getRemovableNicknamesUseCase');
+
 const SyncGuildInfoUseCase = require('@application/guild/usecases/syncGuildInfoUseCase');
 const SendMainChannelUIUseCase = require('@application/guild/usecases/sendMainChannelUIUseCase');
 const SendAdminChannelUIUseCase = require('@application/guild/usecases/sendAdminChannelUIUseCase');
@@ -26,30 +30,28 @@ module.exports = function createDependencies() {
     const userRepository = new MongoUserRepository();
     const guildRepository = new MongoGuildRepository();
 
+    const userCacheRepository = new MemoryUserCacheRepository();
+    const guildCacheRepository = new MemoryGuildCacheRepository();
+
     const gameProfileGateway = new GameProfileGatewayImpl();
 
-
     const registerNicknameUseCase =
-        new RegisterNicknameUseCase({ userRepository, gameProfileGateway });
+        new RegisterNicknameUseCase({ userRepository, userCacheRepository, gameProfileGateway });
 
     const removeNicknameUseCase =
-        new RemoveNicknameUseCase({ userRepository });
+        new RemoveNicknameUseCase({ userRepository, userCacheRepository });
 
     const getRemovableNicknamesUseCase =
-        new GetRemovableNicknamesUseCase({ userRepository });
+        new GetRemovableNicknamesUseCase({ userRepository, userCacheRepository });
 
     const syncGuildInfoUseCase =
-        new SyncGuildInfoUseCase({ guildRepository });
+        new SyncGuildInfoUseCase({ guildRepository, guildCacheRepository });
 
     const sendMainChannelUIUseCase =
-        new SendMainChannelUIUseCase({ guildRepository });
+        new SendMainChannelUIUseCase({ guildRepository, guildCacheRepository });
 
     const sendAdminChannelUIUseCase =
-        new SendAdminChannelUIUseCase({ guildRepository });
-
-    // GetMainChannelIdUseCase
-
-    // setupAdminChannelUseCase
+        new SendAdminChannelUIUseCase({ guildRepository, guildCacheRepository });
 
     // const voiceProfileService =
     // new VoiceProfileService(userRepository, guildRepository)            // 리팩터링 예정
@@ -66,7 +68,6 @@ module.exports = function createDependencies() {
         syncGuildInfoUseCase,
         sendMainChannelUIUseCase,
         sendAdminChannelUIUseCase,
-        // sendVoiceProfileUseCase
     }
 
 }

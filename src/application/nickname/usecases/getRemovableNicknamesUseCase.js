@@ -3,18 +3,24 @@ const STATE_KEYS = require('@constants/stateKeys');
 class GetRemovableNicknamesUseCase {
     /**
      * @typedef {import("@domain/user/repositories/UserRepository")} UserRepository
+     * @typedef {import("@application/user/ports/userCacheRepository")} UserCacheRepository
     */
 
     /**
      * @param {Object} deps
      * @param {UserRepository} deps.userRepository
+     * @param {UserCacheRepository} deps.userCacheRepository
     */
-    constructor({ userRepository }) {
+    constructor({ userRepository, userCacheRepository }) {
         this.userRepository = userRepository;
+        this.userCacheRepository = userCacheRepository;
     }
 
     async execute({ userId }) {
-        let user = await this.userRepository.findById(userId);
+        let user = await this.userCacheRepository.get(userId);
+
+        if (!user)
+            user = await this.userRepository.findById(userId);
 
         if (!user)
             return {

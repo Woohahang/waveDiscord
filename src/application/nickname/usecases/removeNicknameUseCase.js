@@ -8,16 +8,20 @@ class RemoveNicknameUseCase {
      * @param {Object} deps
      * @param {UserRepository} deps.userRepository
     */
-    constructor({ userRepository }) {
+    constructor({ userRepository, userCacheRepository }) {
         this.userRepository = userRepository;
+        this.userCacheRepository = userCacheRepository;
     }
 
     async execute({ userId, nicknameEntryIds }) {
-        let user = await this.userRepository.findById(userId);
+        let user = await this.userCacheRepository.get(userId);
 
-        if (!user) {
+        if (!user)
+            user = await this.userRepository.findById(userId);
+
+        if (!user)
             return console.log('[RemoveNicknameUseCase] user not');
-        }
+
 
         const result = user.removeNicknamesByIds(nicknameEntryIds);
 
@@ -25,6 +29,7 @@ class RemoveNicknameUseCase {
             return result;
 
         await this.userRepository.save(user);
+        await this.userCacheRepository.set(user);
 
         return result;
     }

@@ -7,9 +7,11 @@ class SyncGuildInfoUseCase {
     /**
      * @param {Object} deps
      * @param {import('@domain/guild/repositories/GuildRepository')} deps.guildRepository
+     * @param {import('@application/guild/ports/guildCacheRepository')} deps.guildCacheRepository
      */
-    constructor({ guildRepository }) {
+    constructor({ guildRepository, guildCacheRepository }) {
         this.guildRepository = guildRepository;
+        this.guildCacheRepository = guildCacheRepository;
     }
 
     /**
@@ -21,7 +23,10 @@ class SyncGuildInfoUseCase {
      * @returns {Promise<void>}
      */
     async execute({ guildId, guildName, ownerId, ownerUsername }) {
-        let guild = await this.guildRepository.findById(guildId);
+        let guild = await this.guildCacheRepository.get(guildId);
+
+        if (!guild)
+            guild = await this.guildRepository.findById(guildId);
 
         if (!guild)
             guild = Guild.createEmpty(guildId);
@@ -33,6 +38,7 @@ class SyncGuildInfoUseCase {
         });
 
         await this.guildRepository.save(guild);
+        await this.guildCacheRepository.set(guild);
     }
 }
 
