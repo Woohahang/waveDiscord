@@ -9,7 +9,7 @@ const sendAdminChannelUI = require('../guild/sendAdminChannelUI');
  * @param {import('discord.js').Guild} guild
  * @param dependencies
  */
-async function guildCreateHandler(guild, dependencies) {
+async function handleGuildCreate(guild, dependencies) {
     try {
 
         await syncGuildBasicInfo(guild, dependencies);
@@ -18,7 +18,7 @@ async function guildCreateHandler(guild, dependencies) {
         await sendAdminChannelUI(guild, dependencies);
 
     } catch (error) {
-        logger.error('[guildCreateHandler] 길드 생성 이벤트 처리 중 오류 발생', {
+        logger.error('[handleGuildCreate] 길드 생성 이벤트 처리 중 오류 발생', {
             guildId: guild.id,
             guildName: guild.name,
             errorName: error.name,
@@ -33,4 +33,4 @@ async function guildCreateHandler(guild, dependencies) {
 
 }
 
-module.exports = guildCreateHandler;
+module.exports = handleGuildCreate;

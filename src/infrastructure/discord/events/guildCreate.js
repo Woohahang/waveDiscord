@@ -1,6 +1,6 @@
 const { Events, PermissionsBitField } = require('discord.js');
 const logger = require('@utils/logger');
-const guildCreateHandler = require('../handlers/guildCreateHandler');
+const handleGuildCreate = require('../handlers/handleGuildCreate');
 
 /**
  * 해당 길드에서 봇이 관리자 권한을 가지고 있는지 확인합니다.
@@ -20,7 +20,7 @@ module.exports = function guildCreate(client, dependencies) {
             if (!isBotAdmin(guild))
                 return logger.warn('[guildCreate] 봇 관리자 권한 없음', { guildId: guild.id });
 
-            await guildCreateHandler(guild, dependencies);
+            await handleGuildCreate(guild, dependencies);
 
         } catch (error) {
             logger.error('[guildCreate] 서버 추가 처리 중 오류', {

@@ -1,7 +1,7 @@
-function createNicknameEntry(gameType, userInput) {
+function createNicknameEntry({ gameType, input, externalData }) {
     if (gameType === "leagueOfLegends")
         return {
-            nickname: userInput,
+            nickname: input,
             tier: null,
             rank: null,
             leaguePoints: null,
@@ -9,12 +9,12 @@ function createNicknameEntry(gameType, userInput) {
 
     if (gameType === "steam")
         return {
-            nickname: userGameData?.nickname ?? null,
-            profileLink: userInput,
+            nickname: externalData.nickname,
+            profileLink: input,
         }
 
     else
-        return userInput;
+        return input;
 }
 
 module.exports = createNicknameEntry;

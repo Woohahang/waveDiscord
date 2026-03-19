@@ -1,6 +1,6 @@
-const UserProfileNotFoundError = require('../../utils/errors/UserProfileNotFoundError');
 const axios = require('axios');
 const steamApiKey = process.env.STEAM_API_KEY;
+const UserProfileNotFoundError = require('../../../utils/errors/UserProfileNotFoundError');
 
 const logger = require('@utils/logger');
 

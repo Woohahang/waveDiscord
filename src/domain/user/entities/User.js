@@ -1,4 +1,5 @@
 const GAME_TYPES = require('@constants/gameTypes');
+const USER_RESULT_CODES = require('../constants/userResultCodes');
 
 //
 const DEFAULT_MAX_NICKNAME_COUNT = 5;
@@ -70,40 +71,49 @@ class User {
 
         // 닉네임 등록 갯수 검사
         if (entries.length >= maxCount)
-            return "NICKNAME_SAVE_LIMIT_EXCEEDED";
+            return {
+                ok: false,
+                code: USER_RESULT_CODES.NICKNAME_SAVE_LIMIT_EXCEEDED,
+            };
 
         // 닉네임 중복 검사
         if (isDuplicateNickname(gameType, entries, nicknameEntry))
-            return "NICKNAME_SAVE_DUPLICATE";
+            return {
+                ok: false,
+                code: USER_RESULT_CODES.NICKNAME_SAVE_DUPLICATE,
+            };
 
         entries.push(nicknameEntry);
         this.games[gameType] = entries;
 
-        return "NICKNAME_SAVE_SUCCESS";  // SAVE_NICKNAME_SUCCESS
+        return {
+            ok: true,
+            code: USER_RESULT_CODES.NICKNAME_SAVE_SUCCESS,
+        };
     }
 
-    /**
-     * 지정된 게임 닉네임들을 제거합니다.
-     * 
-     *  * 예시 입력:
-     * [
-     *   { gameType: 'leagueOfLegends', nickname: '끼매누#kr1' }
-     *   { gameType: 'valorant', nickname: '우당탕탕#우하항' },
-     * ]
-     * 
-     * 처리 방식:
-     * - gameType에 해당하는 닉네임 목록에서
-     * - nickname이 동일한 엔트리를 필터링하여 제거합니다.
-     * 
-     * @param {Array<{ gameType: string, nickname: string }>} nicknamesToRemove
-     * @returns {string} 닉네임 삭제 성공 상태 키
-    */
-    removeNicknames(nicknamesToRemove) {
-        for (const { gameType, nickname } of nicknamesToRemove)
-            this.games[gameType] = this.games[gameType].
-                filter(entry => entry.nickname !== nickname);
+    getAllNicknames() {
+        return Object.entries(this.games).flatMap(([gameType, entries]) =>
+            entries.map(({ _id, nickname }) => ({
+                _id: _id.toString(),
+                gameType,
+                nickname,
+            }))
+        );
+    }
 
-        return "NICKNAME_DELETE_SUCCESS";
+    removeNicknamesByIds(nicknameEntryIds) {
+        this.games = Object.fromEntries(
+            Object.entries(this.games).map(([gameType, entries]) => [
+                gameType,
+                entries.filter(entry => !nicknameEntryIds.includes(entry._id.toString()))
+            ])
+        );
+
+        return {
+            ok: true,
+            code: USER_RESULT_CODES.NICKNAME_DELETE_SUCCESS,
+        };
     }
 
 }

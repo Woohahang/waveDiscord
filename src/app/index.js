@@ -1,9 +1,5 @@
-const fs = require('node:fs');
-const path = require('node:path');
 require('module-alias/register');
 require('dotenv').config();
-const { Collection } = require('discord.js');
-const logger = require('@utils/logger');
 const token = process.env.TEST_DISCORD_TOKEN;
 const createClient = require('./bootstrap/createClient.js');
 const connectDatabase = require('./bootstrap/connectDatabase.js');

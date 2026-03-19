@@ -1,3 +1,4 @@
+const CUSTOM_IDS = require('@shared/constants/interactionCustomIds');
 const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, } = require('discord.js');
 const getGameDisplayName = require('@shared/utils/getGameDisplayName');
 
@@ -13,7 +14,7 @@ function getNicknameLabel(gameType) {
 module.exports = function buildNicknameModal(gameType) {
     const modal = new ModalBuilder()
         .setTitle(getGameDisplayName(gameType, 'ko'))
-        .setCustomId('submitNickname');
+        .setCustomId(CUSTOM_IDS.USER.REGISTER_NICKNAME.SUBMIT);
 
     const input = new TextInputBuilder()
         .setCustomId(gameType)
@@ -22,7 +23,5 @@ module.exports = function buildNicknameModal(gameType) {
 
     const nicknameInputRow = new ActionRowBuilder().addComponents(input);
 
-    modal.addComponents(nicknameInputRow);
-
-    return modal;
+    return modal.addComponents(nicknameInputRow);
 };

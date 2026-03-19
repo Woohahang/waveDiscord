@@ -1,25 +1,25 @@
 const { Events } = require('discord.js');
+const handleCommandInteraction = require('../handlers/handleCommandInteraction');
+const handleButtonInteraction = require('../handlers/handleButtonInteraction');
+const handleSelectMenuInteraction = require('../handlers/handleSelectMenuInteraction');
+const handleModalSubmit = require('../handlers/handleModalSubmit');
 const logger = require('@utils/logger');
-const buttonHandler = require('../handlers/buttonHandler');
-const commandHandler = require('../handlers/commandHandler');
-const modalSubmitHandler = require('../handlers/modalSubmitHandler');
-const selectMenuHandler = require('../handlers/selectMenuHandler');
 
 module.exports = function interactionCreate(client, dependencies) {
 
     client.on(Events.InteractionCreate, async interaction => {
         try {
             if (interaction.isChatInputCommand())
-                await commandHandler(interaction, dependencies);
+                await handleCommandInteraction(interaction, dependencies);
 
             if (interaction.isButton())
-                await buttonHandler(interaction, dependencies);
+                await handleButtonInteraction(interaction, dependencies);
 
             if (interaction.isStringSelectMenu())
-                await selectMenuHandler(interaction, dependencies);
+                await handleSelectMenuInteraction(interaction, dependencies);
 
             if (interaction.isModalSubmit())
-                await modalSubmitHandler(interaction, dependencies);
+                await handleModalSubmit(interaction, dependencies);
 
         } catch (error) {
             logger.error('[interactionCreate] 인터랙션 처리 중 오류', {

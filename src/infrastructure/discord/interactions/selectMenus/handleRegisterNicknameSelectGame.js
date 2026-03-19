@@ -1,7 +1,9 @@
+const logger = require('@utils/logger');
 const buildNicknameModal = require('../../components/buildNicknameModal');
 const resetMenuSelection = require('@shared/utils/resetMenuSelection');
 
-module.exports = async function gameMenu(interaction) {
+
+module.exports = async function handleRegisterNicknameSelectGame(interaction) {
 
     // 사용자의 상호작용에서 게임 제목을 추출합니다.
     const gameType = interaction.values[0];
@@ -19,7 +21,7 @@ module.exports = async function gameMenu(interaction) {
         await interaction.showModal(modal);
 
     } catch (error) {
-        logger.error('[gameMenu] 닉네임 모달 처리 중 오류 발생', {
+        logger.error('[handleRegisterNicknameSelectGame] 닉네임 모달 처리 중 오류 발생', {
             gameType,
             stack: error.stack
         })

@@ -12,18 +12,21 @@ class RemoveNicknameUseCase {
         this.userRepository = userRepository;
     }
 
-    async execute({ userId, nicknamesToRemove }) {
+    async execute({ userId, nicknameEntryIds }) {
         let user = await this.userRepository.findById(userId);
 
         if (!user) {
             return console.log('[RemoveNicknameUseCase] user not');
         }
 
-        const resultKey = user.removeNicknames(nicknamesToRemove);
+        const result = user.removeNicknamesByIds(nicknameEntryIds);
+
+        if (!result.ok)
+            return result;
 
         await this.userRepository.save(user);
 
-        return resultKey;
+        return result;
     }
 
 }

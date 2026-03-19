@@ -1,3 +1,4 @@
+const CUSTOM_IDS = require('@shared/constants/interactionCustomIds');
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder, } = require('discord.js');
 const { GAME_TYPES } = require('@constants/gameTypes');
 const getGameDisplayName = require('@shared/utils/getGameDisplayName');
@@ -64,7 +65,7 @@ module.exports = function buildGuildNicknameSelectMenu(enabledGames) {
     const options = createGameSelectOptions(enabledGames);
 
     const selectMenu = new StringSelectMenuBuilder()
-        .setCustomId('gameMenu')
+        .setCustomId(CUSTOM_IDS.USER.REGISTER_NICKNAME.SELECT_GAME)
         .setPlaceholder('닉네임 등록 !')
         .addOptions(options);
 

@@ -1,6 +1,6 @@
 const { GAME_TYPES } = require("@constants/gameTypes");
 const fetchLeagueTier = require("@shared/api/fetchLeagueOfLegendsTier");
-const fetchSteamPlayerName = require("@shared/api/fetchSteamPlayerName");
+const fetchSteamPlayerName = require("@infrastructure/external/steam/fetchSteamPlayerName");
 
 /**
  * 게임 종류에 따라 사용자 정보를 가져옴

@@ -1,4 +1,5 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const CUSTOM_IDS = require('@shared/constants/interactionCustomIds');
 
 const WAVE_INVITE_URL =
     "https://discord.com/oauth2/authorize?client_id=1227561479801409566&permissions=8&scope=bot+applications.commands"
@@ -10,7 +11,7 @@ function buildMainSetupButtons() {
         .setStyle(ButtonStyle.Primary);
 
     const removeNicknameButton = new ButtonBuilder()
-        .setCustomId('removeButton')
+        .setCustomId(CUSTOM_IDS.USER.REMOVE_NICKNAME.BUTTON)
         .setLabel('닉네임 삭제')
         .setStyle(ButtonStyle.Success);
 

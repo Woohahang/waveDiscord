@@ -1,5 +1,4 @@
 const logger = require('@utils/logger');
-const fetchUserGameData = require('../../../modules/nicknameFlow/utils/fetchUserGameData');
 const createNicknameEntry = require('../services/createNicknameEntry');
 const formatNicknameByGame = require('../services/formatNicknameByGame');
 const User = require('@domain/user/entities/User');
@@ -7,14 +6,17 @@ const User = require('@domain/user/entities/User');
 class RegisterNicknameUseCase {
     /**
      * @typedef {import("@domain/user/repositories/UserRepository")} UserRepository
+     * @typedef {import("@application/nickname/ports/gameProfileGateway")} GameProfileGateway
     */
 
     /**
      * @param {Object} deps
      * @param {UserRepository} deps.userRepository
+     * @param {GameProfileGateway} deps.gameProfileGateway
     */
-    constructor({ userRepository }) {
+    constructor({ userRepository, gameProfileGateway }) {
         this.userRepository = userRepository;
+        this.gameProfileGateway = gameProfileGateway;
     }
 
     /**
@@ -44,17 +46,28 @@ class RegisterNicknameUseCase {
         const formattedInput = formatNicknameByGame(gameType, userInput);
 
         // 닉네임 기반으로 외부 게임 데이터를 조회합니다.
-        const userGameData = await fetchUserGameData(gameType, formattedInput);
+        const userGameData = await this.gameProfileGateway.fetch(
+            gameType,
+            formattedInput
+        );
 
         // 도메인 저장 형식에 맞는 닉네임 엔트리를 생성합니다.
-        const nicknameEntry = createNicknameEntry(gameType, formattedInput, userGameData);
+        const nicknameEntry = createNicknameEntry({
+            gameType,
+            input: formattedInput,
+            externalData: userGameData,
+        });
 
         // 유저 엔티티에 닉네임을 추가하고 결과 키를 반환받습니다.
-        const resultKey = user.addNickname(gameType, nicknameEntry);
+        const result = user.addNickname(gameType, nicknameEntry);
+
+        // 실패시 바로 반환  예: 닉네임 중복, 닉네임 개수 초과
+        if (!result.ok)
+            return result;
 
         await this.userRepository.save(user);
 
-        return resultKey;
+        return result;
     }
 }
 

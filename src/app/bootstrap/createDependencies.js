@@ -1,7 +1,11 @@
 const MongoUserRepository = require('@infrastructure/database/mongo/repositories/mongoUserRepository');
 const MongoGuildRepository = require('@infrastructure/database/mongo/repositories/mongoGuildRepository');
+
+const GameProfileGatewayImpl = require('@infrastructure/external/GameProfileGatewayImpl');
+
 const RegisterNicknameUseCase = require('@application/nickname/usecases/registerNicknameUseCase');
 const RemoveNicknameUseCase = require('@application/nickname/usecases/removeNicknameUseCase');
+const GetRemovableNicknamesUseCase = require('@application/nickname/usecases/getRemovableNicknamesUseCase');
 const SyncGuildInfoUseCase = require('@application/guild/usecases/syncGuildInfoUseCase');
 const SendMainChannelUIUseCase = require('@application/guild/usecases/sendMainChannelUIUseCase');
 const SendAdminChannelUIUseCase = require('@application/guild/usecases/sendAdminChannelUIUseCase');
@@ -22,11 +26,17 @@ module.exports = function createDependencies() {
     const userRepository = new MongoUserRepository();
     const guildRepository = new MongoGuildRepository();
 
+    const gameProfileGateway = new GameProfileGatewayImpl();
+
+
     const registerNicknameUseCase =
-        new RegisterNicknameUseCase({ userRepository });
+        new RegisterNicknameUseCase({ userRepository, gameProfileGateway });
 
     const removeNicknameUseCase =
         new RemoveNicknameUseCase({ userRepository });
+
+    const getRemovableNicknamesUseCase =
+        new GetRemovableNicknamesUseCase({ userRepository });
 
     const syncGuildInfoUseCase =
         new SyncGuildInfoUseCase({ guildRepository });
@@ -49,6 +59,10 @@ module.exports = function createDependencies() {
     return {
         registerNicknameUseCase,
         removeNicknameUseCase,
+        getRemovableNicknamesUseCase,
+
+        gameProfileGateway,
+
         syncGuildInfoUseCase,
         sendMainChannelUIUseCase,
         sendAdminChannelUIUseCase,
