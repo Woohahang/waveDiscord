@@ -13,8 +13,9 @@ function createNicknameEntry({ gameType, input, externalData }) {
             profileLink: input,
         }
 
-    else
-        return input;
+    return {
+        nickname: input,
+    };
 }
 
 module.exports = createNicknameEntry;

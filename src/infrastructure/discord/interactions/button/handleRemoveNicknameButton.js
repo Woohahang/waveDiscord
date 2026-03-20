@@ -32,8 +32,6 @@ module.exports = async function handleRemoveNicknameButton(interaction, dependen
             userId
         });
 
-        console.log('result:', result);
-
         if (!result.ok) {
             return interaction.reply({
                 content: getStateMessage(result.code),

@@ -1,5 +1,5 @@
 const GameProfileGateway = require('@application/nickname/ports/gameProfileGateway');
-const { GAME_TYPES } = require("@constants/gameTypes");
+const GAME_TYPES = require("@constants/gameTypes");
 const fetchSteamPlayerName = require('./steam/fetchSteamPlayerName');
 // const fetchRiotProfile = require('./riot/fetchRiotProfile');
 

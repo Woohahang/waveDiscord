@@ -1,4 +1,5 @@
 const { REST, Routes } = require("discord.js");
+const logger = require('@utils/logger');
 
 async function registerCommands(commands) {
     const token = process.env.DISCORD_TOKEN;

@@ -2,7 +2,7 @@ const STATE_KEYS = require('@constants/stateKeys');
 const ERROR_KEY = require('@constants/errorKeys');
 
 const STATE_MESSAGES = {
-    [STATE_KEYS.NO_USER_DATA]:
+    [STATE_KEYS.USER_NOT_FOUND]:
         '## 유저 정보 없음\n' +
         '> * 유저 정보를 찾을 수 없습니다.\n' +
         '> * 문제가 지속되면 **Wave** 디스코드 채널로 문의해 주세요.',

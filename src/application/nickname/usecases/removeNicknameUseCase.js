@@ -1,3 +1,5 @@
+const USER_RESULT_CODES = require('@domain/user/constants/userResultCodes');
+
 class RemoveNicknameUseCase {
 
     /**
@@ -20,8 +22,10 @@ class RemoveNicknameUseCase {
             user = await this.userRepository.findById(userId);
 
         if (!user)
-            return console.log('[RemoveNicknameUseCase] user not');
-
+            return {
+                ok: false,
+                code: USER_RESULT_CODES.USER_NOT_FOUND,
+            };
 
         const result = user.removeNicknamesByIds(nicknameEntryIds);
 

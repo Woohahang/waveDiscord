@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { GAME_TYPES } = require('@constants/gameTypes');
+const GAME_TYPES = require('@constants/gameTypes');
 
 /**
  * nickname 만 필요한 기본 게임 엔트리 스키마
