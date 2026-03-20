@@ -3,7 +3,7 @@ class UserCacheRepository {
         throw new Error('UserCacheRepository.get must be implemented');
     }
 
-    async set(user) {
+    async set(userId, user) {
         throw new Error('UserCacheRepository.set must be implemented');
     }
 

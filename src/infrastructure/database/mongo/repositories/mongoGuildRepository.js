@@ -1,4 +1,4 @@
-const { GAME_TYPES } = require("@constants/gameTypes");
+const GAME_TYPES = require("@constants/gameTypes");
 const guildModel = require("../models/guildModel");
 const GuildRepository = require("../../../../domain/guild/repositories/GuildRepository");
 const Guild = require('../../../../domain/guild/entities/guild');

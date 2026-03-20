@@ -92,21 +92,37 @@ class User {
         };
     }
 
+    /**
+     * 전달된 게임 목록 중,
+     * 유저가 등록한 닉네임이 있는 게임만 반환합니다.
+     *
+     * @param {string[]} gameTypes
+     * @returns {Array<{ gameType: string, entries: Array }>}
+    */
+    getNicknamesByGameTypes(gameTypes) {
+        return gameTypes
+            .map(gameType => ({
+                gameType,
+                entries: this.games[gameType] ?? [],
+            }))
+            .filter(({ entries }) => entries.length > 0);
+    }
+
     getAllNicknames() {
         return Object.entries(this.games).flatMap(([gameType, entries]) =>
-            entries.map(({ _id, nickname }) => ({
-                _id: _id.toString(),
+            entries.map(({ entryId, nickname }) => ({
+                entryId,
                 gameType,
                 nickname,
             }))
         );
     }
 
-    removeNicknamesByIds(nicknameEntryIds) {
+    removeNicknamesByEntryIds(nicknameEntryIds) {
         this.games = Object.fromEntries(
             Object.entries(this.games).map(([gameType, entries]) => [
                 gameType,
-                entries.filter(entry => !nicknameEntryIds.includes(entry._id.toString()))
+                entries.filter(entry => !nicknameEntryIds.includes(entry.entryId))
             ])
         );
 

@@ -7,11 +7,18 @@ class MemoryUserCacheRepository extends UserCacheRepository {
     }
 
     async get(userId) {
-        return this.cache.get(userId) ?? null;
+        if (!this.cache.has(userId)) {
+            return { hit: false, value: null };
+        }
+
+        return {
+            hit: true,
+            value: this.cache.get(userId) // user or null
+        };
     }
 
-    async set(user) {
-        this.cache.set(user.userId, user);
+    async set(userId, user) {
+        this.cache.set(userId, user); // user or null
     }
 
     async delete(userId) {

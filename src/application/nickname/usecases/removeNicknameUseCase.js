@@ -16,26 +16,33 @@ class RemoveNicknameUseCase {
     }
 
     async execute({ userId, nicknameEntryIds }) {
-        let user = await this.userCacheRepository.get(userId);
+        try {
+            const cachedUser = await this.userCacheRepository.get(userId);
 
-        if (!user)
-            user = await this.userRepository.findById(userId);
+            let user;
+            if (cachedUser.hit)
+                user = cachedUser.value;
+            else
+                user = await this.userRepository.findById(userId);
 
-        if (!user)
-            return {
-                ok: false,
-                code: USER_RESULT_CODES.USER_NOT_FOUND,
-            };
+            if (!user)
+                return {
+                    ok: false,
+                    code: USER_RESULT_CODES.USER_NOT_FOUND,
+                };
 
-        const result = user.removeNicknamesByIds(nicknameEntryIds);
+            const result = user.removeNicknamesByEntryIds(nicknameEntryIds);
 
-        if (!result.ok)
+            if (!result.ok)
+                return result;
+
+            await this.userRepository.save(user);
+            await this.userCacheRepository.set(userId, user);
+
             return result;
-
-        await this.userRepository.save(user);
-        await this.userCacheRepository.set(user);
-
-        return result;
+        } catch (error) {
+            console.log("[RemoveNicknameUseCase] 닉네임 삭제중 에러", error);
+        }
     }
 
 }

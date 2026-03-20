@@ -32,27 +32,34 @@ class RegisterNicknameUseCase {
      * @returns {Promise<string>} 닉네임 등록 결과 키
      */
     async execute({ userId, gameType, userInput }) {
-        let user = await this.userCacheRepository.get(userId);
 
-        if (!user)
+        const cachedUser = await this.userCacheRepository.get(userId);
+
+        let user;
+        if (cachedUser.hit)
+            user = cachedUser.value;
+        else
             user = await this.userRepository.findById(userId);
 
         if (!user)
             user = User.createEmpty(userId);
 
         // 게임 타입에 맞게 닉네임 입력값을 정규화합니다.
-        const formattedInput = formatNicknameByGame(gameType, userInput);
+        const formattedResult = formatNicknameByGame(gameType, userInput);
+
+        if (!formattedResult.ok)
+            return formattedResult;
 
         // 닉네임 기반으로 외부 게임 데이터를 조회합니다.
         const userGameData = await this.gameProfileGateway.fetch(
             gameType,
-            formattedInput
+            formattedResult.value
         );
 
         // 도메인 저장 형식에 맞는 닉네임 엔트리를 생성합니다.
         const nicknameEntry = createNicknameEntry({
             gameType,
-            input: formattedInput,
+            input: formattedResult.value,
             externalData: userGameData,
         });
 
@@ -64,7 +71,7 @@ class RegisterNicknameUseCase {
             return result;
 
         await this.userRepository.save(user);
-        await this.userCacheRepository.set(user);
+        await this.userCacheRepository.set(userId, user);
 
         return result;
     }

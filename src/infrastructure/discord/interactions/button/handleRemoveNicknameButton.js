@@ -5,8 +5,8 @@ const getStateMessage = require('@shared/utils/stateMessage');
 const logger = require('@utils/logger');
 
 function buildRemovableNicknameOptions(nicknameEntries) {
-    return nicknameEntries.map(({ _id, gameType, nickname }) => ({
-        value: _id,
+    return nicknameEntries.map(({ entryId, gameType, nickname }) => ({
+        value: entryId,
         label: nickname,
         description: getGameDisplayName(gameType, 'ko'),
     }));
@@ -49,8 +49,9 @@ module.exports = async function handleRemoveNicknameButton(interaction, dependen
         });
 
     } catch (error) {
-        logger.error('[handleRemoveNicknameButton] 닉네임 삭제중 에러 발생',
+        logger.error('[handleRemoveNicknameButton] 닉네임 삭제중 에러 발생', {
             userId,
-        );
+            stack: error.stack
+        });
     }
 }

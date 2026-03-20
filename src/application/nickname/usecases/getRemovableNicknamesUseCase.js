@@ -17,9 +17,12 @@ class GetRemovableNicknamesUseCase {
     }
 
     async execute({ userId }) {
-        let user = await this.userCacheRepository.get(userId);
+        const cachedUser = await this.userCacheRepository.get(userId);
 
-        if (!user)
+        let user;
+        if (cachedUser.hit)
+            user = cachedUser.value;
+        else
             user = await this.userRepository.findById(userId);
 
         if (!user)

@@ -8,6 +8,10 @@ const GAME_TYPES = require('@constants/gameTypes');
  */
 function createNicknameEntry() {
     return {
+        entryId: {
+            type: String,
+            required: true
+        },
         nickname: {
             type: String,
             required: true
@@ -21,6 +25,10 @@ const userSchema = new mongoose.Schema({
 
     // 스팀
     [GAME_TYPES.STEAM]: [{
+        entryId: {
+            type: String,
+            required: true
+        },
         nickname: {             // Wave 에서 보여줄 Steam 표시 이름
             type: String,
             required: true
@@ -33,6 +41,10 @@ const userSchema = new mongoose.Schema({
 
     // 리그오브레전드
     [GAME_TYPES.LEAGUE_OF_LEGENDS]: [{
+        entryId: {
+            type: String,
+            required: true
+        },
         nickname: {
             type: String,
             required: true
