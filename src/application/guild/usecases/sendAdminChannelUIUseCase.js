@@ -1,4 +1,5 @@
 const GUILD_RESULT_CODES = require('../constants/guildResultCodes');
+const Result = require('@shared/result/result');
 
 class SendAdminChannelUIUseCase {
 
@@ -7,27 +8,32 @@ class SendAdminChannelUIUseCase {
         this.guildCacheRepository = guildCacheRepository;
     }
 
+    async #loadGuild(guildId) {
+        let cachedGuild = await this.guildCacheRepository.get(guildId);
+
+        if (cachedGuild)
+            return cachedGuild;
+
+        return await this.guildRepository.findById(guildId);
+    }
+
     async execute({ guildId }) {
-        let guildEntity = await this.guildCacheRepository.get(guildId);
 
-        if (!guildEntity)
-            guildEntity = await this.guildRepository.findById(guildId);
+        const guildEntry = await this.#loadGuild(guildId);
 
-        if (!guildEntity)
+        if (!guildEntry)
             throw new Error('[SendAdminChannelUIUseCase] 길드 정보를 찾을 수 없습니다.');
 
-        if (!guildEntity.adminChannelId)
-            return {
-                ok: false,
+        if (!guildEntry.adminChannelId)
+            return Result.fail({
                 code: GUILD_RESULT_CODES.ADMIN_CHANNEL_NOT_SET
-            };
+            });
 
-        return {
-            ok: true,
+        return Result.ok({
             data: {
-                channelId: guildEntity.adminChannelId,
+                channelId: guildEntry.adminChannelId,
             }
-        }
+        })
     }
 
 }

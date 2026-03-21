@@ -1,8 +1,9 @@
 const STATE_KEYS = require('@constants/stateKeys');
+const Result = require('@shared/result/result');
 
 class GetRemovableNicknamesUseCase {
     /**
-     * @typedef {import("@domain/user/repositories/UserRepository")} UserRepository
+     * @typedef {import("@domain/user/repositories/userRepository")} UserRepository
      * @typedef {import("@application/user/ports/userCacheRepository")} UserCacheRepository
     */
 
@@ -16,33 +17,53 @@ class GetRemovableNicknamesUseCase {
         this.userCacheRepository = userCacheRepository;
     }
 
-    async execute({ userId }) {
-        const cachedUser = await this.userCacheRepository.get(userId);
+    /**
+     * 캐시 → DB 순서로 유저를 조회합니다.
+     *
+     * @param {string} userId
+     * @returns {Promise<User|null>}
+    */
+    async #loadUser(userId) {
+        const cacheResult = await this.userCacheRepository.get(userId);
 
-        let user;
-        if (cachedUser.hit)
-            user = cachedUser.value;
-        else
-            user = await this.userRepository.findById(userId);
+        if (cacheResult.hit)
+            return cacheResult.value;
+
+        const user = await this.userRepository.findById(userId);
+        await this.userCacheRepository.set(userId, user ?? null);
+
+        return user;
+    }
+
+    /**
+     * 삭제 가능한 닉네임 목록을 반환합니다.
+     *
+     * @param {Object} input
+     * @param {string} input.userId
+     *
+     * @returns {Promise<
+     *   | { ok: true, data: Array<{ _id: string, gameType: string, nickname: string }> }
+     *   | { ok: false, code: string }
+     * >}
+    */
+    async execute({ userId }) {
+        const user = await this.#loadUser(userId);
 
         if (!user)
-            return {
-                ok: false,
-                code: STATE_KEYS.NO_USER_DATA,
-            }
+            return Result.fail({
+                code: STATE_KEYS.NO_USER_DATA
+            })
 
         const allNicknames = user.getAllNicknames();
 
         if (allNicknames.length < 1)
-            return {
-                ok: false,
-                code: STATE_KEYS.NO_NICKNAMES,
-            }
+            return Result.fail({
+                code: STATE_KEYS.NO_NICKNAMES
+            })
 
-        return {
-            ok: true,
+        return Result.ok({
             data: allNicknames,
-        };
+        });
     }
 
 }

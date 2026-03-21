@@ -6,12 +6,21 @@ const Guild = require('@domain/guild/entities/guild');
 class SyncGuildInfoUseCase {
     /**
      * @param {Object} deps
-     * @param {import('@domain/guild/repositories/GuildRepository')} deps.guildRepository
+     * @param {import('@domain/guild/repositories/guildRepository')} deps.guildRepository
      * @param {import('@application/guild/ports/guildCacheRepository')} deps.guildCacheRepository
      */
     constructor({ guildRepository, guildCacheRepository }) {
         this.guildRepository = guildRepository;
         this.guildCacheRepository = guildCacheRepository;
+    }
+
+    async #loadGuild(guildId) {
+        let cachedGuild = await this.guildCacheRepository.get(guildId);
+
+        if (cachedGuild)
+            return cachedGuild;
+
+        return await this.guildRepository.findById(guildId);
     }
 
     /**
@@ -23,10 +32,8 @@ class SyncGuildInfoUseCase {
      * @returns {Promise<void>}
      */
     async execute({ guildId, guildName, ownerId, ownerUsername }) {
-        let guild = await this.guildCacheRepository.get(guildId);
 
-        if (!guild)
-            guild = await this.guildRepository.findById(guildId);
+        const guild = await this.#loadGuild(guildId);
 
         if (!guild)
             guild = Guild.createEmpty(guildId);

@@ -1,11 +1,10 @@
-const logger = require('@utils/logger');
 const createNicknameEntry = require('../services/createNicknameEntry');
 const formatNicknameByGame = require('../services/formatNicknameByGame');
 const User = require('@domain/user/entities/User');
 
 class RegisterNicknameUseCase {
     /**
-     * @typedef {import("@domain/user/repositories/UserRepository")} UserRepository
+     * @typedef {import("@domain/user/repositories/userRepository")} UserRepository
      * @typedef {import("@application/user/ports/userCacheRepository")} UserCacheRepository
      * @typedef {import("@application/nickname/ports/gameProfileGateway")} GameProfileGateway
     */
@@ -23,6 +22,24 @@ class RegisterNicknameUseCase {
     }
 
     /**
+     * 캐시 → DB 순서로 유저를 조회합니다.
+     *
+     * @param {string} userId
+     * @returns {Promise<User|null>}
+    */
+    async #loadUser(userId) {
+        const cachedUser = await this.userCacheRepository.get(userId);
+
+        if (cachedUser.hit)
+            return cachedUser.value;
+
+        const user = await this.userRepository.findById(userId);
+        await this.userCacheRepository.set(userId, user ?? null);
+
+        return user;
+    }
+
+    /**
      * 사용자의 게임 닉네임을 등록합니다.
      *
      * @param {Object} input
@@ -33,13 +50,7 @@ class RegisterNicknameUseCase {
      */
     async execute({ userId, gameType, userInput }) {
 
-        const cachedUser = await this.userCacheRepository.get(userId);
-
-        let user;
-        if (cachedUser.hit)
-            user = cachedUser.value;
-        else
-            user = await this.userRepository.findById(userId);
+        const user = await this.#loadUser(userId);
 
         if (!user)
             user = User.createEmpty(userId);
@@ -70,6 +81,7 @@ class RegisterNicknameUseCase {
         if (!result.ok)
             return result;
 
+        // DB 저장 및 최신 상태로 캐시에 반영합니다.
         await this.userRepository.save(user);
         await this.userCacheRepository.set(userId, user);
 

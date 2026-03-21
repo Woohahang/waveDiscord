@@ -1,7 +1,7 @@
 const guildModel = require("../models/guildModel");
 const GuildMapper = require('../mappers/guildMapper');
-const GuildRepository = require("../../../../domain/guild/repositories/GuildRepository");
-const Guild = require('../../../../domain/guild/entities/guild');
+const GuildRepository = require("@domain/guild/repositories/guildRepository");
+const Guild = require('@domain/guild/entities/guild');
 
 class MongoGuildRepository extends GuildRepository {
     /**

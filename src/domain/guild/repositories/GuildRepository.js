@@ -1,10 +1,10 @@
 class GuildRepository {
 
-    findById(guildId) {
+    async findById(guildId) {
         throw new Error("not implemented")
     }
 
-    save(guild) {
+    async save(guild) {
         throw new Error("not implemented")
     }
 

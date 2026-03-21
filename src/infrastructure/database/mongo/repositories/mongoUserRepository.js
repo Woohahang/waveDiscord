@@ -1,6 +1,6 @@
 const userModel = require("../models/userModel");
 const UserMapper = require('../mappers/userMapper');
-const UserRepository = require('../../../../domain/user/repositories/UserRepository');
+const UserRepository = require('../../../../domain/user/repositories/userRepository');
 
 class MongoUserRepository extends UserRepository {
 
@@ -20,6 +20,10 @@ class MongoUserRepository extends UserRepository {
             { $set: data },
             { upsert: true }
         );
+    }
+
+    async deleteById(userId) {
+        await userModel.deleteOne({ userId });
     }
 
 }
