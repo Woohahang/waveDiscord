@@ -20,9 +20,12 @@ module.exports = function voiceStateUpdate(client, dependencies) {
                         guildId: guild.id
                     });
 
+                if (!result.data)
+                    return;
+
+                console.log('[voiceStateUpdate] result.data:', result.data);
                 if (!result.ok) return;
 
-                console.log('[voiceStateUpdate] result:', result);
 
             }
 
@@ -37,7 +40,7 @@ module.exports = function voiceStateUpdate(client, dependencies) {
             }
 
         } catch (error) {
-
+            console.error('[voiceStateUpdate] 에러', error);
         }
     })
 

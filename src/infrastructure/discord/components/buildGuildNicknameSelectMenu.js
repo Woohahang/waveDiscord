@@ -1,6 +1,6 @@
 const CUSTOM_IDS = require('@shared/constants/interactionCustomIds');
 const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder, } = require('discord.js');
-const { GAME_TYPES } = require('@constants/gameTypes');
+const GAME_TYPES = require('@constants/gameTypes');
 const getGameDisplayName = require('@shared/utils/getGameDisplayName');
 
 /**

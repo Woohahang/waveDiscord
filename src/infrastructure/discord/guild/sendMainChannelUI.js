@@ -35,6 +35,9 @@ module.exports = async function sendMainChannelUI(guild, dependencies) {
         }
 
         const { channelId, enabledGames } = result.data;
+
+        console.log('enabledGames:', enabledGames);
+
         const payload = buildMainChannelPayload(enabledGames);
 
         const channel = await guild.channels.fetch(channelId);
