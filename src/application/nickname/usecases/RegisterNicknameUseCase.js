@@ -50,7 +50,7 @@ class RegisterNicknameUseCase {
      */
     async execute({ userId, gameType, userInput }) {
 
-        const user = await this.#loadUser(userId);
+        let user = await this.#loadUser(userId);
 
         if (!user)
             user = User.createEmpty(userId);

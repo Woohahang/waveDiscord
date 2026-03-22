@@ -5,6 +5,7 @@ const MongoGuildRepository = require('@infrastructure/database/mongo/repositorie
 // Cache
 const MemoryUserCacheRepository = require('@infrastructure/cache/memory/memoryUserCacheRepository');
 const MemoryGuildCacheRepository = require('@infrastructure/cache/memory/memoryGuildCacheRepository');
+const InMemoryVoiceMessageStore = require('@infrastructure/cache/memory/inMemoryVoiceMessageStore');
 
 // Gateway
 const GameProfileGatewayImpl = require('@infrastructure/external/GameProfileGatewayImpl');
@@ -20,7 +21,9 @@ const SendMainChannelUIUseCase = require('@application/guild/usecases/sendMainCh
 const SendAdminChannelUIUseCase = require('@application/guild/usecases/sendAdminChannelUIUseCase');
 
 // Voice
-const SendVoiceProfileMessageUseCase = require('@application/voice/sendVoiceProfileMessageUseCase');
+const SendVoiceProfileMessageUseCase = require('@application/voice/usecases/sendVoiceProfileMessageUseCase');
+const SaveVoiceMessageUseCase = require('@application/voice/usecases/saveVoiceMessageUseCase');
+const RemoveVoiceMessageUseCase = require('@application/voice/usecases/removeVoiceMessageUseCase');
 
 /**
  * 애플리케이션에서 사용할 의존성을 조립합니다.
@@ -38,6 +41,7 @@ module.exports = function createDependencies() {
 
     const userCacheRepository = new MemoryUserCacheRepository();
     const guildCacheRepository = new MemoryGuildCacheRepository();
+    const inMemoryVoiceMessageStore = new InMemoryVoiceMessageStore();
 
     const gameProfileGateway = new GameProfileGatewayImpl();
 
@@ -62,6 +66,12 @@ module.exports = function createDependencies() {
     const sendVoiceProfileMessageUseCase =
         new SendVoiceProfileMessageUseCase({ userRepository, guildRepository, userCacheRepository, guildCacheRepository });
 
+    const saveVoiceMessageUseCase =
+        new SaveVoiceMessageUseCase({ voiceMessageStore: inMemoryVoiceMessageStore, })
+
+    const removeVoiceMessageUseCase =
+        new RemoveVoiceMessageUseCase({ voiceMessageStore: inMemoryVoiceMessageStore, })
+
     return {
         registerNicknameUseCase,
         removeNicknameUseCase,
@@ -73,7 +83,10 @@ module.exports = function createDependencies() {
         sendMainChannelUIUseCase,
         sendAdminChannelUIUseCase,
 
+        // voice
         sendVoiceProfileMessageUseCase,
+        saveVoiceMessageUseCase,
+        removeVoiceMessageUseCase,
     }
 
 }

@@ -1,4 +1,4 @@
-const { GAME_TYPES } = require('./gameTypes')
+const GAME_TYPES = require('./gameTypes')
 
 const platforms = {
     steam: [GAME_TYPES.STEAM, GAME_TYPES.RAINBOW_SIX],

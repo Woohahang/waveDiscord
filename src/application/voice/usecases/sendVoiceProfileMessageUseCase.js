@@ -2,11 +2,12 @@ const Result = require('@shared/result/result');
 
 class SendVoiceProfileMessageUseCase {
 
-    constructor({ userRepository, guildRepository, userCacheRepository, guildCacheRepository }) {
+    constructor({ userRepository, guildRepository, userCacheRepository, guildCacheRepository, inMemoryVoiceMessageStore }) {
         this.userRepository = userRepository;
         this.guildRepository = guildRepository;
         this.userCacheRepository = userCacheRepository;
         this.guildCacheRepository = guildCacheRepository;
+        this.inMemoryVoiceMessageStore = inMemoryVoiceMessageStore;
     }
 
     /**
