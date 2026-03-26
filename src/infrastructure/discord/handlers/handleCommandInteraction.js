@@ -1,4 +1,4 @@
-function handleCommandInteraction() {
+async function handleCommandInteraction() {
 
 }
 

@@ -52,7 +52,6 @@ function formatNicknameLine(gameType, entry) {
 
 }
 
-
 function buildUserInfoEmbedField({ profiles }) {
 
     const platformFieldsMap = {};
@@ -113,13 +112,13 @@ module.exports = async function handleVoiceJoin({ newState, dependencies }) {
         // 임베드를 전송합니다.
         const sentMessage = await channel.send({ embeds: [embed] });
 
-        await dependencies.saveVoiceMessageUseCase
-            .execute({
-                guildId: guild.id,
-                userId: member.id,
-                channelId: sentMessage.channelId,
-                messageId: sentMessage.id,
-            });
+        await dependencies.voiceMessageService.save({
+            guildId: guild.id,
+            userId: member.id,
+            channelId: sentMessage.channelId,
+            messageId: sentMessage.id,
+        })
+
     } catch (error) {
         logger.error('[handleVoiceJoin] error', error);
     }
