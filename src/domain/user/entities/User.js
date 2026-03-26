@@ -123,11 +123,6 @@ class User {
                 entries.filter(entry => !nicknameEntryIds.includes(entry.entryId))
             ])
         );
-
-        return {
-            ok: true,
-            code: USER_RESULT_CODES.NICKNAME_DELETE_SUCCESS,
-        };
     }
 
 }

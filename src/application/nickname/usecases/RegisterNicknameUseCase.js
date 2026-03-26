@@ -5,7 +5,7 @@ const Result = require('@shared/result/result');
 const DuplicateNicknameError = require('@domain/user/errors/duplicateNicknameError');
 const NicknameLimitExceededError = require('@domain/user/errors/nicknameLimitExceededError');
 const logger = require('@utils/logger');
-const STATE_KEYS = require('@constants/stateKeys');
+const RESULT_CODES = require('@application/constants/resultCodes');
 
 class RegisterNicknameUseCase {
     /**
@@ -91,18 +91,18 @@ class RegisterNicknameUseCase {
             await this.userCacheRepository.set(userId, user);
 
             return Result.ok({
-                code: STATE_KEYS.USER.REGISTER_NICKNAME.SUCCESS,
+                code: RESULT_CODES.USER.REGISTER_NICKNAME.SUCCESS,
             });
 
         } catch (error) {
             if (error instanceof DuplicateNicknameError)
                 return Result.fail({
-                    code: STATE_KEYS.USER.REGISTER_NICKNAME.DUPLICATE
+                    code: RESULT_CODES.USER.REGISTER_NICKNAME.DUPLICATE
                 });
 
             if (error instanceof NicknameLimitExceededError)
                 return Result.fail({
-                    code: STATE_KEYS.USER.REGISTER_NICKNAME.LIMIT_EXCEEDED
+                    code: RESULT_CODES.USER.REGISTER_NICKNAME.LIMIT_EXCEEDED
                 });
 
             logger.error('[RegisterNicknameUseCase] 에러', {

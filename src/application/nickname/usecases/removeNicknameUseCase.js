@@ -1,4 +1,4 @@
-const USER_RESULT_CODES = require('@domain/user/constants/userResultCodes');
+const RESULT_CODES = require('@application/constants/resultCodes');
 const Result = require('@shared/result/result');
 
 class RemoveNicknameUseCase {
@@ -42,25 +42,25 @@ class RemoveNicknameUseCase {
 
             if (!user)
                 return Result.fail({
-                    code: USER_RESULT_CODES.USER_NOT_FOUND
+                    code: RESULT_CODES.USER.COMMON.NOT_FOUND,
                 });
 
-            const domainResult = user.removeNicknamesByEntryIds(nicknameEntryIds);
-
-            if (!domainResult.ok)
-                return Result.fail({
-                    code: domainResult.code
-                });
+            user.removeNicknamesByEntryIds(nicknameEntryIds);
 
             await this.userRepository.save(user);
             await this.userCacheRepository.set(userId, user);
 
             return Result.ok({
-                code: domainResult.code
+                code: RESULT_CODES.USER.REMOVE_NICKNAME.SUCCESS,
             });
 
         } catch (error) {
-            console.log("[RemoveNicknameUseCase] 닉네임 삭제중 에러", error);
+            logger.error('[RemoveNicknameUseCase] 닉네임 삭제 중 오류 발생', {
+                userId,
+                nicknameEntryIds,
+                stack: error.stack,
+            });
+
             throw error;
         }
     }

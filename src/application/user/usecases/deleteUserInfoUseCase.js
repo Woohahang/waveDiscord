@@ -1,5 +1,5 @@
 const Result = require('@shared/result/result');
-const STATE_KEYS = require('@constants/stateKeys');
+const RESULT_CODES = require('@application/constants/resultCodes');
 
 class DeleteUserInfoUseCase {
     /**
@@ -50,7 +50,7 @@ class DeleteUserInfoUseCase {
         // 유저가 없는 경우
         if (!user) {
             return Result.fail({
-                code: STATE_KEYS.USER.NOT_FOUND
+                code: RESULT_CODES.USER.COMMON.NOT_FOUND,
             });
         }
 
@@ -61,7 +61,7 @@ class DeleteUserInfoUseCase {
         await this.userCacheRepository.delete(userId);
 
         return Result.ok({
-            code: STATE_KEYS.USER.DELETE_SUCCESS
+            code: RESULT_CODES.USER.DELETE.SUCCESS,
         });
     }
 }

@@ -1,8 +1,9 @@
 const STATE_KEYS = require('@constants/stateKeys');
 const ERROR_KEY = require('@constants/errorKeys');
+const RESULT_CODES = require('@application/constants/resultCodes');
 
 const STATE_MESSAGES = {
-    [STATE_KEYS.USER_NOT_FOUND]:
+    [RESULT_CODES.USER.COMMON.NOT_FOUND]:
         '## 유저 정보 없음\n' +
         '> * 유저 정보를 찾을 수 없습니다.\n' +
         '> * 문제가 지속되면 **Wave** 디스코드 채널로 문의해 주세요.',
@@ -12,7 +13,7 @@ const STATE_MESSAGES = {
         '> * 현재 등록된 닉네임이 없습니다.\n' +
         '> * 문제가 지속되면 **Wave** 디스코드 채널로 문의해 주세요.',
 
-    [STATE_KEYS.USER.DELETE_SUCCESS]:
+    [RESULT_CODES.USER.DELETE.SUCCESS]:
         '## 사용자 정보 삭제\n' +
         '> * 사용자 정보가 성공적으로 삭제되었습니다.\n' +
         '> * 닉네임을 등록하면 **Wave**는 언제나 다시 사용할 수 있습니다.',
@@ -22,17 +23,17 @@ const STATE_MESSAGES = {
         '> * 사용자 정보를 삭제하는 중 오류가 발생했습니다.\n' +
         '> * 문제가 지속될 경우, **Wave** 디스코드를 방문해 주세요.',
 
-    [STATE_KEYS.USER.REGISTER_NICKNAME.SUCCESS]:
+    [RESULT_CODES.USER.REGISTER_NICKNAME.SUCCESS]:
         '\n' + `## 닉네임 등록 완료` +
         '\n' + '> * 음성 채널 입장 후 채팅을 열어보세요 !' +
         '\n' + '> * **Wave** 가 사용자 정보를 보여줍니다 !',
 
-    [STATE_KEYS.USER.REGISTER_NICKNAME.LIMIT_EXCEEDED]:
+    [RESULT_CODES.USER.REGISTER_NICKNAME.LIMIT_EXCEEDED]:
         '\n' + `## 닉네임 등록 실패` +
         '\n' + '> * 해당 게임은 저장할 수 있는 닉네임 개수를 초과했습니다.' +
         '\n' + '> * 문제가 지속되면 **Wave** 디스코드 채널로 문의해 주세요.',
 
-    [STATE_KEYS.USER.REGISTER_NICKNAME.DUPLICATE]:
+    [RESULT_CODES.USER.REGISTER_NICKNAME.DUPLICATE]:
         '\n' + `## 닉네임 등록 실패` +
         '\n' + '> * 중복 된 닉네임이 있습니다.' +
         '\n' + '> * 문제가 지속되면 **Wave** 디스코드 채널로 문의해 주세요.',
