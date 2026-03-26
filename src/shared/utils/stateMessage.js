@@ -12,7 +12,7 @@ const STATE_MESSAGES = {
         '> * 현재 등록된 닉네임이 없습니다.\n' +
         '> * 문제가 지속되면 **Wave** 디스코드 채널로 문의해 주세요.',
 
-    [STATE_KEYS.DELETE_SUCCESS]:
+    [STATE_KEYS.USER.DELETE_SUCCESS]:
         '## 사용자 정보 삭제\n' +
         '> * 사용자 정보가 성공적으로 삭제되었습니다.\n' +
         '> * 닉네임을 등록하면 **Wave**는 언제나 다시 사용할 수 있습니다.',
@@ -22,17 +22,17 @@ const STATE_MESSAGES = {
         '> * 사용자 정보를 삭제하는 중 오류가 발생했습니다.\n' +
         '> * 문제가 지속될 경우, **Wave** 디스코드를 방문해 주세요.',
 
-    [STATE_KEYS.NICKNAME_SAVE_SUCCESS]:
+    [STATE_KEYS.USER.REGISTER_NICKNAME.SUCCESS]:
         '\n' + `## 닉네임 등록 완료` +
         '\n' + '> * 음성 채널 입장 후 채팅을 열어보세요 !' +
         '\n' + '> * **Wave** 가 사용자 정보를 보여줍니다 !',
 
-    [ERROR_KEY.NICKNAME_SAVE_LIMIT_EXCEEDED]:
+    [STATE_KEYS.USER.REGISTER_NICKNAME.LIMIT_EXCEEDED]:
         '\n' + `## 닉네임 등록 실패` +
         '\n' + '> * 해당 게임은 저장할 수 있는 닉네임 개수를 초과했습니다.' +
         '\n' + '> * 문제가 지속되면 **Wave** 디스코드 채널로 문의해 주세요.',
 
-    [ERROR_KEY.NICKNAME_SAVE_DUPLICATE]:
+    [STATE_KEYS.USER.REGISTER_NICKNAME.DUPLICATE]:
         '\n' + `## 닉네임 등록 실패` +
         '\n' + '> * 중복 된 닉네임이 있습니다.' +
         '\n' + '> * 문제가 지속되면 **Wave** 디스코드 채널로 문의해 주세요.',
@@ -68,12 +68,12 @@ const STATE_MESSAGES = {
         '\n' + '> * 메뉴를 다시 열어 시도해 주세요.' +
         '\n' + '> * 문제가 지속되면 **Wave** 디스코드 채널로 문의해 주세요.',
 
-    [STATE_KEYS.NO_MENU_TO_SHOW]:
+    [STATE_KEYS.MENU.NO_MENU_TO_SHOW]:
         '## 모든 메뉴 표시 중\n' +
         '> * 모든 게임 메뉴가 이미 표시되고 있습니다.' +
         '\n' + '> * 문제가 지속되면 **Wave** 디스코드 채널로 문의해 주세요.',
 
-    [STATE_KEYS.NO_MENU_TO_HIDE]:
+    [STATE_KEYS.MENU.NO_MENU_TO_HIDE]:
         '## 숨길 메뉴 없음\n' +
         '> * 현재 모든 메뉴가 숨김 상태입니다.' +
         '\n' + '> * 문제가 지속되면 **Wave** 디스코드 채널로 문의해 주세요.',
@@ -83,7 +83,7 @@ const STATE_MESSAGES = {
         '\n' + '> * 잠시 후  `/셋업`  명령어를 시도해주세요.' +
         '\n' + '> * 문제가 지속되면 Wave 디스코드 채널로 문의해 주세요.',
 
-    [STATE_KEYS.GUILD_UPDATE_SUCCESS]:
+    [STATE_KEYS.GUILD.UPDATE_SUCCESS]:
         '\n' + '## 업데이트 완료' +
         '\n' + '> * 현재 **Wave** 는 보완과 개발 단계에 있습니다. ' +
         '\n' + '> * 개발은 지금도 진행 중이며 가끔 업데이트 버튼을 눌러주세요.',

@@ -18,6 +18,18 @@ const CUSTOM_IDS = {
             SELECT_NICKNAMES: 'user:remove-nickname:select-nicknames',      // 유저가 닉네임 삭제하기 위한 닉네임선택 메뉴
             BUTTON: 'user:remove-nickname:button'
         },
+
+        INFO: {
+            BUTTON: 'user:open-info:button',   // "내 정보" 버튼
+            SELECT: 'user:select-info:menu',   // "내 정보" 메뉴
+        }
+    },
+
+    GUILD: {
+        GAME_VISIBILITY: {
+            SHOW_SELECT: 'guild:show-game:select',
+            HIDE_SELECT: 'guild:hide-game:select',
+        },
     },
 };
 

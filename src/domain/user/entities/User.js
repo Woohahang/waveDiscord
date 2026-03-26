@@ -1,5 +1,7 @@
 const GAME_TYPES = require('@constants/gameTypes');
 const USER_RESULT_CODES = require('../constants/userResultCodes');
+const DuplicateNicknameError = require('../errors/duplicateNicknameError');
+const NicknameLimitExceededError = require('../errors/nicknameLimitExceededError');
 
 //
 const DEFAULT_MAX_NICKNAME_COUNT = 5;
@@ -59,37 +61,33 @@ class User {
     }
 
     /**
-     * 게임 닉네임을 저장합니다.
+     * 게임 닉네임 엔트리를 추가합니다.
      *
      * @param {string} gameType
-     * @param {string} nickname
+     * @param {Object} nicknameEntry
+     * @throws {NicknameLimitExceededError}
+     * @throws {DuplicateNicknameError}
     */
     addNickname(gameType, nicknameEntry) {
         const entries = this.games[gameType] ?? [];
-
         const maxCount = getMaxNicknameCount(gameType);
 
-        // 닉네임 등록 갯수 검사
+        // 닉네임 등록 개수 초과 검사
         if (entries.length >= maxCount)
-            return {
-                ok: false,
-                code: USER_RESULT_CODES.NICKNAME_SAVE_LIMIT_EXCEEDED,
-            };
+            throw new NicknameLimitExceededError({
+                gameType,
+                limit: maxCount,
+            });
 
         // 닉네임 중복 검사
         if (isDuplicateNickname(gameType, entries, nicknameEntry))
-            return {
-                ok: false,
-                code: USER_RESULT_CODES.NICKNAME_SAVE_DUPLICATE,
-            };
+            throw new DuplicateNicknameError({
+                gameType,
+                nickname: nicknameEntry.nickname,
+            })
 
         entries.push(nicknameEntry);
         this.games[gameType] = entries;
-
-        return {
-            ok: true,
-            code: USER_RESULT_CODES.NICKNAME_SAVE_SUCCESS,
-        };
     }
 
     /**
