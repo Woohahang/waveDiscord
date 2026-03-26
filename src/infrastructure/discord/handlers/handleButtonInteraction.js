@@ -1,21 +1,23 @@
 const CUSTOM_IDS = require('@shared/constants/interactionCustomIds');
 const logger = require("@utils/logger");
-const publishMainChannelUI = require('../guild/sendMainChannelUI');
-const sendAdminChannelUI = require('../guild/sendAdminChannelUI');
 const handleRemoveNicknameButton = require('../interactions/button/handleRemoveNicknameButton');
+const handleSyncGuildAndRefreshUI = require('../interactions/button/handleSyncGuildAndRefreshUI');
+const handleShowUserInfoMenu = require('../interactions/button/handleShowUserInfoMenu');
 
 async function handleButtonInteraction(interaction, dependencies) {
     const customId = interaction.customId;
-    const guild = interaction.guild;
 
     switch (customId) {
         case 'upDateButton':
-            await publishMainChannelUI(guild, dependencies);
-            await sendAdminChannelUI(guild, dependencies);
+            await handleSyncGuildAndRefreshUI(interaction, dependencies);
             break;
 
         case CUSTOM_IDS.USER.REMOVE_NICKNAME.BUTTON:
             await handleRemoveNicknameButton(interaction, dependencies);
+            break;
+
+        case CUSTOM_IDS.USER.INFO.BUTTON:
+            await handleShowUserInfoMenu(interaction);
             break;
 
         default:

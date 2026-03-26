@@ -6,7 +6,7 @@ const WAVE_INVITE_URL =
 
 function buildMainSetupButtons() {
     const myInfoButton = new ButtonBuilder()
-        .setCustomId('multitoolsButton')
+        .setCustomId(CUSTOM_IDS.USER.INFO.BUTTON)
         .setLabel('내 정보')
         .setStyle(ButtonStyle.Primary);
 

@@ -23,6 +23,7 @@ function validateGameType(gameType) {
     }
 }
 
+
 /**
  * 길드(서버) 엔티티
  */
@@ -59,11 +60,20 @@ class Guild {
 
     /**
      * 활성화된 게임 목록들을 가지고옵니다.
+     * 
+     * @returns {string[]}
     */
     getEnabledGames() {
-        return Object.entries(this.games)
-            .filter(([, enabled]) => enabled === true)
-            .map(([gameType]) => gameType);
+        return this.#getGamesByEnabled(true);
+    }
+
+    /**
+     * 비활성화된 게임 목록들을 가지고옵니다.
+     * 
+     * @returns {string[]}
+    */
+    getDisabledGames() {
+        return this.#getGamesByEnabled(false);
     }
 
     /**
@@ -84,33 +94,24 @@ class Guild {
         this.adminChannelId = channelId;
     }
 
-    hasMainChannel() {
-        return Boolean(this.mainChannelId);
-    }
-
-    hasAdminChannel() {
-        return Boolean(this.adminChannelId);
-    }
-
     /**
-     * 특정 게임 활성화 여부를 설정합니다.
+     * 게임 활성화 설정
      *
      * @param {string} gameType
-     * @param {boolean} enabled
-     */
-    setGameEnabled(gameType, enabled) {
+    */
+    enableGame(gameType) {
         validateGameType(gameType);
-        this.games[gameType] = enabled;
+        this.games[gameType] = true;
     }
 
     /**
-     * 특정 게임 활성화 여부를 반환합니다.
+     * 게임 비활성화 설정
      *
      * @param {string} gameType
-     * @returns {boolean}
-     */
-    isGameEnabled(gameType) {
-        return this.games[gameType] ?? false;
+    */
+    disableGame(gameType) {
+        validateGameType(gameType);
+        this.games[gameType] = false;
     }
 
     /**
@@ -127,6 +128,11 @@ class Guild {
         if (ownerUsername !== undefined) this.ownerUsername = ownerUsername;
     }
 
+    #getGamesByEnabled(enabled) {
+        return Object.entries(this.games)
+            .filter(([, value]) => value === enabled)
+            .map(([gameType]) => gameType);
+    }
 }
 
 module.exports = Guild;

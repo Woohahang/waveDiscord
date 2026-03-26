@@ -1,17 +1,17 @@
-const STATE_KEYS = require('@constants/stateKeys');
 const Result = require('@shared/result/result');
+const STATE_KEYS = require('@constants/stateKeys');
 
-class GetRemovableNicknamesUseCase {
+class DeleteUserInfoUseCase {
     /**
      * @typedef {import("@domain/user/repositories/userRepository")} UserRepository
      * @typedef {import("@application/user/ports/userCacheRepository")} UserCacheRepository
-    */
+     */
 
     /**
      * @param {Object} deps
      * @param {UserRepository} deps.userRepository
      * @param {UserCacheRepository} deps.userCacheRepository
-    */
+     */
     constructor({ userRepository, userCacheRepository }) {
         this.userRepository = userRepository;
         this.userCacheRepository = userCacheRepository;
@@ -22,7 +22,7 @@ class GetRemovableNicknamesUseCase {
      *
      * @param {string} userId
      * @returns {Promise<User|null>}
-    */
+     */
     async #loadUser(userId) {
         const cacheResult = await this.userCacheRepository.get(userId);
 
@@ -30,42 +30,40 @@ class GetRemovableNicknamesUseCase {
             return cacheResult.value;
 
         const user = await this.userRepository.findById(userId);
+
         await this.userCacheRepository.set(userId, user ?? null);
 
         return user;
     }
 
     /**
-     * 삭제 가능한 닉네임 목록을 반환합니다.
+     * 사용자 정보를 완전히 삭제합니다.
      *
-     * @param {Object} input
-     * @param {string} input.userId
-     *
-     * @returns {Promise<
-     *   | { ok: true, data: Array<{ entryId: string, gameType: string, nickname: string }> }
-     *   | { ok: false, code: string }
-     * >}
-    */
+     * @param {Object} param
+     * @param {string} param.userId
+     * @returns {Promise<Result>}
+     */
     async execute({ userId }) {
+
         const user = await this.#loadUser(userId);
 
-        if (!user)
+        // 유저가 없는 경우
+        if (!user) {
             return Result.fail({
-                code: STATE_KEYS.USER_NOT_FOUND
-            })
+                code: STATE_KEYS.USER.NOT_FOUND
+            });
+        }
 
-        const allNicknames = user.getAllNicknames();
+        // 실제 삭제
+        await this.userRepository.deleteById(userId);
 
-        if (allNicknames.length < 1)
-            return Result.fail({
-                code: STATE_KEYS.NO_NICKNAMES
-            })
+        // 캐시 제거
+        await this.userCacheRepository.delete(userId);
 
         return Result.ok({
-            data: allNicknames,
+            code: STATE_KEYS.USER.DELETE_SUCCESS
         });
     }
-
 }
 
-module.exports = GetRemovableNicknamesUseCase;
+module.exports = DeleteUserInfoUseCase;

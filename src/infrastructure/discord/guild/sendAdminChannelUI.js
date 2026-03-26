@@ -9,20 +9,16 @@ const logger = require('@utils/logger');
 /**
  * 길드의 관리자 채널에 Wave UI 메시지를 전송합니다.
  * 
- * 관리자 채널이 설정되지 않은 경우 조용히 종료되며,
- * 그 외 실패는 상위로 예외를 전파합니다.
- * 
  * @param {import('discord.js').Guild} guild - Discord 길드 객체
  * @param {Object} dependencies - 의존성 주입 객체
- * 
- * 관리자 채널 UI 전송에 필요한 데이터를 조회하는 유스케이스
  * @param {SendAdminChannelUIUseCase} dependencies.sendAdminChannelUIUseCase
  * 
  * @returns {Promise<void>}
  */
 module.exports = async function sendAdminChannelUI(guild, dependencies) {
     try {
-        const result = await dependencies.sendAdminChannelUIUseCase.execute({ guildId: guild.id })
+        const result = await dependencies.sendAdminChannelUIUseCase
+            .execute({ guildId: guild.id });
 
         if (!result.ok) {
             if (result.code === GUILD_RESULT_CODES.ADMIN_CHANNEL_NOT_SET) {

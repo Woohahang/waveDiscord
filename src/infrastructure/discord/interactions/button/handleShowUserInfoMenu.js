@@ -9,7 +9,7 @@ const CUSTOM_IDS = require('@shared/constants/interactionCustomIds');
  * - 내 정보 삭제
  * @returns {ActionRowBuilder} - Discord 컴포넌트 액션 로우
  */
-function createUserInfoSelectMenu() {
+function buildUserInfoSelectMenu() {
     const selectMenu = new StringSelectMenuBuilder()
         .setCustomId(CUSTOM_IDS.USER.INFO.SELECT)
         .setPlaceholder('선택 하세요 !')
@@ -35,18 +35,22 @@ function createUserInfoSelectMenu() {
  * @param {import('discord.js').SelectMenuInteraction} interaction - Discord 상호작용 객체
  * @returns {Promise<void>}
  */
-module.exports = async (interaction) => {
-    try {
-        const actionRow = createUserInfoSelectMenu();
+module.exports = async function handleShowUserInfoMenu(interaction) {
+    const row = buildUserInfoSelectMenu();
 
-        await interaction.reply({ components: [actionRow], ephemeral: true });
+    try {
+        await interaction.reply({
+            components: [row],
+            ephemeral: true
+        });
 
     } catch (error) {
-        logger.error('[createUserInfoSelectMenu] 내 정보 메뉴 생성 중 오류', {
+        logger.error('[handleShowUserInfoMenu] 내 정보 메뉴 응답 실패', {
             customId: interaction.customId,
             errorName: error.name,
             errorMessage: error.message,
             stack: error.stack,
-        })
+        });
     };
-};
+
+}

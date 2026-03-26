@@ -40,12 +40,9 @@ module.exports = async function handleSubmitNickname(interaction, dependencies) 
                 userInput
             });
 
-        // 상태 코드 → 사용자 메시지 변환
-        const stateMessage = getStateMessage(result.code);
-
         // 최종 응답 전송
         await interaction.editReply({
-            content: stateMessage
+            content: getStateMessage(result.code),
         });
 
     } catch (error) {

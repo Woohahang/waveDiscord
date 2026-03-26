@@ -22,7 +22,8 @@ const logger = require('@utils/logger');
  */
 module.exports = async function sendMainChannelUI(guild, dependencies) {
     try {
-        const result = await dependencies.sendMainChannelUIUseCase.execute({ guildId: guild.id })
+        const result = await dependencies.sendMainChannelUIUseCase
+            .execute({ guildId: guild.id });
 
         if (!result.ok) {
             if (result.code === GUILD_RESULT_CODES.MAIN_CHANNEL_NOT_SET) {
@@ -35,8 +36,6 @@ module.exports = async function sendMainChannelUI(guild, dependencies) {
         }
 
         const { channelId, enabledGames } = result.data;
-
-        console.log('enabledGames:', enabledGames);
 
         const payload = buildMainChannelPayload(enabledGames);
 
