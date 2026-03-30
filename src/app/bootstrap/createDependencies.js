@@ -33,6 +33,7 @@ const DisableGuildGamesUseCase = require('@application/guild/usecases/disableGui
 // Voice
 const SendVoiceProfileMessageUseCase = require('@application/voice/usecases/sendVoiceProfileMessageUseCase');
 const GetGuildUIDataUseCase = require('@application/guild/usecases/getGuildUIDataUseCase');
+const GetRegisterableGamesUseCase = require('@application/nickname/usecases/getRegisterableGamesUseCase');
 
 /**
  * ==============================
@@ -99,11 +100,15 @@ module.exports = function createDependencies() {
     const deleteUserInfoUseCase =
         new DeleteUserInfoUseCase({ userRepository, userCacheRepository })
 
+    const getRegisterableGamesUseCase =
+        new GetRegisterableGamesUseCase({ guildRepository, guildCacheRepository });
+
     return {
         // nickname
         registerNicknameUseCase,
         removeNicknameUseCase,
         getRemovableNicknamesUseCase,
+        getRegisterableGamesUseCase,
 
         // external
         gameProfileGateway,

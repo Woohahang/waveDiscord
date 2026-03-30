@@ -7,7 +7,7 @@ const resetMenuSelection = require('@shared/utils/resetMenuSelection');
 const handleSelectedGameVisibility = require('../interactions/selectMenus/handleSelectedGameVisibility');
 const handleDeleteUserInfo = require('../interactions/selectMenus/handleDeleteUserInfo');
 
-async function handleSelectMenuInteraction(interaction, dependencies) {
+async function handleStringSelectMenuInteraction(interaction, dependencies) {
     const customId = interaction.customId;
 
     switch (customId) {
@@ -45,5 +45,5 @@ async function handleSelectMenuInteraction(interaction, dependencies) {
     };
 }
 
-module.exports = handleSelectMenuInteraction;
+module.exports = handleStringSelectMenuInteraction;
 

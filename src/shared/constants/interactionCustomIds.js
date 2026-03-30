@@ -5,7 +5,8 @@
  * context: 누가 / 어떤 도메인에서 발생했는가
  * action: 어떤 행동을 하려는가
  * target: 무엇을 선택/클릭했는가
- */
+*/
+
 
 const CUSTOM_IDS = {
     USER: {
@@ -30,6 +31,11 @@ const CUSTOM_IDS = {
             SHOW_SELECT: 'guild:show-game:select',
             HIDE_SELECT: 'guild:hide-game:select',
         },
+
+        SETUP: {
+            SELECT_MAIN_CHANNEL: 'guild:setup:select-main-channel',
+            SELECT_ADMIN_CHANNEL: 'guild:setup:select-admin-channel',
+        }
     },
 };
 

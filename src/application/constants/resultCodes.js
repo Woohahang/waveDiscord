@@ -14,7 +14,7 @@ const RESULT_CODES = {
         },
         REMOVE_NICKNAME: {
             SUCCESS: 'USER_REMOVE_NICKNAME_SUCCESS',
-            // NOT_FOUND: 'USER_REMOVE_NICKNAME_NOT_FOUND',
+            NOT_FOUND: 'USER_REMOVE_NICKNAME_NOT_FOUND',
         },
 
     },

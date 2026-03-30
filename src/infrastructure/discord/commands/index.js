@@ -1,9 +1,8 @@
-const registerNicknameCommand = require('./nickname/registerNicknameCommand');
-const setupCommand = require('./guild/setupCommand');
-const statusCommand = require('./dev/statusCommand');
+const setup = require('./setup');
+const registerNicknameCommand = require('./registerNicknameCommand');
+
 
 module.exports = [
+    setup,
     registerNicknameCommand,
-    setupCommand,
-    statusCommand,
 ];
