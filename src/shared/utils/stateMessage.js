@@ -8,7 +8,7 @@ const STATE_MESSAGES = {
         '> * 유저 정보를 찾을 수 없습니다.\n' +
         '> * 문제가 지속되면 **Wave** 디스코드 채널로 문의해 주세요.',
 
-    [STATE_KEYS.NO_NICKNAMES]:
+    [RESULT_CODES.USER.REMOVE_NICKNAME.NOT_FOUND]:
         '## 등록된 닉네임 없음\n' +
         '> * 현재 등록된 닉네임이 없습니다.\n' +
         '> * 문제가 지속되면 **Wave** 디스코드 채널로 문의해 주세요.',
@@ -38,7 +38,7 @@ const STATE_MESSAGES = {
         '\n' + '> * 중복 된 닉네임이 있습니다.' +
         '\n' + '> * 문제가 지속되면 **Wave** 디스코드 채널로 문의해 주세요.',
 
-    [STATE_KEYS.NICKNAME_DELETE_SUCCESS]:
+    [RESULT_CODES.USER.REMOVE_NICKNAME.SUCCESS]:
         '\n' + `## 닉네임 삭제 완료` +
         '\n' + '> * 닉네임이 성공적으로 삭제되었습니다.' +
         '\n' + '> * 문제가 발생하면 **Wave** 디스코드 채널로 문의해 주세요.',

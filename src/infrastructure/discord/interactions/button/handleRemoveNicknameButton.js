@@ -28,16 +28,16 @@ module.exports = async function handleRemoveNicknameButton(interaction, dependen
     const userId = interaction.member.id;
 
     try {
-        const result = await dependencies.getRemovableNicknamesUseCase.execute({
-            userId
-        });
+        const result = await dependencies.getRemovableNicknamesUseCase
+            .execute({
+                userId
+            });
 
-        if (!result.ok) {
+        if (!result.ok)
             return interaction.reply({
                 content: getStateMessage(result.code),
                 ephemeral: true
             });
-        }
 
         const options = buildRemovableNicknameOptions(result.data);
         const menu = buildRemoveNicknameMenu(options);

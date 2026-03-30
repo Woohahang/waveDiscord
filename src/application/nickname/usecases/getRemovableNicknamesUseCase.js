@@ -1,4 +1,4 @@
-const STATE_KEYS = require('@constants/stateKeys');
+const RESULT_CODES = require('@application/constants/resultCodes');
 const Result = require('@shared/result/result');
 
 class GetRemovableNicknamesUseCase {
@@ -51,14 +51,14 @@ class GetRemovableNicknamesUseCase {
 
         if (!user)
             return Result.fail({
-                code: STATE_KEYS.USER_NOT_FOUND
+                code: RESULT_CODES.USER.COMMON.NOT_FOUND
             })
 
         const allNicknames = user.getAllNicknames();
 
         if (allNicknames.length < 1)
             return Result.fail({
-                code: STATE_KEYS.NO_NICKNAMES
+                code: RESULT_CODES.USER.REMOVE_NICKNAME.NOT_FOUND,
             })
 
         return Result.ok({
