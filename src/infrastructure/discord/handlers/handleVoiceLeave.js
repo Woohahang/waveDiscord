@@ -16,10 +16,8 @@ async function handleVoiceLeave({ oldState, dependencies }) {
             userId,
         });
 
-        if (!savedMessage) {
-            console.error('[handleVoiceLeave] 예상하지 못 한 에러');
-            return
-        }
+        if (!savedMessage)
+            return;
 
         const { channelId, messageId } = savedMessage;
 
